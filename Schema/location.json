@@ -1,14 +1,14 @@
 {
   "openapi" : "3.0.0",
   "info" : {
-    "title" : "Velocity EHS Instance Internal API",
     "description" : "The Internal API for a v6 Instance is the central point in the v6 Architecture and responsible for all data access for the instance.",
+    "version" : "1.0.0",
+    "title" : "Velocity EHS Instance Internal API",
     "contact" : {
       "name" : "VelocityEHS",
       "url" : "https://www.ehs.com",
       "email" : "support@ehs.com"
-    },
-    "version" : "1.0.0"
+    }
   },
   "servers" : [ {
     "url" : "http://localhost:59693/api",
@@ -23,65 +23,34 @@
   "paths" : {
     "/locations" : {
       "get" : {
-        "tags" : [ "Locations" ],
         "description" : "Get a location by location id",
         "operationId" : "getLocation",
+        "tags" : [ "Locations" ],
         "parameters" : [ {
-          "name" : "x-account",
-          "in" : "header",
-          "description" : "The unique identifier for the customer account",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/AccountHeader"
         }, {
-          "name" : "x-identity",
-          "in" : "header",
-          "description" : "The unique identifier for the identity accessing the account",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/IdentityHeader"
         }, {
-          "name" : "x-language",
-          "in" : "header",
-          "description" : "The unique identifier for selected language",
-          "required" : false,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/LanguageHeader"
         }, {
-          "name" : "id",
           "in" : "query",
+          "name" : "id",
           "description" : "The location unique identifier",
           "required" : true,
-          "style" : "form",
-          "explode" : true,
           "schema" : {
-            "minimum" : 0,
             "type" : "integer",
-            "format" : "int32"
+            "format" : "int32",
+            "minimum" : 0
           }
         }, {
-          "name" : "locationType",
           "in" : "query",
+          "name" : "locationType",
           "description" : "Location type of selected location. Group = 0, Location = 1",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
+          "required" : false,
           "schema" : {
-            "minimum" : 0,
             "type" : "integer",
-            "format" : "int32"
+            "format" : "int32",
+            "minimum" : 0
           }
         } ],
         "responses" : {
@@ -107,45 +76,19 @@
         }
       },
       "put" : {
-        "tags" : [ "Locations" ],
         "description" : "Update existing location",
         "operationId" : "updateLocation",
+        "tags" : [ "Locations" ],
         "parameters" : [ {
-          "name" : "x-account",
-          "in" : "header",
-          "description" : "The unique identifier for the customer account",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/AccountHeader"
         }, {
-          "name" : "x-identity",
-          "in" : "header",
-          "description" : "The unique identifier for the identity accessing the account",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/IdentityHeader"
         }, {
-          "name" : "x-language",
-          "in" : "header",
-          "description" : "The unique identifier for selected language",
-          "required" : false,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/LanguageHeader"
         } ],
         "requestBody" : {
           "description" : "The updated location schema",
+          "required" : true,
           "content" : {
             "application/json" : {
               "schema" : {
@@ -163,8 +106,7 @@
                 "$ref" : "#/components/examples/Location"
               }
             }
-          },
-          "required" : true
+          }
         },
         "responses" : {
           "200" : {
@@ -192,64 +134,37 @@
         }
       },
       "post" : {
-        "tags" : [ "Locations" ],
         "description" : "Create new location",
         "operationId" : "createLocation",
+        "tags" : [ "Locations" ],
         "parameters" : [ {
-          "name" : "x-account",
-          "in" : "header",
-          "description" : "The unique identifier for the customer account",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/AccountHeader"
         }, {
-          "name" : "x-identity",
-          "in" : "header",
-          "description" : "The unique identifier for the identity accessing the account",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/IdentityHeader"
         }, {
-          "name" : "x-language",
-          "in" : "header",
-          "description" : "The unique identifier for selected language",
-          "required" : false,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/LanguageHeader"
         } ],
         "requestBody" : {
           "description" : "The new location schema",
+          "required" : true,
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/Location"
+                "$ref" : "#/components/schemas/NewLocationParams"
               },
               "example" : {
-                "$ref" : "#/components/examples/Location"
+                "$ref" : "#/components/examples/NewLocationParams"
               }
             },
             "application/xml" : {
               "schema" : {
-                "$ref" : "#/components/schemas/Location"
+                "$ref" : "#/components/schemas/NewLocationParams"
               },
               "example" : {
-                "$ref" : "#/components/examples/Location"
+                "$ref" : "#/components/examples/NewLocationParams"
               }
             }
-          },
-          "required" : true
+          }
         },
         "responses" : {
           "201" : {
@@ -274,58 +189,46 @@
         }
       },
       "delete" : {
-        "tags" : [ "Locations" ],
         "description" : "Delete a location by location id",
         "operationId" : "deleteLocation",
+        "tags" : [ "Locations" ],
         "parameters" : [ {
-          "name" : "x-account",
-          "in" : "header",
-          "description" : "The unique identifier for the customer account",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/AccountHeader"
         }, {
-          "name" : "x-identity",
-          "in" : "header",
-          "description" : "The unique identifier for the identity accessing the account",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/IdentityHeader"
         }, {
-          "name" : "x-language",
-          "in" : "header",
-          "description" : "The unique identifier for selected language",
-          "required" : false,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/LanguageHeader"
         }, {
-          "name" : "id",
           "in" : "query",
+          "name" : "id",
           "description" : "The location unique identifier",
           "required" : true,
-          "style" : "form",
-          "explode" : true,
           "schema" : {
-            "minimum" : 0,
             "type" : "integer",
-            "format" : "int32"
+            "format" : "int32",
+            "minimum" : 0
+          }
+        }, {
+          "in" : "query",
+          "name" : "locationType",
+          "description" : "The location type will be among Group = 0, Location = 2",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
           }
         } ],
         "responses" : {
           "204" : {
-            "description" : "location was deleted successfully"
+            "description" : "Location was deleted successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "boolean"
+                }
+              }
+            }
           },
           "400" : {
             "description" : "Bad request"
@@ -344,73 +247,50 @@
     },
     "/locations/find" : {
       "get" : {
-        "tags" : [ "Locations" ],
         "description" : "Search for locations by params",
         "operationId" : "getLocations",
+        "tags" : [ "Locations" ],
         "parameters" : [ {
-          "name" : "x-account",
-          "in" : "header",
-          "description" : "The unique identifier for the customer account",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/AccountHeader"
         }, {
-          "name" : "x-identity",
-          "in" : "header",
-          "description" : "The unique identifier for the identity accessing the account",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/IdentityHeader"
         }, {
-          "name" : "x-language",
-          "in" : "header",
-          "description" : "The unique identifier for selected language",
-          "required" : false,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/LanguageHeader"
         }, {
-          "name" : "id",
           "in" : "query",
+          "name" : "id",
           "description" : "The location unique identifier",
           "required" : false,
-          "style" : "form",
-          "explode" : true,
           "schema" : {
-            "minimum" : 0,
             "type" : "integer",
-            "format" : "int32"
+            "format" : "int32",
+            "example" : 1
           }
         }, {
-          "name" : "hierarchyId",
           "in" : "query",
+          "name" : "locationType",
+          "description" : "The location type will be among Group = 0, Location = 2",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
+          }
+        }, {
+          "in" : "query",
+          "name" : "hierarchyId",
           "description" : "The hierarchy unique identifier",
           "required" : false,
-          "style" : "form",
-          "explode" : true,
           "schema" : {
-            "minimum" : 0,
             "type" : "integer",
-            "format" : "int32"
+            "format" : "int32",
+            "example" : 11
           }
         }, {
-          "name" : "locationStatuses",
           "in" : "query",
-          "description" : "The array of selected status unique identifier",
+          "name" : "locationStatuses",
+          "description" : "The array of selected status unique identifier will be among Active = 0, Inactive = 1, Archived = 2",
           "required" : false,
-          "style" : "form",
-          "explode" : true,
           "schema" : {
             "type" : "array",
             "items" : {
@@ -448,86 +328,50 @@
     },
     "/locations/traverse" : {
       "get" : {
-        "tags" : [ "Locations" ],
         "description" : "Get locations by traverse the location tree",
         "operationId" : "getTraversedLocations",
+        "tags" : [ "Locations" ],
         "parameters" : [ {
-          "name" : "x-account",
-          "in" : "header",
-          "description" : "The unique identifier for the customer account",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/AccountHeader"
         }, {
-          "name" : "x-identity",
-          "in" : "header",
-          "description" : "The unique identifier for the identity accessing the account",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/IdentityHeader"
         }, {
-          "name" : "x-language",
-          "in" : "header",
-          "description" : "The unique identifier for selected language",
-          "required" : false,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/LanguageHeader"
         }, {
-          "name" : "id",
           "in" : "query",
+          "name" : "id",
           "description" : "The location unique identifier",
           "required" : true,
-          "style" : "form",
-          "explode" : true,
           "schema" : {
-            "minimum" : 0,
             "type" : "integer",
-            "format" : "int32"
+            "format" : "int32",
+            "minimum" : 0
           }
         }, {
+          "in" : "query",
           "name" : "locationType",
-          "in" : "query",
-          "description" : "The location type",
+          "description" : "The location type will be among Group = 0, Location = 2",
           "required" : true,
-          "style" : "form",
-          "explode" : true,
           "schema" : {
-            "maximum" : 2,
-            "minimum" : 0,
             "type" : "integer",
-            "format" : "int32"
+            "format" : "int32",
+            "example" : 1
           }
         }, {
-          "name" : "hierarchyId",
           "in" : "query",
+          "name" : "hierarchyId",
           "description" : "The hierarchy unique identifier",
           "required" : false,
-          "style" : "form",
-          "explode" : true,
           "schema" : {
-            "minimum" : 0,
             "type" : "integer",
-            "format" : "int32"
+            "format" : "int32",
+            "minimum" : 0
           }
         }, {
-          "name" : "locationStatuses",
           "in" : "query",
+          "name" : "locationStatuses",
           "description" : "The array of selected statuses",
           "required" : false,
-          "style" : "form",
-          "explode" : true,
           "schema" : {
             "type" : "array",
             "items" : {
@@ -537,16 +381,14 @@
             }
           }
         }, {
-          "name" : "levels",
           "in" : "query",
+          "name" : "levels",
           "description" : "The number of level to traverse within hierarchy",
           "required" : false,
-          "style" : "form",
-          "explode" : true,
           "schema" : {
-            "minimum" : -1,
             "type" : "integer",
-            "format" : "int32"
+            "format" : "int32",
+            "minimum" : -1
           }
         } ],
         "responses" : {
@@ -577,44 +419,18 @@
     },
     "/locations/move" : {
       "post" : {
-        "tags" : [ "Locations" ],
         "description" : "Move location and all children under another location group",
         "operationId" : "moveLocation",
+        "tags" : [ "Locations" ],
         "parameters" : [ {
-          "name" : "x-account",
-          "in" : "header",
-          "description" : "The unique identifier for the customer account",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/AccountHeader"
         }, {
-          "name" : "x-identity",
-          "in" : "header",
-          "description" : "The unique identifier for the identity accessing the account",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/IdentityHeader"
         }, {
-          "name" : "x-language",
-          "in" : "header",
-          "description" : "The unique identifier for selected language",
-          "required" : false,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/LanguageHeader"
         } ],
         "requestBody" : {
+          "required" : true,
           "content" : {
             "application/json" : {
               "schema" : {
@@ -632,8 +448,7 @@
                 "$ref" : "#/components/examples/MovingLocationParams"
               }
             }
-          },
-          "required" : true
+          }
         },
         "responses" : {
           "201" : {
@@ -649,11 +464,11 @@
           "400" : {
             "description" : "Bad request"
           },
-          "403" : {
-            "description" : "You do not have sufficient rights to this resource"
-          },
           "404" : {
             "description" : "Location not found"
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
           },
           "422" : {
             "description" : "Fail to update selected location"
@@ -663,64 +478,37 @@
     },
     "/locations/creationValidate" : {
       "post" : {
-        "tags" : [ "Locations" ],
         "description" : "Validation of location creation",
         "operationId" : "canCreateLocation",
+        "tags" : [ "Locations" ],
         "parameters" : [ {
-          "name" : "x-account",
-          "in" : "header",
-          "description" : "The unique identifier for the customer account",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/AccountHeader"
         }, {
-          "name" : "x-identity",
-          "in" : "header",
-          "description" : "The unique identifier for the identity accessing the account",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/IdentityHeader"
         }, {
-          "name" : "x-language",
-          "in" : "header",
-          "description" : "The unique identifier for selected language",
-          "required" : false,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/LanguageHeader"
         } ],
         "requestBody" : {
           "description" : "The new location object",
+          "required" : true,
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/Location"
+                "$ref" : "#/components/schemas/NewLocationParams"
               },
               "example" : {
-                "$ref" : "#/components/examples/Location"
+                "$ref" : "#/components/examples/NewLocationParams"
               }
             },
             "application/xml" : {
               "schema" : {
-                "$ref" : "#/components/schemas/Location"
+                "$ref" : "#/components/schemas/NewLocationParams"
               },
               "example" : {
-                "$ref" : "#/components/examples/Location"
+                "$ref" : "#/components/examples/NewLocationParams"
               }
             }
-          },
-          "required" : true
+          }
         },
         "responses" : {
           "204" : {
@@ -747,53 +535,34 @@
     },
     "/location/deletionValidate" : {
       "post" : {
-        "tags" : [ "Locations" ],
         "description" : "Validation of location deleting",
         "operationId" : "canDeleteLocation",
+        "tags" : [ "Locations" ],
         "parameters" : [ {
-          "name" : "x-account",
-          "in" : "header",
-          "description" : "The unique identifier for the customer account",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/AccountHeader"
         }, {
-          "name" : "x-identity",
-          "in" : "header",
-          "description" : "The unique identifier for the identity accessing the account",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/IdentityHeader"
         }, {
-          "name" : "x-language",
-          "in" : "header",
-          "description" : "The unique identifier for selected language",
-          "required" : false,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
+          "$ref" : "#/components/parameters/LanguageHeader"
         }, {
-          "name" : "id",
           "in" : "query",
+          "name" : "id",
           "description" : "The location unique identifier",
           "required" : true,
-          "style" : "form",
-          "explode" : true,
           "schema" : {
-            "minimum" : 0,
             "type" : "integer",
-            "format" : "int32"
+            "format" : "int32",
+            "minimum" : 0
+          }
+        }, {
+          "in" : "query",
+          "name" : "locationType",
+          "description" : "The location type will be among Group = 0, Location = 2",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
           }
         } ],
         "responses" : {
@@ -821,81 +590,12 @@
     }
   },
   "components" : {
-    "schemas" : {
-      "Location" : {
-        "required" : [ "name" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "description" : "Unique identifier for the location",
-            "format" : "int32",
-            "example" : 12
-          },
-          "name" : {
-            "type" : "string",
-            "example" : "Chicago"
-          },
-          "locationType" : {
-            "type" : "integer",
-            "description" : "location type will be among Root = 0, Group = 1, Location = 2",
-            "format" : "int32",
-            "example" : 2
-          },
-          "locationStatus" : {
-            "type" : "integer",
-            "description" : "location status will be among Active = 0, Inactive = 1, Archived = 2",
-            "format" : "int32",
-            "example" : 0
-          },
-          "parentIds" : {
-            "type" : "array",
-            "items" : {
-              "type" : "integer",
-              "format" : "int32",
-              "example" : 1
-            }
-          },
-          "hierarchyId" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : 10
-          }
-        }
-      },
-      "MovingLocationParams" : {
-        "required" : [ "locationId", "locationType", "parentId" ],
-        "type" : "object",
-        "properties" : {
-          "locationId" : {
-            "type" : "integer",
-            "description" : "The location unique identifier",
-            "format" : "int32",
-            "example" : 0
-          },
-          "locationType" : {
-            "type" : "integer",
-            "description" : "The location type",
-            "format" : "int32",
-            "example" : 0
-          },
-          "parentId" : {
-            "type" : "integer",
-            "description" : "The location parent unique identifier",
-            "format" : "int32",
-            "example" : 0
-          }
-        }
-      }
-    },
     "parameters" : {
       "AccountHeader" : {
         "name" : "x-account",
         "in" : "header",
         "description" : "The unique identifier for the customer account",
         "required" : true,
-        "style" : "simple",
-        "explode" : false,
         "schema" : {
           "type" : "integer",
           "format" : "int32"
@@ -906,8 +606,6 @@
         "in" : "header",
         "description" : "The unique identifier for the identity accessing the account",
         "required" : true,
-        "style" : "simple",
-        "explode" : false,
         "schema" : {
           "type" : "integer",
           "format" : "int32"
@@ -918,23 +616,149 @@
         "in" : "header",
         "description" : "The unique identifier for selected language",
         "required" : false,
-        "style" : "simple",
-        "explode" : false,
         "schema" : {
           "type" : "integer",
           "format" : "int32"
         }
       }
     },
+    "schemas" : {
+      "Location" : {
+        "type" : "object",
+        "required" : [ "locationType" ],
+        "properties" : {
+          "id" : {
+            "description" : "The location unique identifier",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 12
+          },
+          "name" : {
+            "description" : "The location name",
+            "type" : "string",
+            "format" : "string",
+            "example" : "Chicago"
+          },
+          "locationType" : {
+            "description" : "The location type will be among Group = 0, Location = 2",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
+          },
+          "locationStatus" : {
+            "description" : "The location status will be among Active = 0, Inactive = 1, Archived = 2",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 0
+          },
+          "parentId" : {
+            "description" : "The location parent unique identifiers",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
+          },
+          "hierarchyId" : {
+            "description" : "The hierarchy unique identifier",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 10
+          }
+        }
+      },
+      "NewLocationParams" : {
+        "type" : "object",
+        "required" : [ "name", "locationType" ],
+        "properties" : {
+          "name" : {
+            "description" : "The location name",
+            "type" : "string",
+            "format" : "string",
+            "example" : "Chicago"
+          },
+          "locationType" : {
+            "description" : "The location type will be among Group = 0, Location = 2",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
+          },
+          "locationStatus" : {
+            "description" : "The location status will be among Active = 0, Inactive = 1, Archived = 2",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 0
+          },
+          "parentIds" : {
+            "description" : "The array of location parent unique identifiers",
+            "type" : "array",
+            "items" : {
+              "type" : "integer",
+              "format" : "int32",
+              "example" : 1
+            }
+          },
+          "hierarchyId" : {
+            "description" : "The hierarchy unique identifier",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 10
+          }
+        }
+      },
+      "MovingLocationParams" : {
+        "type" : "object",
+        "required" : [ "locationId", "locationType", "parentId" ],
+        "properties" : {
+          "locationId" : {
+            "description" : "The location unique identifier",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 12
+          },
+          "locationType" : {
+            "description" : "The location type",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 0
+          },
+          "parentId" : {
+            "description" : "The location parent unique identifier",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
+          }
+        }
+      }
+    },
     "examples" : {
       "Location" : {
-        "summary" : "An example creating/updating location request",
+        "summary" : "An example location model",
         "value" : {
           "id" : 99,
           "name" : "Test Location",
           "locationType" : 1,
           "locationStatus" : 0,
-          "parentIds" : [ 1 ],
+          "parentId" : 88,
+          "hierarchyId" : 12
+        }
+      },
+      "LocationGroup" : {
+        "summary" : "An example location group model",
+        "value" : {
+          "id" : 88,
+          "name" : "Test Location Group",
+          "locationType" : 0,
+          "locationStatus" : 0,
+          "parentId" : 1,
+          "hierarchyId" : 12
+        }
+      },
+      "NewLocationParams" : {
+        "summary" : "An example creating location request",
+        "value" : {
+          "name" : "New Location",
+          "locationType" : 1,
+          "locationStatus" : 0,
+          "parentIds" : [ 88 ],
           "hierarchyId" : 12
         }
       },

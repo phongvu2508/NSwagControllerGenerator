@@ -11,7 +11,9 @@ Get-ChildItem $schemaPath -Filter *.json |
 Foreach-Object {
     $TextInfo = (Get-Culture).TextInfo
 
-    $controllerFileName = $TextInfo.ToTitleCase($_.BaseName) + "Controller.cs"
+    $controllerName = $TextInfo.ToTitleCase($_.BaseName);
+
+    $controllerFileName = $controllerName + "Controller.cs"
 
     $inputPath = $_.DirectoryName + '\' + $_.Name;
 
