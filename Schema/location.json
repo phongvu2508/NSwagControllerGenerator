@@ -1,0 +1,951 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Velocity EHS Instance Internal API",
+    "description" : "The Internal API for a v6 Instance is the central point in the v6 Architecture and responsible for all data access for the instance.",
+    "contact" : {
+      "name" : "VelocityEHS",
+      "url" : "https://www.ehs.com",
+      "email" : "support@ehs.com"
+    },
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:59693/api",
+    "description" : "Localhost test environment"
+  }, {
+    "url" : "https://odev6web01.ad.velocityehs.com/ehs-internal-api/api",
+    "description" : "Development"
+  } ],
+  "tags" : [ {
+    "name" : "Locations"
+  } ],
+  "paths" : {
+    "/locations" : {
+      "get" : {
+        "tags" : [ "Locations" ],
+        "description" : "Get a location by location id",
+        "operationId" : "getLocation",
+        "parameters" : [ {
+          "name" : "x-account",
+          "in" : "header",
+          "description" : "The unique identifier for the customer account",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "x-identity",
+          "in" : "header",
+          "description" : "The unique identifier for the identity accessing the account",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "x-language",
+          "in" : "header",
+          "description" : "The unique identifier for selected language",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "description" : "The location unique identifier",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "locationType",
+          "in" : "query",
+          "description" : "Location type of selected location. Group = 0, Location = 1",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Found a location with provided location id",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          },
+          "404" : {
+            "description" : "Location not found"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Locations" ],
+        "description" : "Update existing location",
+        "operationId" : "updateLocation",
+        "parameters" : [ {
+          "name" : "x-account",
+          "in" : "header",
+          "description" : "The unique identifier for the customer account",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "x-identity",
+          "in" : "header",
+          "description" : "The unique identifier for the identity accessing the account",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "x-language",
+          "in" : "header",
+          "description" : "The unique identifier for selected language",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "The updated location schema",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Location"
+              },
+              "example" : {
+                "$ref" : "#/components/examples/Location"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Location"
+              },
+              "example" : {
+                "$ref" : "#/components/examples/Location"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Location was updated successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          },
+          "404" : {
+            "description" : "Location not found"
+          },
+          "422" : {
+            "description" : "Fail to update selected location"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Locations" ],
+        "description" : "Create new location",
+        "operationId" : "createLocation",
+        "parameters" : [ {
+          "name" : "x-account",
+          "in" : "header",
+          "description" : "The unique identifier for the customer account",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "x-identity",
+          "in" : "header",
+          "description" : "The unique identifier for the identity accessing the account",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "x-language",
+          "in" : "header",
+          "description" : "The unique identifier for selected language",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "The new location schema",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Location"
+              },
+              "example" : {
+                "$ref" : "#/components/examples/Location"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Location"
+              },
+              "example" : {
+                "$ref" : "#/components/examples/Location"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Location was created successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          },
+          "422" : {
+            "description" : "Fail to create new location"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Locations" ],
+        "description" : "Delete a location by location id",
+        "operationId" : "deleteLocation",
+        "parameters" : [ {
+          "name" : "x-account",
+          "in" : "header",
+          "description" : "The unique identifier for the customer account",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "x-identity",
+          "in" : "header",
+          "description" : "The unique identifier for the identity accessing the account",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "x-language",
+          "in" : "header",
+          "description" : "The unique identifier for selected language",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "description" : "The location unique identifier",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "location was deleted successfully"
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          },
+          "404" : {
+            "description" : "Location not found"
+          },
+          "422" : {
+            "description" : "Fail to delete selected location"
+          }
+        }
+      }
+    },
+    "/locations/find" : {
+      "get" : {
+        "tags" : [ "Locations" ],
+        "description" : "Search for locations by params",
+        "operationId" : "getLocations",
+        "parameters" : [ {
+          "name" : "x-account",
+          "in" : "header",
+          "description" : "The unique identifier for the customer account",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "x-identity",
+          "in" : "header",
+          "description" : "The unique identifier for the identity accessing the account",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "x-language",
+          "in" : "header",
+          "description" : "The unique identifier for selected language",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "description" : "The location unique identifier",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "hierarchyId",
+          "in" : "query",
+          "description" : "The hierarchy unique identifier",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "locationStatuses",
+          "in" : "query",
+          "description" : "The array of selected status unique identifier",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer",
+              "format" : "int32",
+              "example" : 0
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "locations found using provided criterias",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Location"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          },
+          "404" : {
+            "description" : "Locations not found"
+          }
+        }
+      }
+    },
+    "/locations/traverse" : {
+      "get" : {
+        "tags" : [ "Locations" ],
+        "description" : "Get locations by traverse the location tree",
+        "operationId" : "getTraversedLocations",
+        "parameters" : [ {
+          "name" : "x-account",
+          "in" : "header",
+          "description" : "The unique identifier for the customer account",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "x-identity",
+          "in" : "header",
+          "description" : "The unique identifier for the identity accessing the account",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "x-language",
+          "in" : "header",
+          "description" : "The unique identifier for selected language",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "description" : "The location unique identifier",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "locationType",
+          "in" : "query",
+          "description" : "The location type",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maximum" : 2,
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "hierarchyId",
+          "in" : "query",
+          "description" : "The hierarchy unique identifier",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "locationStatuses",
+          "in" : "query",
+          "description" : "The array of selected statuses",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer",
+              "format" : "int32",
+              "example" : 0
+            }
+          }
+        }, {
+          "name" : "levels",
+          "in" : "query",
+          "description" : "The number of level to traverse within hierarchy",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "minimum" : -1,
+            "type" : "integer",
+            "format" : "int32"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "locations found using provided criterias",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Location"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          },
+          "404" : {
+            "description" : "Locations not found"
+          }
+        }
+      }
+    },
+    "/locations/move" : {
+      "post" : {
+        "tags" : [ "Locations" ],
+        "description" : "Move location and all children under another location group",
+        "operationId" : "moveLocation",
+        "parameters" : [ {
+          "name" : "x-account",
+          "in" : "header",
+          "description" : "The unique identifier for the customer account",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "x-identity",
+          "in" : "header",
+          "description" : "The unique identifier for the identity accessing the account",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "x-language",
+          "in" : "header",
+          "description" : "The unique identifier for selected language",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MovingLocationParams"
+              },
+              "example" : {
+                "$ref" : "#/components/examples/MovingLocationParams"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MovingLocationParams"
+              },
+              "example" : {
+                "$ref" : "#/components/examples/MovingLocationParams"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Location was updated successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "boolean"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          },
+          "404" : {
+            "description" : "Location not found"
+          },
+          "422" : {
+            "description" : "Fail to update selected location"
+          }
+        }
+      }
+    },
+    "/locations/creationValidate" : {
+      "post" : {
+        "tags" : [ "Locations" ],
+        "description" : "Validation of location creation",
+        "operationId" : "canCreateLocation",
+        "parameters" : [ {
+          "name" : "x-account",
+          "in" : "header",
+          "description" : "The unique identifier for the customer account",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "x-identity",
+          "in" : "header",
+          "description" : "The unique identifier for the identity accessing the account",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "x-language",
+          "in" : "header",
+          "description" : "The unique identifier for selected language",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "The new location object",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Location"
+              },
+              "example" : {
+                "$ref" : "#/components/examples/Location"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Location"
+              },
+              "example" : {
+                "$ref" : "#/components/examples/Location"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "description" : "Create location validation result",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "boolean"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          },
+          "404" : {
+            "description" : "Location not found"
+          }
+        }
+      }
+    },
+    "/location/deletionValidate" : {
+      "post" : {
+        "tags" : [ "Locations" ],
+        "description" : "Validation of location deleting",
+        "operationId" : "canDeleteLocation",
+        "parameters" : [ {
+          "name" : "x-account",
+          "in" : "header",
+          "description" : "The unique identifier for the customer account",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "x-identity",
+          "in" : "header",
+          "description" : "The unique identifier for the identity accessing the account",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "x-language",
+          "in" : "header",
+          "description" : "The unique identifier for selected language",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "description" : "The location unique identifier",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Delete location validation result",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "boolean"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          },
+          "404" : {
+            "description" : "Location not found"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Location" : {
+        "required" : [ "name" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "description" : "Unique identifier for the location",
+            "format" : "int32",
+            "example" : 12
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "Chicago"
+          },
+          "locationType" : {
+            "type" : "integer",
+            "description" : "location type will be among Root = 0, Group = 1, Location = 2",
+            "format" : "int32",
+            "example" : 2
+          },
+          "locationStatus" : {
+            "type" : "integer",
+            "description" : "location status will be among Active = 0, Inactive = 1, Archived = 2",
+            "format" : "int32",
+            "example" : 0
+          },
+          "parentIds" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer",
+              "format" : "int32",
+              "example" : 1
+            }
+          },
+          "hierarchyId" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 10
+          }
+        }
+      },
+      "MovingLocationParams" : {
+        "required" : [ "locationId", "locationType", "parentId" ],
+        "type" : "object",
+        "properties" : {
+          "locationId" : {
+            "type" : "integer",
+            "description" : "The location unique identifier",
+            "format" : "int32",
+            "example" : 0
+          },
+          "locationType" : {
+            "type" : "integer",
+            "description" : "The location type",
+            "format" : "int32",
+            "example" : 0
+          },
+          "parentId" : {
+            "type" : "integer",
+            "description" : "The location parent unique identifier",
+            "format" : "int32",
+            "example" : 0
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "AccountHeader" : {
+        "name" : "x-account",
+        "in" : "header",
+        "description" : "The unique identifier for the customer account",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      },
+      "IdentityHeader" : {
+        "name" : "x-identity",
+        "in" : "header",
+        "description" : "The unique identifier for the identity accessing the account",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      },
+      "LanguageHeader" : {
+        "name" : "x-language",
+        "in" : "header",
+        "description" : "The unique identifier for selected language",
+        "required" : false,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      }
+    },
+    "examples" : {
+      "Location" : {
+        "summary" : "An example creating/updating location request",
+        "value" : {
+          "id" : 99,
+          "name" : "Test Location",
+          "locationType" : 1,
+          "locationStatus" : 0,
+          "parentIds" : [ 1 ],
+          "hierarchyId" : 12
+        }
+      },
+      "MovingLocationParams" : {
+        "summary" : "An example of moving location request",
+        "value" : {
+          "locationId" : 22,
+          "locationType" : 0,
+          "parentIds" : 1
+        }
+      }
+    }
+  }
+}
