@@ -17,6 +17,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location not found</response>
+        /// <returns>Found a location with provided location id</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationAsync(int id, int? locationType);
     
         /// <param name="body">The updated location schema</param>
@@ -25,6 +26,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location not found</response>
         /// <response code="422">Fail to update selected location</response>
+        /// <returns>Location was updated successfully</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> UpdateLocationAsync(Location body);
     
         /// <param name="body">The new location schema</param>
@@ -32,6 +34,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="422">Fail to create new location</response>
+        /// <returns>Location was created successfully</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> CreateLocationAsync(NewLocationParams body);
     
         /// <param name="id">The location unique identifier</param>
@@ -41,6 +44,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location not found</response>
         /// <response code="422">Fail to delete selected location</response>
+        /// <returns>Location was deleted successfully</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> DeleteLocationAsync(int id, int locationType);
     
         /// <param name="id">The location unique identifier</param>
@@ -51,6 +55,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Locations not found</response>
+        /// <returns>locations found using provided criterias</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationsAsync(int? id, int? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<int> locationStatuses);
     
         /// <param name="id">The location unique identifier</param>
@@ -62,6 +67,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Locations not found</response>
+        /// <returns>locations found using provided criterias</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetTraversedLocationsAsync(int id, int locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<int> locationStatuses, int? levels);
     
         /// <response code="201">Location was updated successfully</response>
@@ -69,6 +75,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Location not found</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="422">Fail to update selected location</response>
+        /// <returns>Location was updated successfully</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> MoveLocationAsync(MovingLocationParams body);
     
         /// <param name="body">The new location object</param>
@@ -76,6 +83,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location not found</response>
+        /// <returns>Create location validation result</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanCreateLocationAsync(NewLocationParams body);
     
         /// <param name="id">The location unique identifier</param>
@@ -84,6 +92,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location not found</response>
+        /// <returns>Delete location validation result</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocationAsync(int id, int locationType);
     
     }
@@ -105,6 +114,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location not found</response>
+        /// <returns>Found a location with provided location id</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations")]
             public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocation(int id, int? locationType)
         {
@@ -117,6 +127,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location not found</response>
         /// <response code="422">Fail to update selected location</response>
+        /// <returns>Location was updated successfully</returns>
         [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("locations")]
             public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> UpdateLocation([Microsoft.AspNetCore.Mvc.FromBody] Location body)
         {
@@ -128,6 +139,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="422">Fail to create new location</response>
+        /// <returns>Location was created successfully</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locations")]
             public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> CreateLocation([Microsoft.AspNetCore.Mvc.FromBody] NewLocationParams body)
         {
@@ -141,6 +153,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location not found</response>
         /// <response code="422">Fail to delete selected location</response>
+        /// <returns>Location was deleted successfully</returns>
         [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("locations")]
             public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> DeleteLocation(int id, int locationType)
         {
@@ -155,6 +168,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Locations not found</response>
+        /// <returns>locations found using provided criterias</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/find")]
             public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocations(int? id, int? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<int> locationStatuses)
         {
@@ -170,6 +184,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Locations not found</response>
+        /// <returns>locations found using provided criterias</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/traverse")]
             public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetTraversedLocations(int id, int locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<int> locationStatuses, int? levels)
         {
@@ -181,6 +196,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Location not found</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="422">Fail to update selected location</response>
+        /// <returns>Location was updated successfully</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locations/move")]
             public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> MoveLocation([Microsoft.AspNetCore.Mvc.FromBody] MovingLocationParams body)
         {
@@ -192,6 +208,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location not found</response>
+        /// <returns>Create location validation result</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locations/creationValidate")]
             public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanCreateLocation([Microsoft.AspNetCore.Mvc.FromBody] NewLocationParams body)
         {
@@ -204,6 +221,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location not found</response>
+        /// <returns>Delete location validation result</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("location/deletionValidate")]
             public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocation(int id, int locationType)
         {
