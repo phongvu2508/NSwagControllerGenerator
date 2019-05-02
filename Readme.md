@@ -1,5 +1,6 @@
 ## Follow this step to generate controller code from api schema
 
+- Clone this and put it under **C:\Source** or **C:\Src**
 - Make sure that you have .netcore 2.2 installed in the system.
 - Export your api schema as json files and place them in 'Schema' folder.
 - Rename your schema to the controller that you want to generate
