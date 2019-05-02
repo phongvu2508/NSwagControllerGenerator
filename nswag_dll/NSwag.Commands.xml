@@ -28,6 +28,9 @@
         <member name="F:NSwag.Commands.CodeGeneration.OperationGenerationMode.MultipleClientsFromPathSegments">
             <summary>From path segments (operation name = last segment, client name = second to last segment).</summary>
         </member>
+        <member name="F:NSwag.Commands.CodeGeneration.OperationGenerationMode.MultipleClientsFromFirstTagAndPathSegments">
+            <summary>From the first operation tag and path segments (operation name = last segment, client name = first operation tag).</summary>
+        </member>
         <member name="F:NSwag.Commands.CodeGeneration.OperationGenerationMode.SingleClientFromOperationId">
             <summary>From the Swagger operation ID.</summary>
         </member>

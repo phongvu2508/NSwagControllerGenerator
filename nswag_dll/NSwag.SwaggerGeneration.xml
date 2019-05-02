@@ -63,6 +63,13 @@
             <typeparam name="T">The operation processor type.</typeparam>
             <returns>The operation processor.</returns>
         </member>
+        <member name="M:NSwag.SwaggerGeneration.Processors.Collections.OperationProcessorCollection.Replace``1(NSwag.SwaggerGeneration.Processors.IOperationProcessor)">
+            <summary>Replaces the first element of type <typeparamref name="T"/>
+            with <paramref name="newItem"/>.</summary>
+            <typeparam name="T">The operation processor type to replace.</typeparam>
+            <param name="newItem">The replacement item.</param>
+            <returns>true, if an item was replaced; otherwise false.</returns>
+        </member>
         <member name="T:NSwag.SwaggerGeneration.Processors.Contexts.DocumentProcessorContext">
             <summary>The <see cref="T:NSwag.SwaggerGeneration.Processors.IDocumentProcessor"/> context.</summary>
         </member>
@@ -224,10 +231,9 @@
             <summary>Gets the response HTTP status code for an empty/void response and the given generator.</summary>
             <returns>The status code.</returns>
         </member>
-        <member name="M:NSwag.SwaggerGeneration.Processors.OperationResponseProcessorBase.ProcessResponseTypeAttributes(NSwag.SwaggerGeneration.Processors.Contexts.OperationProcessorContext,System.Reflection.ParameterInfo,System.Collections.Generic.IEnumerable{System.Attribute})">
+        <member name="M:NSwag.SwaggerGeneration.Processors.OperationResponseProcessorBase.ProcessResponseTypeAttributes(NSwag.SwaggerGeneration.Processors.Contexts.OperationProcessorContext,System.Collections.Generic.IEnumerable{System.Attribute})">
             <summary>Generates the responses based on the given return type attributes.</summary>
             <param name="operationProcessorContext">The context.</param>
-            <param name="returnParameter">The return parameter.</param>
             <param name="responseTypeAttributes">The response type attributes.</param>
             <returns>The task.</returns>
         </member>
@@ -235,6 +241,11 @@
             <summary>Gets all attributes of the given parameter.</summary>
             <param name="parameter">The parameter.</param>
             <returns>The attributes.</returns>
+        </member>
+        <member name="M:NSwag.SwaggerGeneration.Processors.OperationResponseProcessorBase.UpdateResponseDescriptionAsync(NSwag.SwaggerGeneration.Processors.Contexts.OperationProcessorContext)">
+            <summary>Updates the response description based on the return parameter or the response tags in the method's xml docs.</summary>
+            <param name="operationProcessorContext">The context.</param>
+            <returns>The task.</returns>
         </member>
         <member name="T:NSwag.SwaggerGeneration.Processors.OperationSummaryAndDescriptionProcessor">
             <summary>Loads the operation summary and description from the DescriptionAttribute and the XML documentation.</summary>
@@ -251,6 +262,10 @@
             <summary>Processes the specified method information.</summary>
             <param name="context"></param>
             <returns>true if the operation should be added to the Swagger specification.</returns>
+        </member>
+        <member name="M:NSwag.SwaggerGeneration.Processors.OperationTagsProcessor.AddControllerNameTag(NSwag.SwaggerGeneration.Processors.Contexts.OperationProcessorContext)">
+            <summary>Adds the controller name as operation tag.</summary>
+            <param name="context">The context.</param>
         </member>
         <member name="T:NSwag.SwaggerGeneration.Processors.Security.OperationSecurityScopeProcessor">
             <summary>Generates the OAuth2 security scopes for an operation by reflecting the AuthorizeAttribute attributes.</summary>
@@ -277,8 +292,14 @@
             <summary>Appends the OAuth2 security scheme to the document's security definitions.</summary>
         </member>
         <member name="M:NSwag.SwaggerGeneration.Processors.Security.SecurityDefinitionAppender.#ctor(System.String,NSwag.SwaggerSecurityScheme)">
+            <summary>Initializes a new instance of the <see cref="T:NSwag.SwaggerGeneration.Processors.Security.SecurityDefinitionAppender" /> class where the security requirement must be manually added.</summary>
+            <param name="name">The name/key of the security scheme/definition.</param>
+            <param name="swaggerSecurityScheme">The Swagger security scheme.</param>
+        </member>
+        <member name="M:NSwag.SwaggerGeneration.Processors.Security.SecurityDefinitionAppender.#ctor(System.String,System.Collections.Generic.IEnumerable{System.String},NSwag.SwaggerSecurityScheme)">
             <summary>Initializes a new instance of the <see cref="T:NSwag.SwaggerGeneration.Processors.Security.SecurityDefinitionAppender" /> class.</summary>
             <param name="name">The name/key of the security scheme/definition.</param>
+            <param name="scopeNames">The scope names to add to as security requirement with the scheme name in the 'security' property (can be an empty list).</param>
             <param name="swaggerSecurityScheme">The Swagger security scheme.</param>
         </member>
         <member name="M:NSwag.SwaggerGeneration.Processors.Security.SecurityDefinitionAppender.ProcessAsync(NSwag.SwaggerGeneration.Processors.Contexts.DocumentProcessorContext)">

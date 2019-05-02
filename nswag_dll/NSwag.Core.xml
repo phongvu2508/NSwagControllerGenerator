@@ -297,16 +297,16 @@
             <summary>Configuration for an OAuth flow.</summary>
         </member>
         <member name="P:NSwag.OpenApiOAuthFlow.AuthorizationUrl">
-            <summary>Gets or sets the authorization URL to be used for this flow (Swagger only).</summary>
+            <summary>Gets or sets the authorization URL to be used for this flow.</summary>
         </member>
         <member name="P:NSwag.OpenApiOAuthFlow.TokenUrl">
-            <summary>Gets or sets the token URL to be used for this flow (Swagger only).</summary>
+            <summary>Gets or sets the token URL to be used for this flow.</summary>
         </member>
         <member name="P:NSwag.OpenApiOAuthFlow.RefreshUrl">
-            <summary>Gets or sets the token URL to be used for this flow (Swagger only).</summary>
+            <summary>Gets or sets the token URL to be used for this flow.</summary>
         </member>
         <member name="P:NSwag.OpenApiOAuthFlow.Scopes">
-            <summary>Gets the available scopes for the OAuth2 security scheme (Swagger only).</summary>
+            <summary>Gets the available scopes for the OAuth2 security scheme.</summary>
         </member>
         <member name="T:NSwag.OpenApiOAuthFlows">
             <summary>Configuration information for the supported flow types.</summary>
@@ -491,7 +491,7 @@
         <member name="M:NSwag.SwaggerDocument.GenerateOperationIds">
             <summary>Generates missing or non-unique operation IDs.</summary>
         </member>
-        <member name="M:NSwag.SwaggerDocument.CreateJsonSerializerContractResolver(NJsonSchema.SchemaType)">
+        <member name="M:NSwag.SwaggerDocument.GetJsonSerializerContractResolver(NJsonSchema.SchemaType)">
             <summary>Creates the serializer contract resolver based on the <see cref="T:NJsonSchema.SchemaType"/>.</summary>
             <param name="schemaType">The schema type.</param>
             <returns>The settings.</returns>
@@ -654,6 +654,10 @@
         </member>
         <member name="P:NSwag.SwaggerOperation.ActualSecurity">
             <summary>Gets the actual security description, either from the operation or from the <see cref="T:NSwag.SwaggerDocument"/>.</summary>
+        </member>
+        <member name="M:NSwag.SwaggerOperation.TryAddConsumes(System.String)">
+            <summary>Adds a consumes MIME type if it does not yet exists.</summary>
+            <param name="mimeType">The MIME type.</param>
         </member>
         <member name="P:NSwag.SwaggerOperation.ParametersRaw">
             <summary>Gets or sets the parameters.</summary>
@@ -912,10 +916,15 @@
             <param name="fallbackValue">The fallback value when 'x-nullable' is not defined.</param>
             <returns>The result.</returns>
         </member>
-        <member name="M:NSwag.SwaggerResponse.GetActualResponseSchema(NSwag.SwaggerOperation)">
-            <summary>Gets the actual response schema for the given status code.</summary>
-            <param name="operation">The response's operation.</param>
-            <returns>The schema.</returns>
+        <member name="M:NSwag.SwaggerResponse.IsBinary(NSwag.SwaggerOperation)">
+            <summary>Checks whether this is a binary/file response.</summary>
+            <param name="operation">The operation the response belongs to.</param>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:NSwag.SwaggerResponse.IsEmpty(NSwag.SwaggerOperation)">
+            <summary>Checks whether this is an empty response.</summary>
+            <param name="operation">The operation the response belongs to.</param>
+            <returns>The result.</returns>
         </member>
         <member name="T:NSwag.SwaggerSchema">
             <summary>The enumeration of Swagger protocol schemes.</summary>

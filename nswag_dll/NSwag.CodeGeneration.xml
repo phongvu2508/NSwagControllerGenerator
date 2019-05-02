@@ -21,6 +21,10 @@
             <summary>Generates the the whole file containing all needed types.</summary>
             <returns>The code</returns>
         </member>
+        <member name="M:NSwag.CodeGeneration.ClientGeneratorBase`3.GetBinaryResponseTypeName">
+            <summary>Gets the file response type name.</summary>
+            <returns>The type name.</returns>
+        </member>
         <member name="P:NSwag.CodeGeneration.ClientGeneratorBase`3.BaseSettings">
             <summary>Gets the base settings.</summary>
         </member>
@@ -90,6 +94,9 @@
         </member>
         <member name="P:NSwag.CodeGeneration.ClientGeneratorBaseSettings.ParameterNameGenerator">
             <summary>Gets or sets the parameter name generator.</summary>
+        </member>
+        <member name="P:NSwag.CodeGeneration.ClientGeneratorBaseSettings.ExcludedParameterNames">
+            <summary>Gets or sets the globally excluded parameter names.</summary>
         </member>
         <member name="M:NSwag.CodeGeneration.ClientGeneratorBaseSettings.GenerateControllerName(System.String)">
             <summary>Generates the name of the controller based on the provided settings.</summary>
@@ -164,6 +171,10 @@
             <param name="schema">The schema.</param>
             <param name="isNullable">if set to <c>true</c> [is nullable].</param>
             <param name="typeNameHint">The type name hint.</param>
+            <returns>The type name.</returns>
+        </member>
+        <member name="M:NSwag.CodeGeneration.IClientGenerator.GetBinaryResponseTypeName">
+            <summary>Gets the file/binary response type name.</summary>
             <returns>The type name.</returns>
         </member>
         <member name="T:NSwag.CodeGeneration.IParameterNameGenerator">
@@ -357,10 +368,6 @@
             <summary>Gets the success response.</summary>
             <returns>The response.</returns>
         </member>
-        <member name="M:NSwag.CodeGeneration.Models.OperationModelBase`2.GetSuccessResponseSchema">
-            <summary>Gets the success response schema.</summary>
-            <returns>The response schema.</returns>
-        </member>
         <member name="M:NSwag.CodeGeneration.Models.OperationModelBase`2.GetParameterVariableName(NSwag.SwaggerParameter,System.Collections.Generic.IEnumerable{NSwag.SwaggerParameter})">
             <summary>Gets the name of the parameter variable.</summary>
             <param name="parameter">The parameter.</param>
@@ -371,6 +378,10 @@
             <summary>Resolves the type of the parameter.</summary>
             <param name="parameter">The parameter.</param>
             <returns>The parameter type name.</returns>
+        </member>
+        <member name="M:NSwag.CodeGeneration.Models.OperationModelBase`2.GetActualParameters">
+            <summary>Gets the actual parameters ignoring the excluded ones.</summary>
+            <returns>The parameters.</returns>
         </member>
         <member name="T:NSwag.CodeGeneration.Models.ParameterModelBase">
             <summary>The parameter template model.</summary>
@@ -570,6 +581,9 @@
         <member name="P:NSwag.CodeGeneration.Models.ResponseModelBase.ExtensionData">
             <summary>Gets the response extension data.</summary>
         </member>
+        <member name="P:NSwag.CodeGeneration.Models.ResponseModelBase.Produces">
+            <summary>Gets the produced mime type of this response if available.</summary>
+        </member>
         <member name="T:NSwag.CodeGeneration.OperationNameGenerators.IOperationNameGenerator">
             <summary>Generates the client and operation name for a given operation.</summary>
         </member>
@@ -590,6 +604,33 @@
             <param name="path">The HTTP path.</param>
             <param name="httpMethod">The HTTP method.</param>
             <param name="operation">The operation.</param>
+            <returns>The operation name.</returns>
+        </member>
+        <member name="T:NSwag.CodeGeneration.OperationNameGenerators.MultipleClientsFromFirstTagAndPathSegmentsOperationNameGenerator">
+            <summary>Generates the client name based on the first tag and operation name based on the path segments (operation name = last segment, client name = first tag).</summary>
+        </member>
+        <member name="P:NSwag.CodeGeneration.OperationNameGenerators.MultipleClientsFromFirstTagAndPathSegmentsOperationNameGenerator.SupportsMultipleClients">
+            <summary>Gets a value indicating whether the generator supports multiple client classes.</summary>
+        </member>
+        <member name="M:NSwag.CodeGeneration.OperationNameGenerators.MultipleClientsFromFirstTagAndPathSegmentsOperationNameGenerator.GetClientName(NSwag.SwaggerDocument,System.String,System.String,NSwag.SwaggerOperation)">
+            <summary>Gets the client name for a given operation (may be empty).</summary>
+            <param name="document">The Swagger document.</param>
+            <param name="path">The HTTP path.</param>
+            <param name="httpMethod">The HTTP method.</param>
+            <param name="operation">The operation.</param>
+            <returns>The client name.</returns>
+        </member>
+        <member name="M:NSwag.CodeGeneration.OperationNameGenerators.MultipleClientsFromFirstTagAndPathSegmentsOperationNameGenerator.GetOperationName(NSwag.SwaggerDocument,System.String,System.String,NSwag.SwaggerOperation)">
+            <summary>Gets the operation name for a given operation.</summary>
+            <param name="document">The Swagger document.</param>
+            <param name="path">The HTTP path.</param>
+            <param name="httpMethod">The HTTP method.</param>
+            <param name="operation">The operation.</param>
+            <returns>The operation name.</returns>
+        </member>
+        <member name="M:NSwag.CodeGeneration.OperationNameGenerators.MultipleClientsFromFirstTagAndPathSegmentsOperationNameGenerator.ConvertPathToName(System.String)">
+            <summary>Converts the path to an operation name.</summary>
+            <param name="path">The HTTP path.</param>
             <returns>The operation name.</returns>
         </member>
         <member name="T:NSwag.CodeGeneration.OperationNameGenerators.MultipleClientsFromOperationIdOperationNameGenerator">

@@ -37,16 +37,21 @@
         <member name="P:NSwag.SwaggerGeneration.AspNetCore.AspNetCoreToSwaggerGenerator.Settings">
             <summary>Gets the generator settings.</summary>
         </member>
+        <member name="M:NSwag.SwaggerGeneration.AspNetCore.AspNetCoreToSwaggerGenerator.GenerateAsync(System.Object)">
+            <summary>Generates the <see cref="T:NSwag.SwaggerDocument"/> with services from the given service provider.</summary>
+            <param name="serviceProvider">The service provider.</param>
+            <returns>The document</returns>
+        </member>
+        <member name="M:NSwag.SwaggerGeneration.AspNetCore.AspNetCoreToSwaggerGenerator.GetJsonSerializerSettings(System.IServiceProvider)">
+            <summary>Loads the <see cref="M:NSwag.SwaggerGeneration.AspNetCore.AspNetCoreToSwaggerGenerator.GetJsonSerializerSettings(System.IServiceProvider)"/> from the given service provider.</summary>
+            <param name="serviceProvider">The service provider.</param>
+            <returns>The settings.</returns>
+        </member>
         <member name="M:NSwag.SwaggerGeneration.AspNetCore.AspNetCoreToSwaggerGenerator.GenerateAsync(Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescriptionGroupCollection)">
             <summary>Generates a Swagger specification for the given <see cref="T:Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescriptionGroupCollection"/>.</summary>
             <param name="apiDescriptionGroups">The <see cref="T:Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescriptionGroupCollection"/>.</param>
             <returns>The <see cref="T:NSwag.SwaggerDocument" />.</returns>
             <exception cref="T:System.InvalidOperationException">The operation has more than one body parameter.</exception>
-        </member>
-        <member name="M:NSwag.SwaggerGeneration.AspNetCore.AspNetCoreToSwaggerGenerator.GenerateAsync(System.Object)">
-            <summary>Generates the <see cref="T:NSwag.SwaggerDocument"/> with services from the given service provider.</summary>
-            <param name="serviceProvider">The service provider.</param>
-            <returns>The document</returns>
         </member>
         <member name="T:NSwag.SwaggerGeneration.AspNetCore.AspNetCoreToSwaggerGeneratorSettings">
             <summary>Settings for the <see cref="T:NSwag.SwaggerGeneration.AspNetCore.AspNetCoreToSwaggerGenerator"/>.</summary>
@@ -61,6 +66,13 @@
             <summary>Gets or sets a value indicating whether parameters without default value are always required
             (legacy, default: false).</summary>
             <remarks>Use BindRequiredAttribute to mark parameters as required.</remarks>
+        </member>
+        <member name="T:NSwag.SwaggerGeneration.AspNetCore.Processors.AspNetCoreOperationTagsProcessor">
+            <summary>Processes the SwaggerTagsAttribute on the operation method.</summary>
+        </member>
+        <member name="M:NSwag.SwaggerGeneration.AspNetCore.Processors.AspNetCoreOperationTagsProcessor.AddControllerNameTag(NSwag.SwaggerGeneration.Processors.Contexts.OperationProcessorContext)">
+            <summary>Adds the controller name as operation tag.</summary>
+            <param name="context">The context.</param>
         </member>
         <member name="M:NSwag.SwaggerGeneration.AspNetCore.Processors.OperationParameterProcessor.ProcessAsync(NSwag.SwaggerGeneration.Processors.Contexts.OperationProcessorContext)">
             <summary>Processes the specified method information.</summary>
@@ -82,6 +94,26 @@
         <member name="M:NSwag.SwaggerGeneration.AspNetCore.Processors.OperationResponseProcessor.GetVoidResponseStatusCode">
             <summary>Gets the response HTTP status code for an empty/void response and the given generator.</summary>
             <returns>The status code.</returns>
+        </member>
+        <member name="T:NSwag.SwaggerGeneration.Processors.Security.AspNetCoreOperationSecurityScopeProcessor">
+            <summary>Generates the OAuth2 security scopes for an operation by reflecting the AuthorizeAttribute attributes.</summary>
+        </member>
+        <member name="M:NSwag.SwaggerGeneration.Processors.Security.AspNetCoreOperationSecurityScopeProcessor.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:NSwag.SwaggerGeneration.Processors.Security.OperationSecurityScopeProcessor"/> class with 'Bearer' name.</summary>
+        </member>
+        <member name="M:NSwag.SwaggerGeneration.Processors.Security.AspNetCoreOperationSecurityScopeProcessor.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:NSwag.SwaggerGeneration.Processors.Security.OperationSecurityScopeProcessor"/> class.</summary>
+            <param name="name">The security definition name.</param>
+        </member>
+        <member name="M:NSwag.SwaggerGeneration.Processors.Security.AspNetCoreOperationSecurityScopeProcessor.ProcessAsync(NSwag.SwaggerGeneration.Processors.Contexts.OperationProcessorContext)">
+            <summary>Processes the specified method information.</summary>
+            <param name="context"></param>
+            <returns>true if the operation should be added to the Swagger specification.</returns>
+        </member>
+        <member name="M:NSwag.SwaggerGeneration.Processors.Security.AspNetCoreOperationSecurityScopeProcessor.GetScopes(System.Collections.Generic.IEnumerable{Microsoft.AspNetCore.Authorization.AuthorizeAttribute})">
+            <summary>Gets the security scopes for an operation.</summary>
+            <param name="authorizeAttributes">The authorize attributes.</param>
+            <returns>The scopes.</returns>
         </member>
     </members>
 </doc>

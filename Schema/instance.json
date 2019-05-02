@@ -21,11 +21,11 @@
     "name" : "Locations"
   } ],
   "paths" : {
-    "/locations" : {
+    "/users":{
       "get" : {
-        "description" : "Get a location by location id",
-        "operationId" : "getLocation",
-        "tags" : [ "Locations" ],
+        "description" : "Search for locations by params",
+        "operationId" : "getUsers",
+        "tags" : [ "Users" ],
         "parameters" : [ {
           "$ref" : "#/components/parameters/AccountHeader"
         }, {
@@ -35,31 +35,77 @@
         }, {
           "in" : "query",
           "name" : "id",
-          "description" : "The location unique identifier",
-          "required" : true,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32",
-            "minimum" : 0
-          }
-        }, {
-          "in" : "query",
-          "name" : "locationType",
-          "description" : "Location type of selected location. Group = 0, Location = 1",
+          "description" : "The location identifier",
           "required" : false,
           "schema" : {
             "type" : "integer",
             "format" : "int32",
-            "minimum" : 0
+            "example" : 1
+          }
+        }, {
+          "in" : "query",
+          "name" : "locationType",
+          "description" : "The location type will be among Group = 0, Location = 2",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
+          }
+        }, {
+          "in" : "query",
+          "name" : "hierarchyId",
+          "description" : "The hierarchy identifier",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 11
+          }
+        }, {
+          "in" : "query",
+          "name" : "locationStatuses",
+          "description" : "The array of selected status unique identifier will be among Active = 0, Inactive = 1, Archived = 2",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer",
+              "format" : "int32",
+              "example" : 0
+            }
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "description" : "The amount of locations return per request",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 20
+          }
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "description" : "The postion for first location to be returned in the collection",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 20
           }
         } ],
         "responses" : {
           "200" : {
-            "description" : "Found a location with provided location id",
+            "description" : "A list of locations founded using provided criterias",
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Location"
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Location"
+                  }
                 }
               }
             }
@@ -71,7 +117,108 @@
             "description" : "You do not have sufficient rights to this resource"
           },
           "404" : {
-            "description" : "Location not found"
+            "description" : "Locations not found"
+          }
+        }
+      }
+    },
+    "/locations" : {
+      "get" : {
+        "description" : "Search for locations by params",
+        "operationId" : "getLocations",
+        "tags" : [ "Locations" ],
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/AccountHeader"
+        }, {
+          "$ref" : "#/components/parameters/IdentityHeader"
+        }, {
+          "$ref" : "#/components/parameters/LanguageHeader"
+        }, {
+          "in" : "query",
+          "name" : "id",
+          "description" : "The location identifier",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
+          }
+        }, {
+          "in" : "query",
+          "name" : "locationType",
+          "description" : "The location type will be among Group = 0, Location = 2",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
+          }
+        }, {
+          "in" : "query",
+          "name" : "hierarchyId",
+          "description" : "The hierarchy identifier",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 11
+          }
+        }, {
+          "in" : "query",
+          "name" : "locationStatuses",
+          "description" : "The array of selected status unique identifier will be among Active = 0, Inactive = 1, Archived = 2",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer",
+              "format" : "int32",
+              "example" : 0
+            }
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "description" : "The amount of locations return per request",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 20
+          }
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "description" : "The postion for first location to be returned in the collection",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 20
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A list of locations founded using provided criterias",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Location"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          },
+          "404" : {
+            "description" : "Locations not found"
           }
         }
       },
@@ -110,7 +257,7 @@
         },
         "responses" : {
           "200" : {
-            "description" : "Location was updated successfully",
+            "description" : "The updated location",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -168,7 +315,7 @@
         },
         "responses" : {
           "201" : {
-            "description" : "Location was created successfully",
+            "description" : "The new location",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -201,7 +348,7 @@
         }, {
           "in" : "query",
           "name" : "id",
-          "description" : "The location unique identifier",
+          "description" : "The location identifier",
           "required" : true,
           "schema" : {
             "type" : "integer",
@@ -221,7 +368,7 @@
         } ],
         "responses" : {
           "204" : {
-            "description" : "Location was deleted successfully",
+            "description" : "Location deletion result",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -245,10 +392,10 @@
         }
       }
     },
-    "/locations/find" : {
+    "/locations/{locationId}" : {
       "get" : {
-        "description" : "Search for locations by params",
-        "operationId" : "getLocations",
+        "description" : "Get a location by location id",
+        "operationId" : "getLocationById",
         "tags" : [ "Locations" ],
         "parameters" : [ {
           "$ref" : "#/components/parameters/AccountHeader"
@@ -257,59 +404,33 @@
         }, {
           "$ref" : "#/components/parameters/LanguageHeader"
         }, {
-          "in" : "query",
-          "name" : "id",
-          "description" : "The location unique identifier",
-          "required" : false,
+          "in" : "path",
+          "name" : "locationId",
+          "description" : "The location identifier",
+          "required" : true,
           "schema" : {
             "type" : "integer",
             "format" : "int32",
-            "example" : 1
+            "minimum" : 0
           }
         }, {
           "in" : "query",
           "name" : "locationType",
-          "description" : "The location type will be among Group = 0, Location = 2",
+          "description" : "Location type of selected location. Group = 0, Location = 1",
           "required" : false,
           "schema" : {
             "type" : "integer",
             "format" : "int32",
-            "example" : 1
-          }
-        }, {
-          "in" : "query",
-          "name" : "hierarchyId",
-          "description" : "The hierarchy unique identifier",
-          "required" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : 11
-          }
-        }, {
-          "in" : "query",
-          "name" : "locationStatuses",
-          "description" : "The array of selected status unique identifier will be among Active = 0, Inactive = 1, Archived = 2",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "integer",
-              "format" : "int32",
-              "example" : 0
-            }
+            "minimum" : 0
           }
         } ],
         "responses" : {
           "200" : {
-            "description" : "locations found using provided criterias",
+            "description" : "A location with provided identifier",
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Location"
-                  }
+                  "$ref" : "#/components/schemas/Location"
                 }
               }
             }
@@ -321,7 +442,7 @@
             "description" : "You do not have sufficient rights to this resource"
           },
           "404" : {
-            "description" : "Locations not found"
+            "description" : "Location not found"
           }
         }
       }
@@ -340,7 +461,7 @@
         }, {
           "in" : "query",
           "name" : "id",
-          "description" : "The location unique identifier",
+          "description" : "The location identifier",
           "required" : true,
           "schema" : {
             "type" : "integer",
@@ -360,8 +481,8 @@
         }, {
           "in" : "query",
           "name" : "hierarchyId",
-          "description" : "The hierarchy unique identifier",
-          "required" : false,
+          "description" : "The hierarchy identifier",
+          "required" : true,
           "schema" : {
             "type" : "integer",
             "format" : "int32",
@@ -393,7 +514,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "locations found using provided criterias",
+            "description" : "A list of locations founded using provided criterias",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -452,7 +573,7 @@
         },
         "responses" : {
           "201" : {
-            "description" : "Location was updated successfully",
+            "description" : "The updated location",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -547,7 +668,7 @@
         }, {
           "in" : "query",
           "name" : "id",
-          "description" : "The location unique identifier",
+          "description" : "The location identifier",
           "required" : true,
           "schema" : {
             "type" : "integer",
@@ -628,7 +749,7 @@
         "required" : [ "locationType" ],
         "properties" : {
           "id" : {
-            "description" : "The location unique identifier",
+            "description" : "The location identifier",
             "type" : "integer",
             "format" : "int32",
             "example" : 12
@@ -652,13 +773,13 @@
             "example" : 0
           },
           "parentId" : {
-            "description" : "The location parent unique identifiers",
+            "description" : "The location parent identifiers",
             "type" : "integer",
             "format" : "int32",
             "example" : 1
           },
           "hierarchyId" : {
-            "description" : "The hierarchy unique identifier",
+            "description" : "The hierarchy identifier",
             "type" : "integer",
             "format" : "int32",
             "example" : 10
@@ -688,7 +809,7 @@
             "example" : 0
           },
           "parentIds" : {
-            "description" : "The array of location parent unique identifiers",
+            "description" : "The array of location parent identifiers",
             "type" : "array",
             "items" : {
               "type" : "integer",
@@ -697,7 +818,7 @@
             }
           },
           "hierarchyId" : {
-            "description" : "The hierarchy unique identifier",
+            "description" : "The hierarchy identifier",
             "type" : "integer",
             "format" : "int32",
             "example" : 10
@@ -709,7 +830,7 @@
         "required" : [ "locationId", "locationType", "parentId" ],
         "properties" : {
           "locationId" : {
-            "description" : "The location unique identifier",
+            "description" : "The location identifier",
             "type" : "integer",
             "format" : "int32",
             "example" : 12
@@ -721,7 +842,7 @@
             "example" : 0
           },
           "parentId" : {
-            "description" : "The location parent unique identifier",
+            "description" : "The location parent identifier",
             "type" : "integer",
             "format" : "int32",
             "example" : 1

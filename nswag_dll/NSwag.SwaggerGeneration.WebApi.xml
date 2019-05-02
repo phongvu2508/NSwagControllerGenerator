@@ -19,6 +19,14 @@
             * IRoutePrefix
             </summary>
         </member>
+        <member name="T:NSwag.SwaggerGeneration.WebApi.Processors.OperationConsumesProcessor">
+            <summary>Generates the consumes clause from the operation's ConsumesAttribute.</summary>
+        </member>
+        <member name="M:NSwag.SwaggerGeneration.WebApi.Processors.OperationConsumesProcessor.ProcessAsync(NSwag.SwaggerGeneration.Processors.Contexts.OperationProcessorContext)">
+            <summary>Processes the specified method information.</summary>
+            <param name="context"></param>
+            <returns>true if the operation should be added to the Swagger specification.</returns>
+        </member>
         <member name="T:NSwag.SwaggerGeneration.WebApi.Processors.OperationParameterProcessor">
             <summary>Generates the operation's parameters.</summary>
         </member>

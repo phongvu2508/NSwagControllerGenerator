@@ -431,6 +431,10 @@
             <param name="typeNameHint">The type name hint.</param>
             <returns>The type name.</returns>
         </member>
+        <member name="M:NSwag.CodeGeneration.TypeScript.SwaggerToTypeScriptClientGenerator.GetBinaryResponseTypeName">
+            <summary>Gets the file response type name.</summary>
+            <returns>The type name.</returns>
+        </member>
         <member name="M:NSwag.CodeGeneration.TypeScript.SwaggerToTypeScriptClientGenerator.GenerateFile(System.String,System.Collections.Generic.IEnumerable{System.String},NSwag.CodeGeneration.ClientGeneratorOutputType)">
             <summary>Generates the file.</summary>
             <param name="clientCode">The client code.</param>

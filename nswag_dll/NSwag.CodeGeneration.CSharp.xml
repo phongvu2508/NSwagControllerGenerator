@@ -112,6 +112,19 @@
         <member name="P:NSwag.CodeGeneration.CSharp.Models.CSharpClientTemplateModel.JsonSerializerParameterCode">
             <summary>Gets the JSON serializer parameter code.</summary>
         </member>
+        <member name="T:NSwag.CodeGeneration.CSharp.Models.CSharpControllerOperationModel">
+            <summary>The CSharp controller operation model.</summary>
+        </member>
+        <member name="M:NSwag.CodeGeneration.CSharp.Models.CSharpControllerOperationModel.#ctor(NSwag.SwaggerOperation,NSwag.CodeGeneration.CSharp.SwaggerToCSharpControllerGeneratorSettings,NSwag.CodeGeneration.CSharp.SwaggerToCSharpControllerGenerator,NJsonSchema.CodeGeneration.CSharp.CSharpTypeResolver)">
+            <summary>Initializes a new instance of the <see cref="T:NSwag.CodeGeneration.CSharp.Models.CSharpControllerOperationModel" /> class.</summary>
+            <param name="operation">The operation.</param>
+            <param name="settings">The settings.</param>
+            <param name="generator">The generator.</param>
+            <param name="resolver">The resolver.</param>
+        </member>
+        <member name="P:NSwag.CodeGeneration.CSharp.Models.CSharpControllerOperationModel.ResultType">
+            <summary>Gets or sets the type of the result.</summary>
+        </member>
         <member name="T:NSwag.CodeGeneration.CSharp.Models.CSharpControllerRouteNamingStrategy">
             <summary>The CSharp controller routing naming strategy enum.</summary>
         </member>
@@ -129,6 +142,15 @@
         </member>
         <member name="F:NSwag.CodeGeneration.CSharp.Models.CSharpControllerStyle.Abstract">
             <summary>Generates abstract controllers.</summary>
+        </member>
+        <member name="T:NSwag.CodeGeneration.CSharp.Models.CSharpControllerTarget">
+            <summary>The CSharp controller target framework.</summary>
+        </member>
+        <member name="F:NSwag.CodeGeneration.CSharp.Models.CSharpControllerTarget.AspNet">
+            <summary>ASP.NET MVC.</summary>
+        </member>
+        <member name="F:NSwag.CodeGeneration.CSharp.Models.CSharpControllerTarget.AspNetCore">
+            <summary>ASP.NET Core.</summary>
         </member>
         <member name="T:NSwag.CodeGeneration.CSharp.Models.CSharpControllerTemplateModel">
             <summary>The CSharp controller template model.</summary>
@@ -148,6 +170,12 @@
         </member>
         <member name="P:NSwag.CodeGeneration.CSharp.Models.CSharpControllerTemplateModel.AspNetNamespace">
             <summary>Gets the ASP.NET framework namespace.</summary>
+        </member>
+        <member name="P:NSwag.CodeGeneration.CSharp.Models.CSharpControllerTemplateModel.IsAspNetCore">
+            <summary>Gets or sets a value indicating whether the output should target ASP.NET Core.</summary>
+        </member>
+        <member name="P:NSwag.CodeGeneration.CSharp.Models.CSharpControllerTemplateModel.IsAspNet">
+            <summary>Gets or sets a value indicating whether the output should target ASP.NET MVC.</summary>
         </member>
         <member name="P:NSwag.CodeGeneration.CSharp.Models.CSharpControllerTemplateModel.BaseClass">
             <summary>Gets the base class.</summary>
@@ -178,6 +206,12 @@
         </member>
         <member name="P:NSwag.CodeGeneration.CSharp.Models.CSharpControllerTemplateModel.UseCancellationToken">
             <summary>Gets a value indicating whether to allow adding cancellation token.</summary>
+        </member>
+        <member name="P:NSwag.CodeGeneration.CSharp.Models.CSharpControllerTemplateModel.GenerateModelValidationAttributes">
+            <summary>Gets a value indicating whether to allow adding model validation attributes</summary>
+        </member>
+        <member name="P:NSwag.CodeGeneration.CSharp.Models.CSharpControllerTemplateModel.RequiredAttributeType">
+            <summary>Gets the type of the attribte used to specify a parameter as required.</summary>
         </member>
         <member name="P:NSwag.CodeGeneration.CSharp.Models.CSharpControllerTemplateModel.Title">
             <summary>Gets the Title.</summary>
@@ -578,14 +612,20 @@
         <member name="P:NSwag.CodeGeneration.CSharp.SwaggerToCSharpControllerGeneratorSettings.ControllerStyle">
             <summary>Gets or sets the controller generation style (partial, abstract; default: partial).</summary>
         </member>
+        <member name="P:NSwag.CodeGeneration.CSharp.SwaggerToCSharpControllerGeneratorSettings.ControllerTarget">
+            <summary>Gets or sets the controller target framework.</summary>
+        </member>
         <member name="P:NSwag.CodeGeneration.CSharp.SwaggerToCSharpControllerGeneratorSettings.UseCancellationToken">
             <summary>Gets or sets a value indicating whether to allow adding cancellation token </summary>
         </member>
-        <member name="P:NSwag.CodeGeneration.CSharp.SwaggerToCSharpControllerGeneratorSettings.AspNetNamespace">
-            <summary>Gets or sets the ASP.NET namespace (default: 'System.Web.Http').</summary>
-        </member>
         <member name="P:NSwag.CodeGeneration.CSharp.SwaggerToCSharpControllerGeneratorSettings.RouteNamingStrategy">
             <summary>Gets or sets the strategy for naming routes (default: CSharpRouteNamingStrategy.None).</summary>
+        </member>
+        <member name="P:NSwag.CodeGeneration.CSharp.SwaggerToCSharpControllerGeneratorSettings.GenerateModelValidationAttributes">
+            <summary>Gets or sets a value indicating whether to add model validation attributes.</summary>
+        </member>
+        <member name="P:NSwag.CodeGeneration.CSharp.SwaggerToCSharpControllerGeneratorSettings.UseActionResultType">
+            <summary>Gets or sets a value indicating whether ASP.Net Core (2.1) ActionResult type is used (default: false).</summary>
         </member>
         <member name="T:NSwag.CodeGeneration.CSharp.SwaggerToCSharpGeneratorBase">
             <summary>The CSharp generator base class.</summary>
