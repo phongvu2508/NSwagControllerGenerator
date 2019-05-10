@@ -1,0 +1,982 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "description" : "The Internal API for a v6 Instance is the central point in the v6 Architecture and responsible for all data access for the instance.",
+    "version" : "1.0.0",
+    "title" : "Velocity EHS Instance Internal API",
+    "contact" : {
+      "name" : "VelocityEHS",
+      "url" : "https://www.ehs.com",
+      "email" : "support@ehs.com"
+    }
+  },
+  "servers" : [ {
+    "url" : "http://localhost:59693/api",
+    "description" : "Localhost test environment"
+  }, {
+    "url" : "https://odev6web01.ad.velocityehs.com/ehs-internal-api/api",
+    "description" : "Development"
+  } ],
+  "tags" : [ {
+    "name" : "Location"
+  } ],
+  "paths" : {
+    "/locations" : {
+      "get" : {
+        "summary" : "Search for locations by params",
+        "description" : "Search for locations by params",
+        "operationId" : "getLocations",
+        "tags" : [ "Location" ],
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/AccountHeader"
+        }, {
+          "$ref" : "#/components/parameters/IdentityHeader"
+        }, {
+          "$ref" : "#/components/parameters/LanguageHeader"
+        }, {
+          "in" : "query",
+          "name" : "id",
+          "description" : "The location identifier",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
+          }
+        }, {
+          "in" : "query",
+          "name" : "locationType",
+          "description" : "The location type will be among Group = 0, Location = 2",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
+          }
+        }, {
+          "in" : "query",
+          "name" : "hierarchyId",
+          "description" : "The hierarchy identifier",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 11
+          }
+        }, {
+          "in" : "query",
+          "name" : "locationStatuses",
+          "description" : "The array of selected status unique identifier will be among Active = 0, Inactive = 1, Archived = 2",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer",
+              "format" : "int32",
+              "example" : 0
+            }
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "description" : "The amount of locations return per request",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 20
+          }
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "description" : "The postion for first location to be returned in the collection",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 20
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A list of locations founded using provided criterias",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Location"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestError"
+                },
+                "example" : {
+                  "$ref" : "#/components/examples/BadRequestError"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestError"
+                },
+                "example" : {
+                  "$ref" : "#/components/examples/BadRequestError"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          },
+          "404" : {
+            "description" : "Locations not found"
+          }
+        }
+      },
+      "put" : {
+        "summary" : "Update existing location",
+        "description" : "Update existing location",
+        "operationId" : "updateLocation",
+        "tags" : [ "Location" ],
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/AccountHeader"
+        }, {
+          "$ref" : "#/components/parameters/IdentityHeader"
+        }, {
+          "$ref" : "#/components/parameters/LanguageHeader"
+        } ],
+        "requestBody" : {
+          "description" : "The updated location schema",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Location"
+              },
+              "example" : {
+                "$ref" : "#/components/examples/Location"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Location"
+              },
+              "example" : {
+                "$ref" : "#/components/examples/Location"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The updated location",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestError"
+                },
+                "example" : {
+                  "$ref" : "#/components/examples/BadRequestError"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestError"
+                },
+                "example" : {
+                  "$ref" : "#/components/examples/BadRequestError"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          },
+          "404" : {
+            "description" : "Location not found"
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Create new location",
+        "description" : "Create new location",
+        "operationId" : "createLocation",
+        "tags" : [ "Location" ],
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/AccountHeader"
+        }, {
+          "$ref" : "#/components/parameters/IdentityHeader"
+        }, {
+          "$ref" : "#/components/parameters/LanguageHeader"
+        } ],
+        "requestBody" : {
+          "description" : "The new location schema",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/NewLocationParams"
+              },
+              "example" : {
+                "$ref" : "#/components/examples/NewLocationParams"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/NewLocationParams"
+              },
+              "example" : {
+                "$ref" : "#/components/examples/NewLocationParams"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "The new location",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestError"
+                },
+                "example" : {
+                  "$ref" : "#/components/examples/BadRequestError"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestError"
+                },
+                "example" : {
+                  "$ref" : "#/components/examples/BadRequestError"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "Delete a location by location id",
+        "description" : "Delete a location by location id",
+        "operationId" : "deleteLocation",
+        "tags" : [ "Location" ],
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/AccountHeader"
+        }, {
+          "$ref" : "#/components/parameters/IdentityHeader"
+        }, {
+          "$ref" : "#/components/parameters/LanguageHeader"
+        }, {
+          "in" : "query",
+          "name" : "id",
+          "description" : "The location identifier",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "minimum" : 0
+          }
+        }, {
+          "in" : "query",
+          "name" : "locationType",
+          "description" : "The location type will be among Group = 0, Location = 2",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Location deletion result",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "boolean"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestError"
+                },
+                "example" : {
+                  "$ref" : "#/components/examples/BadRequestError"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestError"
+                },
+                "example" : {
+                  "$ref" : "#/components/examples/BadRequestError"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          },
+          "404" : {
+            "description" : "Location not found"
+          }
+        }
+      }
+    },
+    "/locations/{locationId}" : {
+      "get" : {
+        "summary" : "Get a location by location id",
+        "description" : "Get a location by location id",
+        "operationId" : "getLocationById",
+        "tags" : [ "Location" ],
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/AccountHeader"
+        }, {
+          "$ref" : "#/components/parameters/IdentityHeader"
+        }, {
+          "$ref" : "#/components/parameters/LanguageHeader"
+        }, {
+          "in" : "path",
+          "name" : "locationId",
+          "description" : "The location identifier",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "minimum" : 0
+          }
+        }, {
+          "in" : "query",
+          "name" : "locationType",
+          "description" : "Location type of selected location. Group = 0, Location = 1",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "minimum" : 0
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A location with provided identifier",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestError"
+                },
+                "example" : {
+                  "$ref" : "#/components/examples/BadRequestError"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestError"
+                },
+                "example" : {
+                  "$ref" : "#/components/examples/BadRequestError"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          },
+          "404" : {
+            "description" : "Location not found"
+          }
+        }
+      }
+    },
+    "/locations/traverse" : {
+      "get" : {
+        "summary" : "Get locations by traverse the location tree",
+        "description" : "Get locations by traverse the location tree",
+        "operationId" : "getTraversedLocations",
+        "tags" : [ "Location" ],
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/AccountHeader"
+        }, {
+          "$ref" : "#/components/parameters/IdentityHeader"
+        }, {
+          "$ref" : "#/components/parameters/LanguageHeader"
+        }, {
+          "in" : "query",
+          "name" : "id",
+          "description" : "The location identifier",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "minimum" : 0
+          }
+        }, {
+          "in" : "query",
+          "name" : "locationType",
+          "description" : "The location type will be among Group = 0, Location = 2",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
+          }
+        }, {
+          "in" : "query",
+          "name" : "hierarchyId",
+          "description" : "The hierarchy identifier",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "minimum" : 0
+          }
+        }, {
+          "in" : "query",
+          "name" : "locationStatuses",
+          "description" : "The array of selected statuses",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer",
+              "format" : "int32",
+              "example" : 0
+            }
+          }
+        }, {
+          "in" : "query",
+          "name" : "levels",
+          "description" : "The number of level to traverse within hierarchy",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "minimum" : -1
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A list of locations founded using provided criterias",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Location"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestError"
+                },
+                "example" : {
+                  "$ref" : "#/components/examples/BadRequestError"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestError"
+                },
+                "example" : {
+                  "$ref" : "#/components/examples/BadRequestError"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          },
+          "404" : {
+            "description" : "Locations not found"
+          }
+        }
+      }
+    },
+    "/locations/move" : {
+      "post" : {
+        "summary" : "Move location and all children under another location group",
+        "description" : "Move location and all children under another location group",
+        "operationId" : "moveLocation",
+        "tags" : [ "Location" ],
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/AccountHeader"
+        }, {
+          "$ref" : "#/components/parameters/IdentityHeader"
+        }, {
+          "$ref" : "#/components/parameters/LanguageHeader"
+        } ],
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MovingLocationParams"
+              },
+              "example" : {
+                "$ref" : "#/components/examples/MovingLocationParams"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MovingLocationParams"
+              },
+              "example" : {
+                "$ref" : "#/components/examples/MovingLocationParams"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The updated location",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "boolean"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestError"
+                },
+                "example" : {
+                  "$ref" : "#/components/examples/BadRequestError"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestError"
+                },
+                "example" : {
+                  "$ref" : "#/components/examples/BadRequestError"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Location not found"
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          }
+        }
+      }
+    },
+    "/locations/creationValidate" : {
+      "post" : {
+        "summary" : "Validation of location creation",
+        "description" : "Validation of location creation",
+        "operationId" : "canCreateLocation",
+        "tags" : [ "Location" ],
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/AccountHeader"
+        }, {
+          "$ref" : "#/components/parameters/IdentityHeader"
+        }, {
+          "$ref" : "#/components/parameters/LanguageHeader"
+        } ],
+        "requestBody" : {
+          "description" : "The new location object",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/NewLocationParams"
+              },
+              "example" : {
+                "$ref" : "#/components/examples/NewLocationParams"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/NewLocationParams"
+              },
+              "example" : {
+                "$ref" : "#/components/examples/NewLocationParams"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Create location validation result",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "boolean"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestError"
+                },
+                "example" : {
+                  "$ref" : "#/components/examples/BadRequestError"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestError"
+                },
+                "example" : {
+                  "$ref" : "#/components/examples/BadRequestError"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          },
+          "404" : {
+            "description" : "Location not found"
+          }
+        }
+      }
+    },
+    "/location/deletionValidate" : {
+      "post" : {
+        "summary" : "Validation of location deleting",
+        "description" : "Validation of location deleting",
+        "operationId" : "canDeleteLocation",
+        "tags" : [ "Location" ],
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/AccountHeader"
+        }, {
+          "$ref" : "#/components/parameters/IdentityHeader"
+        }, {
+          "$ref" : "#/components/parameters/LanguageHeader"
+        }, {
+          "in" : "query",
+          "name" : "id",
+          "description" : "The location identifier",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "minimum" : 0
+          }
+        }, {
+          "in" : "query",
+          "name" : "locationType",
+          "description" : "The location type will be among Group = 0, Location = 2",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Delete location validation result",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "boolean"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestError"
+                },
+                "example" : {
+                  "$ref" : "#/components/examples/BadRequestError"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestError"
+                },
+                "example" : {
+                  "$ref" : "#/components/examples/BadRequestError"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You do not have sufficient rights to this resource"
+          },
+          "404" : {
+            "description" : "Location not found"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "parameters" : {
+      "AccountHeader" : {
+        "name" : "x-account",
+        "in" : "header",
+        "description" : "The unique identifier for the customer account",
+        "required" : true,
+        "schema" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      },
+      "IdentityHeader" : {
+        "name" : "x-identity",
+        "in" : "header",
+        "description" : "The unique identifier for the identity accessing the account",
+        "required" : true,
+        "schema" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      },
+      "LanguageHeader" : {
+        "name" : "x-language",
+        "in" : "header",
+        "description" : "The unique identifier for selected language",
+        "required" : false,
+        "schema" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      }
+    },
+    "schemas" : {
+      "Location" : {
+        "type" : "object",
+        "required" : [ "locationType" ],
+        "properties" : {
+          "id" : {
+            "description" : "The location identifier",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 12
+          },
+          "name" : {
+            "description" : "The location name",
+            "type" : "string",
+            "format" : "string",
+            "example" : "Chicago"
+          },
+          "locationType" : {
+            "description" : "The location type will be among Group = 0, Location = 2",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
+          },
+          "locationStatus" : {
+            "description" : "The location status will be among Active = 0, Inactive = 1, Archived = 2",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 0
+          },
+          "parentId" : {
+            "description" : "The location parent identifiers",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
+          },
+          "hierarchyId" : {
+            "description" : "The hierarchy identifier",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 10
+          }
+        }
+      },
+      "NewLocationParams" : {
+        "type" : "object",
+        "required" : [ "name", "locationType" ],
+        "properties" : {
+          "name" : {
+            "description" : "The location name",
+            "type" : "string",
+            "format" : "string",
+            "example" : "Chicago"
+          },
+          "locationType" : {
+            "description" : "The location type will be among Group = 0, Location = 2",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
+          },
+          "locationStatus" : {
+            "description" : "The location status will be among Active = 0, Inactive = 1, Archived = 2",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 0
+          },
+          "parentIds" : {
+            "description" : "The array of location parent identifiers",
+            "type" : "array",
+            "items" : {
+              "type" : "integer",
+              "format" : "int32",
+              "example" : 1
+            }
+          },
+          "hierarchyId" : {
+            "description" : "The hierarchy identifier",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 10
+          }
+        }
+      },
+      "MovingLocationParams" : {
+        "type" : "object",
+        "required" : [ "locationId", "locationType", "parentId" ],
+        "properties" : {
+          "locationId" : {
+            "description" : "The location identifier",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 12
+          },
+          "locationType" : {
+            "description" : "The location type",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 0
+          },
+          "parentId" : {
+            "description" : "The location parent identifier",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
+          }
+        }
+      },
+      "BadRequestError" : {
+        "type" : "object",
+        "required" : [ "errorCode" ],
+        "properties" : {
+          "errorCode" : {
+            "description" : "The error code if existed",
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 61001
+          },
+          "errorMessages" : {
+            "description" : "The error messages",
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "format" : "string",
+              "example" : "object already exists"
+            }
+          }
+        }
+      }
+    },
+    "examples" : {
+      "Location" : {
+        "summary" : "An example location model",
+        "value" : {
+          "id" : 99,
+          "name" : "Test Location",
+          "locationType" : 1,
+          "locationStatus" : 0,
+          "parentId" : 88,
+          "hierarchyId" : 12
+        }
+      },
+      "LocationGroup" : {
+        "summary" : "An example location group model",
+        "value" : {
+          "id" : 88,
+          "name" : "Test Location Group",
+          "locationType" : 0,
+          "locationStatus" : 0,
+          "parentId" : 1,
+          "hierarchyId" : 12
+        }
+      },
+      "NewLocationParams" : {
+        "summary" : "An example creating location request",
+        "value" : {
+          "name" : "New Location",
+          "locationType" : 1,
+          "locationStatus" : 0,
+          "parentIds" : [ 88 ],
+          "hierarchyId" : 12
+        }
+      },
+      "MovingLocationParams" : {
+        "summary" : "An example of moving location request",
+        "value" : {
+          "locationId" : 22,
+          "locationType" : 0,
+          "parentIds" : 1
+        }
+      },
+      "BadRequestError" : {
+        "summary" : "An example of bad request error",
+        "value" : {
+          "errorCode" : 61001,
+          "errorMessages" : [ "object already exists" ]
+        }
+      }
+    }
+  }
+}
