@@ -1,0 +1,1341 @@
+openapi: 3.0.0
+info:
+  description: The Internal API for a v6 Instance is the central point in the v6 Architecture and responsible for all data access for the instance.
+  version: "0.1.0"
+  title: Velocity EHS Instance Internal API
+  contact:
+    name: VelocityEHS
+    url: https://www.ehs.com
+    email: support@ehs.com
+servers:
+  - url: 'https://odev6web01.ad.velocityehs.com/ehs-internal-api/api'
+    description: Development
+tags:
+  - name: Hierarchy
+  - name: Location
+  - name: Person
+paths:
+# Hierarchies
+  /hierarchies:
+    get:
+      tags:
+      - Hierarchy
+      summary: Return a list all Hierarchies
+      description: Return a list all Hierarchies
+      operationId: getHierarchies
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      responses:
+        200:
+          description: A list of Hierarchies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Hierarchy'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Hierarchy'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Hierarchies not found
+    put:
+      tags:
+      - Hierarchy
+      summary: Update existing Hierarchy
+      description: Update existing Hierarchy
+      operationId: updateHierarchy
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The updated Hierarchy object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateHierarchyParams'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/UpdateHierarchyParams'
+        required: true
+      responses:
+        204:
+          description: The hierarchy was successfully updated.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Hierarchy not found
+    post:
+      tags:
+      - Hierarchy
+      summary: Create new Hierarchy
+      description: Create new Hierarchy
+      operationId: createHierarchy
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The new Hierarchy schema
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewHierarchyParams'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/NewHierarchyParams'
+        required: true
+      responses:
+        201:
+          description: The new hierarchy identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /hierarchies/{hierarchyId}:
+    get:
+      tags:
+      - Hierarchy
+      summary: Get a Hierarchy by id
+      description: Get a Hierarchy by id
+      operationId: getHierarchy
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: hierarchyId
+          in: path
+          description: The Hierarchy identifier
+          required: true
+          style: simple
+          explode: false
+          schema:
+            minimum: 1
+            type: integer
+            format: int32
+            nullable: true
+      responses:
+        200:
+          description: A Hierarchy by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hierarchy'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Hierarchy'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Hierarchy not found
+    delete:
+      tags:
+      - Hierarchy
+      summary: Delete a Hierarchy by Hierarchy id
+      description: Delete a Hierarchy by Hierarchy id
+      operationId: deleteHierarchy
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: hierarchyId
+          in: path
+          description: The Hierarchy identifier
+          required: true
+          style: simple
+          explode: false
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+            nullable: true
+      responses:
+        204:
+          description: Delete Hierarchy result
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Hierarchy not found          
+  /hierarchies/createValidate:
+    post:
+      tags:
+      - Hierarchy
+      summary: Hierarchy creation validation
+      description: Hierarchy creation validation
+      operationId: canCreateHierarchy
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The new Hierarchy object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewHierarchyParams'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/NewHierarchyParams'
+        required: true
+      responses:
+        200:
+          description: Create Hierarchy validation result
+          content:
+            application/json:
+              schema:
+                type: boolean
+            application/xml:
+              schema:
+                type: boolean
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Hierarchy not found
+  /hierarchies/updateValidate:
+    post:
+      tags:
+      - Hierarchy
+      summary: Hierarchy update validation
+      description: Hierarchy update validation
+      operationId: canUpdateHierarchy
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The updated Hierarchy object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateHierarchyParams'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/UpdateHierarchyParams'
+        required: true
+      responses:
+        200:
+          description: Update Hierarchy validation result
+          content:
+            application/json:
+              schema:
+                type: boolean
+            application/xml:
+              schema:
+                type: boolean
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Hierarchy not found
+  /hierarchies/deleteValidate:
+    post:
+      tags:
+      - Hierarchy
+      summary: Hierarchy deletion validation
+      description: Hierarchy deletion validation
+      operationId: canDeleteHierarchy
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: hierarchyId
+          in: query
+          description: The hierarchy identifier
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+            nullable: true
+      responses:
+        200:
+          description: Delete Hierarchy validation result
+          content:
+            application/json:
+              schema:
+                type: boolean
+            application/xml:
+              schema:
+                type: boolean
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Hierarchy not found
+# Locations
+  /locations:
+    get:
+      tags:
+      - Location
+      summary: Search for locations by params
+      description: Search for locations by params
+      operationId: getLocations
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: id
+          in: query
+          description: The location identifier
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+        - name: locationType
+          in: query
+          description: The location type will be among Group = 0, Location = 2
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+        - name: hierarchyId
+          in: query
+          description: The hierarchy identifier
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 11
+        - name: locationStatuses
+          in: query
+          description: The array of selected status unique identifier will be among
+            Active = 0, Inactive = 1, Archived = 2
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+              example: 0
+        - name: limit
+          in: query
+          description: The amount of locations return per request
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 20
+        - name: offset
+          in: query
+          description: The position for first location to be returned in the collection
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 20
+      responses:
+        200:
+          description: A list of locations founded using provided criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Locations not found
+    put:
+      tags:
+      - Location
+      summary: Update existing location
+      description: Update existing location
+      operationId: updateLocation
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The updated location schema
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Location'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Location'
+        required: true
+      responses:
+        204:
+          description: The location was successfully updated.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Location not found
+    post:
+      tags:
+      - Location
+      summary: Create new location
+      description: Create new location
+      operationId: createLocation
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The new location schema
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewLocationParams'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/NewLocationParams'
+        required: true
+      responses:
+        201:
+          description: The new location identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+    delete:
+      tags:
+      - Location
+      summary: Delete a location by location id
+      description: Delete a location by location id
+      operationId: deleteLocation
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: id
+          in: query
+          description: The location identifier
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+        - name: locationType
+          in: query
+          description: The location type will be among Group = 0, Location = 2
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+      responses:
+        204:
+          description: Location deletion result
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Location not found
+  /locations/{locationId}:
+    get:
+      tags:
+      - Location
+      summary: Get a location by location id
+      description: Get a location by location id
+      operationId: getLocationById
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: locationId
+          in: path
+          description: The location identifier
+          required: true
+          style: simple
+          explode: false
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+        - name: locationType
+          in: query
+          description: Location type of selected location. Group = 0, Location = 1
+          required: false
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: A location with provided identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Location'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Location not found
+  /locations/traverse:
+    get:
+      tags:
+      - Location
+      summary: Get locations by traverse the location tree
+      description: Get locations by traverse the location tree
+      operationId: getTraversedLocations
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: id
+          in: query
+          description: The location identifier
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+        - name: locationType
+          in: query
+          description: The location type will be among Group = 0, Location = 2
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+        - name: hierarchyId
+          in: query
+          description: The hierarchy identifier
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+        - name: locationStatuses
+          in: query
+          description: The array of selected statuses
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+              example: 0
+        - name: levels
+          in: query
+          description: The number of level to traverse within hierarchy
+          required: false
+          style: form
+          explode: true
+          schema:
+            minimum: -1
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: A list of locations founded using provided criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Locations not found
+  /locations/move:
+    post:
+      tags:
+      - Location
+      summary: Move location and all children under another location group
+      description: Move location and all children under another location group
+      operationId: moveLocation
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovingLocationParams'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/MovingLocationParams'
+        required: true
+      responses:
+        204:
+          description: The location successfully moved.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Location not found
+  /locations/creationValidate:
+    post:
+      tags:
+      - Location
+      summary: Validation of location creation
+      description: Validation of location creation
+      operationId: canCreateLocation
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The new location object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewLocationParams'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/NewLocationParams'
+        required: true
+      responses:
+        200:
+          description: Create location validation result
+          content:
+            application/json:
+              schema:
+                type: boolean
+            application/xml:
+              schema:
+                type: boolean
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Location not found
+  /locations/deletionValidate:
+    post:
+      tags:
+      - Location
+      summary: Validation of location deleting
+      description: Validation of location deleting
+      operationId: canDeleteLocation
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: id
+          in: query
+          description: The location identifier
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+        - name: locationType
+          in: query
+          description: The location type will be among Group = 0, Location = 2
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+      responses:
+        200:
+          description: Delete location validation result
+          content:
+            application/json:
+              schema:
+                type: boolean
+            application/xml:
+              schema:
+                type: boolean
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Location not found
+# Persons
+  '/persons':
+    put:
+      summary: Updates a person based on person id
+      operationId: UpdatePerson
+      tags:
+        - Person
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Person"
+      responses:
+        204:
+          description: The person was successfully updated
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Persons not found
+    post:
+      summary: Creates a new person and returns the person id
+      operationId: AddPerson
+      tags:
+        - Person
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Person'
+      responses:
+        201:
+          description: The new person identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Person not found
+    delete:
+      tags:
+      - Person
+      summary: Delete a person by person id
+      description: Delete a person by person id
+      operationId: deletePerson
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: personId
+          in: query
+          description: The person identifier
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+      responses:
+        204:
+          description: Person has been deleted
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Person not found
+  '/persons/{personId}':
+    get:
+      summary: Returns the person based on person id
+      operationId: GetPersonById
+      tags:
+        - Person
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - in: path
+          name: personId
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Person'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Person not found
+components:
+  parameters:
+    AccountHeader:
+      name: x-account
+      in: header
+      description: Unique identifier for the customer account
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
+        example: 1		  
+    IdentityHeader:
+      name: x-identity
+      in: header
+      description: Unique identifier for the identity accessing the account
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
+        example: 1337
+    LanguageHeader:
+      name: x-language
+      in: header
+      description: The unique identifier for selected language
+      required: false
+      style: simple
+      explode: false
+      schema:
+        type: integer
+        format: int32
+  schemas:
+    BadRequestError:
+      required:
+      - errorCode
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          description: The error code if existed
+          format: int32
+          example: 61001
+        errorMessages:
+          type: array
+          description: The error messages
+          items:
+            type: string
+            format: string
+            example: object already exists
+    Hierarchy:
+      type: object
+      required:
+        - HierarchyType
+      properties:
+        Name:
+          description: The Hierarchy name
+          type: string
+          format: string
+          example: Oakville
+        IsDefault:
+          description: Idendifying hierarchy as Default or not
+          type: boolean
+          format: bool
+          example: 0
+        HierarchyId:
+          description: The hierarchy identifier
+          type: integer
+          format: int32
+          example: 11
+          nullable: true          
+    Location:
+      required:
+      - locationType
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: true
+          description: The location identifier
+          format: int32
+          example: 12
+        name:
+          type: string
+          nullable: true
+          description: The location name
+          format: string
+          example: Chicago
+        locationType:
+          type: integer
+          description: The location type will be among Group = 0, Location = 2
+          format: int32
+          example: 1
+        locationStatus:
+          type: integer
+          nullable: true
+          description: The location status will be among Active = 0, Inactive = 1,
+            Archived = 2
+          format: int32
+          example: 0
+        parentId:
+          type: integer
+          nullable: true
+          description: The location parent identifiers
+          format: int32
+          example: 1
+        hierarchyId:
+          type: integer
+          nullable: true
+          description: The hierarchy identifier
+          format: int32
+          example: 10
+    MovingLocationParams:
+      required:
+      - locationId
+      - locationType
+      - parentId
+      type: object
+      properties:
+        locationId:
+          type: integer
+          description: The location identifier
+          format: int32
+          example: 12
+        locationType:
+          type: integer
+          description: The location type
+          format: int32
+          example: 0
+        parentId:
+          type: integer
+          description: The location parent identifier
+          format: int32
+          example: 1
+    NewHierarchyParams:
+      type: object
+      required:
+        - Name
+        - IsDefault
+      properties:
+        Name:
+          description: The Hierarchy name
+          type: string
+          format: string
+          example: Oakville
+        IsDefault:
+          description: Idendifying hierarchy as Default or not
+          type: boolean
+          format: bool
+          example: 0
+        HierarchyId:
+          description: The hierarchy identifier
+          type: integer
+          format: int32
+          example: 11
+          nullable: true
+    NewLocationParams:
+      required:
+      - locationType
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: The location name
+          format: string
+          example: Chicago
+        locationType:
+          type: integer
+          description: The location type will be among Group = 0, Location = 2
+          format: int32
+          example: 1
+        locationStatus:
+          type: integer
+          nullable: true
+          description: The location status will be among Active = 0, Inactive = 1,
+            Archived = 2
+          format: int32
+          example: 0
+        parentIds:
+          type: array
+          description: The array of location parent identifiers
+          items:
+            type: integer
+            format: int32
+            example: 1
+        hierarchyId:
+          type: integer
+          nullable: true
+          description: The hierarchy identifier
+          format: int32
+          example: 10
+    Person:
+      type: object
+      properties:
+        personId:
+          type: integer
+          nullable: true
+        createdByPersonId:
+          type: integer
+          nullable: true
+        loginAccessRequired:
+          type: boolean
+          nullable: true
+        displayName:
+          type: string
+          nullable: true
+        username:
+          type: string
+          nullable: true
+          example: noreply@ehs.com
+        statusId:
+          type: integer
+          nullable: true
+          example: 12
+        firstName:
+          type: string
+          nullable: true
+          example: John
+        lastName:
+          type: string
+          nullable: true
+          example: Doe
+        locationList:
+          type: array
+          nullable: true
+          items:
+            type: integer
+        genderId: 
+          type: integer
+          nullable: true
+        dateOfBirth:
+          format: date-time
+          type: string
+          nullable: true
+          example: "1995-09-07 10:40:52"
+        phoneNumber:
+          type: string
+          nullable: true
+          example: 555-123-4567
+        mobileNumber:
+          type: string
+          nullable: true
+          example: 555-987-6543
+        email:
+          type: string
+          nullable: true
+          example: noreply@ehs.com
+        address:
+          type: string
+          nullable: true
+          example: 123 New Street
+        city:
+          type: string
+          nullable: true
+          example: Ottawa
+        countryDivisionId:
+          type: integer
+          nullable: true
+        countryId:
+          type: integer
+          nullable: true
+        postalCode:
+          type: string
+          nullable: true
+          example: A1A 1A1
+        relationshipId:
+          type: integer
+          nullable: true
+        currentPosition:
+          type: string
+          nullable: true
+          example: EHS Manager
+        supervisorId:
+          type: integer
+          nullable: true
+        hireDate:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2000-01-01"
+        endDate:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2019-01-01"
+        currentpositionStartDate:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2010-01-01"
+        employeeId:
+          type: string
+          nullable: true
+          example: ABC123456
+        contractingCompanyId:
+          type: integer
+          nullable: true
+        customerid:
+          type: integer
+          nullable: true
+        contactTypeId:
+          type: integer
+          nullable: true
+        locked:
+          type: boolean
+          nullable: true
+          example: false
+        expiryDate:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2029-01-01 12:00:00"
+    Status201Response:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The new object identifier
+          format: int32
+          example: 11
+    UpdateHierarchyParams:
+      type: object
+      required:
+        - Name
+        - IsDefault
+      properties:
+        Name:
+          description: The Hierarchy name
+          type: string
+          format: string
+          example: Oakville
+        IsDefault:
+          description: Idendifying hierarchy as Default or not
+          type: boolean
+          format: bool
+          example: 0
+        HierarchyId:
+          description: The hierarchy identifier
+          type: integer
+          format: int32
+          example: 11
+          nullable: true
