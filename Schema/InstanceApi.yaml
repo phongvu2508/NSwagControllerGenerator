@@ -12,6 +12,7 @@ servers:
     description: Development
 tags:
   - name: Hierarchy
+  - name: List
   - name: Location
   - name: Person
 paths:
@@ -346,6 +347,503 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Hierarchy not found
+# Lists
+  /lists:
+    get:
+      summary: Search for lists based on params
+      description: Search for lists based on params
+      operationId: getLists
+      tags:
+        - List
+      parameters:
+        - $ref: "#/components/parameters/AccountHeader"
+        - $ref: "#/components/parameters/IdentityHeader"
+        - $ref: "#/components/parameters/LanguageHeader"
+        - in: query
+          name: id
+          description: The list to be returned (null will return all lists)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            example: 1
+        - in: query
+          name: statusFilters
+          description: The array of selected statuses to include
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+              example: 1
+      responses:
+        200:
+          description: A list of lists found using provided criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/List'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Lists not found
+
+    put:
+      summary: Update existing list
+      description: Update existing list
+      operationId: updateList
+      tags: 
+        - List
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The updated list schema
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/List"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/List"
+      responses:
+        204:
+          description: The list was successfully updated.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: List not found
+
+    post:
+      summary: Create new list
+      description: Create new list
+      operationId: createList
+      tags: 
+        - List
+      requestBody:
+        description: The list schema
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewListParams"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/NewListParams"
+      responses:
+        201:
+          description: The new list identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+
+    delete:
+      summary: Delete a list by list id
+      description: Delete a list by list id
+      operationId: deleteList
+      tags:
+        - List
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - in: query
+          name: listId
+          description: The list identifier
+          required: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+      responses:
+        204:
+          description: List deletion result
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: List not found
+
+  /lists/{listId}:
+    get:
+      summary: Get a list by list id
+      description: Get a list by list id
+      operationId: getListById
+      tags:
+        - List
+      parameters:
+        - $ref: "#/components/parameters/AccountHeader"
+        - $ref: "#/components/parameters/IdentityHeader"
+        - $ref: "#/components/parameters/LanguageHeader"
+        - in: path
+          name: listId
+          description: The list to be returned
+          required: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+        - in: query
+          name: statusFilters
+          description: The array of selected statuses to include
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+              example: 1
+      responses:
+        200:
+          description: A list with provided identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/List'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: List not found
+  /listitems:
+    get:
+      summary: Search for list items based on params
+      description: Search for list items based on params
+      operationId: getListItems
+      tags:
+        - List
+      parameters:
+        - $ref: "#/components/parameters/AccountHeader"
+        - $ref: "#/components/parameters/IdentityHeader"
+        - $ref: "#/components/parameters/LanguageHeader"
+        - in: query
+          name: listId
+          description: The list the list items retrieved belong to (null will return all lists)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            example: 1
+        - in: query
+          name: id
+          description: The list item to be returned (null will return all list items)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            example: 1
+        - in: query
+          name: listStatusFilters
+          description: The array of selected statuses of lists to include
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+              example: 1
+        - in: query
+          name: listItemStatusFilters
+          description: The array of selected statuses list items to include
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+              example: 1
+      responses:
+        200:
+          description: A list of list items found using provided criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ListItem'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: List item not found
+
+    put:
+      summary: Update existing list item
+      description: Update existing list item
+      operationId: updateListItem
+      tags: 
+        - List
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The updated list item schema
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateListItemParams"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/UpdateListItemParams"
+      responses:
+        204:
+          description: The list item was successfully updated
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: List Item not found
+
+    post:
+      summary: Create new list item
+      description: Create new list item
+      operationId: createListItem
+      tags: 
+        - List
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The new list item schema
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewListItemParams"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/NewListItemParams"
+      responses:
+        201:
+          description: The new list item identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+
+    delete:
+      summary: Delete a list item by list item id
+      description: Delete a list item by list item id
+      operationId: deleteListItem
+      tags:
+        - List
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - in: query
+          name: listItemId
+          description: The list item identifier
+          required: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+      responses:
+        204:
+          description: List Item deletion result
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: List Item not found
+
+  /listitems/{listItemId}:
+    get:
+      summary: Get a list item by list item id
+      description: Get a list item by list item id
+      operationId: getListItemById
+      tags:
+        - List
+      parameters:
+        - $ref: "#/components/parameters/AccountHeader"
+        - $ref: "#/components/parameters/IdentityHeader"
+        - $ref: "#/components/parameters/LanguageHeader"
+        - in: path
+          name: listItemId
+          description: The list item to be returned
+          required: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+        - in: query
+          name: listItemStatusFilters
+          description: The array of selected statuses list items to include
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+              example: 1
+      responses:
+        200:
+          description: A list item with provided identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListItem'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ListItem'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: List Item not found
+
+  /listitems/reorder:
+    put:
+      summary: Reorders all list items in a list
+      description: Reorders all list items in a list
+      operationId: ReorderListItem
+      tags:
+        - List
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - in: query
+          name: listId
+          description: The list the list items retrieved belong to
+          required: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+        - in: query
+          name: listItemIds
+          description: The array of selected list items to include
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+              example: 1
+      responses:
+        204:
+          description: The list item reorder was successfully updated
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: List Item not found
 # Locations
   /locations:
     get:
@@ -370,7 +868,7 @@ paths:
             example: 1
         - name: locationType
           in: query
-          description: The location type will be among Group = 0, Location = 2
+          description: The location type will be among Group = 0, Location = 1
           required: false
           style: form
           explode: true
@@ -542,7 +1040,7 @@ paths:
             format: int32
         - name: locationType
           in: query
-          description: The location type will be among Group = 0, Location = 2
+          description: The location type will be among Group = 0, Location = 1
           required: true
           style: form
           explode: true
@@ -643,7 +1141,7 @@ paths:
             format: int32
         - name: locationType
           in: query
-          description: The location type will be among Group = 0, Location = 2
+          description: The location type will be among Group = 0, Location = 1
           required: true
           style: form
           explode: true
@@ -813,7 +1311,7 @@ paths:
             format: int32
         - name: locationType
           in: query
-          description: The location type will be among Group = 0, Location = 2
+          description: The location type will be among Group = 0, Location = 1
           required: true
           style: form
           explode: true
@@ -844,6 +1342,361 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Location not found
+# LocationLists
+  /locationlists/{listId}:
+    get:
+      tags:
+      - LocationList
+      summary: Get a location list availability by location list identifier
+      description: Get a location list availability by location list identifier
+      operationId: getLocationListAvailabilityById
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: listId
+          in: path
+          description: The location list identifier
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int32
+        - name: availability
+          in: query
+          description: The availability status
+          required: true
+          schema:
+            type: boolean
+            format: bool
+            default: true
+      responses:
+        200:
+          description: A List of available location identifier for this location list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationListAvailability'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/LocationListAvailability'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Location list not found
+    put:
+      tags:
+      - LocationList
+      summary: Set availability for a location list
+      description: Set availability for a location list
+      operationId: setLocationListAvailability
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: listId
+          in: path
+          description: The location list identifier
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        description: The updated availability for selected location list
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LocationListAvailabilityDetails"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/LocationListAvailabilityDetails"
+      responses:
+        204:
+          description: The availability was successfully updated
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Location list not found
+    post:
+      tags:
+      - LocationList
+      summary: Get availability location structure for a location list
+      description: Set availability for a location list
+      operationId: getLocationListAvailabilityStructure
+      parameters:
+      - $ref: '#/components/parameters/AccountHeader'
+      - $ref: '#/components/parameters/IdentityHeader'
+      - $ref: '#/components/parameters/LanguageHeader'
+      - name: listId
+        in: path
+        description: The location list identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: locationId
+        in: query
+        description: The location identifier
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+      - name: locationType
+        in: query
+        description: The location type will be among Group = 0, Location = 1
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          example: 1
+      - name: hierarchyId
+        in: query
+        description: The hierarchy identifier
+        required: true
+        style: form
+        explode: true
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+      - name: levels
+        in: query
+        description: The number of level to traverse within hierarchy
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: -1
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: A list of locations with statuses founded using provided criteria
+          content:
+            application/json:
+                schema:
+                  type: array
+                  items:
+                      $ref: '#/components/schemas/Location'
+        400:
+          description: Bad request
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+                schema:
+                  $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Location list not found
+  /locationlistItems/{listItemId}:
+    get:
+      tags:
+      - LocationList
+      summary: Get a location list item availability by location list item identifier
+      description: Get a location list item availability by location list item identifier
+      operationId: getLocationListItemAvailabilityById
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: listItemId
+          in: path
+          description: The location list item identifier
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int32
+        - name: availability
+          in: query
+          description: The availability status
+          required: true
+          schema:
+            type: boolean
+            format: bool
+            default: true
+      responses:
+        200:
+          description: A List of available location identifier for this location list item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationListAvailability'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/LocationListAvailability'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Location list item not found
+    put:
+      tags:
+      - LocationList
+      summary: Set availability for a location list item
+      description: Set availability for a location list item
+      operationId: setLocationListItemAvailability
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: listItemId
+          in: path
+          description: The location list item identifier
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        description: The updated availability for selected location list item
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LocationListAvailabilityDetails"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/LocationListAvailabilityDetails"
+      responses:
+        204:
+          description: The availability was successfully updated
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Location list item not found
+    post:
+      tags:
+      - LocationList
+      summary: Get availability location structure for a location list item
+      description: Get availability location structure for a location list item
+      operationId: getLocationListItemAvailabilityStructure
+      parameters:
+      - $ref: '#/components/parameters/AccountHeader'
+      - $ref: '#/components/parameters/IdentityHeader'
+      - $ref: '#/components/parameters/LanguageHeader'
+      - name: listItemId
+        in: path
+        description: The location list item identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: locationId
+        in: query
+        description: The location identifier
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+      - name: locationType
+        in: query
+        description: The location type will be among Group = 0, Location = 1
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          example: 1
+      - name: hierarchyId
+        in: query
+        description: The hierarchy identifier
+        required: true
+        style: form
+        explode: true
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+      - name: levels
+        in: query
+        description: The number of level to traverse within hierarchy
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: -1
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: A list of locations with statuses founded using provided criteria
+          content:
+            application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Location'
+        400:
+          description: Bad request
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+                schema:
+                  $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Location list not found
 # Persons
   '/persons':
     put:
@@ -1005,7 +1858,7 @@ components:
       explode: false
       schema:
         type: integer
-        example: 1		  
+        example: 1      
     IdentityHeader:
       name: x-identity
       in: header
@@ -1064,7 +1917,55 @@ components:
           type: integer
           format: int32
           example: 11
-          nullable: true          
+          nullable: true
+    List:
+      type: object
+      required:
+      - listId
+      properties:
+        listId:
+          type: integer
+        orderable:
+          type: boolean
+          nullable: true
+        editable:
+          type: boolean
+          nullable: true
+        statusId:
+          type: integer
+          nullable: true
+        itemsOrderable:
+          type: boolean
+          nullable: true
+        itemsEditable:
+          type: boolean
+          nullable: true
+        value:
+          type: string
+          nullable: true
+          example: directions
+    ListItem:
+      type: object
+      required:
+      - listItemId
+      - listId
+      properties:
+        listItemId: 
+          type: integer
+        listId:
+          type: integer
+        editable:
+          type: boolean
+          nullable: true
+        itemOrder:
+          type: integer
+          nullable: true
+        statusId:
+          type: integer
+          nullable: true
+        value:
+          type: string
+          nullable: true
     Location:
       required:
       - locationType
@@ -1128,6 +2029,35 @@ components:
           description: The location parent identifier
           format: int32
           example: 1
+    LocationListAvailability:
+        type: object
+        properties:
+            LocationIds:
+                description: The array of location and location group identifier
+                type: array
+                example: [ 1, 12]
+                items:
+                    type: integer
+                    format: int32
+    LocationListAvailabilityDetails:
+        type: object
+        properties:
+            LocationStatuses:
+                description: The availability statuses for locations
+                type: object
+                additionalProperties:
+                  type: boolean
+                example:
+                  "27": true
+                  "48": false
+            LocationGroupStatuses:
+                description: The availability statuses for location groups
+                type: object
+                additionalProperties:
+                  type: boolean
+                example:
+                  "1": true
+                  "12": false
     NewHierarchyParams:
       type: object
       required:
@@ -1150,10 +2080,47 @@ components:
           format: int32
           example: 11
           nullable: true
+    NewListParams:
+      type: object
+      properties:
+        orderable:
+          type: boolean
+          nullable: true
+        editable:
+          type: boolean
+          nullable: true
+        statusId:
+          type: integer
+          nullable: true
+        itemsOrderable:
+          type: boolean
+          nullable: true
+        itemsEditable:
+          type: boolean
+          nullable: true
+        value:
+          type: string
+          nullable: true
+          example: "directions"
+    NewListItemParams:
+      type: object
+      required:
+      - listId
+      - value
+      properties:
+        listId:
+          type: integer
+        value:
+          description: The array of list item values
+          type: array
+          example: ["left", "right"]
+          items:
+            type: string
     NewLocationParams:
       required:
       - locationType
       - name
+      - parentIds
       type: object
       properties:
         name:
@@ -1320,22 +2287,39 @@ components:
     UpdateHierarchyParams:
       type: object
       required:
-        - Name
-        - IsDefault
+        - HierarchyId
       properties:
         Name:
           description: The Hierarchy name
           type: string
           format: string
           example: Oakville
+          nullable: true
         IsDefault:
           description: Idendifying hierarchy as Default or not
           type: boolean
           format: bool
           example: 0
+          nullable: true
         HierarchyId:
           description: The hierarchy identifier
           type: integer
           format: int32
           example: 11
+    UpdateListItemParams:
+      type: object
+      required:
+        - listItemId
+      properties:
+        listItemId: 
+          type: integer
+        editable:
+          type: boolean
           nullable: true
+        statusId:
+          type: integer
+          nullable: true
+        value:
+          type: string
+          nullable: true
+          example: left

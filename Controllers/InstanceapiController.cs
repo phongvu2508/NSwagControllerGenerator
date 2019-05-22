@@ -199,11 +199,281 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface IListController
+    {
+        /// <summary>Search for lists based on params</summary>
+        /// <param name="id">The list to be returned (null will return all lists)</param>
+        /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <response code="200">A list of lists found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Lists not found</response>
+        /// <returns>A list of lists found using provided criteria</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<List>>> GetListsAsync(int? id, System.Collections.Generic.IEnumerable<int> statusFilters);
+    
+        /// <summary>Update existing list</summary>
+        /// <param name="body">The updated list schema</param>
+        /// <response code="204">The list was successfully updated.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List not found</response>
+        /// <returns>The list was successfully updated.</returns>
+        System.Threading.Tasks.Task UpdateListAsync(List body);
+    
+        /// <summary>Create new list</summary>
+        /// <param name="body">The list schema</param>
+        /// <response code="201">The new list identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new list identifier</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateListAsync(NewListParams body);
+    
+        /// <summary>Delete a list by list id</summary>
+        /// <param name="listId">The list identifier</param>
+        /// <response code="204">List deletion result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List not found</response>
+        /// <returns>List deletion result</returns>
+        System.Threading.Tasks.Task DeleteListAsync(int listId);
+    
+        /// <summary>Get a list by list id</summary>
+        /// <param name="listId">The list to be returned</param>
+        /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <response code="200">A list with provided identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List not found</response>
+        /// <returns>A list with provided identifier</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId, System.Collections.Generic.IEnumerable<int> statusFilters);
+    
+        /// <summary>Search for list items based on params</summary>
+        /// <param name="listId">The list the list items retrieved belong to (null will return all lists)</param>
+        /// <param name="id">The list item to be returned (null will return all list items)</param>
+        /// <param name="listStatusFilters">The array of selected statuses of lists to include</param>
+        /// <param name="listItemStatusFilters">The array of selected statuses list items to include</param>
+        /// <response code="200">A list of list items found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List item not found</response>
+        /// <returns>A list of list items found using provided criteria</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItem>>> GetListItemsAsync(int? listId, int? id, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters);
+    
+        /// <summary>Update existing list item</summary>
+        /// <param name="body">The updated list item schema</param>
+        /// <response code="204">The list item was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>The list item was successfully updated</returns>
+        System.Threading.Tasks.Task UpdateListItemAsync(UpdateListItemParams body);
+    
+        /// <summary>Create new list item</summary>
+        /// <param name="body">The new list item schema</param>
+        /// <response code="201">The new list item identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new list item identifier</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateListItemAsync(NewListItemParams body);
+    
+        /// <summary>Delete a list item by list item id</summary>
+        /// <param name="listItemId">The list item identifier</param>
+        /// <response code="204">List Item deletion result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>List Item deletion result</returns>
+        System.Threading.Tasks.Task DeleteListItemAsync(int listItemId);
+    
+        /// <summary>Get a list item by list item id</summary>
+        /// <param name="listItemId">The list item to be returned</param>
+        /// <param name="listItemStatusFilters">The array of selected statuses list items to include</param>
+        /// <response code="200">A list item with provided identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>A list item with provided identifier</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ListItem>> GetListItemByIdAsync(int listItemId, System.Collections.Generic.IEnumerable<int> listItemStatusFilters);
+    
+        /// <summary>Reorders all list items in a list</summary>
+        /// <param name="listId">The list the list items retrieved belong to</param>
+        /// <param name="listItemIds">The array of selected list items to include</param>
+        /// <response code="204">The list item reorder was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>The list item reorder was successfully updated</returns>
+        System.Threading.Tasks.Task ReorderListItemAsync(int listId, System.Collections.Generic.IEnumerable<int> listItemIds);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    [Microsoft.AspNetCore.Mvc.Route("api")]
+    public partial class ListController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private IListController implementation;
+    
+        public ListController(IListController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <summary>Search for lists based on params</summary>
+        /// <param name="id">The list to be returned (null will return all lists)</param>
+        /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <response code="200">A list of lists found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Lists not found</response>
+        /// <returns>A list of lists found using provided criteria</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists")]
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<List>>> GetLists(int? id, System.Collections.Generic.IEnumerable<int> statusFilters)
+        {
+            return this.implementation.GetListsAsync(id, statusFilters);
+        }
+    
+        /// <summary>Update existing list</summary>
+        /// <param name="body">The updated list schema</param>
+        /// <response code="204">The list was successfully updated.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List not found</response>
+        /// <returns>The list was successfully updated.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("lists")]
+            public System.Threading.Tasks.Task UpdateList([Microsoft.AspNetCore.Mvc.FromBody] List body)
+        {
+            return this.implementation.UpdateListAsync(body);
+        }
+    
+        /// <summary>Create new list</summary>
+        /// <param name="body">The list schema</param>
+        /// <response code="201">The new list identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new list identifier</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lists")]
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateList([Microsoft.AspNetCore.Mvc.FromBody] NewListParams body)
+        {
+            return this.implementation.CreateListAsync(body);
+        }
+    
+        /// <summary>Delete a list by list id</summary>
+        /// <param name="listId">The list identifier</param>
+        /// <response code="204">List deletion result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List not found</response>
+        /// <returns>List deletion result</returns>
+        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("lists")]
+            public System.Threading.Tasks.Task DeleteList(int listId)
+        {
+            return this.implementation.DeleteListAsync(listId);
+        }
+    
+        /// <summary>Get a list by list id</summary>
+        /// <param name="listId">The list to be returned</param>
+        /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <response code="200">A list with provided identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List not found</response>
+        /// <returns>A list with provided identifier</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/{listId}")]
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListById(int listId, System.Collections.Generic.IEnumerable<int> statusFilters)
+        {
+            return this.implementation.GetListByIdAsync(listId, statusFilters);
+        }
+    
+        /// <summary>Search for list items based on params</summary>
+        /// <param name="listId">The list the list items retrieved belong to (null will return all lists)</param>
+        /// <param name="id">The list item to be returned (null will return all list items)</param>
+        /// <param name="listStatusFilters">The array of selected statuses of lists to include</param>
+        /// <param name="listItemStatusFilters">The array of selected statuses list items to include</param>
+        /// <response code="200">A list of list items found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List item not found</response>
+        /// <returns>A list of list items found using provided criteria</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("listitems")]
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItem>>> GetListItems(int? listId, int? id, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters)
+        {
+            return this.implementation.GetListItemsAsync(listId, id, listStatusFilters, listItemStatusFilters);
+        }
+    
+        /// <summary>Update existing list item</summary>
+        /// <param name="body">The updated list item schema</param>
+        /// <response code="204">The list item was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>The list item was successfully updated</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("listitems")]
+            public System.Threading.Tasks.Task UpdateListItem([Microsoft.AspNetCore.Mvc.FromBody] UpdateListItemParams body)
+        {
+            return this.implementation.UpdateListItemAsync(body);
+        }
+    
+        /// <summary>Create new list item</summary>
+        /// <param name="body">The new list item schema</param>
+        /// <response code="201">The new list item identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new list item identifier</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("listitems")]
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateListItem([Microsoft.AspNetCore.Mvc.FromBody] NewListItemParams body)
+        {
+            return this.implementation.CreateListItemAsync(body);
+        }
+    
+        /// <summary>Delete a list item by list item id</summary>
+        /// <param name="listItemId">The list item identifier</param>
+        /// <response code="204">List Item deletion result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>List Item deletion result</returns>
+        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("listitems")]
+            public System.Threading.Tasks.Task DeleteListItem(int listItemId)
+        {
+            return this.implementation.DeleteListItemAsync(listItemId);
+        }
+    
+        /// <summary>Get a list item by list item id</summary>
+        /// <param name="listItemId">The list item to be returned</param>
+        /// <param name="listItemStatusFilters">The array of selected statuses list items to include</param>
+        /// <response code="200">A list item with provided identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>A list item with provided identifier</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("listitems/{listItemId}")]
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ListItem>> GetListItemById(int listItemId, System.Collections.Generic.IEnumerable<int> listItemStatusFilters)
+        {
+            return this.implementation.GetListItemByIdAsync(listItemId, listItemStatusFilters);
+        }
+    
+        /// <summary>Reorders all list items in a list</summary>
+        /// <param name="listId">The list the list items retrieved belong to</param>
+        /// <param name="listItemIds">The array of selected list items to include</param>
+        /// <response code="204">The list item reorder was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>The list item reorder was successfully updated</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("listitems/reorder")]
+            public System.Threading.Tasks.Task ReorderListItem(int listId, System.Collections.Generic.IEnumerable<int> listItemIds)
+        {
+            return this.implementation.ReorderListItemAsync(listId, listItemIds);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
     public interface ILocationController
     {
         /// <summary>Search for locations by params</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 2</param>
+        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="locationStatuses">The array of selected status unique identifier will be among Active = 0, Inactive = 1, Archived = 2</param>
         /// <param name="limit">The amount of locations return per request</param>
@@ -234,7 +504,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     
         /// <summary>Delete a location by location id</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 2</param>
+        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
         /// <response code="204">Location deletion result</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
@@ -254,7 +524,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     
         /// <summary>Get locations by traverse the location tree</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 2</param>
+        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="locationStatuses">The array of selected statuses</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
@@ -284,7 +554,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     
         /// <summary>Validation of location deleting</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 2</param>
+        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
         /// <response code="200">Delete location validation result</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
@@ -307,7 +577,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     
         /// <summary>Search for locations by params</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 2</param>
+        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="locationStatuses">The array of selected status unique identifier will be among Active = 0, Inactive = 1, Archived = 2</param>
         /// <param name="limit">The amount of locations return per request</param>
@@ -350,7 +620,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     
         /// <summary>Delete a location by location id</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 2</param>
+        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
         /// <response code="204">Location deletion result</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
@@ -378,7 +648,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     
         /// <summary>Get locations by traverse the location tree</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 2</param>
+        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="locationStatuses">The array of selected statuses</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
@@ -420,7 +690,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     
         /// <summary>Validation of location deleting</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 2</param>
+        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
         /// <response code="200">Delete location validation result</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
@@ -430,6 +700,180 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
             public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocation(int id, int locationType)
         {
             return this.implementation.CanDeleteLocationAsync(id, locationType);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface ILocationListController
+    {
+        /// <summary>Get a location list availability by location list identifier</summary>
+        /// <param name="listId">The location list identifier</param>
+        /// <param name="availability">The availability status</param>
+        /// <response code="200">A List of available location identifier for this location list</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location list not found</response>
+        /// <returns>A List of available location identifier for this location list</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LocationListAvailability>> GetLocationListAvailabilityByIdAsync(int listId, bool availability);
+    
+        /// <summary>Set availability for a location list</summary>
+        /// <param name="listId">The location list identifier</param>
+        /// <param name="body">The updated availability for selected location list</param>
+        /// <response code="204">The availability was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location list not found</response>
+        /// <returns>The availability was successfully updated</returns>
+        System.Threading.Tasks.Task SetLocationListAvailabilityAsync(int listId, LocationListAvailabilityDetails body);
+    
+        /// <summary>Get availability location structure for a location list</summary>
+        /// <param name="listId">The location list identifier</param>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="hierarchyId">The hierarchy identifier</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <response code="200">A list of locations with statuses founded using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location list not found</response>
+        /// <returns>A list of locations with statuses founded using provided criteria</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListAvailabilityStructureAsync(int listId, int? locationId, int? locationType, int hierarchyId, int? levels);
+    
+        /// <summary>Get a location list item availability by location list item identifier</summary>
+        /// <param name="listItemId">The location list item identifier</param>
+        /// <param name="availability">The availability status</param>
+        /// <response code="200">A List of available location identifier for this location list item</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location list item not found</response>
+        /// <returns>A List of available location identifier for this location list item</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LocationListAvailability>> GetLocationListItemAvailabilityByIdAsync(int listItemId, bool availability);
+    
+        /// <summary>Set availability for a location list item</summary>
+        /// <param name="listItemId">The location list item identifier</param>
+        /// <param name="body">The updated availability for selected location list item</param>
+        /// <response code="204">The availability was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location list item not found</response>
+        /// <returns>The availability was successfully updated</returns>
+        System.Threading.Tasks.Task SetLocationListItemAvailabilityAsync(int listItemId, LocationListAvailabilityDetails body);
+    
+        /// <summary>Get availability location structure for a location list item</summary>
+        /// <param name="listItemId">The location list item identifier</param>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="hierarchyId">The hierarchy identifier</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <response code="200">A list of locations with statuses founded using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location list not found</response>
+        /// <returns>A list of locations with statuses founded using provided criteria</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListItemAvailabilityStructureAsync(int listItemId, int? locationId, int? locationType, int hierarchyId, int? levels);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    [Microsoft.AspNetCore.Mvc.Route("api")]
+    public partial class LocationListController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private ILocationListController implementation;
+    
+        public LocationListController(ILocationListController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <summary>Get a location list availability by location list identifier</summary>
+        /// <param name="listId">The location list identifier</param>
+        /// <param name="availability">The availability status</param>
+        /// <response code="200">A List of available location identifier for this location list</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location list not found</response>
+        /// <returns>A List of available location identifier for this location list</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/{listId}")]
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LocationListAvailability>> GetLocationListAvailabilityById(int listId, bool availability)
+        {
+            return this.implementation.GetLocationListAvailabilityByIdAsync(listId, availability);
+        }
+    
+        /// <summary>Set availability for a location list</summary>
+        /// <param name="listId">The location list identifier</param>
+        /// <param name="body">The updated availability for selected location list</param>
+        /// <response code="204">The availability was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location list not found</response>
+        /// <returns>The availability was successfully updated</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("locationlists/{listId}")]
+            public System.Threading.Tasks.Task SetLocationListAvailability(int listId, [Microsoft.AspNetCore.Mvc.FromBody] LocationListAvailabilityDetails body)
+        {
+            return this.implementation.SetLocationListAvailabilityAsync(listId, body);
+        }
+    
+        /// <summary>Get availability location structure for a location list</summary>
+        /// <param name="listId">The location list identifier</param>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="hierarchyId">The hierarchy identifier</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <response code="200">A list of locations with statuses founded using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location list not found</response>
+        /// <returns>A list of locations with statuses founded using provided criteria</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locationlists/{listId}")]
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListAvailabilityStructure(int listId, int? locationId, int? locationType, int hierarchyId, int? levels)
+        {
+            return this.implementation.GetLocationListAvailabilityStructureAsync(listId, locationId, locationType, hierarchyId, levels);
+        }
+    
+        /// <summary>Get a location list item availability by location list item identifier</summary>
+        /// <param name="listItemId">The location list item identifier</param>
+        /// <param name="availability">The availability status</param>
+        /// <response code="200">A List of available location identifier for this location list item</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location list item not found</response>
+        /// <returns>A List of available location identifier for this location list item</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlistItems/{listItemId}")]
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LocationListAvailability>> GetLocationListItemAvailabilityById(int listItemId, bool availability)
+        {
+            return this.implementation.GetLocationListItemAvailabilityByIdAsync(listItemId, availability);
+        }
+    
+        /// <summary>Set availability for a location list item</summary>
+        /// <param name="listItemId">The location list item identifier</param>
+        /// <param name="body">The updated availability for selected location list item</param>
+        /// <response code="204">The availability was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location list item not found</response>
+        /// <returns>The availability was successfully updated</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("locationlistItems/{listItemId}")]
+            public System.Threading.Tasks.Task SetLocationListItemAvailability(int listItemId, [Microsoft.AspNetCore.Mvc.FromBody] LocationListAvailabilityDetails body)
+        {
+            return this.implementation.SetLocationListItemAvailabilityAsync(listItemId, body);
+        }
+    
+        /// <summary>Get availability location structure for a location list item</summary>
+        /// <param name="listItemId">The location list item identifier</param>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="hierarchyId">The hierarchy identifier</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <response code="200">A list of locations with statuses founded using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location list not found</response>
+        /// <returns>A list of locations with statuses founded using provided criteria</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locationlistItems/{listItemId}")]
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListItemAvailabilityStructure(int listItemId, int? locationId, int? locationType, int hierarchyId, int? levels)
+        {
+            return this.implementation.GetLocationListItemAvailabilityStructureAsync(listItemId, locationId, locationType, hierarchyId, levels);
         }
     
     }
@@ -545,7 +989,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     
         /// <summary>The error messages</summary>
         [Newtonsoft.Json.JsonProperty("errorMessages", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<string> ErrorMessages { get; set; }
+        public System.Collections.Generic.IList<string> ErrorMessages { get; set; }
     
         public string ToJson() 
         {
@@ -582,6 +1026,75 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public static Hierarchy FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Hierarchy>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class List 
+    {
+        [Newtonsoft.Json.JsonProperty("listId", Required = Newtonsoft.Json.Required.Always)]
+        public int ListId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("orderable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Orderable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("editable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Editable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("statusId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StatusId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("itemsOrderable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ItemsOrderable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("itemsEditable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ItemsEditable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static List FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<List>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ListItem 
+    {
+        [Newtonsoft.Json.JsonProperty("listItemId", Required = Newtonsoft.Json.Required.Always)]
+        public int ListItemId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("listId", Required = Newtonsoft.Json.Required.Always)]
+        public int ListId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("editable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Editable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("itemOrder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ItemOrder { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("statusId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StatusId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ListItem FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListItem>(data);
         }
     
     }
@@ -653,6 +1166,48 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LocationListAvailability 
+    {
+        /// <summary>The array of location and location group identifier</summary>
+        [Newtonsoft.Json.JsonProperty("LocationIds", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> LocationIds { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LocationListAvailability FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LocationListAvailability>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LocationListAvailabilityDetails 
+    {
+        /// <summary>The availability statuses for locations</summary>
+        [Newtonsoft.Json.JsonProperty("LocationStatuses", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IDictionary<string, bool> LocationStatuses { get; set; }
+    
+        /// <summary>The availability statuses for location groups</summary>
+        [Newtonsoft.Json.JsonProperty("LocationGroupStatuses", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IDictionary<string, bool> LocationGroupStatuses { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LocationListAvailabilityDetails FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LocationListAvailabilityDetails>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class NewHierarchyParams 
     {
         /// <summary>The Hierarchy name</summary>
@@ -681,6 +1236,62 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class NewListParams 
+    {
+        [Newtonsoft.Json.JsonProperty("orderable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Orderable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("editable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Editable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("statusId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StatusId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("itemsOrderable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ItemsOrderable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("itemsEditable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ItemsEditable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static NewListParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<NewListParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class NewListItemParams 
+    {
+        [Newtonsoft.Json.JsonProperty("listId", Required = Newtonsoft.Json.Required.Always)]
+        public int ListId { get; set; }
+    
+        /// <summary>The array of list item values</summary>
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IList<string> Value { get; set; } = new System.Collections.Generic.List<string>();
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static NewListItemParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<NewListItemParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class NewLocationParams 
     {
         /// <summary>The location name</summary>
@@ -697,8 +1308,9 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public int? LocationStatus { get; set; }
     
         /// <summary>The array of location parent identifiers</summary>
-        [Newtonsoft.Json.JsonProperty("parentIds", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<int> ParentIds { get; set; }
+        [Newtonsoft.Json.JsonProperty("parentIds", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IList<int> ParentIds { get; set; } = new System.Collections.Generic.List<int>();
     
         /// <summary>The hierarchy identifier</summary>
         [Newtonsoft.Json.JsonProperty("hierarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -744,7 +1356,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public string LastName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("locationList", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<int> LocationList { get; set; }
+        public System.Collections.Generic.IList<int> LocationList { get; set; }
     
         [Newtonsoft.Json.JsonProperty("genderId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? GenderId { get; set; }
@@ -847,17 +1459,16 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     public partial class UpdateHierarchyParams 
     {
         /// <summary>The Hierarchy name</summary>
-        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
     
         /// <summary>Idendifying hierarchy as Default or not</summary>
-        [Newtonsoft.Json.JsonProperty("IsDefault", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsDefault { get; set; }
+        [Newtonsoft.Json.JsonProperty("IsDefault", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsDefault { get; set; }
     
         /// <summary>The hierarchy identifier</summary>
-        [Newtonsoft.Json.JsonProperty("HierarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? HierarchyId { get; set; }
+        [Newtonsoft.Json.JsonProperty("HierarchyId", Required = Newtonsoft.Json.Required.Always)]
+        public int HierarchyId { get; set; }
     
         public string ToJson() 
         {
@@ -867,6 +1478,33 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public static UpdateHierarchyParams FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateHierarchyParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdateListItemParams 
+    {
+        [Newtonsoft.Json.JsonProperty("listItemId", Required = Newtonsoft.Json.Required.Always)]
+        public int ListItemId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("editable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Editable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("statusId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StatusId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdateListItemParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateListItemParams>(data);
         }
     
     }
