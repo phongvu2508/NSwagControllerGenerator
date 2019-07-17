@@ -121,26 +121,26 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
     
         /// <summary>Search for locations by params</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
-        /// <param name="locationStatuses">The array of selected status unique identifier will be among Active = 0, Inactive = 1, Archived = 2</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
         /// <param name="limit">The amount of locations return per request</param>
         /// <param name="offset">The position for first location to be returned in the collection</param>
         /// <returns>A list of locations founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationsAsync(int? id, int? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<int> locationStatuses, int? limit, int? offset);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationsAsync(int? id, LocationType? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? limit, int? offset);
     
         /// <summary>Search for locations by params</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
-        /// <param name="locationStatuses">The array of selected status unique identifier will be among Active = 0, Inactive = 1, Archived = 2</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
         /// <param name="limit">The amount of locations return per request</param>
         /// <param name="offset">The position for first location to be returned in the collection</param>
         /// <returns>A list of locations founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationsAsync(int? id, int? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<int> locationStatuses, int? limit, int? offset, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationsAsync(int? id, LocationType? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? limit, int? offset, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update existing location</summary>
         /// <param name="body">The updated location schema</param>
@@ -170,54 +170,54 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
     
         /// <summary>Delete a location by location id</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <returns>Location deletion result</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task DeleteLocationAsync(int id, int locationType);
+        System.Threading.Tasks.Task DeleteLocationAsync(int id, LocationType locationType);
     
         /// <summary>Delete a location by location id</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <returns>Location deletion result</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task DeleteLocationAsync(int id, int locationType, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteLocationAsync(int id, LocationType locationType, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get a location by location id</summary>
         /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">Location type of selected location. Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <returns>A location with provided identifier</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationByIdAsync(int locationId, int? locationType);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationByIdAsync(int locationId, LocationType locationType);
     
         /// <summary>Get a location by location id</summary>
         /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">Location type of selected location. Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <returns>A location with provided identifier</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationByIdAsync(int locationId, int? locationType, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationByIdAsync(int locationId, LocationType locationType, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get locations by traverse the location tree</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="locationStatuses">The array of selected statuses</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
         /// <returns>A list of locations founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetTraversedLocationsAsync(int id, int locationType, int hierarchyId, System.Collections.Generic.IEnumerable<int> locationStatuses, int? levels);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetTraversedLocationsAsync(int id, LocationType locationType, int hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels);
     
         /// <summary>Get locations by traverse the location tree</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="locationStatuses">The array of selected statuses</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
         /// <returns>A list of locations founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetTraversedLocationsAsync(int id, int locationType, int hierarchyId, System.Collections.Generic.IEnumerable<int> locationStatuses, int? levels, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetTraversedLocationsAsync(int id, LocationType locationType, int hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Move location and all children under another location group</summary>
         /// <returns>The location successfully moved.</returns>
@@ -245,18 +245,18 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
     
         /// <summary>Validation of location deleting</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <returns>Delete location validation result</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocationAsync(int id, int locationType);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocationAsync(int id, LocationType locationType);
     
         /// <summary>Validation of location deleting</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <returns>Delete location validation result</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocationAsync(int id, int locationType, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocationAsync(int id, LocationType locationType, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Search for lists based on params</summary>
         /// <param name="statusFilters">The array of selected statuses to include</param>
@@ -442,23 +442,23 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <summary>Get availability location structure for a location list</summary>
         /// <param name="listId">The location list identifier</param>
         /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
         /// <returns>A list of locations with statuses founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListAvailabilityStructureAsync(int listId, int locationId, int locationType, int hierarchyId, int? levels);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListAvailabilityStructureAsync(int listId, int locationId, LocationType locationType, int hierarchyId, int? levels);
     
         /// <summary>Get availability location structure for a location list</summary>
         /// <param name="listId">The location list identifier</param>
         /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
         /// <returns>A list of locations with statuses founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListAvailabilityStructureAsync(int listId, int locationId, int locationType, int hierarchyId, int? levels, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListAvailabilityStructureAsync(int listId, int locationId, LocationType locationType, int hierarchyId, int? levels, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get a list of available location Ids by location list item identifier</summary>
         /// <param name="listItemId">The location list item identifier</param>
@@ -491,23 +491,55 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <summary>Get availability location structure for a location list item</summary>
         /// <param name="listItemId">The location list item identifier</param>
         /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
         /// <returns>A list of locations with statuses founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListItemAvailabilityStructureAsync(int listItemId, int locationId, int locationType, int hierarchyId, int? levels);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListItemAvailabilityStructureAsync(int listItemId, int locationId, LocationType locationType, int hierarchyId, int? levels);
     
         /// <summary>Get availability location structure for a location list item</summary>
         /// <param name="listItemId">The location list item identifier</param>
         /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
         /// <returns>A list of locations with statuses founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListItemAvailabilityStructureAsync(int listItemId, int locationId, int locationType, int hierarchyId, int? levels, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListItemAvailabilityStructureAsync(int listItemId, int locationId, LocationType locationType, int hierarchyId, int? levels, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get a list of available location list Ids by location identifier</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <returns>A List of available location list identifier for this location</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<int>>> GetLocationListAvailabilityByLocationIdAsync(int locationId, LocationType locationType);
+    
+        /// <summary>Get a list of available location list Ids by location identifier</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <returns>A List of available location list identifier for this location</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<int>>> GetLocationListAvailabilityByLocationIdAsync(int locationId, LocationType locationType, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get a list of available location list item Ids by parent List and location identifier</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="listId">The parent list identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <returns>A List of available location item list identifier for this location</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<int>>> GetLocationListItemAvailabilityByLocationIdAsync(int locationId, int listId, LocationType locationType);
+    
+        /// <summary>Get a list of available location list item Ids by parent List and location identifier</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="listId">The parent list identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <returns>A List of available location item list identifier for this location</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<int>>> GetLocationListItemAvailabilityByLocationIdAsync(int locationId, int listId, LocationType locationType, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Search for persons by params</summary>
         /// <param name="employmentStatus">Status of the person ( active = 11, inactive = 12 )</param>
@@ -794,13 +826,14 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
     
-        /// <summary>The location type will be among Group = 0, Location = 1</summary>
         [Newtonsoft.Json.JsonProperty("locationType", Required = Newtonsoft.Json.Required.Always)]
-        public int LocationType { get; set; }
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LocationType LocationType { get; set; }
     
-        /// <summary>The location status will be among Active = 0, Inactive = 1, Archived = 2</summary>
-        [Newtonsoft.Json.JsonProperty("locationStatus", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? LocationStatus { get; set; }
+        [Newtonsoft.Json.JsonProperty("locationStatus", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LocationStatus LocationStatus { get; set; }
     
         /// <summary>The location parent identifiers</summary>
         [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -809,6 +842,10 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <summary>The hierarchy identifier</summary>
         [Newtonsoft.Json.JsonProperty("hierarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? HierarchyId { get; set; }
+    
+        /// <summary>The available status for Location List</summary>
+        [Newtonsoft.Json.JsonProperty("isAvailable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsAvailable { get; set; }
     
         public string ToJson() 
         {
@@ -829,9 +866,10 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("locationId", Required = Newtonsoft.Json.Required.Always)]
         public int LocationId { get; set; }
     
-        /// <summary>The location type</summary>
         [Newtonsoft.Json.JsonProperty("locationType", Required = Newtonsoft.Json.Required.Always)]
-        public int LocationType { get; set; }
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LocationType LocationType { get; set; }
     
         /// <summary>The location parent identifier</summary>
         [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.Always)]
@@ -857,13 +895,14 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
     
-        /// <summary>The location type will be among Group = 0, Location = 1</summary>
         [Newtonsoft.Json.JsonProperty("locationType", Required = Newtonsoft.Json.Required.Always)]
-        public int LocationType { get; set; }
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LocationType LocationType { get; set; }
     
-        /// <summary>The location status will be among Active = 0, Inactive = 1, Archived = 2</summary>
-        [Newtonsoft.Json.JsonProperty("locationStatus", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? LocationStatus { get; set; }
+        [Newtonsoft.Json.JsonProperty("locationStatus", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LocationStatus LocationStatus { get; set; }
     
         /// <summary>The array of location parent identifiers</summary>
         [Newtonsoft.Json.JsonProperty("parentIds", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -882,6 +921,31 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<NewLocationParams>(data);
         }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum LocationType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"Group")]
+        Group = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Location")]
+        Location = 1,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum LocationStatus
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"Active")]
+        Active = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Inactive")]
+        Inactive = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Archived")]
+        Archived = 2,
     
     }
     
@@ -1029,12 +1093,12 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
     public partial class LocationListAvailability 
     {
         /// <summary>The array of location identifiers</summary>
-        [Newtonsoft.Json.JsonProperty("LocationIds", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<int> LocationIds { get; set; }
+        [Newtonsoft.Json.JsonProperty("Location", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> Location { get; set; }
     
         /// <summary>The array of location group identifiers</summary>
-        [Newtonsoft.Json.JsonProperty("LocationGroupIds", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<int> LocationGroupIds { get; set; }
+        [Newtonsoft.Json.JsonProperty("LocationGroup", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> LocationGroup { get; set; }
     
         public string ToJson() 
         {
@@ -1052,12 +1116,12 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
     public partial class LocationListAvailabilityDetails 
     {
         /// <summary>The array statuses for locations</summary>
-        [Newtonsoft.Json.JsonProperty("LocationStatuses", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IDictionary<string, bool> LocationStatuses { get; set; }
+        [Newtonsoft.Json.JsonProperty("Location", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IDictionary<string, bool> Location { get; set; }
     
         /// <summary>The array statuses for location groups</summary>
-        [Newtonsoft.Json.JsonProperty("LocationGroupStatuses", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IDictionary<string, bool> LocationGroupStatuses { get; set; }
+        [Newtonsoft.Json.JsonProperty("LocationGroup", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IDictionary<string, bool> LocationGroup { get; set; }
     
         public string ToJson() 
         {

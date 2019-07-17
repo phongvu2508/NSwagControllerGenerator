@@ -339,7 +339,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <summary>Get availability location structure for a location list</summary>
         /// <param name="listId">The location list identifier</param>
         /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
         /// <response code="200">A list of locations with statuses founded using provided criteria</response>
@@ -347,7 +347,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location list not found</response>
         /// <returns>A list of locations with statuses founded using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListAvailabilityStructureAsync(int listId, int locationId, int locationType, int hierarchyId, int? levels);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListAvailabilityStructureAsync(int listId, int locationId, LocationType locationType, int hierarchyId, int? levels);
     
         /// <summary>Get a list of available location Ids by location list item identifier</summary>
         /// <param name="listItemId">The location list item identifier</param>
@@ -371,7 +371,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <summary>Get availability location structure for a location list item</summary>
         /// <param name="listItemId">The location list item identifier</param>
         /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
         /// <response code="200">A list of locations with statuses founded using provided criteria</response>
@@ -379,7 +379,27 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location list not found</response>
         /// <returns>A list of locations with statuses founded using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListItemAvailabilityStructureAsync(int listItemId, int locationId, int locationType, int hierarchyId, int? levels);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListItemAvailabilityStructureAsync(int listItemId, int locationId, LocationType locationType, int hierarchyId, int? levels);
+    
+        /// <summary>Get a list of available location list Ids by location identifier</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <response code="200">A List of available location list identifier for this location</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location not found</response>
+        /// <returns>A List of available location list identifier for this location</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<int>>> GetLocationListAvailabilityByLocationIdAsync(int locationId, LocationType locationType);
+    
+        /// <summary>Get a list of available location list item Ids by location identifier</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <response code="200">A List of available location item list identifier for this location</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location not found</response>
+        /// <returns>A List of available location item list identifier for this location</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<int>>> GetLocationListItemAvailabilityByLocationIdAsync(int locationId, LocationType locationType);
     
     }
     
@@ -423,7 +443,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <summary>Get availability location structure for a location list</summary>
         /// <param name="listId">The location list identifier</param>
         /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
         /// <response code="200">A list of locations with statuses founded using provided criteria</response>
@@ -432,7 +452,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="404">Location list not found</response>
         /// <returns>A list of locations with statuses founded using provided criteria</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locationlists/{listId}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListAvailabilityStructure(int listId, int locationId, int locationType, int hierarchyId, int? levels)
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListAvailabilityStructure(int listId, int locationId, LocationType locationType, int hierarchyId, int? levels)
         {
             return this.implementation.GetLocationListAvailabilityStructureAsync(listId, locationId, locationType, hierarchyId, levels);
         }
@@ -467,7 +487,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <summary>Get availability location structure for a location list item</summary>
         /// <param name="listItemId">The location list item identifier</param>
         /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
         /// <response code="200">A list of locations with statuses founded using provided criteria</response>
@@ -476,9 +496,37 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="404">Location list not found</response>
         /// <returns>A list of locations with statuses founded using provided criteria</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locationlists/items/{listItemId}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListItemAvailabilityStructure(int listItemId, int locationId, int locationType, int hierarchyId, int? levels)
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListItemAvailabilityStructure(int listItemId, int locationId, LocationType locationType, int hierarchyId, int? levels)
         {
             return this.implementation.GetLocationListItemAvailabilityStructureAsync(listItemId, locationId, locationType, hierarchyId, levels);
+        }
+    
+        /// <summary>Get a list of available location list Ids by location identifier</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <response code="200">A List of available location list identifier for this location</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location not found</response>
+        /// <returns>A List of available location list identifier for this location</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/locations/{locationId}")]
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<int>>> GetLocationListAvailabilityByLocationId(int locationId, LocationType locationType)
+        {
+            return this.implementation.GetLocationListAvailabilityByLocationIdAsync(locationId, locationType);
+        }
+    
+        /// <summary>Get a list of available location list item Ids by location identifier</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <response code="200">A List of available location item list identifier for this location</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location not found</response>
+        /// <returns>A List of available location item list identifier for this location</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/items/locations/{locationId}")]
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<int>>> GetLocationListItemAvailabilityByLocationId(int locationId, LocationType locationType)
+        {
+            return this.implementation.GetLocationListItemAvailabilityByLocationIdAsync(locationId, locationType);
         }
     
     }
@@ -972,13 +1020,14 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
     
-        /// <summary>The location type will be among Group = 0, Location = 1</summary>
         [Newtonsoft.Json.JsonProperty("locationType", Required = Newtonsoft.Json.Required.Always)]
-        public int LocationType { get; set; }
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LocationType LocationType { get; set; }
     
-        /// <summary>The location status will be among Active = 0, Inactive = 1, Archived = 2</summary>
-        [Newtonsoft.Json.JsonProperty("locationStatus", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? LocationStatus { get; set; }
+        [Newtonsoft.Json.JsonProperty("locationStatus", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LocationStatus LocationStatus { get; set; }
     
         /// <summary>The location parent identifiers</summary>
         [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -997,6 +1046,31 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Location>(data);
         }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum LocationType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"Group")]
+        Group = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Location")]
+        Location = 1,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum LocationStatus
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"Active")]
+        Active = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Inactive")]
+        Inactive = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Archived")]
+        Archived = 2,
     
     }
     

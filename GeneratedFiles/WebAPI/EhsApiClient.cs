@@ -894,29 +894,29 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Infrastructure
     
         /// <summary>Search for locations by params</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
-        /// <param name="locationStatuses">The array of selected status unique identifier will be among Active = 0, Inactive = 1, Archived = 2</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
         /// <param name="limit">The amount of locations return per request</param>
         /// <param name="offset">The position for first location to be returned in the collection</param>
         /// <returns>A list of locations founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationsAsync(int? id, int? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<int> locationStatuses, int? limit, int? offset)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationsAsync(int? id, LocationType? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? limit, int? offset)
         {
             return GetLocationsAsync(id, locationType, hierarchyId, locationStatuses, limit, offset, System.Threading.CancellationToken.None);
         }
     
         /// <summary>Search for locations by params</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
-        /// <param name="locationStatuses">The array of selected status unique identifier will be among Active = 0, Inactive = 1, Archived = 2</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
         /// <param name="limit">The amount of locations return per request</param>
         /// <param name="offset">The position for first location to be returned in the collection</param>
         /// <returns>A list of locations founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationsAsync(int? id, int? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<int> locationStatuses, int? limit, int? offset, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationsAsync(int? id, LocationType? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? limit, int? offset, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/locations?");
@@ -1237,21 +1237,21 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Infrastructure
     
         /// <summary>Delete a location by location id</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <returns>Location deletion result</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task DeleteLocationAsync(int id, int locationType)
+        public System.Threading.Tasks.Task DeleteLocationAsync(int id, LocationType locationType)
         {
             return DeleteLocationAsync(id, locationType, System.Threading.CancellationToken.None);
         }
     
         /// <summary>Delete a location by location id</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <returns>Location deletion result</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task DeleteLocationAsync(int id, int locationType, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteLocationAsync(int id, LocationType locationType, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -1342,32 +1342,32 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Infrastructure
     
         /// <summary>Get a location by location id</summary>
         /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">Location type of selected location. Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <returns>A location with provided identifier</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationByIdAsync(int locationId, int? locationType)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationByIdAsync(int locationId, LocationType locationType)
         {
             return GetLocationByIdAsync(locationId, locationType, System.Threading.CancellationToken.None);
         }
     
         /// <summary>Get a location by location id</summary>
         /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">Location type of selected location. Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <returns>A location with provided identifier</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationByIdAsync(int locationId, int? locationType, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationByIdAsync(int locationId, LocationType locationType, System.Threading.CancellationToken cancellationToken)
         {
             if (locationId == null)
                 throw new System.ArgumentNullException("locationId");
     
+            if (locationType == null)
+                throw new System.ArgumentNullException("locationType");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/locations/{locationId}?");
             urlBuilder_.Replace("{locationId}", System.Uri.EscapeDataString(ConvertToString(locationId, System.Globalization.CultureInfo.InvariantCulture)));
-            if (locationType != null) 
-            {
-                urlBuilder_.Append("locationType=").Append(System.Uri.EscapeDataString(ConvertToString(locationType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
+            urlBuilder_.Append("locationType=").Append(System.Uri.EscapeDataString(ConvertToString(locationType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;
@@ -1460,27 +1460,27 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Infrastructure
     
         /// <summary>Get locations by traverse the location tree</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="locationStatuses">The array of selected statuses</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
         /// <returns>A list of locations founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetTraversedLocationsAsync(int id, int locationType, int hierarchyId, System.Collections.Generic.IEnumerable<int> locationStatuses, int? levels)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetTraversedLocationsAsync(int id, LocationType locationType, int hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels)
         {
             return GetTraversedLocationsAsync(id, locationType, hierarchyId, locationStatuses, levels, System.Threading.CancellationToken.None);
         }
     
         /// <summary>Get locations by traverse the location tree</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="locationStatuses">The array of selected statuses</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
         /// <returns>A list of locations founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetTraversedLocationsAsync(int id, int locationType, int hierarchyId, System.Collections.Generic.IEnumerable<int> locationStatuses, int? levels, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetTraversedLocationsAsync(int id, LocationType locationType, int hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -1801,21 +1801,21 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Infrastructure
     
         /// <summary>Validation of location deleting</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <returns>Delete location validation result</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocationAsync(int id, int locationType)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocationAsync(int id, LocationType locationType)
         {
             return CanDeleteLocationAsync(id, locationType, System.Threading.CancellationToken.None);
         }
     
         /// <summary>Validation of location deleting</summary>
         /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <returns>Delete location validation result</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocationAsync(int id, int locationType, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocationAsync(int id, LocationType locationType, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -3310,12 +3310,12 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Infrastructure
         /// <summary>Get availability location structure for a location list</summary>
         /// <param name="listId">The location list identifier</param>
         /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
         /// <returns>A list of locations with statuses founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListAvailabilityStructureAsync(int listId, int locationId, int locationType, int hierarchyId, int? levels)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListAvailabilityStructureAsync(int listId, int locationId, LocationType locationType, int hierarchyId, int? levels)
         {
             return GetLocationListAvailabilityStructureAsync(listId, locationId, locationType, hierarchyId, levels, System.Threading.CancellationToken.None);
         }
@@ -3323,13 +3323,13 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Infrastructure
         /// <summary>Get availability location structure for a location list</summary>
         /// <param name="listId">The location list identifier</param>
         /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
         /// <returns>A list of locations with statuses founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListAvailabilityStructureAsync(int listId, int locationId, int locationType, int hierarchyId, int? levels, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListAvailabilityStructureAsync(int listId, int locationId, LocationType locationType, int hierarchyId, int? levels, System.Threading.CancellationToken cancellationToken)
         {
             if (listId == null)
                 throw new System.ArgumentNullException("listId");
@@ -3661,12 +3661,12 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Infrastructure
         /// <summary>Get availability location structure for a location list item</summary>
         /// <param name="listItemId">The location list item identifier</param>
         /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
         /// <returns>A list of locations with statuses founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListItemAvailabilityStructureAsync(int listItemId, int locationId, int locationType, int hierarchyId, int? levels)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListItemAvailabilityStructureAsync(int listItemId, int locationId, LocationType locationType, int hierarchyId, int? levels)
         {
             return GetLocationListItemAvailabilityStructureAsync(listItemId, locationId, locationType, hierarchyId, levels, System.Threading.CancellationToken.None);
         }
@@ -3674,13 +3674,13 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Infrastructure
         /// <summary>Get availability location structure for a location list item</summary>
         /// <param name="listItemId">The location list item identifier</param>
         /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">The location type will be among Group = 0, Location = 1</param>
+        /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
         /// <returns>A list of locations with statuses founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListItemAvailabilityStructureAsync(int listItemId, int locationId, int locationType, int hierarchyId, int? levels, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListItemAvailabilityStructureAsync(int listItemId, int locationId, LocationType locationType, int hierarchyId, int? levels, System.Threading.CancellationToken cancellationToken)
         {
             if (listItemId == null)
                 throw new System.ArgumentNullException("listItemId");
@@ -3782,6 +3782,248 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Infrastructure
                         }
             
                         return default(System.Collections.ObjectModel.Collection<Location>);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get a list of available location list Ids by location identifier</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <returns>A List of available location list identifier for this location</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<int>>> GetLocationListAvailabilityByLocationIdAsync(int locationId, LocationType locationType)
+        {
+            return GetLocationListAvailabilityByLocationIdAsync(locationId, locationType, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get a list of available location list Ids by location identifier</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <returns>A List of available location list identifier for this location</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<int>>> GetLocationListAvailabilityByLocationIdAsync(int locationId, LocationType locationType, System.Threading.CancellationToken cancellationToken)
+        {
+            if (locationId == null)
+                throw new System.ArgumentNullException("locationId");
+    
+            if (locationType == null)
+                throw new System.ArgumentNullException("locationType");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/locationlists/locations/{locationId}?");
+            urlBuilder_.Replace("{locationId}", System.Uri.EscapeDataString(ConvertToString(locationId, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append("locationType=").Append(System.Uri.EscapeDataString(ConvertToString(locationType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(System.Collections.ObjectModel.Collection<int>); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.ObjectModel.Collection<int>>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(BadRequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<BadRequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<BadRequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Location not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(System.Collections.ObjectModel.Collection<int>);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get a list of available location list item Ids by parent List and location identifier</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="listId">The parent list identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <returns>A List of available location item list identifier for this location</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<int>>> GetLocationListItemAvailabilityByLocationIdAsync(int locationId, int listId, LocationType locationType)
+        {
+            return GetLocationListItemAvailabilityByLocationIdAsync(locationId, listId, locationType, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get a list of available location list item Ids by parent List and location identifier</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="listId">The parent list identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <returns>A List of available location item list identifier for this location</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<int>>> GetLocationListItemAvailabilityByLocationIdAsync(int locationId, int listId, LocationType locationType, System.Threading.CancellationToken cancellationToken)
+        {
+            if (locationId == null)
+                throw new System.ArgumentNullException("locationId");
+    
+            if (listId == null)
+                throw new System.ArgumentNullException("listId");
+    
+            if (locationType == null)
+                throw new System.ArgumentNullException("locationType");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/locationlists/items/locations/{locationId}?");
+            urlBuilder_.Replace("{locationId}", System.Uri.EscapeDataString(ConvertToString(locationId, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append("listId=").Append(System.Uri.EscapeDataString(ConvertToString(listId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("locationType=").Append(System.Uri.EscapeDataString(ConvertToString(locationType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(System.Collections.ObjectModel.Collection<int>); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.ObjectModel.Collection<int>>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(BadRequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<BadRequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<BadRequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Location not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(System.Collections.ObjectModel.Collection<int>);
                     }
                     finally
                     {

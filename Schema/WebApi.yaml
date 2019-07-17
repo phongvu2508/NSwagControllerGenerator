@@ -555,14 +555,10 @@ paths:
           format: int32
       - name: locationType
         in: query
-        description: The location type will be among Group = 0, Location = 1
+        description: The location type
         required: true
-        style: form
-        explode: true
         schema:
-          type: integer
-          format: int32
-          example: 1
+          $ref: '#/components/schemas/LocationType'
       - name: hierarchyId
         in: query
         description: The hierarchy identifier
@@ -724,14 +720,10 @@ paths:
           format: int32
       - name: locationType
         in: query
-        description: The location type will be among Group = 0, Location = 1
+        description: The location type
         required: true
-        style: form
-        explode: true
         schema:
-          type: integer
-          format: int32
-          example: 1
+          $ref: '#/components/schemas/LocationType'
       - name: hierarchyId
         in: query
         description: The hierarchy identifier
@@ -774,6 +766,116 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Location list not found
+  /locationlists/locations/{locationId}:
+    get:
+      tags:
+      - LocationList
+      summary: Get a list of available location list Ids by location identifier
+      description: Get a list of available location list Ids by location identifier
+      operationId: getLocationListAvailabilityByLocationId
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: locationId
+          in: path
+          description: The location identifier
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int32
+        - name: locationType
+          in: query
+          description: The location type
+          required: true
+          schema:
+            $ref: '#/components/schemas/LocationType'
+      responses:
+        200:
+          description: A List of available location list identifier for this location
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+            application/xml:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Location not found
+  /locationlists/items/locations/{locationId}:
+    get:
+      tags:
+      - LocationList
+      summary: Get a list of available location list item Ids by location identifier
+      description: Get a list of available location list item Ids by location identifier
+      operationId: getLocationListItemAvailabilityByLocationId
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: locationId
+          in: path
+          description: The location identifier
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int32
+        - name: locationType
+          in: query
+          description: The location type
+          required: true
+          schema:
+            $ref: '#/components/schemas/LocationType'
+      responses:
+        200:
+          description: A List of available location item list identifier for this location
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+            application/xml:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Location not found
 # Person
   /persons:
     get:
@@ -1137,7 +1239,7 @@ paths:
         404:
           description: Persons not found
     post:
-      summary: Creates a new person and returns the person id
+      summary: Creates a new person and returns the person id 
       operationId: CreatePerson
       tags:
         - Person
@@ -1528,17 +1630,9 @@ components:
           format: string
           example: Chicago
         locationType:
-          type: integer
-          description: The location type will be among Group = 0, Location = 1
-          format: int32
-          example: 1
+          $ref: '#/components/schemas/LocationType'
         locationStatus:
-          type: integer
-          nullable: true
-          description: The location status will be among Active = 0, Inactive = 1,
-            Archived = 2
-          format: int32
-          example: 0
+          $ref: '#/components/schemas/LocationStatus'
         parentId:
           type: integer
           nullable: true
@@ -1551,6 +1645,17 @@ components:
           description: The hierarchy identifier
           format: int32
           example: 10
+    LocationType:
+      type: string
+      enum:
+        - Group
+        - Location
+    LocationStatus:
+      type: string
+      enum:
+        - Active
+        - Inactive
+        - Archived
 # Lists
     ListItem:
       type: object

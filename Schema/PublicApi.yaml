@@ -1,0 +1,698 @@
+openapi: 3.0.0
+info:
+  description: The Public API for a v6 Instance is the central point in the v6 Architecture and responsible for all data access for the instance.
+  version: "0.1.0"
+  title: Velocity EHS Instance Public API
+  contact:
+    name: VelocityEHS
+    url: https://www.ehs.com
+    email: support@ehs.com
+servers:
+  - url: 'https://odev6web01.ad.velocityehs.com/ehs-public-api/api'
+    description: Development
+tags:
+  - name: Person
+paths:
+# Persons
+  '/persons':
+    get:
+      tags:
+      - Person
+      summary: Search for persons by params
+      description: Search for persons by params
+      operationId: getPersons
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: employmentStatus
+          in: query
+          description: Status of the person ( active = 11, inactive = 12 )
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            nullable: true
+            items:
+              type: integer
+              format: int32
+        - name: displayName
+          in: query
+          description: Display Name of the Person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            nullable: true
+        - name: location
+          in: query
+          description: Associated Location to the person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            nullable: true
+            items:
+              type: integer
+              format: int32
+        - name: emailAddress
+          in: query
+          description: Email address of the person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            nullable: true
+        - name: firstName
+          in: query
+          description: First Name of the person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            nullable: true
+        - name: lastName
+          in: query
+          description: Last Name of the person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            nullable: true
+        - name: countryDivision
+          in: query
+          description: State or Province of the person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            nullable: true
+            items:
+              type: integer
+              format: int32
+        - name: country
+          in: query
+          description: Country of the person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            nullable: true
+            items:
+              type: integer
+              format: int32
+        - name: relationshipToCompany
+          in: query
+          description: Relationship Type
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            nullable: true
+            items:
+              type: integer
+              format: int32
+        - name: contractingCompany
+          in: query
+          description: Contracting company of the person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            nullable: true
+            items:
+              type: integer
+              format: int32
+        - name: customerName
+          in: query
+          description: Customer's Name of the Person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            nullable: true
+            items:
+              type: integer
+              format: int32
+        - name: supervisor
+          in: query
+          description: Supervisor of the Person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            nullable: true
+            items:
+              type: integer
+              format: int32
+        - name: startDateStart
+          in: query
+          description: Start date of range for Hire Date of the Person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+        - name: startDateEnd
+          in: query
+          description: End date of range for Hire Date of the Person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+        - name: endDateStart
+          in: query
+          description: Start date of range for End Date of the Person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+        - name: endDateEnd
+          in: query
+          description: End date of range for End Date of the Person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+        - name: currentPositionStartDateStart
+          in: query
+          description: Start date of range for Current Position Start Date of the Person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+        - name: currentPositionStartDateEnd
+          in: query
+          description: End date of range for Current Position Start Date of the Person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+        - name: employeeID
+          in: query
+          description: EmployeeID
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            nullable: true
+        - name: currentPosition
+          in: query
+          description: Current Position of the Person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            nullable: true
+        - name: loginAccessRequired
+          in: query
+          description: Person requires login access or not
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            nullable: true
+        - name: username
+          in: query
+          description: Username of the person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            nullable: true
+        - name: loginExpirationDateStart
+          in: query
+          description: Start date of range for Expiry Date of the Person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+        - name: loginExpirationDateEnd
+          in: query
+          description: End date of range for Expiry Date of the Person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+        - name: contactPreference
+          in: query
+          description: Contact Type of the person email/phone
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            nullable: true
+            items:
+              type: integer
+              format: int32
+        - name: pageNumber
+          in: query
+          description: Page Number of the Person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            nullable: true
+        - name: pageSize
+          in: query
+          description: Page Size of the Person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            nullable: true
+        - name: sortBy
+          in: query
+          description: Param for sortBy
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            nullable: true
+        - name: sortOrder
+          in: query
+          description: Param for sortOrder
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            nullable: true
+            maxLength: 4
+      responses:
+        200:
+          description: A list of persons founded using provided criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Person'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Persons not found
+    put:
+      summary: Updates a person based on person id
+      operationId: UpdatePerson
+      tags:
+        - Person
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Person"
+      responses:
+        204:
+          description: The person was successfully updated
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Persons not found
+    post:
+      summary: Creates a new person and returns the person id
+      operationId: AddPerson
+      tags:
+        - Person
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Person'
+      responses:
+        201:
+          description: The new person identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Person not found
+    delete:
+      tags:
+      - Person
+      summary: Delete a person by person id
+      description: Delete a person by person id
+      operationId: deletePerson
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: personId
+          in: query
+          description: The person identifier
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+      responses:
+        204:
+          description: Person has been deleted
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Person not found
+  '/persons/{personId}':
+    get:
+      summary: Returns the person based on person id
+      operationId: GetPersonById
+      tags:
+        - Person
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - in: path
+          name: personId
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Person'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Person not found
+components:
+  parameters:
+    AccountHeader:
+      name: x-account
+      in: header
+      description: Unique identifier for the customer account
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
+        example: 1      
+    IdentityHeader:
+      name: x-identity
+      in: header
+      description: Unique identifier for the identity accessing the account
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
+        example: 1337
+    LanguageHeader:
+      name: x-language
+      in: header
+      description: The unique identifier for selected language
+      required: false
+      style: simple
+      explode: false
+      schema:
+        type: integer
+        format: int32
+  schemas:
+# Common
+    BadRequestError:
+      required:
+      - errorCode
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          description: The error code if existed
+          format: int32
+          example: 61001
+        errorMessages:
+          type: array
+          description: The error messages
+          items:
+            type: string
+            format: string
+            example: object already exists
+    Status201Response:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The new object identifier
+          format: int32
+          example: 11
+# Persons
+    Person:
+      type: object
+      properties:
+        personId:
+          type: integer
+          nullable: true
+        createdByPersonId:
+          type: integer
+          nullable: true
+        loginAccessRequired:
+          type: boolean
+          nullable: true
+        displayName:
+          type: string
+          nullable: true
+        username:
+          type: string
+          nullable: true
+          example: noreply@ehs.com
+        statusId:
+          $ref: '#/components/schemas/PersonStatus'
+        firstName:
+          type: string
+          nullable: true
+          example: John
+        lastName:
+          type: string
+          nullable: true
+          example: Doe
+        locationList:
+          type: array
+          nullable: true
+          items:
+            type: integer
+        genderId: 
+          $ref: '#/components/schemas/PersonGender'
+        dateOfBirth:
+          format: date-time
+          type: string
+          nullable: true
+          example: "1995-09-07 10:40:52"
+        phoneNumber:
+          type: string
+          nullable: true
+          example: 555-123-4567
+        mobileNumber:
+          type: string
+          nullable: true
+          example: 555-987-6543
+        email:
+          type: string
+          nullable: true
+          example: noreply@ehs.com
+        address:
+          type: string
+          nullable: true
+          example: 123 New Street
+        city:
+          type: string
+          nullable: true
+          example: Ottawa
+        countryDivisionId:
+          type: integer
+          nullable: true
+        countryId:
+          type: integer
+          nullable: true
+        postalCode:
+          type: string
+          nullable: true
+          example: A1A 1A1
+        relationshipId:
+          $ref: '#/components/schemas/PersonRelationshipType'
+        currentPosition:
+          type: string
+          nullable: true
+          example: EHS Manager
+        supervisorId:
+          type: integer
+          nullable: true
+        hireDate:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2000-01-01"
+        endDate:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2019-01-01"
+        currentpositionStartDate:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2010-01-01"
+        employeeId:
+          type: string
+          nullable: true
+          example: ABC123456
+        contractingCompanyId:
+          type: integer
+          nullable: true
+        customerid:
+          type: integer
+          nullable: true
+        contactTypeId:
+          $ref: '#/components/schemas/PersonContactType'
+        locked:
+          type: boolean
+          nullable: true
+          example: false
+        expiryDate:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2029-01-01 12:00:00"
+        personDetails:
+          type: string
+          nullable: true
+          example: "FirstName-LastName-JobTitle"
+    PersonGender:
+      type: string
+      enum:
+        - female
+        - male
+    PersonStatus:
+      type: string
+      enum:
+        - active
+        - inactive
+    PersonRelationshipType:
+      type: string
+      enum:
+        - contractor
+        - customer
+        - employee
+    PersonContactType:
+      type: string
+      enum:
+        - email
+        - mobile
+        - both
