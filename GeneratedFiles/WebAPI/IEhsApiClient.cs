@@ -17,6 +17,273 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <summary>The injected HttpClient</summary>
         System.Net.Http.HttpClient HttpClient { get; }
     
+        /// <summary>Return all accounts in the instance.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="externalId">The external account id</param>
+        /// <param name="accountIdentifier">The account identifier</param>
+        /// <returns>The matching account</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Account>>> GetAccountsAsync(int? accountId, System.Guid? externalId, string accountIdentifier);
+    
+        /// <summary>Return all accounts in the instance.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="externalId">The external account id</param>
+        /// <param name="accountIdentifier">The account identifier</param>
+        /// <returns>The matching account</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Account>>> GetAccountsAsync(int? accountId, System.Guid? externalId, string accountIdentifier, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Update an existing account</summary>
+        /// <param name="body">The updated account object</param>
+        /// <returns>The account was successfully updated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateAccountAsync(Account body);
+    
+        /// <summary>Update an existing account</summary>
+        /// <param name="body">The updated account object</param>
+        /// <returns>The account was successfully updated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateAccountAsync(Account body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Create a new account</summary>
+        /// <param name="body">The new account schema</param>
+        /// <returns>The new account identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateAccountAsync(Account body);
+    
+        /// <summary>Create a new account</summary>
+        /// <param name="body">The new account schema</param>
+        /// <returns>The new account identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateAccountAsync(Account body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get an account by the account id</summary>
+        /// <param name="accountId">The account id</param>
+        /// <returns>The account</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Account>> GetAccountByIdAsync(int? accountId);
+    
+        /// <summary>Get an account by the account id</summary>
+        /// <param name="accountId">The account id</param>
+        /// <returns>The account</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Account>> GetAccountByIdAsync(int? accountId, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Gets the basic user information for an accounts user.</summary>
+        /// <param name="username">Username of the person</param>
+        /// <param name="emailAddress">Email address of the person</param>
+        /// <param name="phoneNumber">Phone number of the person</param>
+        /// <returns>The basic details of the user that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfoAsync(string username, string emailAddress, string phoneNumber);
+    
+        /// <summary>Gets the basic user information for an accounts user.</summary>
+        /// <param name="username">Username of the person</param>
+        /// <param name="emailAddress">Email address of the person</param>
+        /// <param name="phoneNumber">Phone number of the person</param>
+        /// <returns>The basic details of the user that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfoAsync(string username, string emailAddress, string phoneNumber, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Gets the authentication methods for the account.</summary>
+        /// <returns>The authentication methods for the account.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync();
+    
+        /// <summary>Gets the authentication methods for the account.</summary>
+        /// <returns>The authentication methods for the account.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Sets an authentication methods for the account.</summary>
+        /// <returns>The authentication methods was successfully set.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetAuthMethodAsync(AuthenticationMethod body);
+    
+        /// <summary>Sets an authentication methods for the account.</summary>
+        /// <returns>The authentication methods was successfully set.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task SetAuthMethodAsync(AuthenticationMethod body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Delete an authentication methods for the account.</summary>
+        /// <param name="id">The authentication method identifier</param>
+        /// <returns>The authentication method was deleted.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DeleteAuthMethodAsync(int id);
+    
+        /// <summary>Delete an authentication methods for the account.</summary>
+        /// <param name="id">The authentication method identifier</param>
+        /// <returns>The authentication method was deleted.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task DeleteAuthMethodAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Determines if the provided credentials are valid.</summary>
+        /// <returns>Credientials were valid.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthVerificationResult>> AuthFormsHasAccessAsync(FormsAuthCrediential body);
+    
+        /// <summary>Determines if the provided credentials are valid.</summary>
+        /// <returns>Credientials were valid.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthVerificationResult>> AuthFormsHasAccessAsync(FormsAuthCrediential body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Request to start the forgot password process for a given username.</summary>
+        /// <returns>The person was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPasswordAsync(FormsAuthPasswordChangeRequest body);
+    
+        /// <summary>Request to start the forgot password process for a given username.</summary>
+        /// <returns>The person was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPasswordAsync(FormsAuthPasswordChangeRequest body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Gets the password rules for the account.</summary>
+        /// <returns>The password rules for the account.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<FormsAuthPasswordRule>>> GetPasswordRulesAsync();
+    
+        /// <summary>Gets the password rules for the account.</summary>
+        /// <returns>The password rules for the account.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<FormsAuthPasswordRule>>> GetPasswordRulesAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Adds password rules for the account.</summary>
+        /// <returns>The authentication rules were added.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task AddPasswordRulesAsync(System.Collections.Generic.IEnumerable<FormsAuthPasswordRule> body);
+    
+        /// <summary>Adds password rules for the account.</summary>
+        /// <returns>The authentication rules were added.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task AddPasswordRulesAsync(System.Collections.Generic.IEnumerable<FormsAuthPasswordRule> body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Deletes a password rule for the account.</summary>
+        /// <returns>The password rule was removed for the account.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DeletePasswordRuleAsync();
+    
+        /// <summary>Deletes a password rule for the account.</summary>
+        /// <returns>The password rule was removed for the account.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task DeletePasswordRuleAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Update an existing SSO Identity Provider.</summary>
+        /// <param name="body">The updated SSO Identity Provider object</param>
+        /// <returns>The SSO Identity Provider was successfully updated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateSsoIdpAsync(SsoIdentityProvider body);
+    
+        /// <summary>Update an existing SSO Identity Provider.</summary>
+        /// <param name="body">The updated SSO Identity Provider object</param>
+        /// <returns>The SSO Identity Provider was successfully updated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateSsoIdpAsync(SsoIdentityProvider body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Create a new SSO Identity Provider</summary>
+        /// <param name="body">The new SSO Identity Provider schema</param>
+        /// <returns>The new SSO Identity Provider identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateSsoIdpAsync(SsoIdentityProvider body);
+    
+        /// <summary>Create a new SSO Identity Provider</summary>
+        /// <param name="body">The new SSO Identity Provider schema</param>
+        /// <returns>The new SSO Identity Provider identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateSsoIdpAsync(SsoIdentityProvider body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get a SSO Identity Provider by the id</summary>
+        /// <param name="id">The SSO Identity Provider id</param>
+        /// <returns>The SSO Identity Provider</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpByIdAsync(int? id);
+    
+        /// <summary>Get a SSO Identity Provider by the id</summary>
+        /// <param name="id">The SSO Identity Provider id</param>
+        /// <returns>The SSO Identity Provider</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpByIdAsync(int? id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Update existing account</summary>
+        /// <param name="body">The updated account object</param>
+        /// <returns>The hierarchy was successfully updated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateSsoSpAsync(SsoServiceProvider body);
+    
+        /// <summary>Update existing account</summary>
+        /// <param name="body">The updated account object</param>
+        /// <returns>The hierarchy was successfully updated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateSsoSpAsync(SsoServiceProvider body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Create a new SSO Identity Provider</summary>
+        /// <param name="body">The new account schema</param>
+        /// <returns>The new hierarchy identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateSsoSpAsync(SsoServiceProvider body);
+    
+        /// <summary>Create a new SSO Identity Provider</summary>
+        /// <param name="body">The new account schema</param>
+        /// <returns>The new hierarchy identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateSsoSpAsync(SsoServiceProvider body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get an account by the account id</summary>
+        /// <param name="id">The account id</param>
+        /// <returns>The account</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpByIdAsync(int? id);
+    
+        /// <summary>Get an account by the account id</summary>
+        /// <param name="id">The account id</param>
+        /// <returns>The account</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpByIdAsync(int? id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Requests a code for multi-factor authentication.</summary>
+        /// <param name="deliveryMethod">The method in which to deliver the forgot password information.</param>
+        /// <returns>Verification code successfully requested.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<IdentityVerification>> RequestAuthVerificationCodeAsync(DeliveryMethod? deliveryMethod);
+    
+        /// <summary>Requests a code for multi-factor authentication.</summary>
+        /// <param name="deliveryMethod">The method in which to deliver the forgot password information.</param>
+        /// <returns>Verification code successfully requested.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<IdentityVerification>> RequestAuthVerificationCodeAsync(DeliveryMethod? deliveryMethod, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Verifies a code for multi-factor authentication.</summary>
+        /// <param name="body">The new account schema</param>
+        /// <returns>Verification code successfully validated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task VerifyAuthVerificationCodeAsync(IdentityVerification body);
+    
+        /// <summary>Verifies a code for multi-factor authentication.</summary>
+        /// <param name="body">The new account schema</param>
+        /// <returns>Verification code successfully validated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task VerifyAuthVerificationCodeAsync(IdentityVerification body, System.Threading.CancellationToken cancellationToken);
+    
         /// <summary>Return a list all Hierarchies</summary>
         /// <returns>A list of Hierarchies</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -460,6 +727,21 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListAvailabilityStructureAsync(int listId, int locationId, LocationType locationType, int hierarchyId, int? levels, System.Threading.CancellationToken cancellationToken);
     
+        /// <summary>Get a list of available location list Ids by location identifier</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <returns>A List of available location list identifier for this location</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<int>>> GetLocationListAvailabilityByLocationIdAsync(int locationId, LocationType locationType);
+    
+        /// <summary>Get a list of available location list Ids by location identifier</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <returns>A List of available location list identifier for this location</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<int>>> GetLocationListAvailabilityByLocationIdAsync(int locationId, LocationType locationType, System.Threading.CancellationToken cancellationToken);
+    
         /// <summary>Get a list of available location Ids by location list item identifier</summary>
         /// <param name="listItemId">The location list item identifier</param>
         /// <returns>A List of available location identifier for this location list item</returns>
@@ -508,21 +790,6 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListItemAvailabilityStructureAsync(int listItemId, int locationId, LocationType locationType, int hierarchyId, int? levels, System.Threading.CancellationToken cancellationToken);
-    
-        /// <summary>Get a list of available location list Ids by location identifier</summary>
-        /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">The location type</param>
-        /// <returns>A List of available location list identifier for this location</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<int>>> GetLocationListAvailabilityByLocationIdAsync(int locationId, LocationType locationType);
-    
-        /// <summary>Get a list of available location list Ids by location identifier</summary>
-        /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">The location type</param>
-        /// <returns>A List of available location list identifier for this location</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<int>>> GetLocationListAvailabilityByLocationIdAsync(int locationId, LocationType locationType, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get a list of available location list item Ids by parent List and location identifier</summary>
         /// <param name="locationId">The location identifier</param>
@@ -613,13 +880,13 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <summary>Updates a person based on person id</summary>
         /// <returns>The person was successfully updated</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdatePersonAsync(Person body);
+        System.Threading.Tasks.Task UpdatePersonAsync(UpdatePersonParams body);
     
         /// <summary>Updates a person based on person id</summary>
         /// <returns>The person was successfully updated</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task UpdatePersonAsync(Person body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task UpdatePersonAsync(UpdatePersonParams body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Creates a new person and returns the person id</summary>
         /// <returns>The new person identifier</returns>
@@ -655,6 +922,17 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Person>> GetPersonByIdAsync(int personId, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Update the password for the current user.</summary>
+        /// <returns>The person was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdatePersonsPasswordAsync(int personId, FormsAuthPasswordUpdate body);
+    
+        /// <summary>Update the password for the current user.</summary>
+        /// <returns>The person was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdatePersonsPasswordAsync(int personId, FormsAuthPasswordUpdate body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Returns persons based on name</summary>
         /// <param name="pageNumber">Page Number of the Person</param>
@@ -733,6 +1011,448 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         public static Status201MultipleResponses FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Status201MultipleResponses>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Account 
+    {
+        /// <summary>The unique account id</summary>
+        [Newtonsoft.Json.JsonProperty("accountId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? AccountId { get; set; }
+    
+        /// <summary>The external account id</summary>
+        [Newtonsoft.Json.JsonProperty("externalAccountId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid? ExternalAccountId { get; set; }
+    
+        /// <summary>The account identifier</summary>
+        [Newtonsoft.Json.JsonProperty("accountIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string AccountIdentifier { get; set; }
+    
+        /// <summary>The name of the account</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>The maximum number of hierarchies the account allows.</summary>
+        [Newtonsoft.Json.JsonProperty("maxHierarchies", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaxHierarchies { get; set; }
+    
+        /// <summary>The maximum number of locations the account allows.</summary>
+        [Newtonsoft.Json.JsonProperty("maxLocations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaxLocations { get; set; }
+    
+        /// <summary>The number of days a password is valid.</summary>
+        [Newtonsoft.Json.JsonProperty("passwordValidityDays", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PasswordValidityDays { get; set; }
+    
+        /// <summary>Whether two factor authentication is enabled for the account.</summary>
+        [Newtonsoft.Json.JsonProperty("enableTwoFactorAuthentication", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? EnableTwoFactorAuthentication { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Account FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Account>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class AccountUser 
+    {
+        /// <summary>The unique account id</summary>
+        [Newtonsoft.Json.JsonProperty("accountId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int AccountId { get; set; }
+    
+        /// <summary>The account identifier</summary>
+        [Newtonsoft.Json.JsonProperty("accountIdentifier", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string AccountIdentifier { get; set; }
+    
+        /// <summary>The obscured username of the user.</summary>
+        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Username { get; set; }
+    
+        /// <summary>The obscured email of the user.</summary>
+        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Email { get; set; }
+    
+        /// <summary>The obscured phone number of the user.</summary>
+        [Newtonsoft.Json.JsonProperty("phoneNumber", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PhoneNumber { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static AccountUser FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<AccountUser>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class AuthenticationMethod 
+    {
+        /// <summary>The authentication method id.</summary>
+        [Newtonsoft.Json.JsonProperty("authenticationMethodId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int AuthenticationMethodId { get; set; }
+    
+        /// <summary>The name of the authentication method.</summary>
+        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static AuthenticationMethod FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<AuthenticationMethod>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormsAuthPasswordUpdate 
+    {
+        /// <summary>The users password</summary>
+        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Password { get; set; }
+    
+        /// <summary>The forgot password key</summary>
+        [Newtonsoft.Json.JsonProperty("forgotPasswordKey", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid? ForgotPasswordKey { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormsAuthPasswordUpdate FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthPasswordUpdate>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormsAuthPasswordChangeRequest 
+    {
+        /// <summary>The username</summary>
+        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Username { get; set; }
+    
+        /// <summary>The method in which to deliver the forgot password information.</summary>
+        [Newtonsoft.Json.JsonProperty("deliveryMethod", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public FormsAuthPasswordChangeRequestDeliveryMethod DeliveryMethod { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormsAuthPasswordChangeRequest FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthPasswordChangeRequest>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormsAuthPasswordChangeResponse 
+    {
+        /// <summary>The forgot password key</summary>
+        [Newtonsoft.Json.JsonProperty("forgotPasswordKey", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid ForgotPasswordKey { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormsAuthPasswordChangeResponse FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthPasswordChangeResponse>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormsAuthPasswordRule 
+    {
+        /// <summary>The id of the password rule.</summary>
+        [Newtonsoft.Json.JsonProperty("ruleId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RuleId { get; set; }
+    
+        /// <summary>The description of the password rule.</summary>
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        /// <summary>The value for the rule.</summary>
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormsAuthPasswordRule FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthPasswordRule>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormsAuthCrediential 
+    {
+        /// <summary>The username</summary>
+        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Username { get; set; }
+    
+        /// <summary>The users password</summary>
+        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Password { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormsAuthCrediential FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthCrediential>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormsAuthVerificationResult 
+    {
+        /// <summary>Whether the user is required to change their password or not.</summary>
+        [Newtonsoft.Json.JsonProperty("passwordChangeRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool PasswordChangeRequired { get; set; }
+    
+        /// <summary>Whether the user required additional identity verification.</summary>
+        [Newtonsoft.Json.JsonProperty("identityVerificationRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IdentityVerificationRequired { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormsAuthVerificationResult FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthVerificationResult>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class SsoIdentityProvider 
+    {
+        /// <summary>The unique id for the identity provider.</summary>
+        [Newtonsoft.Json.JsonProperty("identityProviderSettingId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? IdentityProviderSettingId { get; set; }
+    
+        /// <summary>The id of the signing certificate.</summary>
+        [Newtonsoft.Json.JsonProperty("signingCertificateId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? SigningCertificateId { get; set; }
+    
+        /// <summary>The id of the decrypting certificate.</summary>
+        [Newtonsoft.Json.JsonProperty("decryptingCertificateId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int DecryptingCertificateId { get; set; }
+    
+        /// <summary>Whether the SAML response from the partner identity provider should be signed.</summary>
+        [Newtonsoft.Json.JsonProperty("wantSamlResponseSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? WantSamlResponseSigned { get; set; }
+    
+        /// <summary>Whether the SAML assertion from the partner identity provider should be signed.</summary>
+        [Newtonsoft.Json.JsonProperty("wantAssertionSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? WantAssertionSigned { get; set; }
+    
+        /// <summary>Whether the SAML assertion from the partner identity provider should be encrypted.</summary>
+        [Newtonsoft.Json.JsonProperty("wantAssertionEncrypted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? WantAssertionEncrypted { get; set; }
+    
+        /// <summary>The time span to allow for differences between local and partner computer clocks when checking time intervals.</summary>
+        [Newtonsoft.Json.JsonProperty("clockSkew", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ClockSkew { get; set; }
+    
+        /// <summary>The trust name of the Identity Provider</summary>
+        [Newtonsoft.Json.JsonProperty("trustName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TrustName { get; set; }
+    
+        /// <summary>The display name for the identity provider</summary>
+        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DisplayName { get; set; }
+    
+        /// <summary>The URL for the Identity Provider single sign on service.</summary>
+        [Newtonsoft.Json.JsonProperty("singleSignOnServiceUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SingleSignOnServiceUrl { get; set; }
+    
+        /// <summary>The local trust name for the EHS application.</summary>
+        [Newtonsoft.Json.JsonProperty("localTrustName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string LocalTrustName { get; set; }
+    
+        /// <summary>The username</summary>
+        [Newtonsoft.Json.JsonProperty("assertionToClientMapper", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string AssertionToClientMapper { get; set; }
+    
+        /// <summary>The mapper for determine who the person is based on the SSO Assertions username.</summary>
+        [Newtonsoft.Json.JsonProperty("userNameToPersonMapper", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string UserNameToPersonMapper { get; set; }
+    
+        /// <summary>Whether the identify provider is active or not.</summary>
+        [Newtonsoft.Json.JsonProperty("active", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Active { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static SsoIdentityProvider FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SsoIdentityProvider>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class SsoServiceProvider 
+    {
+        /// <summary>The unique id for the service provider.</summary>
+        [Newtonsoft.Json.JsonProperty("serviceProviderSettingId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ServiceProviderSettingId { get; set; }
+    
+        /// <summary>The id of the signing certificate.</summary>
+        [Newtonsoft.Json.JsonProperty("signingCertificateId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? SigningCertificateId { get; set; }
+    
+        /// <summary>The id of the encrypting certificate.</summary>
+        [Newtonsoft.Json.JsonProperty("encryptingCertificateId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? EncryptingCertificateId { get; set; }
+    
+        /// <summary>Whether SAML responses sent to the partner service provider should be signed.</summary>
+        [Newtonsoft.Json.JsonProperty("signSamlResponse", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SignSamlResponse { get; set; }
+    
+        /// <summary>Whether SAML assertions sent to the partner service provider should be signed.</summary>
+        [Newtonsoft.Json.JsonProperty("signAssertion", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SignAssertion { get; set; }
+    
+        /// <summary>Whether SAML assertions sent to the partner service provider should be encrypted.</summary>
+        [Newtonsoft.Json.JsonProperty("encryptAssertion", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? EncryptAssertion { get; set; }
+    
+        /// <summary>Whether the service provider is for a VelocityEHS Product.</summary>
+        [Newtonsoft.Json.JsonProperty("isVelocityServiceProvider", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsVelocityServiceProvider { get; set; }
+    
+        /// <summary>The NotBefore/NotOnOrAfter time interval for the SAML assertion.</summary>
+        [Newtonsoft.Json.JsonProperty("assertionLifetime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? AssertionLifetime { get; set; }
+    
+        /// <summary>The time span to allow for differences between local and partner computer clocks when checking time intervals.</summary>
+        [Newtonsoft.Json.JsonProperty("clockSkew", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ClockSkew { get; set; }
+    
+        /// <summary>The order the service provider should be listed relative to other service providers.</summary>
+        [Newtonsoft.Json.JsonProperty("listOrder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ListOrder { get; set; }
+    
+        /// <summary>The trust name of the Service Provider</summary>
+        [Newtonsoft.Json.JsonProperty("trustName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TrustName { get; set; }
+    
+        /// <summary>The display name of the service provider.</summary>
+        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DisplayName { get; set; }
+    
+        /// <summary>The service provider assertion consumer service URL.</summary>
+        [Newtonsoft.Json.JsonProperty("endpointUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string EndpointUrl { get; set; }
+    
+        /// <summary>The name identifier format to include in SAML assertions sent to the partner service provider or in authn requests sent to the partner identity provider</summary>
+        [Newtonsoft.Json.JsonProperty("nameIdFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string NameIdFormat { get; set; }
+    
+        /// <summary>The XML signature digest method.</summary>
+        [Newtonsoft.Json.JsonProperty("digestMethod", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DigestMethod { get; set; }
+    
+        /// <summary>The XML signature method.</summary>
+        [Newtonsoft.Json.JsonProperty("signatureMethod", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SignatureMethod { get; set; }
+    
+        /// <summary>The XML encryption key encryption method.</summary>
+        [Newtonsoft.Json.JsonProperty("keyEncryptionMethod", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string KeyEncryptionMethod { get; set; }
+    
+        /// <summary>The XML encryption data encryption method.</summary>
+        [Newtonsoft.Json.JsonProperty("dataEncryptionMethod", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DataEncryptionMethod { get; set; }
+    
+        /// <summary>The mapper for determining what value to use as the username in the assertion.</summary>
+        [Newtonsoft.Json.JsonProperty("personToUserNameMapper", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PersonToUserNameMapper { get; set; }
+    
+        /// <summary>The mapper for determining what attributes to include in the assertion.</summary>
+        [Newtonsoft.Json.JsonProperty("assertionAttributesProvider", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string AssertionAttributesProvider { get; set; }
+    
+        /// <summary>The mapper for determing what relay state to provide with the assertion.</summary>
+        [Newtonsoft.Json.JsonProperty("assertionRelayStateProvider", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string AssertionRelayStateProvider { get; set; }
+    
+        /// <summary>Whether the service provider is active or not.</summary>
+        [Newtonsoft.Json.JsonProperty("active", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Active { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static SsoServiceProvider FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SsoServiceProvider>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class IdentityVerification 
+    {
+        /// <summary>The verification code.</summary>
+        [Newtonsoft.Json.JsonProperty("verificationCode", Required = Newtonsoft.Json.Required.Always)]
+        public int VerificationCode { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static IdentityVerification FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<IdentityVerification>(data);
         }
     
     }
@@ -1093,11 +1813,11 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
     public partial class LocationListAvailability 
     {
         /// <summary>The array of location identifiers</summary>
-        [Newtonsoft.Json.JsonProperty("Location", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("location", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<int> Location { get; set; }
     
         /// <summary>The array of location group identifiers</summary>
-        [Newtonsoft.Json.JsonProperty("LocationGroup", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("locationGroup", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<int> LocationGroup { get; set; }
     
         public string ToJson() 
@@ -1116,11 +1836,11 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
     public partial class LocationListAvailabilityDetails 
     {
         /// <summary>The array statuses for locations</summary>
-        [Newtonsoft.Json.JsonProperty("Location", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("location", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IDictionary<string, bool> Location { get; set; }
     
         /// <summary>The array statuses for location groups</summary>
-        [Newtonsoft.Json.JsonProperty("LocationGroup", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("locationGroup", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IDictionary<string, bool> LocationGroup { get; set; }
     
         public string ToJson() 
@@ -1162,8 +1882,8 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("lastName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string LastName { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("locationList", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<int> LocationList { get; set; }
+        [Newtonsoft.Json.JsonProperty("locations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> Locations { get; set; }
     
         [Newtonsoft.Json.JsonProperty("genderId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? GenderId { get; set; }
@@ -1243,6 +1963,142 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Person>(data);
         }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdatePersonParams 
+    {
+        [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PersonId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("updatedByPersonID", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? UpdatedByPersonID { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("statusId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StatusId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("loginAccessRequired", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LoginAccessRequired { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DisplayName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Username { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("addLocations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> AddLocations { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("deleteLocations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> DeleteLocations { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("firstName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string FirstName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("lastName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string LastName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("genderId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? GenderId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("dateOfBirth", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? DateOfBirth { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("phoneNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PhoneNumber { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("mobileNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string MobileNumber { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Email { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("address", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Address { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("city", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string City { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("countryDivisionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CountryDivisionId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("countryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CountryId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("postalCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PostalCode { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("relationshipId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RelationshipId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("currentPosition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CurrentPosition { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("supervisorId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? SupervisorId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("hireDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? HireDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("endDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? EndDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("currentpositionStartDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? CurrentpositionStartDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("employeeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string EmployeeId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("contractingCompanyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ContractingCompanyId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("customerid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Customerid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("contactTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ContactTypeId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locked", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Locked { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("expiryDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? ExpiryDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("personDetails", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PersonDetails { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdatePersonParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdatePersonParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum DeliveryMethod
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"email")]
+        Email = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"phone")]
+        Phone = 1,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum FormsAuthPasswordChangeRequestDeliveryMethod
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"email")]
+        Email = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"phone")]
+        Phone = 1,
     
     }
 

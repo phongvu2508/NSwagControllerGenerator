@@ -4,7 +4,7 @@
 // </auto-generated>
 //----------------------
 
-namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
+namespace VelocityEhs.UI.Web.Ehs.MobileApi.Controllers
 {
     #pragma warning disable
 

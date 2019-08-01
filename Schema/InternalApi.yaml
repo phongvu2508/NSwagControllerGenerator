@@ -11,12 +11,868 @@ servers:
   - url: 'https://odev6web01.ad.velocityehs.com/ehs-internal-api/api'
     description: Development
 tags:
+  - name: Account
+  - name: Authentication
   - name: Hierarchy
   - name: Location
   - name: List
   - name: LocationList
   - name: Person
 paths:
+# Accounts
+  /accounts:
+    get:
+      tags:
+      - Account
+      summary: Return all accounts in the instance.
+      description: Return all accounts in the instance.
+      operationId: getAccounts
+      parameters:
+        - name: accountId
+          in: query
+          description: The account id
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 13
+            nullable: true
+        - name: externalId
+          in: query
+          description: The external account id
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            format: guid
+            example: "FEB8B939-BDC0-DD11-8038-DFD6234E2644"
+            nullable: true
+        - name: accountIdentifier
+          in: query
+          description: The account identifier
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            format: int32
+            example: "AcmeCorp"
+            nullable: true
+      responses:
+        200:
+          description: The matching account
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Accounts not found
+    put:
+      tags:
+      - Account
+      summary: Update an existing account
+      description: Update an existing account
+      operationId: updateAccount
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The updated account object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Account'
+        required: true
+      responses:
+        204:
+          description: The account was successfully updated.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Account not found
+    post:
+      tags:
+      - Account
+      summary: Create a new account
+      description: Create a new account
+      operationId: createAccount
+      requestBody:
+        description: The new account schema
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Account'
+        required: true
+      responses:
+        201:
+          description: The new account identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /accounts/{accountId}:
+    get:
+      tags:
+      - Account
+      summary: Get an account by the account id
+      description: Get an account by the account id
+      operationId: getAccountById
+      parameters:
+        - name: accountId
+          in: path
+          description: The account id
+          required: true
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 13
+            nullable: true
+      responses:
+        200:
+          description: The account
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/Account'
+            application/xml:
+              schema:
+                  $ref: '#/components/schemas/Account'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Account not found
+  /account/userInfo:
+    get:
+      tags:
+      - Account
+      summary: Gets the basic user information for an accounts user.
+      description: Gets the basic user information for an accounts user.
+      operationId: getUserInfo
+      parameters:
+        - name: x-account
+          in: header
+          description: Unique identifier for the customer account
+          required: false
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            example: 1   
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: username
+          in: query
+          description: Username of the person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            nullable: true
+        - name: emailAddress
+          in: query
+          description: Email address of the person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            nullable: true
+        - name: phoneNumber
+          in: query
+          description: Phone number of the person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            nullable: true 
+      responses:
+        200:
+          description: The basic details of the user that matches the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountUser'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/AccountUser'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: No authentication methods for the account
+# Authentication
+  /auth/methods:
+    get:
+      tags:
+      - Authentication
+      summary: Gets the authentication methods for the account.
+      description: Gets the authentication methods for the account.
+      operationId: getAuthMethods
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      responses:
+        200:
+          description: The authentication methods for the account.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuthenticationMethod'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuthenticationMethod'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: No authentication methods for the account
+    post:
+      tags:
+      - Authentication
+      summary: Sets an authentication methods for the account.
+      description: Sets an authentication methods for the account.
+      operationId: setAuthMethod
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationMethod'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/AuthenticationMethod'
+      responses:
+        204:
+          description: The authentication methods was successfully set.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: No authentication methods for the account
+    delete:
+      tags:
+      - Authentication
+      summary: Delete an authentication methods for the account.
+      description: Delete an authentication methods for the account.
+      operationId: deleteAuthMethod
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: id
+          in: query
+          description: The authentication method identifier
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+      responses:
+        204:
+          description: The authentication method was deleted.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: No authentication methods for the account
+  /auth/forms/login:
+    post:
+      tags:
+      - Authentication
+      summary: Determines if the provided credentials are valid.
+      description: Determines if the provided credentials are valid.
+      operationId: authFormsHasAccess
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormsAuthCrediential'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/FormsAuthCrediential'
+      responses:
+        200:
+          description: Credientials were valid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormsAuthVerificationResult'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/FormsAuthVerificationResult'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Credientials are invalid.
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Hierarchies not found
+  '/auth/forms/forgotPassword':
+    post:
+      summary: Request to start the forgot password process for a given username.
+      operationId: forgotPassword
+      tags:
+        - Authentication
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FormsAuthPasswordChangeRequest"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/FormsAuthPasswordChangeRequest"
+      responses:
+        200:
+          description: The person was successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FormsAuthPasswordChangeResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/FormsAuthPasswordChangeResponse"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Persons not found
+  /auth/forms/rules:
+    get:
+      tags:
+      - Authentication
+      summary: Gets the password rules for the account.
+      description: Gets the password rules for the account.
+      operationId: getPasswordRules
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      responses:
+        200:
+          description: The password rules for the account.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FormsAuthPasswordRule'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FormsAuthPasswordRule'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: No password rules for the account
+    post:
+      tags:
+      - Authentication
+      summary: Adds password rules for the account.
+      description: Adds password rules for the account.
+      operationId: addPasswordRules
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FormsAuthPasswordRule'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FormsAuthPasswordRule'
+      responses:
+        204:
+          description: The authentication rules were added.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: No password rules for the account
+    delete:
+      tags:
+      - Authentication
+      summary: Deletes a password rule for the account.
+      description: Deletes a password rule for the account.
+      operationId: deletePasswordRule
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      responses:
+        204:
+          description: The password rule was removed for the account.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: No password rules for the account
+  /auth/sso/idp:
+    put:
+      tags:
+      - Authentication
+      summary: Update an existing SSO Identity Provider.
+      description: Update an existing SSO Identity Provider.
+      operationId: updateSsoIdp
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The updated SSO Identity Provider object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SsoIdentityProvider'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/SsoIdentityProvider'
+        required: true
+      responses:
+        204:
+          description: The SSO Identity Provider was successfully updated.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Identity Provider not found
+    post:
+      tags:
+      - Authentication
+      summary: Create a new SSO Identity Provider
+      description: Create a new SSO Identity Provider
+      operationId: createSsoIdp
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The new SSO Identity Provider schema
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SsoIdentityProvider'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/SsoIdentityProvider'
+        required: true
+      responses:
+        201:
+          description: The new SSO Identity Provider identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /auth/sso/idp/{id}:
+    get:
+      tags:
+      - Authentication
+      summary: Get a SSO Identity Provider by the id
+      description: Get a SSO Identity Provider by the id
+      operationId: getSsoIdpById
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: id
+          in: path
+          description: The SSO Identity Provider id
+          required: true
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 13
+            nullable: true
+      responses:
+        200:
+          description: The SSO Identity Provider
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/SsoIdentityProvider'
+            application/xml:
+              schema:
+                  $ref: '#/components/schemas/SsoIdentityProvider'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: SSO Identity Provider not found
+  /auth/sso/sp:
+    put:
+      tags:
+      - Authentication
+      summary: Update existing account
+      description: Update existing account
+      operationId: updateSsoSp
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The updated account object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SsoServiceProvider'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/SsoServiceProvider'
+        required: true
+      responses:
+        204:
+          description: The hierarchy was successfully updated.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Account not found
+    post:
+      tags:
+      - Authentication
+      summary: Create a new SSO Identity Provider
+      description: Create a new SSO Identity Provider
+      operationId: createSsoSp
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The new account schema
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SsoServiceProvider'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/SsoServiceProvider'
+        required: true
+      responses:
+        201:
+          description: The new hierarchy identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /auth/sso/sp/{id}:
+    get:
+      tags:
+      - Authentication
+      summary: Get an account by the account id
+      description: Get an account by the account id
+      operationId: getSsoSpById
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: id
+          in: path
+          description: The account id
+          required: true
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 13
+            nullable: true
+      responses:
+        200:
+          description: The account
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/SsoServiceProvider'
+            application/xml:
+              schema:
+                  $ref: '#/components/schemas/SsoServiceProvider'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Account not found
+  /auth/2fa/requestCode:
+    get:
+      tags:
+      - Authentication
+      summary: Requests a code for multi-factor authentication.
+      description: Requests a code for multi-factor authentication.
+      operationId: requestAuthVerificationCode
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: deliveryMethod
+          in: query
+          description: The method in which to deliver the forgot password information.
+          required: false
+          schema:
+            type: string
+            enum: [email, phone]
+            nullable: true
+      responses:
+        200:
+          description: Verification code successfully requested.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentityVerification'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/IdentityVerification'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /auth/2fa/verifyCode:
+    post:
+      tags:
+      - Authentication
+      summary: Verifies a code for multi-factor authentication.
+      description: Verifies a code for multi-factor authentication.
+      operationId: verifyAuthVerificationCode
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The new account schema
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdentityVerification'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/IdentityVerification'
+        required: true
+      responses:
+        204:
+          description: Verification code successfully validated.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
 # Hierarchies
   /hierarchies:
     get:
@@ -1465,6 +2321,61 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Location list not found
+  /locationlists/locations/{locationId}:
+    get:
+      tags:
+      - LocationList
+      summary: Get a list of available location list Ids by location identifier
+      description: Get a list of available location list Ids by location identifier
+      operationId: getLocationListAvailabilityByLocationId
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: locationId
+          in: path
+          description: The location identifier
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int32
+        - name: locationType
+          in: query
+          description: The location type
+          required: true
+          schema:
+            $ref: '#/components/schemas/LocationType'
+      responses:
+        200:
+          description: A List of available location list identifier for this location
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+            application/xml:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Location not found
   /locationlists/items/{listItemId}:
     get:
       tags:
@@ -1630,61 +2541,6 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Location list not found
-  /locationlists/locations/{locationId}:
-    get:
-      tags:
-      - LocationList
-      summary: Get a list of available location list Ids by location identifier
-      description: Get a list of available location list Ids by location identifier
-      operationId: getLocationListAvailabilityByLocationId
-      parameters:
-        - $ref: '#/components/parameters/AccountHeader'
-        - $ref: '#/components/parameters/IdentityHeader'
-        - $ref: '#/components/parameters/LanguageHeader'
-        - name: locationId
-          in: path
-          description: The location identifier
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-            format: int32
-        - name: locationType
-          in: query
-          description: The location type
-          required: true
-          schema:
-            $ref: '#/components/schemas/LocationType'
-      responses:
-        200:
-          description: A List of available location list identifier for this location
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: integer
-                  format: int32
-            application/xml:
-              schema:
-                type: array
-                items:
-                  type: integer
-                  format: int32
-        400:
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-        403:
-          description: You do not have sufficient rights to this resource
-        404:
-          description: Location not found
   /locationlists/items/locations/{locationId}:
     get:
       tags:
@@ -2092,7 +2948,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Person"
+              $ref: "#/components/schemas/UpdatePersonParams"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/UpdatePersonParams"
       responses:
         204:
           description: The person was successfully updated
@@ -2226,6 +3085,48 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Person not found
+  '/persons/{personId}/setPassword':
+    put:
+      summary: Update the password for the current user.
+      operationId: UpdatePersonsPassword
+      tags:
+        - Person
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - in: path
+          name: personId
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FormsAuthPasswordUpdate"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/FormsAuthPasswordUpdate"
+      responses:
+        204:
+          description: The person was successfully updated
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Persons not found
   '/persons/search/{name}':
     get:
       summary: Returns persons based on name
@@ -2354,6 +3255,394 @@ components:
             type: integer
             format: int32
             example: 11
+# Accounts
+    Account:
+      type: object
+      properties:
+        accountId:
+          description: The unique account id
+          type: integer
+          format: int32
+          example: 13
+          nullable: true
+        externalAccountId:
+          description: The external account id
+          type: string
+          format: guid
+          example: "FEB8B939-BDC0-DD11-8038-DFD6234E2644"
+          nullable: true
+        accountIdentifier:
+          description: The account identifier
+          type: string
+          format: string
+          example: "AcmeCorp"
+          nullable: true
+        name:
+          description: The name of the account
+          type: string
+          format: string
+          example: "Acme Corporation"
+          nullable: true
+        maxHierarchies:
+          description: The maximum number of hierarchies the account allows.
+          type: integer
+          format: int32
+          example: 1
+          nullable: true
+        maxLocations:
+          description: The maximum number of locations the account allows.
+          type: integer
+          format: int32
+          example: 10000
+          nullable: true
+        passwordValidityDays:
+          description: The number of days a password is valid.
+          type: integer
+          format: int32
+          example: 90
+          nullable: true
+        enableTwoFactorAuthentication:
+          description: Whether two factor authentication is enabled for the account.
+          type: boolean
+          example: false
+          nullable: true
+    AccountUser:
+      type: object
+      properties:
+        accountId:
+          description: The unique account id
+          type: integer
+          format: int32
+          example: 13
+        accountIdentifier:
+          description: The account identifier
+          type: string
+          format: string
+          example: "AcmeCorp"
+        username:
+          description: The obscured username of the user. 
+          type: string
+          format: string
+          example: "joh********"
+        email: 
+          description: The obscured email of the user. 
+          type: string
+          format: string
+          example: "joh********@ehs.com"
+        phoneNumber: 
+          description: The obscured phone number of the user. 
+          type: string
+          format: string
+          example: "*******312"
+# Authentication
+    AuthenticationMethod:
+      type: object
+      properties:
+        authenticationMethodId:
+          description: The authentication method id.
+          type: integer
+          format: int32
+          example: 13
+        Name:
+          description: The name of the authentication method.
+          type: string
+          format: string
+          example: Forms Authentication
+    FormsAuthPasswordUpdate:
+      type: object
+      required:
+        - password
+      properties:
+        password:
+          description: The users password
+          type: string
+          format: password
+          example: 12345678
+        forgotPasswordKey:
+          description: The forgot password key
+          type: string
+          format: guid
+          nullable: true
+          example: 00000000-0000-0000-0000-000000000000
+    FormsAuthPasswordChangeRequest:
+      type: object
+      required:
+        - username
+      properties:
+        username:
+          description: The username
+          type: string
+          format: string
+          example: johndoe@acmecorp.com
+        deliveryMethod:
+          description: The method in which to deliver the forgot password information.
+          type: string
+          enum: [email, phone]
+    FormsAuthPasswordChangeResponse:
+      type: object
+      required:
+        - forgotPasswordKey
+      properties:
+        forgotPasswordKey:
+          description: The forgot password key
+          type: string
+          format: guid
+          example: 00000000-0000-0000-0000-000000000000
+    FormsAuthPasswordRule:
+      type: object
+      properties:
+        ruleId:
+          description: The id of the password rule.
+          type: integer
+          format: int32
+          nullable: true
+          example: 66
+        description:
+          description: The description of the password rule.
+          type: string
+          nullable: true
+          example: "At least one uppercase character"
+        value:
+          description: The value for the rule.
+          type: integer
+          format: int32
+          nullable: true
+          example: 1
+    FormsAuthCrediential:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          description: The username
+          type: string
+          format: string
+          example: johndoe@acmecorp.com
+        password:
+          description: The users password
+          type: string
+          format: password
+          example: 12345678
+    FormsAuthVerificationResult:
+      type: object
+      properties:
+        passwordChangeRequired:
+          description: Whether the user is required to change their password or not.
+          type: boolean
+          example: false
+        identityVerificationRequired:
+          description: Whether the user required additional identity verification.
+          type: boolean
+          example: false
+    SsoIdentityProvider:
+      type: object
+      properties:
+        identityProviderSettingId:
+          description: The unique id for the identity provider.
+          type: integer
+          format: int32
+          nullable: true
+          example: 11
+        signingCertificateId:
+          description: The id of the signing certificate.
+          type: integer
+          format: int32
+          nullable: true
+          example: 99
+        decryptingCertificateId:
+          description: The id of the decrypting certificate.
+          type: integer
+          format: int32
+          example: 101
+        wantSamlResponseSigned:
+          description: Whether the SAML response from the partner identity provider should be signed.
+          type: boolean
+          nullable: true
+        wantAssertionSigned:
+          description: Whether the SAML assertion from the partner identity provider should be signed.
+          type: boolean
+          nullable: true
+        wantAssertionEncrypted:
+          description: Whether the SAML assertion from the partner identity provider should be encrypted.
+          type: boolean
+          nullable: true
+        clockSkew:
+          description: The time span to allow for differences between local and partner computer clocks when checking time intervals.
+          type: integer
+          format: int32
+          nullable: true
+          example: 0
+        trustName:
+          description: The trust name of the Identity Provider
+          type: string
+          format: string
+          nullable: true
+          example: "https://sts.windows.net/00000000-0000-0000-0000-000000000000"
+        displayName:
+          description: The display name for the identity provider
+          type: string
+          format: string
+          nullable: true
+          example: Microsoft Azure
+        singleSignOnServiceUrl:
+          description: The URL for the Identity Provider single sign on service.
+          type: string
+          format: string
+          nullable: true
+          example: "https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000/saml2"
+        localTrustName:
+          description: The local trust name for the EHS application.
+          type: string
+          format: string
+          nullable: true
+          example: https://ehs.com
+        assertionToClientMapper:
+          description: The username
+          type: string
+          format: string
+          nullable: true
+          example: AccountIdentifier
+        userNameToPersonMapper:
+          description: The mapper for determine who the person is based on the SSO Assertions username.
+          type: string
+          format: string
+          nullable: true
+          example: UsernameMapper
+        active:
+          description: Whether the identify provider is active or not.
+          type: boolean
+          nullable: true
+    SsoServiceProvider:
+      type: object
+      properties:
+        serviceProviderSettingId:
+          description: The unique id for the service provider.
+          type: integer
+          format: int32
+          nullable: true
+          example: 0
+        signingCertificateId:
+          description: The id of the signing certificate.
+          type: integer
+          format: int32
+          nullable: true
+          example: 0
+        encryptingCertificateId:
+          description: The id of the encrypting certificate.
+          type: integer
+          format: int32
+          nullable: true
+          example: 0
+        signSamlResponse:
+          description: Whether SAML responses sent to the partner service provider should be signed.
+          type: boolean
+          nullable: true
+        signAssertion:
+          description: Whether SAML assertions sent to the partner service provider should be signed.
+          type: boolean
+          nullable: true
+        encryptAssertion:
+          description: Whether SAML assertions sent to the partner service provider should be encrypted.
+          type: boolean
+          nullable: true
+        isVelocityServiceProvider:
+          description: Whether the service provider is for a VelocityEHS Product.
+          type: boolean
+          nullable: true
+        assertionLifetime:
+          description: The NotBefore/NotOnOrAfter time interval for the SAML assertion.
+          type: integer
+          format: int32
+          nullable: true
+          example: 600
+        clockSkew:
+          description: The time span to allow for differences between local and partner computer clocks when checking time intervals.
+          type: integer
+          format: int32
+          nullable: true
+          example: 0
+        listOrder:
+          description: The order the service provider should be listed relative to other service providers.
+          type: integer
+          format: int32
+          nullable: true
+          example: 0
+        trustName:
+          description: The trust name of the Service Provider
+          type: string
+          format: string
+          nullable: true
+          example: "https://sts.windows.net/00000000-0000-0000-0000-000000000000"
+        displayName:
+          description: The display name of the service provider.
+          type: string
+          format: string
+          nullable: true
+          example: "Chemical Management"
+        endpointUrl:
+          description: The service provider assertion consumer service URL.
+          type: string
+          format: string
+          nullable: true
+          example: "https://ep.humantech.com/0000/saml/SSO"
+        nameIdFormat:
+          description: The name identifier format to include in SAML assertions sent to the partner service provider or in authn requests sent to the partner identity provider
+          type: string
+          nullable: true
+          example: urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified
+        digestMethod:
+          description: The XML signature digest method. 
+          type: string
+          nullable: true
+          example: http://www.w3.org/2000/09/xmldsig#sha1
+        signatureMethod:
+          description: The XML signature method. 
+          type: string
+          nullable: true
+          example: http://www.w3.org/2000/09/xmldsig#rsa-sha1
+        keyEncryptionMethod:
+          description: The XML encryption key encryption method. 
+          type: string
+          nullable: true
+          example: http://www.w3.org/2001/04/xmlenc#rsa-1_5
+        dataEncryptionMethod:
+          description: The XML encryption data encryption method.
+          type: string
+          nullable: true
+          example: http://www.w3.org/2001/04/xmlenc#aes128-cbc
+        personToUserNameMapper:
+          description: The mapper for determining what value to use as the username in the assertion.
+          type: string
+          format: string
+          nullable: true
+          example: "PersonUsername"
+        assertionAttributesProvider:
+          description: The mapper for determining what attributes to include in the assertion.
+          type: string
+          format: string
+          nullable: true
+          example: "DefaultAttributes"
+        assertionRelayStateProvider:
+          description: The mapper for determing what relay state to provide with the assertion.
+          type: string
+          format: string
+          nullable: true
+          example: "DefaultRelayState"
+        active:
+          description: Whether the service provider is active or not.
+          type: boolean
+          nullable: true
+    IdentityVerification:
+      type: object
+      required:
+        - verificationCode
+      properties:
+        verificationCode:
+          description: The verification code.
+          type: integer
+          format: int32
+          example: 13377331
 # Hierarchies
     Hierarchy:
       type: object
@@ -2593,14 +3882,14 @@ components:
     LocationListAvailability:
         type: object
         properties:
-            Location:
+            location:
                 description: The array of location identifiers
                 type: array
                 example: [ 1, 12]
                 items:
                     type: integer
                     format: int32
-            LocationGroup:
+            locationGroup:
                 description: The array of location group identifiers
                 type: array
                 example: [ 1, 12]
@@ -2610,13 +3899,13 @@ components:
     LocationListAvailabilityDetails:
         type: object
         properties:
-            Location:
+            location:
                 description: The array statuses for locations
                 type: object
                 additionalProperties:
                   type: boolean
                 example: {"11": true, "12": false}
-            LocationGroup:
+            locationGroup:
                 description: The array statuses for location groups
                 type: object
                 additionalProperties:
@@ -2654,11 +3943,145 @@ components:
           type: string
           nullable: true
           example: Doe
-        locationList:
+        locations:
           type: array
           nullable: true
           items:
             type: integer
+        genderId: 
+          type: integer
+          nullable: true
+        dateOfBirth:
+          format: date-time
+          type: string
+          nullable: true
+          example: "1995-09-07 10:40:52"
+        phoneNumber:
+          type: string
+          nullable: true
+          example: 555-123-4567
+        mobileNumber:
+          type: string
+          nullable: true
+          example: 555-987-6543
+        email:
+          type: string
+          nullable: true
+          example: noreply@ehs.com
+        address:
+          type: string
+          nullable: true
+          example: 123 New Street
+        city:
+          type: string
+          nullable: true
+          example: Ottawa
+        countryDivisionId:
+          type: integer
+          nullable: true
+        countryId:
+          type: integer
+          nullable: true
+        postalCode:
+          type: string
+          nullable: true
+          example: A1A 1A1
+        relationshipId:
+          type: integer
+          nullable: true
+        currentPosition:
+          type: string
+          nullable: true
+          example: EHS Manager
+        supervisorId:
+          type: integer
+          nullable: true
+        hireDate:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2000-01-01"
+        endDate:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2019-01-01"
+        currentpositionStartDate:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2010-01-01"
+        employeeId:
+          type: string
+          nullable: true
+          example: ABC123456
+        contractingCompanyId:
+          type: integer
+          nullable: true
+        customerid:
+          type: integer
+          nullable: true
+        contactTypeId:
+          type: integer
+          nullable: true
+        locked:
+          type: boolean
+          nullable: true
+          example: false
+        expiryDate:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2029-01-01 12:00:00"
+        personDetails:
+          type: string
+          nullable: true
+          example: "FirstName-LastName-JobTitle"
+    UpdatePersonParams:
+      type: object
+      properties:
+        personId:
+          type: integer
+          nullable: true
+        updatedByPersonID:
+          type: integer
+          nullable: true
+        statusId:
+          type: integer
+          nullable: true
+          example: 12
+        loginAccessRequired:
+          type: boolean
+          nullable: true
+        displayName:
+          type: string
+          nullable: true
+        username:
+          type: string
+          nullable: true
+          example: noreply@ehs.com
+        addLocations:
+          type: array
+          nullable: true
+          items:
+            type: integer
+            format: int32
+            example: 1
+        deleteLocations:
+          type: array
+          nullable: true
+          items:
+            type: integer
+            format: int32
+            example: 1
+        firstName:
+          type: string
+          nullable: true
+          example: John
+        lastName:
+          type: string
+          nullable: true
+          example: Doe
         genderId: 
           type: integer
           nullable: true
