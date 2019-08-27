@@ -350,6 +350,11 @@
         <member name="P:NSwag.CodeGeneration.CSharp.Models.CSharpOperationModel.HasResponses">
             <summary>Checks if any responses are mapped to this operation.</summary>
         </member>
+        <member name="P:NSwag.CodeGeneration.CSharp.Models.CSharpOperationModel.HasAuthenticationSchemes">
+            <summary>
+            Gets a value indicating whether this instance has authentication schemes.
+            </summary>
+        </member>
         <member name="P:NSwag.CodeGeneration.CSharp.Models.CSharpOperationModel.AuthenticationSchemes">
             <summary>Gets a comma delimited list of authentication scheme names mapped to this operation.</summary>
         </member>

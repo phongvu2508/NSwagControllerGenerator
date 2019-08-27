@@ -8,8 +8,10 @@ info:
     url: https://www.ehs.com
     email: support@ehs.com
 servers:
-  - url: 'https://odev6web01.ad.velocityehs.com/ehs-internal-api/api'
+  - url: 'https://odev6web01.ehs.dev/ehs-internal-api/api'
     description: Development
+  - url: 'https://ovev6apifarm.ehs.dev/alpha/api'
+    description: Verification - Alpha
 tags:
   - name: Account
   - name: Authentication
@@ -94,10 +96,6 @@ paths:
       summary: Update an existing account
       description: Update an existing account
       operationId: updateAccount
-      parameters:
-        - $ref: '#/components/parameters/AccountHeader'
-        - $ref: '#/components/parameters/IdentityHeader'
-        - $ref: '#/components/parameters/LanguageHeader'
       requestBody:
         description: The updated account object
         content:
@@ -202,7 +200,7 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Account not found
-  /account/userInfo:
+  /accounts/userInfo:
     get:
       tags:
       - Account
@@ -279,8 +277,28 @@ paths:
       description: Gets the authentication methods for the account.
       operationId: getAuthMethods
       parameters:
-        - $ref: '#/components/parameters/AccountHeader'
-        - $ref: '#/components/parameters/LanguageHeader'
+        - name: accountId
+          in: query
+          description: The account id
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 13
+            nullable: true
+        - name: accountIdentifier
+          in: query
+          description: The account identifier
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            format: int32
+            example: "AcmeCorp"
+            nullable: true
       responses:
         200:
           description: The authentication methods for the account.
@@ -544,6 +562,16 @@ paths:
       parameters:
         - $ref: '#/components/parameters/AccountHeader'
         - $ref: '#/components/parameters/LanguageHeader'
+        - name: id
+          in: query
+          description: The password rule identifier
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
       responses:
         204:
           description: The password rule was removed for the account.
@@ -655,7 +683,6 @@ paths:
             type: integer
             format: int32
             example: 13
-            nullable: true
       responses:
         200:
           description: The SSO Identity Provider
@@ -774,7 +801,6 @@ paths:
             type: integer
             format: int32
             example: 13
-            nullable: true
       responses:
         200:
           description: The account
@@ -1687,11 +1713,20 @@ paths:
         - List
       parameters:
         - $ref: "#/components/parameters/AccountHeader"
-        - $ref: "#/components/parameters/IdentityHeader"
         - $ref: "#/components/parameters/LanguageHeader"
         - in: query
           name: statusFilters
           description: The array of selected statuses to include
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+              example: 1
+        - in: query
+          name: productFilters
+          description: The array of selected products to include
           required: false
           schema:
             type: array
@@ -1737,10 +1772,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/List"
+              $ref: '#/components/schemas/UpdateListParams'
           application/xml:
             schema:
-              $ref: "#/components/schemas/List"
+              $ref: '#/components/schemas/UpdateListParams'
       responses:
         204:
           description: The list was successfully updated.
@@ -1841,7 +1876,6 @@ paths:
         - List
       parameters:
         - $ref: "#/components/parameters/AccountHeader"
-        - $ref: "#/components/parameters/IdentityHeader"
         - $ref: "#/components/parameters/LanguageHeader"
         - in: path
           name: listId
@@ -1861,6 +1895,16 @@ paths:
               type: integer
               format: int32
               example: 1
+        - in: query
+          name: productFilters
+          description: The array of selected products to include
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+              example: 1
       responses:
         200:
           description: A list with provided identifier
@@ -1871,6 +1915,44 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/List'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: List not found
+  /lists/search:
+    get:
+      summary: Get lists by list name
+      description: Get a lists by list name
+      operationId: getListsByName
+      tags:
+        - List
+      parameters:
+        - $ref: "#/components/parameters/AccountHeader"
+        - $ref: "#/components/parameters/LanguageHeader"
+        - in: path
+          name: listName
+          description: The lists to be returned
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A list of lists found using provided criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ListSearch'
         400:
           description: Bad request
           content:
@@ -2105,6 +2187,44 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/ListItem'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: List Item not found
+  /lists/items/search:
+    get:
+      summary: Get list items by list item name
+      description: Get a list items by list item name
+      operationId: getListItemsByName
+      tags:
+        - List
+      parameters:
+        - $ref: "#/components/parameters/AccountHeader"
+        - $ref: "#/components/parameters/LanguageHeader"
+        - in: path
+          name: listItemName
+          description: The list items to be returned
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A list of list items found using provided criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ListItemSearch'
         400:
           description: Bad request
           content:
@@ -3382,7 +3502,13 @@ components:
       type: object
       required:
         - forgotPasswordKey
+        - personId
       properties:
+        personId:
+          description: The id of the person being authenticated.
+          type: integer
+          format: int32
+          example: 1
         forgotPasswordKey:
           description: The forgot password key
           type: string
@@ -3426,7 +3552,16 @@ components:
           example: 12345678
     FormsAuthVerificationResult:
       type: object
+      required:
+        - personId
+        - passwordChangeRequired
+        - identityVerificationRequired
       properties:
+        personId:
+          description: The id of the person being authenticated.
+          type: integer
+          format: int32
+          example: 1
         passwordChangeRequired:
           description: Whether the user is required to change their password or not.
           type: boolean
@@ -3454,6 +3589,7 @@ components:
           description: The id of the decrypting certificate.
           type: integer
           format: int32
+          nullable: true
           example: 101
         wantSamlResponseSigned:
           description: Whether the SAML response from the partner identity provider should be signed.
@@ -3826,7 +3962,7 @@ components:
       properties:
         listid:
           type: integer
-        value:
+        values:
           description: The array of list item values
           type: array
           items:
@@ -3855,6 +3991,24 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ListItem'
+    ListItemSearch:
+      type: object
+      properties:
+        listitemid:
+          type: integer
+        listitemtext:
+          type: string
+        statusid:
+          type: integer
+        listid:
+          type: integer
+        productids:
+          type: array
+          nullable: true
+          items:
+            type: integer
+        listtext:
+          type: string
     List:
       type: object
       properties:
@@ -3875,9 +4029,58 @@ components:
         itemseditable:
           type: boolean
           nullable: true
+        productlist:
+          type: array
+          nullable: true
+          items:
+            type: integer
         value:
           type: string
           nullable: true
+    UpdateListParams:
+      type: object
+      properties:
+        listid:
+          type: integer
+        orderable:
+          type: boolean
+          nullable: true
+        editable:
+          type: boolean
+          nullable: true
+        statusid:
+          type: integer
+          nullable: true
+        itemseditable:
+          type: boolean
+          nullable: true
+        addproductlist:
+          type: array
+          nullable: true
+          items:
+            type: integer
+        removeproductlist:
+          type: array
+          nullable: true
+          items:
+            type: integer
+        value:
+          type: string
+          nullable: true
+    ListSearch:
+      type: object
+      properties:
+        listid:
+          type: integer
+        listtext:
+          type: string
+        productids:
+          type: array
+          nullable: true
+          items:
+            type: integer
+        statusid:
+          type: integer
 # Location Lists
     LocationListAvailability:
         type: object

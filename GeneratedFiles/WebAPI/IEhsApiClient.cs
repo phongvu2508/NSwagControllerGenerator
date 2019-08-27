@@ -91,15 +91,19 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfoAsync(string username, string emailAddress, string phoneNumber, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Gets the authentication methods for the account.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="accountIdentifier">The account identifier</param>
         /// <returns>The authentication methods for the account.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync();
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync(int? accountId, string accountIdentifier);
     
         /// <summary>Gets the authentication methods for the account.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="accountIdentifier">The account identifier</param>
         /// <returns>The authentication methods for the account.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync(int? accountId, string accountIdentifier, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Sets an authentication methods for the account.</summary>
         /// <returns>The authentication methods was successfully set.</returns>
@@ -170,15 +174,17 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         System.Threading.Tasks.Task AddPasswordRulesAsync(System.Collections.Generic.IEnumerable<FormsAuthPasswordRule> body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Deletes a password rule for the account.</summary>
+        /// <param name="id">The password rule identifier</param>
         /// <returns>The password rule was removed for the account.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task DeletePasswordRuleAsync();
+        System.Threading.Tasks.Task DeletePasswordRuleAsync(int id);
     
         /// <summary>Deletes a password rule for the account.</summary>
+        /// <param name="id">The password rule identifier</param>
         /// <returns>The password rule was removed for the account.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task DeletePasswordRuleAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeletePasswordRuleAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update an existing SSO Identity Provider.</summary>
         /// <param name="body">The updated SSO Identity Provider object</param>
@@ -210,14 +216,14 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <param name="id">The SSO Identity Provider id</param>
         /// <returns>The SSO Identity Provider</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpByIdAsync(int? id);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpByIdAsync(int id);
     
         /// <summary>Get a SSO Identity Provider by the id</summary>
         /// <param name="id">The SSO Identity Provider id</param>
         /// <returns>The SSO Identity Provider</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpByIdAsync(int? id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update existing account</summary>
         /// <param name="body">The updated account object</param>
@@ -249,14 +255,14 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <param name="id">The account id</param>
         /// <returns>The account</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpByIdAsync(int? id);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpByIdAsync(int id);
     
         /// <summary>Get an account by the account id</summary>
         /// <param name="id">The account id</param>
         /// <returns>The account</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpByIdAsync(int? id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Requests a code for multi-factor authentication.</summary>
         /// <param name="deliveryMethod">The method in which to deliver the forgot password information.</param>
@@ -527,29 +533,31 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
     
         /// <summary>Search for lists based on params</summary>
         /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <param name="productFilters">The array of selected products to include</param>
         /// <returns>A list of lists found using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<List>>> GetListsAsync(System.Collections.Generic.IEnumerable<int> statusFilters);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<List>>> GetListsAsync(System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters);
     
         /// <summary>Search for lists based on params</summary>
         /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <param name="productFilters">The array of selected products to include</param>
         /// <returns>A list of lists found using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<List>>> GetListsAsync(System.Collections.Generic.IEnumerable<int> statusFilters, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<List>>> GetListsAsync(System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update existing list</summary>
         /// <param name="body">The updated list schema</param>
         /// <returns>The list was successfully updated.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateListAsync(List body);
+        System.Threading.Tasks.Task UpdateListAsync(UpdateListParams body);
     
         /// <summary>Update existing list</summary>
         /// <param name="body">The updated list schema</param>
         /// <returns>The list was successfully updated.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task UpdateListAsync(List body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task UpdateListAsync(UpdateListParams body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Create new list</summary>
         /// <param name="body">The list schema</param>
@@ -580,17 +588,32 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <summary>Get a list by list id</summary>
         /// <param name="listId">The list to be returned</param>
         /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <param name="productFilters">The array of selected products to include</param>
         /// <returns>A list with provided identifier</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId, System.Collections.Generic.IEnumerable<int> statusFilters);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId, System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters);
     
         /// <summary>Get a list by list id</summary>
         /// <param name="listId">The list to be returned</param>
         /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <param name="productFilters">The array of selected products to include</param>
         /// <returns>A list with provided identifier</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId, System.Collections.Generic.IEnumerable<int> statusFilters, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId, System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get lists by list name</summary>
+        /// <param name="listName">The lists to be returned</param>
+        /// <returns>A list of lists found using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListSearch>>> GetListsByNameAsync(string listName);
+    
+        /// <summary>Get lists by list name</summary>
+        /// <param name="listName">The lists to be returned</param>
+        /// <returns>A list of lists found using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListSearch>>> GetListsByNameAsync(string listName, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Search for list items based on params</summary>
         /// <param name="listId">The list the list items retrieved belong to (null will return all lists)</param>
@@ -664,6 +687,19 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ListItem>> GetListItemByIdAsync(int listItemId, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get list items by list item name</summary>
+        /// <param name="listItemName">The list items to be returned</param>
+        /// <returns>A list of list items found using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListItemSearch>>> GetListItemsByNameAsync(string listItemName);
+    
+        /// <summary>Get list items by list item name</summary>
+        /// <param name="listItemName">The list items to be returned</param>
+        /// <returns>A list of list items found using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListItemSearch>>> GetListItemsByNameAsync(string listItemName, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Reorders all list items in a list</summary>
         /// <param name="body">The reorder list item schema</param>
@@ -1172,6 +1208,10 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class FormsAuthPasswordChangeResponse 
     {
+        /// <summary>The id of the person being authenticated.</summary>
+        [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Always)]
+        public int PersonId { get; set; }
+    
         /// <summary>The forgot password key</summary>
         [Newtonsoft.Json.JsonProperty("forgotPasswordKey", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -1244,12 +1284,16 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class FormsAuthVerificationResult 
     {
+        /// <summary>The id of the person being authenticated.</summary>
+        [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Always)]
+        public int PersonId { get; set; }
+    
         /// <summary>Whether the user is required to change their password or not.</summary>
-        [Newtonsoft.Json.JsonProperty("passwordChangeRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("passwordChangeRequired", Required = Newtonsoft.Json.Required.Always)]
         public bool PasswordChangeRequired { get; set; }
     
         /// <summary>Whether the user required additional identity verification.</summary>
-        [Newtonsoft.Json.JsonProperty("identityVerificationRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("identityVerificationRequired", Required = Newtonsoft.Json.Required.Always)]
         public bool IdentityVerificationRequired { get; set; }
     
         public string ToJson() 
@@ -1276,8 +1320,8 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         public int? SigningCertificateId { get; set; }
     
         /// <summary>The id of the decrypting certificate.</summary>
-        [Newtonsoft.Json.JsonProperty("decryptingCertificateId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int DecryptingCertificateId { get; set; }
+        [Newtonsoft.Json.JsonProperty("decryptingCertificateId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? DecryptingCertificateId { get; set; }
     
         /// <summary>Whether the SAML response from the partner identity provider should be signed.</summary>
         [Newtonsoft.Json.JsonProperty("wantSamlResponseSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1709,8 +1753,8 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         public int Listid { get; set; }
     
         /// <summary>The array of list item values</summary>
-        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<string> Value { get; set; }
+        [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Values { get; set; }
     
         public string ToJson() 
         {
@@ -1774,6 +1818,39 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ListItemSearch 
+    {
+        [Newtonsoft.Json.JsonProperty("listitemid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Listitemid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("listitemtext", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Listitemtext { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("statusid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Statusid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Listid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("productids", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> Productids { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("listtext", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Listtext { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ListItemSearch FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListItemSearch>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class List 
     {
         [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1794,6 +1871,9 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("itemseditable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? Itemseditable { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("productlist", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> Productlist { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Value { get; set; }
     
@@ -1805,6 +1885,72 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         public static List FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<List>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdateListParams 
+    {
+        [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Listid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("orderable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Orderable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("editable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Editable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("statusid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Statusid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("itemseditable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Itemseditable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("addproductlist", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> Addproductlist { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("removeproductlist", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> Removeproductlist { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdateListParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateListParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ListSearch 
+    {
+        [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Listid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("listtext", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Listtext { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("productids", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> Productids { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("statusid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Statusid { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ListSearch FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListSearch>(data);
         }
     
     }

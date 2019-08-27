@@ -134,7 +134,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">No authentication methods for the account</response>
         /// <returns>The basic details of the user that matches the request</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("account/userInfo")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("accounts/userInfo")]
             public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfo(string username, string emailAddress, string phoneNumber)
         {
             return this.implementation.GetUserInfoAsync(username, emailAddress, phoneNumber);
@@ -146,12 +146,14 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     public interface IAuthenticationController
     {
         /// <summary>Gets the authentication methods for the account.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="accountIdentifier">The account identifier</param>
         /// <response code="200">The authentication methods for the account.</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">No authentication methods for the account</response>
         /// <returns>The authentication methods for the account.</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<AuthenticationMethod>>> GetAuthMethodsAsync();
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<AuthenticationMethod>>> GetAuthMethodsAsync(int? accountId, string accountIdentifier);
     
         /// <summary>Sets an authentication methods for the account.</summary>
         /// <response code="204">The authentication methods was successfully set.</response>
@@ -204,12 +206,13 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         System.Threading.Tasks.Task AddPasswordRulesAsync(System.Collections.Generic.IEnumerable<FormsAuthPasswordRule> body);
     
         /// <summary>Deletes a password rule for the account.</summary>
+        /// <param name="id">The password rule identifier</param>
         /// <response code="204">The password rule was removed for the account.</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">No password rules for the account</response>
         /// <returns>The password rule was removed for the account.</returns>
-        System.Threading.Tasks.Task DeletePasswordRuleAsync();
+        System.Threading.Tasks.Task DeletePasswordRuleAsync(int id);
     
         /// <summary>Update an existing SSO Identity Provider.</summary>
         /// <param name="body">The updated SSO Identity Provider object</param>
@@ -235,7 +238,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">SSO Identity Provider not found</response>
         /// <returns>The SSO Identity Provider</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpByIdAsync(int? id);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpByIdAsync(int id);
     
         /// <summary>Update existing account</summary>
         /// <param name="body">The updated account object</param>
@@ -261,7 +264,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Account not found</response>
         /// <returns>The account</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpByIdAsync(int? id);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpByIdAsync(int id);
     
         /// <summary>Requests a code for multi-factor authentication.</summary>
         /// <param name="deliveryMethod">The method in which to deliver the forgot password information.</param>
@@ -293,15 +296,17 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         }
     
         /// <summary>Gets the authentication methods for the account.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="accountIdentifier">The account identifier</param>
         /// <response code="200">The authentication methods for the account.</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">No authentication methods for the account</response>
         /// <returns>The authentication methods for the account.</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/methods")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<AuthenticationMethod>>> GetAuthMethods()
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<AuthenticationMethod>>> GetAuthMethods(int? accountId, string accountIdentifier)
         {
-            return this.implementation.GetAuthMethodsAsync();
+            return this.implementation.GetAuthMethodsAsync(accountId, accountIdentifier);
         }
     
         /// <summary>Sets an authentication methods for the account.</summary>
@@ -379,15 +384,16 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         }
     
         /// <summary>Deletes a password rule for the account.</summary>
+        /// <param name="id">The password rule identifier</param>
         /// <response code="204">The password rule was removed for the account.</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">No password rules for the account</response>
         /// <returns>The password rule was removed for the account.</returns>
         [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("auth/forms/rules")]
-            public System.Threading.Tasks.Task DeletePasswordRule()
+            public System.Threading.Tasks.Task DeletePasswordRule(int id)
         {
-            return this.implementation.DeletePasswordRuleAsync();
+            return this.implementation.DeletePasswordRuleAsync(id);
         }
     
         /// <summary>Update an existing SSO Identity Provider.</summary>
@@ -423,7 +429,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">SSO Identity Provider not found</response>
         /// <returns>The SSO Identity Provider</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/sso/idp/{id}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpById(int? id)
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpById(int id)
         {
             return this.implementation.GetSsoIdpByIdAsync(id);
         }
@@ -461,7 +467,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Account not found</response>
         /// <returns>The account</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/sso/sp/{id}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpById(int? id)
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpById(int id)
         {
             return this.implementation.GetSsoSpByIdAsync(id);
         }
@@ -923,12 +929,13 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     {
         /// <summary>Search for lists based on params</summary>
         /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <param name="productFilters">The array of selected products to include</param>
         /// <response code="200">A list of lists found using provided criteria</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Lists not found</response>
         /// <returns>A list of lists found using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<List>>> GetListsAsync(System.Collections.Generic.IEnumerable<int> statusFilters);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<List>>> GetListsAsync(System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters);
     
         /// <summary>Update existing list</summary>
         /// <param name="body">The updated list schema</param>
@@ -937,7 +944,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">List not found</response>
         /// <returns>The list was successfully updated.</returns>
-        System.Threading.Tasks.Task UpdateListAsync(List body);
+        System.Threading.Tasks.Task UpdateListAsync(UpdateListParams body);
     
         /// <summary>Create new list</summary>
         /// <param name="body">The list schema</param>
@@ -959,12 +966,22 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <summary>Get a list by list id</summary>
         /// <param name="listId">The list to be returned</param>
         /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <param name="productFilters">The array of selected products to include</param>
         /// <response code="200">A list with provided identifier</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">List not found</response>
         /// <returns>A list with provided identifier</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId, System.Collections.Generic.IEnumerable<int> statusFilters);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId, System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters);
+    
+        /// <summary>Get lists by list name</summary>
+        /// <param name="listName">The lists to be returned</param>
+        /// <response code="200">A list of lists found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List not found</response>
+        /// <returns>A list of lists found using provided criteria</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListSearch>>> GetListsByNameAsync(string listName);
     
         /// <summary>Search for list items based on params</summary>
         /// <param name="listId">The list the list items retrieved belong to (null will return all lists)</param>
@@ -1014,6 +1031,15 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <returns>A list item with provided identifier</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ListItem>> GetListItemByIdAsync(int listItemId, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters);
     
+        /// <summary>Get list items by list item name</summary>
+        /// <param name="listItemName">The list items to be returned</param>
+        /// <response code="200">A list of list items found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>A list of list items found using provided criteria</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItemSearch>>> GetListItemsByNameAsync(string listItemName);
+    
         /// <summary>Reorders all list items in a list</summary>
         /// <param name="body">The reorder list item schema</param>
         /// <response code="204">The list item reorder was successfully updated</response>
@@ -1038,15 +1064,16 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     
         /// <summary>Search for lists based on params</summary>
         /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <param name="productFilters">The array of selected products to include</param>
         /// <response code="200">A list of lists found using provided criteria</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Lists not found</response>
         /// <returns>A list of lists found using provided criteria</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<List>>> GetLists(System.Collections.Generic.IEnumerable<int> statusFilters)
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<List>>> GetLists(System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters)
         {
-            return this.implementation.GetListsAsync(statusFilters);
+            return this.implementation.GetListsAsync(statusFilters, productFilters);
         }
     
         /// <summary>Update existing list</summary>
@@ -1057,7 +1084,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">List not found</response>
         /// <returns>The list was successfully updated.</returns>
         [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("lists")]
-            public System.Threading.Tasks.Task UpdateList([Microsoft.AspNetCore.Mvc.FromBody] List body)
+            public System.Threading.Tasks.Task UpdateList([Microsoft.AspNetCore.Mvc.FromBody] UpdateListParams body)
         {
             return this.implementation.UpdateListAsync(body);
         }
@@ -1090,15 +1117,29 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <summary>Get a list by list id</summary>
         /// <param name="listId">The list to be returned</param>
         /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <param name="productFilters">The array of selected products to include</param>
         /// <response code="200">A list with provided identifier</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">List not found</response>
         /// <returns>A list with provided identifier</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/{listId}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListById(int listId, System.Collections.Generic.IEnumerable<int> statusFilters)
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListById(int listId, System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters)
         {
-            return this.implementation.GetListByIdAsync(listId, statusFilters);
+            return this.implementation.GetListByIdAsync(listId, statusFilters, productFilters);
+        }
+    
+        /// <summary>Get lists by list name</summary>
+        /// <param name="listName">The lists to be returned</param>
+        /// <response code="200">A list of lists found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List not found</response>
+        /// <returns>A list of lists found using provided criteria</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/search")]
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListSearch>>> GetListsByName(string listName)
+        {
+            return this.implementation.GetListsByNameAsync(listName);
         }
     
         /// <summary>Search for list items based on params</summary>
@@ -1167,6 +1208,19 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
             public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ListItem>> GetListItemById(int listItemId, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters)
         {
             return this.implementation.GetListItemByIdAsync(listItemId, listStatusFilters, listItemStatusFilters);
+        }
+    
+        /// <summary>Get list items by list item name</summary>
+        /// <param name="listItemName">The list items to be returned</param>
+        /// <response code="200">A list of list items found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>A list of list items found using provided criteria</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/items/search")]
+            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItemSearch>>> GetListItemsByName(string listItemName)
+        {
+            return this.implementation.GetListItemsByNameAsync(listItemName);
         }
     
         /// <summary>Reorders all list items in a list</summary>
@@ -1847,6 +1901,10 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class FormsAuthPasswordChangeResponse 
     {
+        /// <summary>The id of the person being authenticated.</summary>
+        [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Always)]
+        public int PersonId { get; set; }
+    
         /// <summary>The forgot password key</summary>
         [Newtonsoft.Json.JsonProperty("forgotPasswordKey", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -1919,12 +1977,16 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class FormsAuthVerificationResult 
     {
+        /// <summary>The id of the person being authenticated.</summary>
+        [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Always)]
+        public int PersonId { get; set; }
+    
         /// <summary>Whether the user is required to change their password or not.</summary>
-        [Newtonsoft.Json.JsonProperty("passwordChangeRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("passwordChangeRequired", Required = Newtonsoft.Json.Required.Always)]
         public bool PasswordChangeRequired { get; set; }
     
         /// <summary>Whether the user required additional identity verification.</summary>
-        [Newtonsoft.Json.JsonProperty("identityVerificationRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("identityVerificationRequired", Required = Newtonsoft.Json.Required.Always)]
         public bool IdentityVerificationRequired { get; set; }
     
         public string ToJson() 
@@ -1951,8 +2013,8 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public int? SigningCertificateId { get; set; }
     
         /// <summary>The id of the decrypting certificate.</summary>
-        [Newtonsoft.Json.JsonProperty("decryptingCertificateId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int DecryptingCertificateId { get; set; }
+        [Newtonsoft.Json.JsonProperty("decryptingCertificateId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? DecryptingCertificateId { get; set; }
     
         /// <summary>Whether the SAML response from the partner identity provider should be signed.</summary>
         [Newtonsoft.Json.JsonProperty("wantSamlResponseSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2384,8 +2446,8 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public int Listid { get; set; }
     
         /// <summary>The array of list item values</summary>
-        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<string> Value { get; set; }
+        [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<string> Values { get; set; }
     
         public string ToJson() 
         {
@@ -2449,6 +2511,39 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ListItemSearch 
+    {
+        [Newtonsoft.Json.JsonProperty("listitemid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Listitemid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("listitemtext", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Listitemtext { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("statusid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Statusid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Listid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("productids", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> Productids { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("listtext", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Listtext { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ListItemSearch FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListItemSearch>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class List 
     {
         [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2469,6 +2564,9 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         [Newtonsoft.Json.JsonProperty("itemseditable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? Itemseditable { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("productlist", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> Productlist { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Value { get; set; }
     
@@ -2480,6 +2578,72 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public static List FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<List>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdateListParams 
+    {
+        [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Listid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("orderable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Orderable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("editable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Editable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("statusid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Statusid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("itemseditable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Itemseditable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("addproductlist", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> Addproductlist { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("removeproductlist", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> Removeproductlist { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdateListParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateListParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ListSearch 
+    {
+        [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Listid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("listtext", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Listtext { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("productids", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> Productids { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("statusid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Statusid { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ListSearch FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListSearch>(data);
         }
     
     }

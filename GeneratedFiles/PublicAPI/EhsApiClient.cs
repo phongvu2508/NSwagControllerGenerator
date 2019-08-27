@@ -14,7 +14,7 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
     public partial class EhsApiClient : IEhsApiClient
     {
         private readonly Microsoft.Extensions.Configuration.IConfiguration _configuration;
-        private string _baseUrl = "https://odev6web01.ad.velocityehs.com/ehs-internal-api/api";
+        private string _baseUrl = "https://odev6web01.ehs.dev/ehs-internal-api/api";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
@@ -507,7 +507,7 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfoAsync(string username, string emailAddress, string phoneNumber, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/account/userInfo?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/accounts/userInfo?");
             if (username != null) 
             {
                 urlBuilder_.Append("username=").Append(System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -611,21 +611,34 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         }
     
         /// <summary>Gets the authentication methods for the account.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="accountIdentifier">The account identifier</param>
         /// <returns>The authentication methods for the account.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync()
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync(int? accountId, string accountIdentifier)
         {
-            return GetAuthMethodsAsync(System.Threading.CancellationToken.None);
+            return GetAuthMethodsAsync(accountId, accountIdentifier, System.Threading.CancellationToken.None);
         }
     
         /// <summary>Gets the authentication methods for the account.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="accountIdentifier">The account identifier</param>
         /// <returns>The authentication methods for the account.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync(int? accountId, string accountIdentifier, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/auth/methods");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/auth/methods?");
+            if (accountId != null) 
+            {
+                urlBuilder_.Append("accountId=").Append(System.Uri.EscapeDataString(ConvertToString(accountId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (accountIdentifier != null) 
+            {
+                urlBuilder_.Append("accountIdentifier=").Append(System.Uri.EscapeDataString(ConvertToString(accountIdentifier, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             try
@@ -1332,21 +1345,28 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         }
     
         /// <summary>Deletes a password rule for the account.</summary>
+        /// <param name="id">The password rule identifier</param>
         /// <returns>The password rule was removed for the account.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task DeletePasswordRuleAsync()
+        public System.Threading.Tasks.Task DeletePasswordRuleAsync(int id)
         {
-            return DeletePasswordRuleAsync(System.Threading.CancellationToken.None);
+            return DeletePasswordRuleAsync(id, System.Threading.CancellationToken.None);
         }
     
         /// <summary>Deletes a password rule for the account.</summary>
+        /// <param name="id">The password rule identifier</param>
         /// <returns>The password rule was removed for the account.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task DeletePasswordRuleAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeletePasswordRuleAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/auth/forms/rules");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/auth/forms/rules?");
+            urlBuilder_.Append("id=").Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             try
@@ -1628,7 +1648,7 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         /// <param name="id">The SSO Identity Provider id</param>
         /// <returns>The SSO Identity Provider</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpByIdAsync(int? id)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpByIdAsync(int id)
         {
             return GetSsoIdpByIdAsync(id, System.Threading.CancellationToken.None);
         }
@@ -1638,8 +1658,11 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         /// <returns>The SSO Identity Provider</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpByIdAsync(int? id, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpByIdAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/auth/sso/idp/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
@@ -1937,7 +1960,7 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         /// <param name="id">The account id</param>
         /// <returns>The account</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpByIdAsync(int? id)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpByIdAsync(int id)
         {
             return GetSsoSpByIdAsync(id, System.Threading.CancellationToken.None);
         }
@@ -1947,8 +1970,11 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         /// <returns>The account</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpByIdAsync(int? id, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpByIdAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/auth/sso/sp/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
@@ -4105,25 +4131,31 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
     
         /// <summary>Search for lists based on params</summary>
         /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <param name="productFilters">The array of selected products to include</param>
         /// <returns>A list of lists found using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<List>>> GetListsAsync(System.Collections.Generic.IEnumerable<int> statusFilters)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<List>>> GetListsAsync(System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters)
         {
-            return GetListsAsync(statusFilters, System.Threading.CancellationToken.None);
+            return GetListsAsync(statusFilters, productFilters, System.Threading.CancellationToken.None);
         }
     
         /// <summary>Search for lists based on params</summary>
         /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <param name="productFilters">The array of selected products to include</param>
         /// <returns>A list of lists found using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<List>>> GetListsAsync(System.Collections.Generic.IEnumerable<int> statusFilters, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<List>>> GetListsAsync(System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lists?");
             if (statusFilters != null) 
             {
                 foreach (var item_ in statusFilters) { urlBuilder_.Append("statusFilters=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+            }
+            if (productFilters != null) 
+            {
+                foreach (var item_ in productFilters) { urlBuilder_.Append("productFilters=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
             urlBuilder_.Length--;
     
@@ -4219,7 +4251,7 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         /// <param name="body">The updated list schema</param>
         /// <returns>The list was successfully updated.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task UpdateListAsync(List body)
+        public System.Threading.Tasks.Task UpdateListAsync(UpdateListParams body)
         {
             return UpdateListAsync(body, System.Threading.CancellationToken.None);
         }
@@ -4229,7 +4261,7 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         /// <returns>The list was successfully updated.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task UpdateListAsync(List body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task UpdateListAsync(UpdateListParams body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lists");
@@ -4518,20 +4550,22 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         /// <summary>Get a list by list id</summary>
         /// <param name="listId">The list to be returned</param>
         /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <param name="productFilters">The array of selected products to include</param>
         /// <returns>A list with provided identifier</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId, System.Collections.Generic.IEnumerable<int> statusFilters)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId, System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters)
         {
-            return GetListByIdAsync(listId, statusFilters, System.Threading.CancellationToken.None);
+            return GetListByIdAsync(listId, statusFilters, productFilters, System.Threading.CancellationToken.None);
         }
     
         /// <summary>Get a list by list id</summary>
         /// <param name="listId">The list to be returned</param>
         /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <param name="productFilters">The array of selected products to include</param>
         /// <returns>A list with provided identifier</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId, System.Collections.Generic.IEnumerable<int> statusFilters, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId, System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters, System.Threading.CancellationToken cancellationToken)
         {
             if (listId == null)
                 throw new System.ArgumentNullException("listId");
@@ -4542,6 +4576,10 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
             if (statusFilters != null) 
             {
                 foreach (var item_ in statusFilters) { urlBuilder_.Append("statusFilters=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+            }
+            if (productFilters != null) 
+            {
+                foreach (var item_ in productFilters) { urlBuilder_.Append("productFilters=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
             urlBuilder_.Length--;
     
@@ -4620,6 +4658,117 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                         }
             
                         return default(List);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get lists by list name</summary>
+        /// <param name="listName">The lists to be returned</param>
+        /// <returns>A list of lists found using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListSearch>>> GetListsByNameAsync(string listName)
+        {
+            return GetListsByNameAsync(listName, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get lists by list name</summary>
+        /// <param name="listName">The lists to be returned</param>
+        /// <returns>A list of lists found using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListSearch>>> GetListsByNameAsync(string listName, System.Threading.CancellationToken cancellationToken)
+        {
+            if (listName == null)
+                throw new System.ArgumentNullException("listName");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lists/search");
+            urlBuilder_.Replace("{listName}", System.Uri.EscapeDataString(ConvertToString(listName, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(System.Collections.ObjectModel.Collection<ListSearch>); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.ObjectModel.Collection<ListSearch>>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(BadRequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<BadRequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<BadRequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("List not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(System.Collections.ObjectModel.Collection<ListSearch>);
                     }
                     finally
                     {
@@ -5168,6 +5317,117 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                         }
             
                         return default(ListItem);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get list items by list item name</summary>
+        /// <param name="listItemName">The list items to be returned</param>
+        /// <returns>A list of list items found using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListItemSearch>>> GetListItemsByNameAsync(string listItemName)
+        {
+            return GetListItemsByNameAsync(listItemName, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get list items by list item name</summary>
+        /// <param name="listItemName">The list items to be returned</param>
+        /// <returns>A list of list items found using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListItemSearch>>> GetListItemsByNameAsync(string listItemName, System.Threading.CancellationToken cancellationToken)
+        {
+            if (listItemName == null)
+                throw new System.ArgumentNullException("listItemName");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lists/items/search");
+            urlBuilder_.Replace("{listItemName}", System.Uri.EscapeDataString(ConvertToString(listItemName, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(System.Collections.ObjectModel.Collection<ListItemSearch>); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.ObjectModel.Collection<ListItemSearch>>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(BadRequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<BadRequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<BadRequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("List Item not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(System.Collections.ObjectModel.Collection<ListItemSearch>);
                     }
                     finally
                     {
