@@ -82,7 +82,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Accounts not found</response>
         /// <returns>The matching account</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("accounts")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Account>>> GetAccounts(int? accountId, System.Guid? externalId, string accountIdentifier)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Account>>> GetAccounts(int? accountId, System.Guid? externalId, string accountIdentifier)
         {
             return this.implementation.GetAccountsAsync(accountId, externalId, accountIdentifier);
         }
@@ -95,7 +95,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Account not found</response>
         /// <returns>The account was successfully updated.</returns>
         [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("accounts")]
-            public System.Threading.Tasks.Task UpdateAccount([Microsoft.AspNetCore.Mvc.FromBody] Account body)
+        public System.Threading.Tasks.Task UpdateAccount([Microsoft.AspNetCore.Mvc.FromBody] Account body)
         {
             return this.implementation.UpdateAccountAsync(body);
         }
@@ -107,7 +107,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The new account identifier</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("accounts")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateAccount([Microsoft.AspNetCore.Mvc.FromBody] Account body)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateAccount([Microsoft.AspNetCore.Mvc.FromBody] Account body)
         {
             return this.implementation.CreateAccountAsync(body);
         }
@@ -120,7 +120,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Account not found</response>
         /// <returns>The account</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("accounts/{accountId}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Account>> GetAccountById(int? accountId)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Account>> GetAccountById(int? accountId)
         {
             return this.implementation.GetAccountByIdAsync(accountId);
         }
@@ -135,7 +135,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">No authentication methods for the account</response>
         /// <returns>The basic details of the user that matches the request</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("accounts/userInfo")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfo(string username, string emailAddress, string phoneNumber)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfo(string username, string emailAddress, string phoneNumber)
         {
             return this.implementation.GetUserInfoAsync(username, emailAddress, phoneNumber);
         }
@@ -304,7 +304,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">No authentication methods for the account</response>
         /// <returns>The authentication methods for the account.</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/methods")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<AuthenticationMethod>>> GetAuthMethods(int? accountId, string accountIdentifier)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<AuthenticationMethod>>> GetAuthMethods(int? accountId, string accountIdentifier)
         {
             return this.implementation.GetAuthMethodsAsync(accountId, accountIdentifier);
         }
@@ -316,7 +316,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">No authentication methods for the account</response>
         /// <returns>The authentication methods was successfully set.</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/methods")]
-            public System.Threading.Tasks.Task SetAuthMethod([Microsoft.AspNetCore.Mvc.FromBody] AuthenticationMethod body)
+        public System.Threading.Tasks.Task SetAuthMethod([Microsoft.AspNetCore.Mvc.FromBody] AuthenticationMethod body)
         {
             return this.implementation.SetAuthMethodAsync(body);
         }
@@ -329,7 +329,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">No authentication methods for the account</response>
         /// <returns>The authentication method was deleted.</returns>
         [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("auth/methods")]
-            public System.Threading.Tasks.Task DeleteAuthMethod(int id)
+        public System.Threading.Tasks.Task DeleteAuthMethod(int id)
         {
             return this.implementation.DeleteAuthMethodAsync(id);
         }
@@ -342,7 +342,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Hierarchies not found</response>
         /// <returns>Credientials were valid.</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/forms/login")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthVerificationResult>> AuthFormsHasAccess([Microsoft.AspNetCore.Mvc.FromBody] FormsAuthCrediential body)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthVerificationResult>> AuthFormsHasAccess([Microsoft.AspNetCore.Mvc.FromBody] FormsAuthCrediential body)
         {
             return this.implementation.AuthFormsHasAccessAsync(body);
         }
@@ -354,7 +354,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Persons not found</response>
         /// <returns>The person was successfully updated</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/forms/forgotPassword")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPassword([Microsoft.AspNetCore.Mvc.FromBody] FormsAuthPasswordChangeRequest body)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPassword([Microsoft.AspNetCore.Mvc.FromBody] FormsAuthPasswordChangeRequest body)
         {
             return this.implementation.ForgotPasswordAsync(body);
         }
@@ -366,7 +366,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">No password rules for the account</response>
         /// <returns>The password rules for the account.</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/forms/rules")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<FormsAuthPasswordRule>>> GetPasswordRules()
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<FormsAuthPasswordRule>>> GetPasswordRules()
         {
             return this.implementation.GetPasswordRulesAsync();
         }
@@ -378,7 +378,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">No password rules for the account</response>
         /// <returns>The authentication rules were added.</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/forms/rules")]
-            public System.Threading.Tasks.Task AddPasswordRules([Microsoft.AspNetCore.Mvc.FromBody] System.Collections.Generic.IEnumerable<FormsAuthPasswordRule> body)
+        public System.Threading.Tasks.Task AddPasswordRules([Microsoft.AspNetCore.Mvc.FromBody] System.Collections.Generic.IEnumerable<FormsAuthPasswordRule> body)
         {
             return this.implementation.AddPasswordRulesAsync(body);
         }
@@ -391,7 +391,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">No password rules for the account</response>
         /// <returns>The password rule was removed for the account.</returns>
         [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("auth/forms/rules")]
-            public System.Threading.Tasks.Task DeletePasswordRule(int id)
+        public System.Threading.Tasks.Task DeletePasswordRule(int id)
         {
             return this.implementation.DeletePasswordRuleAsync(id);
         }
@@ -404,7 +404,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Identity Provider not found</response>
         /// <returns>The SSO Identity Provider was successfully updated.</returns>
         [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("auth/sso/idp")]
-            public System.Threading.Tasks.Task UpdateSsoIdp([Microsoft.AspNetCore.Mvc.FromBody] SsoIdentityProvider body)
+        public System.Threading.Tasks.Task UpdateSsoIdp([Microsoft.AspNetCore.Mvc.FromBody] SsoIdentityProvider body)
         {
             return this.implementation.UpdateSsoIdpAsync(body);
         }
@@ -416,7 +416,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The new SSO Identity Provider identifier</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/sso/idp")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateSsoIdp([Microsoft.AspNetCore.Mvc.FromBody] SsoIdentityProvider body)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateSsoIdp([Microsoft.AspNetCore.Mvc.FromBody] SsoIdentityProvider body)
         {
             return this.implementation.CreateSsoIdpAsync(body);
         }
@@ -429,7 +429,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">SSO Identity Provider not found</response>
         /// <returns>The SSO Identity Provider</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/sso/idp/{id}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpById(int id)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpById(int id)
         {
             return this.implementation.GetSsoIdpByIdAsync(id);
         }
@@ -442,7 +442,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Account not found</response>
         /// <returns>The hierarchy was successfully updated.</returns>
         [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("auth/sso/sp")]
-            public System.Threading.Tasks.Task UpdateSsoSp([Microsoft.AspNetCore.Mvc.FromBody] SsoServiceProvider body)
+        public System.Threading.Tasks.Task UpdateSsoSp([Microsoft.AspNetCore.Mvc.FromBody] SsoServiceProvider body)
         {
             return this.implementation.UpdateSsoSpAsync(body);
         }
@@ -454,7 +454,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The new hierarchy identifier</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/sso/sp")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateSsoSp([Microsoft.AspNetCore.Mvc.FromBody] SsoServiceProvider body)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateSsoSp([Microsoft.AspNetCore.Mvc.FromBody] SsoServiceProvider body)
         {
             return this.implementation.CreateSsoSpAsync(body);
         }
@@ -467,7 +467,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Account not found</response>
         /// <returns>The account</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/sso/sp/{id}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpById(int id)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpById(int id)
         {
             return this.implementation.GetSsoSpByIdAsync(id);
         }
@@ -479,7 +479,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>Verification code successfully requested.</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/2fa/requestCode")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<IdentityVerification>> RequestAuthVerificationCode(DeliveryMethod? deliveryMethod)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<IdentityVerification>> RequestAuthVerificationCode(DeliveryMethod? deliveryMethod)
         {
             return this.implementation.RequestAuthVerificationCodeAsync(deliveryMethod);
         }
@@ -491,7 +491,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>Verification code successfully validated.</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/2fa/verifyCode")]
-            public System.Threading.Tasks.Task VerifyAuthVerificationCode([Microsoft.AspNetCore.Mvc.FromBody] IdentityVerification body)
+        public System.Threading.Tasks.Task VerifyAuthVerificationCode([Microsoft.AspNetCore.Mvc.FromBody] IdentityVerification body)
         {
             return this.implementation.VerifyAuthVerificationCodeAsync(body);
         }
@@ -591,7 +591,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Hierarchies not found</response>
         /// <returns>A list of Hierarchies</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("hierarchies")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Hierarchy>>> GetHierarchies()
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Hierarchy>>> GetHierarchies()
         {
             return this.implementation.GetHierarchiesAsync();
         }
@@ -604,7 +604,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Hierarchy not found</response>
         /// <returns>The hierarchy was successfully updated.</returns>
         [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("hierarchies")]
-            public System.Threading.Tasks.Task UpdateHierarchy([Microsoft.AspNetCore.Mvc.FromBody] UpdateHierarchyParams body)
+        public System.Threading.Tasks.Task UpdateHierarchy([Microsoft.AspNetCore.Mvc.FromBody] UpdateHierarchyParams body)
         {
             return this.implementation.UpdateHierarchyAsync(body);
         }
@@ -616,7 +616,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The new hierarchy identifier</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("hierarchies")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateHierarchy([Microsoft.AspNetCore.Mvc.FromBody] NewHierarchyParams body)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateHierarchy([Microsoft.AspNetCore.Mvc.FromBody] NewHierarchyParams body)
         {
             return this.implementation.CreateHierarchyAsync(body);
         }
@@ -629,7 +629,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Hierarchy not found</response>
         /// <returns>A Hierarchy by id</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("hierarchies/{hierarchyId}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Hierarchy>> GetHierarchy(int? hierarchyId)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Hierarchy>> GetHierarchy(int? hierarchyId)
         {
             return this.implementation.GetHierarchyAsync(hierarchyId);
         }
@@ -642,7 +642,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Hierarchy not found</response>
         /// <returns>Delete Hierarchy result</returns>
         [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("hierarchies/{hierarchyId}")]
-            public System.Threading.Tasks.Task DeleteHierarchy(int? hierarchyId)
+        public System.Threading.Tasks.Task DeleteHierarchy(int? hierarchyId)
         {
             return this.implementation.DeleteHierarchyAsync(hierarchyId);
         }
@@ -655,7 +655,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Hierarchy not found</response>
         /// <returns>Create Hierarchy validation result</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("hierarchies/createValidate")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanCreateHierarchy([Microsoft.AspNetCore.Mvc.FromBody] NewHierarchyParams body)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanCreateHierarchy([Microsoft.AspNetCore.Mvc.FromBody] NewHierarchyParams body)
         {
             return this.implementation.CanCreateHierarchyAsync(body);
         }
@@ -668,7 +668,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Hierarchy not found</response>
         /// <returns>Update Hierarchy validation result</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("hierarchies/updateValidate")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanUpdateHierarchy([Microsoft.AspNetCore.Mvc.FromBody] UpdateHierarchyParams body)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanUpdateHierarchy([Microsoft.AspNetCore.Mvc.FromBody] UpdateHierarchyParams body)
         {
             return this.implementation.CanUpdateHierarchyAsync(body);
         }
@@ -681,7 +681,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Hierarchy not found</response>
         /// <returns>Delete Hierarchy validation result</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("hierarchies/deleteValidate")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteHierarchy(int? hierarchyId)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteHierarchy(int? hierarchyId)
         {
             return this.implementation.CanDeleteHierarchyAsync(hierarchyId);
         }
@@ -808,7 +808,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Locations not found</response>
         /// <returns>A list of locations founded using provided criteria</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocations(int? id, LocationType? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? limit, int? offset)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocations(int? id, LocationType? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? limit, int? offset)
         {
             return this.implementation.GetLocationsAsync(id, locationType, hierarchyId, locationStatuses, limit, offset);
         }
@@ -821,7 +821,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Location not found</response>
         /// <returns>The location was successfully updated.</returns>
         [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("locations")]
-            public System.Threading.Tasks.Task UpdateLocation([Microsoft.AspNetCore.Mvc.FromBody] Location body)
+        public System.Threading.Tasks.Task UpdateLocation([Microsoft.AspNetCore.Mvc.FromBody] Location body)
         {
             return this.implementation.UpdateLocationAsync(body);
         }
@@ -833,7 +833,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The new location identifier</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locations")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateLocation([Microsoft.AspNetCore.Mvc.FromBody] NewLocationParams body)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateLocation([Microsoft.AspNetCore.Mvc.FromBody] NewLocationParams body)
         {
             return this.implementation.CreateLocationAsync(body);
         }
@@ -847,7 +847,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Location not found</response>
         /// <returns>Location deletion result</returns>
         [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("locations")]
-            public System.Threading.Tasks.Task DeleteLocation(int id, LocationType locationType)
+        public System.Threading.Tasks.Task DeleteLocation(int id, LocationType locationType)
         {
             return this.implementation.DeleteLocationAsync(id, locationType);
         }
@@ -861,7 +861,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Location not found</response>
         /// <returns>A location with provided identifier</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/{locationId}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationById(int locationId, LocationType locationType)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationById(int locationId, LocationType locationType)
         {
             return this.implementation.GetLocationByIdAsync(locationId, locationType);
         }
@@ -878,7 +878,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Locations not found</response>
         /// <returns>A list of locations founded using provided criteria</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/traverse")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetTraversedLocations(int id, LocationType locationType, int hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetTraversedLocations(int id, LocationType locationType, int hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels)
         {
             return this.implementation.GetTraversedLocationsAsync(id, locationType, hierarchyId, locationStatuses, levels);
         }
@@ -890,7 +890,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Location not found</response>
         /// <returns>The location successfully moved.</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locations/move")]
-            public System.Threading.Tasks.Task MoveLocation([Microsoft.AspNetCore.Mvc.FromBody] MovingLocationParams body)
+        public System.Threading.Tasks.Task MoveLocation([Microsoft.AspNetCore.Mvc.FromBody] MovingLocationParams body)
         {
             return this.implementation.MoveLocationAsync(body);
         }
@@ -903,7 +903,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Location not found</response>
         /// <returns>Create location validation result</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locations/creationValidate")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanCreateLocation([Microsoft.AspNetCore.Mvc.FromBody] NewLocationParams body)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanCreateLocation([Microsoft.AspNetCore.Mvc.FromBody] NewLocationParams body)
         {
             return this.implementation.CanCreateLocationAsync(body);
         }
@@ -917,7 +917,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Location not found</response>
         /// <returns>Delete location validation result</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locations/deletionValidate")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocation(int id, LocationType locationType)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocation(int id, LocationType locationType)
         {
             return this.implementation.CanDeleteLocationAsync(id, locationType);
         }
@@ -1071,7 +1071,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Lists not found</response>
         /// <returns>A list of lists found using provided criteria</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<List>>> GetLists(System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<List>>> GetLists(System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters)
         {
             return this.implementation.GetListsAsync(statusFilters, productFilters);
         }
@@ -1084,7 +1084,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">List not found</response>
         /// <returns>The list was successfully updated.</returns>
         [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("lists")]
-            public System.Threading.Tasks.Task UpdateList([Microsoft.AspNetCore.Mvc.FromBody] UpdateListParams body)
+        public System.Threading.Tasks.Task UpdateList([Microsoft.AspNetCore.Mvc.FromBody] UpdateListParams body)
         {
             return this.implementation.UpdateListAsync(body);
         }
@@ -1096,7 +1096,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The new list identifier</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lists")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateList([Microsoft.AspNetCore.Mvc.FromBody] List body)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateList([Microsoft.AspNetCore.Mvc.FromBody] List body)
         {
             return this.implementation.CreateListAsync(body);
         }
@@ -1109,7 +1109,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">List not found</response>
         /// <returns>List deletion result</returns>
         [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("lists")]
-            public System.Threading.Tasks.Task DeleteList(int listId)
+        public System.Threading.Tasks.Task DeleteList(int listId)
         {
             return this.implementation.DeleteListAsync(listId);
         }
@@ -1124,7 +1124,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">List not found</response>
         /// <returns>A list with provided identifier</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/{listId}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListById(int listId, System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListById(int listId, System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters)
         {
             return this.implementation.GetListByIdAsync(listId, statusFilters, productFilters);
         }
@@ -1137,7 +1137,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">List not found</response>
         /// <returns>A list of lists found using provided criteria</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/search")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListSearch>>> GetListsByName(string listName)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListSearch>>> GetListsByName(string listName)
         {
             return this.implementation.GetListsByNameAsync(listName);
         }
@@ -1152,7 +1152,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">List item not found</response>
         /// <returns>A list of list items found using provided criteria</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/items")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItem>>> GetListItems(int? listId, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItem>>> GetListItems(int? listId, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters)
         {
             return this.implementation.GetListItemsAsync(listId, listStatusFilters, listItemStatusFilters);
         }
@@ -1165,7 +1165,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">List Item not found</response>
         /// <returns>The list item was successfully updated</returns>
         [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("lists/items")]
-            public System.Threading.Tasks.Task UpdateListItem([Microsoft.AspNetCore.Mvc.FromBody] UpdateListItemParams body)
+        public System.Threading.Tasks.Task UpdateListItem([Microsoft.AspNetCore.Mvc.FromBody] UpdateListItemParams body)
         {
             return this.implementation.UpdateListItemAsync(body);
         }
@@ -1177,7 +1177,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The new list item identifier</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lists/items")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201MultipleResponses>> CreateListItem([Microsoft.AspNetCore.Mvc.FromBody] NewListItemParams body)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201MultipleResponses>> CreateListItem([Microsoft.AspNetCore.Mvc.FromBody] NewListItemParams body)
         {
             return this.implementation.CreateListItemAsync(body);
         }
@@ -1190,7 +1190,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">List Item not found</response>
         /// <returns>List Item deletion result</returns>
         [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("lists/items")]
-            public System.Threading.Tasks.Task DeleteListItem(int listItemId)
+        public System.Threading.Tasks.Task DeleteListItem(int listItemId)
         {
             return this.implementation.DeleteListItemAsync(listItemId);
         }
@@ -1205,7 +1205,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">List Item not found</response>
         /// <returns>A list item with provided identifier</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/items/{listItemId}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ListItem>> GetListItemById(int listItemId, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ListItem>> GetListItemById(int listItemId, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters)
         {
             return this.implementation.GetListItemByIdAsync(listItemId, listStatusFilters, listItemStatusFilters);
         }
@@ -1218,7 +1218,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">List Item not found</response>
         /// <returns>A list of list items found using provided criteria</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/items/search")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItemSearch>>> GetListItemsByName(string listItemName)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItemSearch>>> GetListItemsByName(string listItemName)
         {
             return this.implementation.GetListItemsByNameAsync(listItemName);
         }
@@ -1231,7 +1231,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">List Item not found</response>
         /// <returns>The list item reorder was successfully updated</returns>
         [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("lists/items/reorder")]
-            public System.Threading.Tasks.Task ReorderListItem([Microsoft.AspNetCore.Mvc.FromBody] ReorderListItemParams body)
+        public System.Threading.Tasks.Task ReorderListItem([Microsoft.AspNetCore.Mvc.FromBody] ReorderListItemParams body)
         {
             return this.implementation.ReorderListItemAsync(body);
         }
@@ -1347,7 +1347,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Location list not found</response>
         /// <returns>A List of available location identifier for this location list</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/{listId}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LocationListAvailability>> GetLocationListAvailabilityById(int listId)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LocationListAvailability>> GetLocationListAvailabilityById(int listId)
         {
             return this.implementation.GetLocationListAvailabilityByIdAsync(listId);
         }
@@ -1361,7 +1361,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Location list not found</response>
         /// <returns>The availability was successfully updated</returns>
         [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("locationlists/{listId}")]
-            public System.Threading.Tasks.Task SetLocationListAvailability(int listId, [Microsoft.AspNetCore.Mvc.FromBody] LocationListAvailabilityDetails body)
+        public System.Threading.Tasks.Task SetLocationListAvailability(int listId, [Microsoft.AspNetCore.Mvc.FromBody] LocationListAvailabilityDetails body)
         {
             return this.implementation.SetLocationListAvailabilityAsync(listId, body);
         }
@@ -1378,7 +1378,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Location list not found</response>
         /// <returns>A list of locations with statuses founded using provided criteria</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locationlists/{listId}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListAvailabilityStructure(int listId, int locationId, LocationType locationType, int hierarchyId, int? levels)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListAvailabilityStructure(int listId, int locationId, LocationType locationType, int hierarchyId, int? levels)
         {
             return this.implementation.GetLocationListAvailabilityStructureAsync(listId, locationId, locationType, hierarchyId, levels);
         }
@@ -1392,7 +1392,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Location not found</response>
         /// <returns>A List of available location list identifier for this location</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/locations/{locationId}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<int>>> GetLocationListAvailabilityByLocationId(int locationId, LocationType locationType)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<int>>> GetLocationListAvailabilityByLocationId(int locationId, LocationType locationType)
         {
             return this.implementation.GetLocationListAvailabilityByLocationIdAsync(locationId, locationType);
         }
@@ -1405,7 +1405,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Location list item not found</response>
         /// <returns>A List of available location identifier for this location list item</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/items/{listItemId}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LocationListAvailability>> GetLocationListItemAvailabilityById(int listItemId)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LocationListAvailability>> GetLocationListItemAvailabilityById(int listItemId)
         {
             return this.implementation.GetLocationListItemAvailabilityByIdAsync(listItemId);
         }
@@ -1419,7 +1419,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Location list item not found</response>
         /// <returns>The availability was successfully updated</returns>
         [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("locationlists/items/{listItemId}")]
-            public System.Threading.Tasks.Task SetLocationListItemAvailability(int listItemId, [Microsoft.AspNetCore.Mvc.FromBody] LocationListAvailabilityDetails body)
+        public System.Threading.Tasks.Task SetLocationListItemAvailability(int listItemId, [Microsoft.AspNetCore.Mvc.FromBody] LocationListAvailabilityDetails body)
         {
             return this.implementation.SetLocationListItemAvailabilityAsync(listItemId, body);
         }
@@ -1436,7 +1436,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Location list not found</response>
         /// <returns>A list of locations with statuses founded using provided criteria</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locationlists/items/{listItemId}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListItemAvailabilityStructure(int listItemId, int locationId, LocationType locationType, int hierarchyId, int? levels)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListItemAvailabilityStructure(int listItemId, int locationId, LocationType locationType, int hierarchyId, int? levels)
         {
             return this.implementation.GetLocationListItemAvailabilityStructureAsync(listItemId, locationId, locationType, hierarchyId, levels);
         }
@@ -1451,7 +1451,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Location not found</response>
         /// <returns>A List of available location item list identifier for this location</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/items/locations/{locationId}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<int>>> GetLocationListItemAvailabilityByLocationId(int locationId, int listId, LocationType locationType)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<int>>> GetLocationListItemAvailabilityByLocationId(int locationId, int listId, LocationType locationType)
         {
             return this.implementation.GetLocationListItemAvailabilityByLocationIdAsync(locationId, listId, locationType);
         }
@@ -1598,7 +1598,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Persons not found</response>
         /// <returns>A list of persons founded using provided criteria</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Person>>> GetPersons(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Person>>> GetPersons(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder)
         {
             return this.implementation.GetPersonsAsync(employmentStatus, displayName, location, emailAddress, firstName, lastName, countryDivision, country, relationshipToCompany, contractingCompany, customerName, supervisor, startDateStart, startDateEnd, endDateStart, endDateEnd, currentPositionStartDateStart, currentPositionStartDateEnd, employeeID, currentPosition, loginAccessRequired, username, loginExpirationDateStart, loginExpirationDateEnd, contactPreference, pageNumber, pageSize, sortBy, sortOrder);
         }
@@ -1610,7 +1610,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Persons not found</response>
         /// <returns>The person was successfully updated</returns>
         [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("persons")]
-            public System.Threading.Tasks.Task UpdatePerson([Microsoft.AspNetCore.Mvc.FromBody] UpdatePersonParams body)
+        public System.Threading.Tasks.Task UpdatePerson([Microsoft.AspNetCore.Mvc.FromBody] UpdatePersonParams body)
         {
             return this.implementation.UpdatePersonAsync(body);
         }
@@ -1622,7 +1622,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Person not found</response>
         /// <returns>The new person identifier</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("persons")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreatePerson([Microsoft.AspNetCore.Mvc.FromBody] Person body)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreatePerson([Microsoft.AspNetCore.Mvc.FromBody] Person body)
         {
             return this.implementation.CreatePersonAsync(body);
         }
@@ -1635,7 +1635,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Person not found</response>
         /// <returns>Person has been deleted</returns>
         [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("persons")]
-            public System.Threading.Tasks.Task DeletePerson(int personId)
+        public System.Threading.Tasks.Task DeletePerson(int personId)
         {
             return this.implementation.DeletePersonAsync(personId);
         }
@@ -1647,7 +1647,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Person not found</response>
         /// <returns>OK</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons/{personId}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Person>> GetPersonById(int personId)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Person>> GetPersonById(int personId)
         {
             return this.implementation.GetPersonByIdAsync(personId);
         }
@@ -1659,7 +1659,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Persons not found</response>
         /// <returns>The person was successfully updated</returns>
         [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("persons/{personId}/setPassword")]
-            public System.Threading.Tasks.Task UpdatePersonsPassword(int personId, [Microsoft.AspNetCore.Mvc.FromBody] FormsAuthPasswordUpdate body)
+        public System.Threading.Tasks.Task UpdatePersonsPassword(int personId, [Microsoft.AspNetCore.Mvc.FromBody] FormsAuthPasswordUpdate body)
         {
             return this.implementation.UpdatePersonsPasswordAsync(personId, body);
         }
@@ -1673,7 +1673,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Persons not found</response>
         /// <returns>OK</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons/search/{name}")]
-            public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Person>>> GetPersonsByName(string name, int? pageNumber, int? pageSize)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Person>>> GetPersonsByName(string name, int? pageNumber, int? pageSize)
         {
             return this.implementation.GetPersonsByNameAsync(name, pageNumber, pageSize);
         }

@@ -72,6 +72,9 @@ paths:
                 $ref: '#/components/schemas/User'
         '204':
           description: The current user could not be found.
+      security : [ {
+        simple : []
+      } ]
 # Lists
   /lists:
     get:

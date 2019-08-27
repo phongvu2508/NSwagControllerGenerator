@@ -11,7 +11,7 @@ $TextInfo = (Get-Culture).TextInfo
 Get-ChildItem $schemaPath -Filter *.yaml | 
 Foreach-Object {
     $controllerName = $TextInfo.ToTitleCase($_.BaseName);
-    $controllerFileName = "Controller.cs"
+    $controllerFileName = "Controllers.cs"
     $clientFileName =  "EhsApiClient.cs"
 
     if ($controllerName -eq "InternalApi") {
