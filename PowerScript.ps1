@@ -33,15 +33,25 @@ Foreach-Object {
 
         # $clientFileName =  "EhsApiClient.cs"
 
-        $clientCommand = 'dotnet ' + $currentPath + '/nswag_dll_web/dotnet-nswag.dll swagger2csclient /input:' + $inputPath + `
+        $clientCommandWeb = 'dotnet ' + $currentPath + '/nswag_dll_web/dotnet-nswag.dll swagger2csclient /input:' + $inputPath + `
                             ' /namespace:VelocityEhs.UI.Web.Ehs.Infrastructure /ClassName:EhsApiClient /output:' + $currentPath + `
                             '/GeneratedFiles/WebAPI/' + $clientFileName + ' /UseLiquidTemplates:true /ResponseArrayType:"System.Collections.ObjectModel.Collection"' + `
                             ' /GenerateClientInterfaces:true /GenerateContractsOutput:true /ContractsNamespace:VelocityEhs.UI.Web.Ehs.Application.Contracts' + `
                             ' /ContractsOutput:' + $currentPath + '/GeneratedFiles/WebAPI/I' + $clientFileName;
     
-        Write-Host "Generating " $clientCommand " ..."
+        Write-Host "Generating " $clientCommandWeb " ..."
 
-        Invoke-Expression "$clientCommand"
+        Invoke-Expression "$clientCommandWeb"
+
+        $clientCommandMobile = 'dotnet ' + $currentPath + '/nswag_dll_web/dotnet-nswag.dll swagger2csclient /input:' + $inputPath + `
+                            ' /namespace:VelocityEhs.UI.Web.Ehs.MobileApi.EhsClient /ClassName:EhsApiClient /output:' + $currentPath + `
+                            '/GeneratedFiles/MobileAPI/' + $clientFileName + ' /UseLiquidTemplates:true /ResponseArrayType:"System.Collections.ObjectModel.Collection"' + `
+                            ' /GenerateClientInterfaces:true /GenerateContractsOutput:true /ContractsNamespace:VelocityEhs.UI.Web.Ehs.MobileApi.EhsClient.Contracts' + `
+                            ' /ContractsOutput:' + $currentPath + '/GeneratedFiles/MobileAPI/I' + $clientFileName;
+    
+        Write-Host "Generating " $clientCommandMobile " ..."
+
+        Invoke-Expression "$clientCommandMobile"
 
         $clientCommandPublic = 'dotnet ' + $currentPath + '/nswag_dll_web/dotnet-nswag.dll swagger2csclient /input:' + $inputPath + `
                                 ' /namespace:VelocityEhs.Service.PublicApi.Ehs.Infrastructure /ClassName:EhsApiClient /output:' + $currentPath + `

@@ -60,19 +60,6 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateAccountAsync(Account body, System.Threading.CancellationToken cancellationToken);
     
-        /// <summary>Get an account by the account id</summary>
-        /// <param name="accountId">The account id</param>
-        /// <returns>The account</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Account>> GetAccountByIdAsync(int? accountId);
-    
-        /// <summary>Get an account by the account id</summary>
-        /// <param name="accountId">The account id</param>
-        /// <returns>The account</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Account>> GetAccountByIdAsync(int? accountId, System.Threading.CancellationToken cancellationToken);
-    
         /// <summary>Gets the basic user information for an accounts user.</summary>
         /// <param name="username">Username of the person</param>
         /// <param name="emailAddress">Email address of the person</param>
@@ -89,6 +76,98 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfoAsync(string username, string emailAddress, string phoneNumber, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get an account by the account id</summary>
+        /// <returns>The account</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Account>> GetAccountByIdAsync();
+    
+        /// <summary>Get an account by the account id</summary>
+        /// <returns>The account</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Account>> GetAccountByIdAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Gets the personalization information for an account.</summary>
+        /// <returns>The personalization of the account that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetAccountPersonalizationAsync();
+    
+        /// <summary>Gets the personalization information for an account.</summary>
+        /// <returns>The personalization of the account that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetAccountPersonalizationAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Updates a personalization based on account id</summary>
+        /// <returns>The account was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateAccountPersonalizationAsync(UpdatePersonalization body);
+    
+        /// <summary>Updates a personalization based on account id</summary>
+        /// <returns>The account was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateAccountPersonalizationAsync(UpdatePersonalization body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get an account currency list</summary>
+        /// <returns>The currency list of the account that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Currency>>> GetAccountCurrencyListAsync();
+    
+        /// <summary>Get an account currency list</summary>
+        /// <returns>The currency list of the account that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Currency>>> GetAccountCurrencyListAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Update an account currency list</summary>
+        /// <param name="body">The updated account currency list</param>
+        /// <returns>The account was successfully updated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateAccountCurrencyListAsync(UpdateAccountCurrencyList body);
+    
+        /// <summary>Update an account currency list</summary>
+        /// <param name="body">The updated account currency list</param>
+        /// <returns>The account was successfully updated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateAccountCurrencyListAsync(UpdateAccountCurrencyList body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get an account country list</summary>
+        /// <returns>The country list of the account that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Country>>> GetAccountCountryListAsync();
+    
+        /// <summary>Get an account country list</summary>
+        /// <returns>The country list of the account that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Country>>> GetAccountCountryListAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Update an account country list</summary>
+        /// <param name="body">The updated account country list</param>
+        /// <returns>The account was successfully updated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateAccountCountryListAsync(UpdateAccountCountryList body);
+    
+        /// <summary>Update an account country list</summary>
+        /// <param name="body">The updated account country list</param>
+        /// <returns>The account was successfully updated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateAccountCountryListAsync(UpdateAccountCountryList body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get an account language list</summary>
+        /// <returns>The country list of the account that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Language>>> GetAccountLanguagesAsync();
+    
+        /// <summary>Get an account language list</summary>
+        /// <returns>The country list of the account that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Language>>> GetAccountLanguagesAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Gets the authentication methods for the account.</summary>
         /// <param name="accountId">The account id</param>
@@ -151,6 +230,30 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPasswordAsync(FormsAuthPasswordChangeRequest body, System.Threading.CancellationToken cancellationToken);
     
+        /// <summary>Adds jti to a black list.</summary>
+        /// <returns>The blacklist item was successfully added.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task BlacklistAsync(FormsAuthBlacklistRequest body);
+    
+        /// <summary>Adds jti to a black list.</summary>
+        /// <returns>The blacklist item was successfully added.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task BlacklistAsync(FormsAuthBlacklistRequest body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Checks the jti to see if it is blacklisted</summary>
+        /// <param name="id">The SSO Identity Provider id</param>
+        /// <returns>The BlackList Return Object</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthBlacklistResponse>> GetJTIFromBlacklistAsync(System.Guid id);
+    
+        /// <summary>Checks the jti to see if it is blacklisted</summary>
+        /// <param name="id">The SSO Identity Provider id</param>
+        /// <returns>The BlackList Return Object</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthBlacklistResponse>> GetJTIFromBlacklistAsync(System.Guid id, System.Threading.CancellationToken cancellationToken);
+    
         /// <summary>Gets the password rules for the account.</summary>
         /// <returns>The password rules for the account.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -185,6 +288,19 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task DeletePasswordRuleAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get a list of SSO Identity Providers</summary>
+        /// <param name="trustName">The trust name of the identity providers to get.</param>
+        /// <returns>The SSO Identity Providers</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<SsoIdentityProvider>>> GetSsoIdpAsync(string trustName);
+    
+        /// <summary>Get a list of SSO Identity Providers</summary>
+        /// <param name="trustName">The trust name of the identity providers to get.</param>
+        /// <returns>The SSO Identity Providers</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<SsoIdentityProvider>>> GetSsoIdpAsync(string trustName, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update an existing SSO Identity Provider.</summary>
         /// <param name="body">The updated SSO Identity Provider object</param>
@@ -225,41 +341,54 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
     
-        /// <summary>Update existing account</summary>
-        /// <param name="body">The updated account object</param>
+        /// <summary>Get a list of SSO Service Providers</summary>
+        /// <param name="velocityServiceProvidersOnly">Whether to only include VelocityEHS service providers.</param>
+        /// <returns>The list of SSO Service Providers</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<SsoServiceProvider>>> GetSsoSpAsync(bool? velocityServiceProvidersOnly);
+    
+        /// <summary>Get a list of SSO Service Providers</summary>
+        /// <param name="velocityServiceProvidersOnly">Whether to only include VelocityEHS service providers.</param>
+        /// <returns>The list of SSO Service Providers</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<SsoServiceProvider>>> GetSsoSpAsync(bool? velocityServiceProvidersOnly, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Update existing SSO Service Provider</summary>
+        /// <param name="body">The updated SSO Service Provider object</param>
         /// <returns>The hierarchy was successfully updated.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateSsoSpAsync(SsoServiceProvider body);
     
-        /// <summary>Update existing account</summary>
-        /// <param name="body">The updated account object</param>
+        /// <summary>Update existing SSO Service Provider</summary>
+        /// <param name="body">The updated SSO Service Provider object</param>
         /// <returns>The hierarchy was successfully updated.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task UpdateSsoSpAsync(SsoServiceProvider body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Create a new SSO Identity Provider</summary>
-        /// <param name="body">The new account schema</param>
+        /// <param name="body">The new SSO Service Provider schema</param>
         /// <returns>The new hierarchy identifier</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateSsoSpAsync(SsoServiceProvider body);
     
         /// <summary>Create a new SSO Identity Provider</summary>
-        /// <param name="body">The new account schema</param>
+        /// <param name="body">The new SSO Service Provider schema</param>
         /// <returns>The new hierarchy identifier</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateSsoSpAsync(SsoServiceProvider body, System.Threading.CancellationToken cancellationToken);
     
-        /// <summary>Get an account by the account id</summary>
-        /// <param name="id">The account id</param>
-        /// <returns>The account</returns>
+        /// <summary>Get a SSO Service Provider by the id</summary>
+        /// <param name="id">The SSO Service Provider id</param>
+        /// <returns>The SSO Service Provider</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpByIdAsync(int id);
     
-        /// <summary>Get an account by the account id</summary>
-        /// <param name="id">The account id</param>
-        /// <returns>The account</returns>
+        /// <summary>Get a SSO Service Provider by the id</summary>
+        /// <param name="id">The SSO Service Provider id</param>
+        /// <returns>The SSO Service Provider</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
@@ -278,17 +407,86 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<IdentityVerification>> RequestAuthVerificationCodeAsync(DeliveryMethod? deliveryMethod, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Verifies a code for multi-factor authentication.</summary>
-        /// <param name="body">The new account schema</param>
+        /// <param name="body">The identity verification information</param>
         /// <returns>Verification code successfully validated.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task VerifyAuthVerificationCodeAsync(IdentityVerification body);
     
         /// <summary>Verifies a code for multi-factor authentication.</summary>
-        /// <param name="body">The new account schema</param>
+        /// <param name="body">The identity verification information</param>
         /// <returns>Verification code successfully validated.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task VerifyAuthVerificationCodeAsync(IdentityVerification body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Validates Password based on account, person and password rules</summary>
+        /// <param name="password">password to be passed in</param>
+        /// <returns>Password validation result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePasswordAsync(string password);
+    
+        /// <summary>Validates Password based on account, person and password rules</summary>
+        /// <param name="password">password to be passed in</param>
+        /// <returns>Password validation result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePasswordAsync(string password, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get the product configuration summary</summary>
+        /// <returns>The product configuration summary</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductConfigSummaryAsync();
+    
+        /// <summary>Get the product configuration summary</summary>
+        /// <returns>The product configuration summary</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductConfigSummaryAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get the workflow configuration for a state</summary>
+        /// <param name="category">The name of the category to get the workflow configuration for.</param>
+        /// <param name="state">The name of the state to get the workflow configuration for.</param>
+        /// <returns>The state's workflow configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigByNameAsync(string category, string state);
+    
+        /// <summary>Get the workflow configuration for a state</summary>
+        /// <param name="category">The name of the category to get the workflow configuration for.</param>
+        /// <param name="state">The name of the state to get the workflow configuration for.</param>
+        /// <returns>The state's workflow configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigByNameAsync(string category, string state, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get the workflow configuration for a state</summary>
+        /// <param name="categoryId">The id of the category to get the workflow configuration for.</param>
+        /// <param name="stateId">The id of the state to get the workflow configuration for.</param>
+        /// <returns>The state's workflow configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigRawAsync(int categoryId, int stateId);
+    
+        /// <summary>Get the workflow configuration for a state</summary>
+        /// <param name="categoryId">The id of the category to get the workflow configuration for.</param>
+        /// <param name="stateId">The id of the state to get the workflow configuration for.</param>
+        /// <returns>The state's workflow configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigRawAsync(int categoryId, int stateId, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get the workflow configurations summaries</summary>
+        /// <param name="productId">The id of the product to get the workflow config summary for.</param>
+        /// <param name="lastModified">Only include configurations that have changed since this date.</param>
+        /// <returns>The state's workflow configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetWorkflowConfigsSummaryAsync(int? productId, System.DateTimeOffset? lastModified);
+    
+        /// <summary>Get the workflow configurations summaries</summary>
+        /// <param name="productId">The id of the product to get the workflow config summary for.</param>
+        /// <param name="lastModified">Only include configurations that have changed since this date.</param>
+        /// <returns>The state's workflow configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetWorkflowConfigsSummaryAsync(int? productId, System.DateTimeOffset? lastModified, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Return a list all Hierarchies</summary>
         /// <returns>A list of Hierarchies</returns>
@@ -392,6 +590,101 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteHierarchyAsync(int? hierarchyId, System.Threading.CancellationToken cancellationToken);
     
+        /// <summary>Add translations into Database received from The Translation Tool</summary>
+        /// <returns>The translation requests were successfully created. The reason why reponse 204 returned instead of 201 because we are not returning any Id for this API.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetTranslationsAsync(SetTranslation body);
+    
+        /// <summary>Add translations into Database received from The Translation Tool</summary>
+        /// <returns>The translation requests were successfully created. The reason why reponse 204 returned instead of 201 because we are not returning any Id for this API.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task SetTranslationsAsync(SetTranslation body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get Translation Requests by params</summary>
+        /// <param name="fromDate">Start date of range for getTranslationRequests</param>
+        /// <param name="toDate">End date of range for getTranslationRequests</param>
+        /// <returns>A list of translation requests founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<TranslationRequest>>> GetTranslationRequestsAsync(System.DateTimeOffset? fromDate, System.DateTimeOffset? toDate);
+    
+        /// <summary>Get Translation Requests by params</summary>
+        /// <param name="fromDate">Start date of range for getTranslationRequests</param>
+        /// <param name="toDate">End date of range for getTranslationRequests</param>
+        /// <returns>A list of translation requests founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<TranslationRequest>>> GetTranslationRequestsAsync(System.DateTimeOffset? fromDate, System.DateTimeOffset? toDate, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Updates a sent based on translation requests</summary>
+        /// <returns>The translation requests were successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateSentTranslationRequestsAsync(UpdateSentTranslationRequests body);
+    
+        /// <summary>Updates a sent based on translation requests</summary>
+        /// <returns>The translation requests were successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateSentTranslationRequestsAsync(UpdateSentTranslationRequests body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Create machine translation request</summary>
+        /// <param name="body">The new translation schema</param>
+        /// <returns>The new translation identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateMachineTranslationRequestAsync(MachineTranslation body);
+    
+        /// <summary>Create machine translation request</summary>
+        /// <param name="body">The new translation schema</param>
+        /// <returns>The new translation identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateMachineTranslationRequestAsync(MachineTranslation body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get UnitSystem Conversion Rate</summary>
+        /// <param name="fromUnitId">Original Id of Unit</param>
+        /// <param name="fromUnitValue">Original Value of Unit</param>
+        /// <param name="toUnitSystemId">Converted Id of Unit System</param>
+        /// <returns>A Conversion value founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<UnitSystem>> GetUnitSystemConversionAsync(int? fromUnitId, double? fromUnitValue, int? toUnitSystemId);
+    
+        /// <summary>Get UnitSystem Conversion Rate</summary>
+        /// <param name="fromUnitId">Original Id of Unit</param>
+        /// <param name="fromUnitValue">Original Value of Unit</param>
+        /// <param name="toUnitSystemId">Converted Id of Unit System</param>
+        /// <returns>A Conversion value founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<UnitSystem>> GetUnitSystemConversionAsync(int? fromUnitId, double? fromUnitValue, int? toUnitSystemId, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get Currency Conversion Rate</summary>
+        /// <param name="fromCurrencyId">Id of original currency</param>
+        /// <param name="toCurrencyId">Id of converting currency</param>
+        /// <param name="year">Year of the conversion</param>
+        /// <returns>A conversion rate founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Currency>> GetCurrencyConversionRateAsync(int? fromCurrencyId, int? toCurrencyId, int? year);
+    
+        /// <summary>Get Currency Conversion Rate</summary>
+        /// <param name="fromCurrencyId">Id of original currency</param>
+        /// <param name="toCurrencyId">Id of converting currency</param>
+        /// <param name="year">Year of the conversion</param>
+        /// <returns>A conversion rate founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Currency>> GetCurrencyConversionRateAsync(int? fromCurrencyId, int? toCurrencyId, int? year, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get Currency list by searching</summary>
+        /// <returns>A currency list founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Currency>>> GetCurrencyForSearchAsync(string searchText);
+    
+        /// <summary>Get Currency list by searching</summary>
+        /// <returns>A currency list founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Currency>>> GetCurrencyForSearchAsync(string searchText, System.Threading.CancellationToken cancellationToken);
+    
         /// <summary>Search for locations by params</summary>
         /// <param name="id">The location identifier</param>
         /// <param name="locationType">The location type</param>
@@ -471,6 +764,25 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationByIdAsync(int locationId, LocationType locationType, System.Threading.CancellationToken cancellationToken);
     
+        /// <summary>Get locations by location name</summary>
+        /// <param name="locationName">The location name</param>
+        /// <param name="hierarchyId">The hierarchy identifier</param>
+        /// <param name="locationTypes">The array of selected location types</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <returns>A list of locations founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationsByNameAsync(string locationName, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationType> locationTypes, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses);
+    
+        /// <summary>Get locations by location name</summary>
+        /// <param name="locationName">The location name</param>
+        /// <param name="hierarchyId">The hierarchy identifier</param>
+        /// <param name="locationTypes">The array of selected location types</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <returns>A list of locations founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationsByNameAsync(string locationName, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationType> locationTypes, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, System.Threading.CancellationToken cancellationToken);
+    
         /// <summary>Get locations by traverse the location tree</summary>
         /// <param name="id">The location identifier</param>
         /// <param name="locationType">The location type</param>
@@ -491,6 +803,57 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetTraversedLocationsAsync(int id, LocationType locationType, int hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get immediate child locations or location groups</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationTypes">The array of selected types</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <returns>A list of locations founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetChildLocationsAsync(int id, System.Collections.Generic.IEnumerable<LocationType> locationTypes, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses);
+    
+        /// <summary>Get immediate child locations or location groups</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationTypes">The array of selected types</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <returns>A list of locations founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetChildLocationsAsync(int id, System.Collections.Generic.IEnumerable<LocationType> locationTypes, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get child locations count</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <returns>A count of locations found using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<int>> GetChildLocationsCountAsync(int id, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels);
+    
+        /// <summary>Get child locations count</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <returns>A count of locations found using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<int>> GetChildLocationsCountAsync(int id, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get child location groups count</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <returns>A count of locations found using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<int>> GetChildLocationGroupsCountAsync(int id, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels);
+    
+        /// <summary>Get child location groups count</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <returns>A count of locations found using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<int>> GetChildLocationGroupsCountAsync(int id, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Move location and all children under another location group</summary>
         /// <returns>The location successfully moved.</returns>
@@ -587,20 +950,16 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
     
         /// <summary>Get a list by list id</summary>
         /// <param name="listId">The list to be returned</param>
-        /// <param name="statusFilters">The array of selected statuses to include</param>
-        /// <param name="productFilters">The array of selected products to include</param>
         /// <returns>A list with provided identifier</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId, System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId);
     
         /// <summary>Get a list by list id</summary>
         /// <param name="listId">The list to be returned</param>
-        /// <param name="statusFilters">The array of selected statuses to include</param>
-        /// <param name="productFilters">The array of selected products to include</param>
         /// <returns>A list with provided identifier</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId, System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get lists by list name</summary>
         /// <param name="listName">The lists to be returned</param>
@@ -673,20 +1032,16 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
     
         /// <summary>Get a list item by list item id</summary>
         /// <param name="listItemId">The list item to be returned</param>
-        /// <param name="listStatusFilters">The array of selected statuses lists to include</param>
-        /// <param name="listItemStatusFilters">The array of selected statuses list items to include</param>
         /// <returns>A list item with provided identifier</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ListItem>> GetListItemByIdAsync(int listItemId, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ListItem>> GetListItemByIdAsync(int listItemId);
     
         /// <summary>Get a list item by list item id</summary>
         /// <param name="listItemId">The list item to be returned</param>
-        /// <param name="listStatusFilters">The array of selected statuses lists to include</param>
-        /// <param name="listItemStatusFilters">The array of selected statuses list items to include</param>
         /// <returns>A list item with provided identifier</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ListItem>> GetListItemByIdAsync(int listItemId, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ListItem>> GetListItemByIdAsync(int listItemId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get list items by list item name</summary>
         /// <param name="listItemName">The list items to be returned</param>
@@ -844,6 +1199,45 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<int>>> GetLocationListItemAvailabilityByLocationIdAsync(int locationId, int listId, LocationType locationType, System.Threading.CancellationToken cancellationToken);
     
+        /// <summary>Insert a white listed mobile access token</summary>
+        /// <param name="body">The token to be persisted</param>
+        /// <returns>token is successfully inserted for user</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task InsertMobileTokenAsync(AddSessionTokenRequest body);
+    
+        /// <summary>Insert a white listed mobile access token</summary>
+        /// <param name="body">The token to be persisted</param>
+        /// <returns>token is successfully inserted for user</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task InsertMobileTokenAsync(AddSessionTokenRequest body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Perform a check to determine whether token is still valid</summary>
+        /// <param name="body">Provides information about the token to be verified</param>
+        /// <returns>token in question is still valid</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task VerifyMobileTokenAsync(SessionToken body);
+    
+        /// <summary>Perform a check to determine whether token is still valid</summary>
+        /// <param name="body">Provides information about the token to be verified</param>
+        /// <returns>token in question is still valid</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task VerifyMobileTokenAsync(SessionToken body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Perform a log out from mobile device</summary>
+        /// <param name="body">The token to be removed</param>
+        /// <returns>token is removed successfully</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RemoveMobileTokenAsync(SessionToken body);
+    
+        /// <summary>Perform a log out from mobile device</summary>
+        /// <param name="body">The token to be removed</param>
+        /// <returns>token is removed successfully</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task RemoveMobileTokenAsync(SessionToken body, System.Threading.CancellationToken cancellationToken);
+    
         /// <summary>Search for persons by params</summary>
         /// <param name="employmentStatus">Status of the person ( active = 11, inactive = 12 )</param>
         /// <param name="displayName">Display Name of the Person</param>
@@ -970,6 +1364,28 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task UpdatePersonsPasswordAsync(int personId, FormsAuthPasswordUpdate body, System.Threading.CancellationToken cancellationToken);
     
+        /// <summary>Returns the person's personalization based on person id</summary>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalizationAsync(int personId);
+    
+        /// <summary>Returns the person's personalization based on person id</summary>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalizationAsync(int personId, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Updates a personalization based on person id</summary>
+        /// <returns>The person was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdatePersonPersonalizationAsync(int personId, UpdatePersonalization body);
+    
+        /// <summary>Updates a personalization based on person id</summary>
+        /// <returns>The person was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdatePersonPersonalizationAsync(int personId, UpdatePersonalization body, System.Threading.CancellationToken cancellationToken);
+    
         /// <summary>Returns persons based on name</summary>
         /// <param name="pageNumber">Page Number of the Person</param>
         /// <param name="pageSize">Page Size of the Person</param>
@@ -990,24 +1406,56 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class BadRequestError 
+    public partial class RequestError 
     {
         /// <summary>The error code if existed</summary>
-        [Newtonsoft.Json.JsonProperty("errorCode", Required = Newtonsoft.Json.Required.Always)]
-        public int ErrorCode { get; set; }
+        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Always)]
+        public int Code { get; set; }
     
-        /// <summary>The error messages</summary>
-        [Newtonsoft.Json.JsonProperty("errorMessages", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<string> ErrorMessages { get; set; }
+        /// <summary>The error message</summary>
+        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Message { get; set; }
+    
+        /// <summary>the array of nested detail errors</summary>
+        [Newtonsoft.Json.JsonProperty("errors", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<RequestErrorDetail> Errors { get; set; }
     
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static BadRequestError FromJson(string data)
+        public static RequestError FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<BadRequestError>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class RequestErrorDetail 
+    {
+        /// <summary>The error code if existed</summary>
+        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Code { get; set; }
+    
+        /// <summary>The error name / attribute name</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>The error message</summary>
+        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Message { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static RequestErrorDetail FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RequestErrorDetail>(data);
         }
     
     }
@@ -1086,6 +1534,10 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("enableTwoFactorAuthentication", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? EnableTwoFactorAuthentication { get; set; }
     
+        /// <summary>Whether the machine translation is allowed.</summary>
+        [Newtonsoft.Json.JsonProperty("disableMachineTranslations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DisableMachineTranslations { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -1129,6 +1581,82 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         public static AccountUser FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<AccountUser>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdateAccountCurrencyList 
+    {
+        /// <summary>list of currency Id list to add</summary>
+        [Newtonsoft.Json.JsonProperty("addCurrencyIdList", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> AddCurrencyIdList { get; set; }
+    
+        /// <summary>list of currency Id list to delete</summary>
+        [Newtonsoft.Json.JsonProperty("deleteCurrencyIdList", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> DeleteCurrencyIdList { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdateAccountCurrencyList FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateAccountCurrencyList>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdateAccountCountryList 
+    {
+        /// <summary>list of country Id list to add</summary>
+        [Newtonsoft.Json.JsonProperty("addCountryIdList", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> AddCountryIdList { get; set; }
+    
+        /// <summary>list of country Id list to delete</summary>
+        [Newtonsoft.Json.JsonProperty("deleteCountryIdList", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> DeleteCountryIdList { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdateAccountCountryList FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateAccountCountryList>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Language 
+    {
+        [Newtonsoft.Json.JsonProperty("languageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LanguageId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("languageCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string LanguageCode { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("languageName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string LanguageName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("nativeLanguage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string NativeLanguage { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("defaultLanguage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DefaultLanguage { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Language FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Language>(data);
         }
     
     }
@@ -1230,6 +1758,49 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormsAuthBlacklistRequest 
+    {
+        /// <summary>The id of the json web token</summary>
+        [Newtonsoft.Json.JsonProperty("jti", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid Jti { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("expirydate", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTimeOffset Expirydate { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormsAuthBlacklistRequest FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthBlacklistRequest>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormsAuthBlacklistResponse 
+    {
+        /// <summary>The boolean value whether the jti exists</summary>
+        [Newtonsoft.Json.JsonProperty("blacklistresponsecode", Required = Newtonsoft.Json.Required.Always)]
+        public bool Blacklistresponsecode { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormsAuthBlacklistResponse FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthBlacklistResponse>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class FormsAuthPasswordRule 
     {
         /// <summary>The id of the password rule.</summary>
@@ -1295,6 +1866,10 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <summary>Whether the user required additional identity verification.</summary>
         [Newtonsoft.Json.JsonProperty("identityVerificationRequired", Required = Newtonsoft.Json.Required.Always)]
         public bool IdentityVerificationRequired { get; set; }
+    
+        /// <summary>Whether the user is locked</summary>
+        [Newtonsoft.Json.JsonProperty("isLocked", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsLocked { get; set; }
     
         public string ToJson() 
         {
@@ -1502,6 +2077,78 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class SessionToken 
+    {
+        /// <summary>Token to store</summary>
+        [Newtonsoft.Json.JsonProperty("token", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Token { get; set; }
+    
+        /// <summary>Date and time the token was issued</summary>
+        [Newtonsoft.Json.JsonProperty("issued", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? Issued { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static SessionToken FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SessionToken>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class AddSessionTokenRequest 
+    {
+        /// <summary>PersonId associated with the token</summary>
+        [Newtonsoft.Json.JsonProperty("userId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int UserId { get; set; }
+    
+        /// <summary>Token to store</summary>
+        [Newtonsoft.Json.JsonProperty("token", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Token { get; set; }
+    
+        /// <summary>Date and time the token was issued</summary>
+        [Newtonsoft.Json.JsonProperty("issued", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? Issued { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static AddSessionTokenRequest FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<AddSessionTokenRequest>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class PasswordValidationResult 
+    {
+        /// <summary>Token to store</summary>
+        [Newtonsoft.Json.JsonProperty("isvalid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool Isvalid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("unfollowedrules", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<FormsAuthPasswordRule> Unfollowedrules { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static PasswordValidationResult FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PasswordValidationResult>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Hierarchy 
     {
         /// <summary>The Hierarchy name</summary>
@@ -1580,6 +2227,390 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class TranslationRequest 
+    {
+        /// <summary>Id of Translation Requested</summary>
+        [Newtonsoft.Json.JsonProperty("translationRequestId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TranslationRequestId { get; set; }
+    
+        /// <summary>Unique Id of Account</summary>
+        [Newtonsoft.Json.JsonProperty("accountId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string AccountId { get; set; }
+    
+        /// <summary>Id of Text Type</summary>
+        [Newtonsoft.Json.JsonProperty("textTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TextTypeId { get; set; }
+    
+        /// <summary>Id of Text</summary>
+        [Newtonsoft.Json.JsonProperty("textId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TextId { get; set; }
+    
+        /// <summary>Name of Column</summary>
+        [Newtonsoft.Json.JsonProperty("columnName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ColumnName { get; set; }
+    
+        /// <summary>Original Text</summary>
+        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Text { get; set; }
+    
+        /// <summary>Description of the text</summary>
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        /// <summary>Max length of the text</summary>
+        [Newtonsoft.Json.JsonProperty("maxLength", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaxLength { get; set; }
+    
+        /// <summary>Id of the language</summary>
+        [Newtonsoft.Json.JsonProperty("languageID", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LanguageID { get; set; }
+    
+        /// <summary>Identifier of Language</summary>
+        [Newtonsoft.Json.JsonProperty("languageIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string LanguageIdentifier { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static TranslationRequest FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<TranslationRequest>(data);
+        }
+    
+    }
+    
+    /// <summary>The properties name for the SetTranslation is with Capital letter because these are properties of Json which need to be able to read from DB</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class SetTranslation 
+    {
+        /// <summary>Unique Id of Account</summary>
+        [Newtonsoft.Json.JsonProperty("AccountID", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string AccountID { get; set; }
+    
+        /// <summary>Id of Text Type</summary>
+        [Newtonsoft.Json.JsonProperty("TextTypeID", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TextTypeID { get; set; }
+    
+        /// <summary>Id of Text</summary>
+        [Newtonsoft.Json.JsonProperty("TextID", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TextID { get; set; }
+    
+        /// <summary>Name of Column</summary>
+        [Newtonsoft.Json.JsonProperty("ColumnName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ColumnName { get; set; }
+    
+        /// <summary>Id of the Language</summary>
+        [Newtonsoft.Json.JsonProperty("LanguageID", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LanguageID { get; set; }
+    
+        /// <summary>Translated Text</summary>
+        [Newtonsoft.Json.JsonProperty("TranslatedText", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TranslatedText { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static SetTranslation FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SetTranslation>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class MachineTranslation 
+    {
+        /// <summary>Unique Id of account</summary>
+        [Newtonsoft.Json.JsonProperty("accountId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? AccountId { get; set; }
+    
+        /// <summary>Unique Id of person</summary>
+        [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PersonId { get; set; }
+    
+        /// <summary>Original Language</summary>
+        [Newtonsoft.Json.JsonProperty("originalLanguage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string OriginalLanguage { get; set; }
+    
+        /// <summary>Id of Translated Language</summary>
+        [Newtonsoft.Json.JsonProperty("translatedLanguageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TranslatedLanguageId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static MachineTranslation FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<MachineTranslation>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdateSentTranslationRequests 
+    {
+        /// <summary>List of Id of translation Requested</summary>
+        [Newtonsoft.Json.JsonProperty("translationRequestIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> TranslationRequestIds { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdateSentTranslationRequests FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateSentTranslationRequests>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Currency 
+    {
+        /// <summary>Currency Id</summary>
+        [Newtonsoft.Json.JsonProperty("currencyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CurrencyId { get; set; }
+    
+        /// <summary>Currency Code</summary>
+        [Newtonsoft.Json.JsonProperty("currencyCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CurrencyCode { get; set; }
+    
+        /// <summary>Currency Description</summary>
+        [Newtonsoft.Json.JsonProperty("currencyDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CurrencyDescription { get; set; }
+    
+        /// <summary>Currency Display String</summary>
+        [Newtonsoft.Json.JsonProperty("currencyDisplayString", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CurrencyDisplayString { get; set; }
+    
+        /// <summary>Default Currency</summary>
+        [Newtonsoft.Json.JsonProperty("defaultCurrency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DefaultCurrency { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Currency FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Currency>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Country 
+    {
+        /// <summary>Currency Id</summary>
+        [Newtonsoft.Json.JsonProperty("countryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CountryId { get; set; }
+    
+        /// <summary>Currency Code</summary>
+        [Newtonsoft.Json.JsonProperty("commonCountryName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CommonCountryName { get; set; }
+    
+        /// <summary>Currency Description</summary>
+        [Newtonsoft.Json.JsonProperty("formalCountryName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string FormalCountryName { get; set; }
+    
+        /// <summary>Default Currency</summary>
+        [Newtonsoft.Json.JsonProperty("nativeCountryName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string NativeCountryName { get; set; }
+    
+        /// <summary>Default Currency</summary>
+        [Newtonsoft.Json.JsonProperty("iSOCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ISOCode { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Country FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Country>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UnitSystem 
+    {
+        /// <summary>Output of Unit value</summary>
+        [Newtonsoft.Json.JsonProperty("toUnitValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? ToUnitValue { get; set; }
+    
+        /// <summary>Output of Unit id</summary>
+        [Newtonsoft.Json.JsonProperty("toUnitId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? ToUnitId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UnitSystem FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UnitSystem>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Personalization 
+    {
+        /// <summary>The unique account id</summary>
+        [Newtonsoft.Json.JsonProperty("accountId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? AccountId { get; set; }
+    
+        /// <summary>The unique person id</summary>
+        [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PersonId { get; set; }
+    
+        /// <summary>The Preference of dateFormat language id</summary>
+        [Newtonsoft.Json.JsonProperty("languageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LanguageId { get; set; }
+    
+        /// <summary>The dateFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("dateFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DateFormat { get; set; }
+    
+        /// <summary>The Preference of dateFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("dateFormatUserPreference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DateFormatUserPreference { get; set; }
+    
+        /// <summary>The numberFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("numberFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string NumberFormat { get; set; }
+    
+        /// <summary>The Preference of numberFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("numberFormatUserPreference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NumberFormatUserPreference { get; set; }
+    
+        /// <summary>The timeFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("timeFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TimeFormat { get; set; }
+    
+        /// <summary>The Preference of timeFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("timeFormatUserPreference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TimeFormatUserPreference { get; set; }
+    
+        /// <summary>Time zone Id for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TimeZoneId { get; set; }
+    
+        /// <summary>The timeZoneName for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TimeZoneName { get; set; }
+    
+        /// <summary>The timeZoneOffset for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneOffset", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? TimeZoneOffset { get; set; }
+    
+        /// <summary>Currency Id for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("currencyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CurrencyId { get; set; }
+    
+        /// <summary>The currencyCode for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("currencyCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CurrencyCode { get; set; }
+    
+        /// <summary>unitSystem Id for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("unitSystemId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? UnitSystemId { get; set; }
+    
+        /// <summary>unitSystem for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("unitSystem", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string UnitSystem { get; set; }
+    
+        /// <summary>The Preference of unitSystem for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("unitSystemUserPreference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? UnitSystemUserPreference { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Personalization FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Personalization>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdatePersonalization 
+    {
+        /// <summary>The unique person id</summary>
+        [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PersonId { get; set; }
+    
+        /// <summary>The Preference of dateFormat language id</summary>
+        [Newtonsoft.Json.JsonProperty("languageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LanguageId { get; set; }
+    
+        /// <summary>The dateFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("dateFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DateFormat { get; set; }
+    
+        /// <summary>The Preference of dateFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("dateFormatUserPreference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DateFormatUserPreference { get; set; }
+    
+        /// <summary>The numberFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("numberFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string NumberFormat { get; set; }
+    
+        /// <summary>The Preference of numberFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("numberFormatUserPreference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NumberFormatUserPreference { get; set; }
+    
+        /// <summary>The timeFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("timeFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TimeFormat { get; set; }
+    
+        /// <summary>The Preference of timeFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("timeFormatUserPreference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TimeFormatUserPreference { get; set; }
+    
+        /// <summary>Time zone Id for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TimeZoneId { get; set; }
+    
+        /// <summary>Currency Id for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("currencyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CurrencyId { get; set; }
+    
+        /// <summary>unitSystem Id for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("unitSystemId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? UnitSystemId { get; set; }
+    
+        /// <summary>The Preference of unitSystem for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("unitSystemUserPreference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? UnitSystemUserPreference { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdatePersonalization FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdatePersonalization>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Location 
     {
         /// <summary>The location identifier</summary>
@@ -1607,9 +2638,49 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("hierarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? HierarchyId { get; set; }
     
+        /// <summary>The location path</summary>
+        [Newtonsoft.Json.JsonProperty("paths", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Paths { get; set; }
+    
         /// <summary>The available status for Location List</summary>
         [Newtonsoft.Json.JsonProperty("isAvailable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? IsAvailable { get; set; }
+    
+        /// <summary>The SIC code</summary>
+        [Newtonsoft.Json.JsonProperty("sicCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SicCode { get; set; }
+    
+        /// <summary>The NAICS code</summary>
+        [Newtonsoft.Json.JsonProperty("naicsCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? NaicsCode { get; set; }
+    
+        /// <summary>The OSHA Establishment Name</summary>
+        [Newtonsoft.Json.JsonProperty("oshaEstablishmentName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string OshaEstablishmentName { get; set; }
+    
+        /// <summary>The OSHA establishment type identifier</summary>
+        [Newtonsoft.Json.JsonProperty("oshaEstablishmentTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? OshaEstablishmentTypeId { get; set; }
+    
+        /// <summary>The street address</summary>
+        [Newtonsoft.Json.JsonProperty("streetAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string StreetAddress { get; set; }
+    
+        /// <summary>The city name</summary>
+        [Newtonsoft.Json.JsonProperty("city", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string City { get; set; }
+    
+        /// <summary>The zip code</summary>
+        [Newtonsoft.Json.JsonProperty("zipCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ZipCode { get; set; }
+    
+        /// <summary>The state identifier</summary>
+        [Newtonsoft.Json.JsonProperty("stateId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StateId { get; set; }
+    
+        /// <summary>The industry description</summary>
+        [Newtonsoft.Json.JsonProperty("industryDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string IndustryDescription { get; set; }
     
         public string ToJson() 
         {
@@ -1675,6 +2746,42 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         /// <summary>The hierarchy identifier</summary>
         [Newtonsoft.Json.JsonProperty("hierarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? HierarchyId { get; set; }
+    
+        /// <summary>The SIC code</summary>
+        [Newtonsoft.Json.JsonProperty("sicCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SicCode { get; set; }
+    
+        /// <summary>The NAICS code</summary>
+        [Newtonsoft.Json.JsonProperty("naicsCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? NaicsCode { get; set; }
+    
+        /// <summary>The OSHA Establishment Name</summary>
+        [Newtonsoft.Json.JsonProperty("oshaEstablishmentName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string OshaEstablishmentName { get; set; }
+    
+        /// <summary>The OSHA establishment type identifier</summary>
+        [Newtonsoft.Json.JsonProperty("oshaEstablishmentTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? OshaEstablishmentTypeId { get; set; }
+    
+        /// <summary>The street address</summary>
+        [Newtonsoft.Json.JsonProperty("streetAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string StreetAddress { get; set; }
+    
+        /// <summary>The city name</summary>
+        [Newtonsoft.Json.JsonProperty("city", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string City { get; set; }
+    
+        /// <summary>The zip code</summary>
+        [Newtonsoft.Json.JsonProperty("zipCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ZipCode { get; set; }
+    
+        /// <summary>The state identifier</summary>
+        [Newtonsoft.Json.JsonProperty("stateId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StateId { get; set; }
+    
+        /// <summary>The industry description</summary>
+        [Newtonsoft.Json.JsonProperty("industryDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string IndustryDescription { get; set; }
     
         public string ToJson() 
         {
@@ -2007,14 +3114,14 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? PersonId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("createdByPersonId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? CreatedByPersonId { get; set; }
+        [Newtonsoft.Json.JsonProperty("locations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> Locations { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationNames", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IDictionary<string, string> LocationNames { get; set; }
     
         [Newtonsoft.Json.JsonProperty("loginAccessRequired", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? LoginAccessRequired { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string DisplayName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Username { get; set; }
@@ -2022,17 +3129,23 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("statusId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? StatusId { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("statusName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string StatusName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DisplayName { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("firstName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string FirstName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("lastName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string LastName { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("locations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<int> Locations { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("genderId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? GenderId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("gender", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Gender { get; set; }
     
         [Newtonsoft.Json.JsonProperty("dateOfBirth", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? DateOfBirth { get; set; }
@@ -2055,20 +3168,35 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("countryDivisionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CountryDivisionId { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("countryDivisionName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CountryDivisionName { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("countryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CountryId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("CountryName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CountryName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("postalCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PostalCode { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("relationshipId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? RelationshipId { get; set; }
+        [Newtonsoft.Json.JsonProperty("languageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LanguageId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("relationshipTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RelationshipTypeId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("relationshipType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RelationshipType { get; set; }
     
         [Newtonsoft.Json.JsonProperty("currentPosition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CurrentPosition { get; set; }
     
         [Newtonsoft.Json.JsonProperty("supervisorId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? SupervisorId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("supervisorName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SupervisorName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("hireDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? HireDate { get; set; }
@@ -2085,17 +3213,29 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("contractingCompanyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? ContractingCompanyId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("customerid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Customerid { get; set; }
+        [Newtonsoft.Json.JsonProperty("contractingCompanyName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ContractingCompanyName { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("contactTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? ContactTypeId { get; set; }
+        [Newtonsoft.Json.JsonProperty("customerId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CustomerId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("customerName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CustomerName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("locked", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? Locked { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("contactTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ContactTypeId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("contactTypeName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ContactTypeName { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("expiryDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? ExpiryDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("createdByPersonId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CreatedByPersonId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("personDetails", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PersonDetails { get; set; }
@@ -2118,8 +3258,8 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? PersonId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("updatedByPersonID", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? UpdatedByPersonID { get; set; }
+        [Newtonsoft.Json.JsonProperty("updatedByPersonId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? UpdatedByPersonId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("statusId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? StatusId { get; set; }
@@ -2175,8 +3315,11 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("postalCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PostalCode { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("relationshipId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? RelationshipId { get; set; }
+        [Newtonsoft.Json.JsonProperty("languageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LanguageId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("relationshipTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RelationshipTypeId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("currentPosition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CurrentPosition { get; set; }
@@ -2199,8 +3342,8 @@ namespace VelocityEhs.UI.Web.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("contractingCompanyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? ContractingCompanyId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("customerid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Customerid { get; set; }
+        [Newtonsoft.Json.JsonProperty("customerId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CustomerId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("contactTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? ContactTypeId { get; set; }

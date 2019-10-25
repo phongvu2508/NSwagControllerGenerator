@@ -4,1243 +4,687 @@
 // </auto-generated>
 //----------------------
 
-namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
+namespace VelocityEhs.UI.Web.Ehs.MobileApi.EhsClient.Contracts
 {
     #pragma warning disable
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface IAccountController
+    public partial interface IEhsApiClient
     {
+        /// <summary>The based url for API client</summary>
+        string BaseUrl { get; }
+        
+        /// <summary>The injected HttpClient</summary>
+        System.Net.Http.HttpClient HttpClient { get; }
+    
         /// <summary>Return all accounts in the instance.</summary>
         /// <param name="accountId">The account id</param>
         /// <param name="externalId">The external account id</param>
         /// <param name="accountIdentifier">The account identifier</param>
-        /// <response code="200">The matching account</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Accounts not found</response>
         /// <returns>The matching account</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Account>>> GetAccountsAsync(int? accountId, System.Guid? externalId, string accountIdentifier);
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Account>>> GetAccountsAsync(int? accountId, System.Guid? externalId, string accountIdentifier);
+    
+        /// <summary>Return all accounts in the instance.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="externalId">The external account id</param>
+        /// <param name="accountIdentifier">The account identifier</param>
+        /// <returns>The matching account</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Account>>> GetAccountsAsync(int? accountId, System.Guid? externalId, string accountIdentifier, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update an existing account</summary>
         /// <param name="body">The updated account object</param>
-        /// <response code="204">The account was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Account not found</response>
         /// <returns>The account was successfully updated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateAccountAsync(Account body);
     
-        /// <summary>Create a new account</summary>
-        /// <param name="body">The new account schema</param>
-        /// <response code="201">The new account identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <returns>The new account identifier</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateAccountAsync(Account body);
-    
-        /// <summary>Gets the basic user information for an accounts user.</summary>
-        /// <param name="username">Username of the person</param>
-        /// <param name="emailAddress">Email address of the person</param>
-        /// <param name="phoneNumber">Phone number of the person</param>
-        /// <response code="200">The basic details of the user that matches the request</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No authentication methods for the account</response>
-        /// <returns>The basic details of the user that matches the request</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfoAsync(string username, string emailAddress, string phoneNumber);
-    
-        /// <summary>Get an account by the account id</summary>
-        /// <response code="200">The account</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Account not found</response>
-        /// <returns>The account</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Account>> GetAccountByIdAsync();
-    
-        /// <summary>Gets the personalization information for an account.</summary>
-        /// <response code="200">The personalization of the account that matches the request</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Account not found</response>
-        /// <returns>The personalization of the account that matches the request</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetAccountPersonalizationAsync();
-    
-        /// <summary>Updates a personalization based on account id</summary>
-        /// <response code="204">The account was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Account not found</response>
-        /// <returns>The account was successfully updated</returns>
-        System.Threading.Tasks.Task UpdateAccountPersonalizationAsync(UpdatePersonalization body);
-    
-        /// <summary>Get an account currency list</summary>
-        /// <response code="200">The currency list of the account that matches the request</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Currency List not found</response>
-        /// <returns>The currency list of the account that matches the request</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Currency>>> GetAccountCurrencyListAsync();
-    
-        /// <summary>Update an account currency list</summary>
-        /// <param name="body">The updated account currency list</param>
-        /// <response code="204">The account was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No currency for the account</response>
-        /// <returns>The account was successfully updated.</returns>
-        System.Threading.Tasks.Task UpdateAccountCurrencyListAsync(UpdateAccountCurrencyList body);
-    
-        /// <summary>Get an account country list</summary>
-        /// <response code="200">The country list of the account that matches the request</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Country List not found</response>
-        /// <returns>The country list of the account that matches the request</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Country>>> GetAccountCountryListAsync();
-    
-        /// <summary>Update an account country list</summary>
-        /// <param name="body">The updated account country list</param>
-        /// <response code="204">The account was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No country List for the account</response>
-        /// <returns>The account was successfully updated.</returns>
-        System.Threading.Tasks.Task UpdateAccountCountryListAsync(UpdateAccountCountryList body);
-    
-        /// <summary>Get an account language list</summary>
-        /// <response code="200">The country list of the account that matches the request</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Language List not found</response>
-        /// <returns>The country list of the account that matches the request</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Language>>> GetAccountLanguagesAsync();
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    [Microsoft.AspNetCore.Mvc.Route("api")]
-    public partial class AccountController : Microsoft.AspNetCore.Mvc.Controller
-    {
-        private IAccountController implementation;
-    
-        public AccountController(IAccountController implementation)
-        {
-            this.implementation = implementation;
-        }
-    
-        /// <summary>Return all accounts in the instance.</summary>
-        /// <param name="accountId">The account id</param>
-        /// <param name="externalId">The external account id</param>
-        /// <param name="accountIdentifier">The account identifier</param>
-        /// <response code="200">The matching account</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Accounts not found</response>
-        /// <returns>The matching account</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("accounts")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Account>>> GetAccounts(int? accountId, System.Guid? externalId, string accountIdentifier)
-        {
-            return this.implementation.GetAccountsAsync(accountId, externalId, accountIdentifier);
-        }
-    
         /// <summary>Update an existing account</summary>
         /// <param name="body">The updated account object</param>
-        /// <response code="204">The account was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Account not found</response>
         /// <returns>The account was successfully updated.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("accounts")]
-        public System.Threading.Tasks.Task UpdateAccount([Microsoft.AspNetCore.Mvc.FromBody] Account body)
-        {
-            return this.implementation.UpdateAccountAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateAccountAsync(Account body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Create a new account</summary>
         /// <param name="body">The new account schema</param>
-        /// <response code="201">The new account identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The new account identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("accounts")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateAccount([Microsoft.AspNetCore.Mvc.FromBody] Account body)
-        {
-            return this.implementation.CreateAccountAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateAccountAsync(Account body);
+    
+        /// <summary>Create a new account</summary>
+        /// <param name="body">The new account schema</param>
+        /// <returns>The new account identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateAccountAsync(Account body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Gets the basic user information for an accounts user.</summary>
         /// <param name="username">Username of the person</param>
         /// <param name="emailAddress">Email address of the person</param>
         /// <param name="phoneNumber">Phone number of the person</param>
-        /// <response code="200">The basic details of the user that matches the request</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No authentication methods for the account</response>
         /// <returns>The basic details of the user that matches the request</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("accounts/userInfo")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfo(string username, string emailAddress, string phoneNumber)
-        {
-            return this.implementation.GetUserInfoAsync(username, emailAddress, phoneNumber);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfoAsync(string username, string emailAddress, string phoneNumber);
+    
+        /// <summary>Gets the basic user information for an accounts user.</summary>
+        /// <param name="username">Username of the person</param>
+        /// <param name="emailAddress">Email address of the person</param>
+        /// <param name="phoneNumber">Phone number of the person</param>
+        /// <returns>The basic details of the user that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfoAsync(string username, string emailAddress, string phoneNumber, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get an account by the account id</summary>
-        /// <response code="200">The account</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Account not found</response>
         /// <returns>The account</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("accounts/current")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Account>> GetAccountById()
-        {
-            return this.implementation.GetAccountByIdAsync();
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Account>> GetAccountByIdAsync();
+    
+        /// <summary>Get an account by the account id</summary>
+        /// <returns>The account</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Account>> GetAccountByIdAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Gets the personalization information for an account.</summary>
-        /// <response code="200">The personalization of the account that matches the request</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Account not found</response>
         /// <returns>The personalization of the account that matches the request</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("accounts/current/personalization")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetAccountPersonalization()
-        {
-            return this.implementation.GetAccountPersonalizationAsync();
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetAccountPersonalizationAsync();
+    
+        /// <summary>Gets the personalization information for an account.</summary>
+        /// <returns>The personalization of the account that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetAccountPersonalizationAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Updates a personalization based on account id</summary>
-        /// <response code="204">The account was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Account not found</response>
         /// <returns>The account was successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("accounts/current/personalization")]
-        public System.Threading.Tasks.Task UpdateAccountPersonalization([Microsoft.AspNetCore.Mvc.FromBody] UpdatePersonalization body)
-        {
-            return this.implementation.UpdateAccountPersonalizationAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateAccountPersonalizationAsync(UpdatePersonalization body);
+    
+        /// <summary>Updates a personalization based on account id</summary>
+        /// <returns>The account was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateAccountPersonalizationAsync(UpdatePersonalization body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get an account currency list</summary>
-        /// <response code="200">The currency list of the account that matches the request</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Currency List not found</response>
         /// <returns>The currency list of the account that matches the request</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("accounts/current/currency")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Currency>>> GetAccountCurrencyList()
-        {
-            return this.implementation.GetAccountCurrencyListAsync();
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Currency>>> GetAccountCurrencyListAsync();
+    
+        /// <summary>Get an account currency list</summary>
+        /// <returns>The currency list of the account that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Currency>>> GetAccountCurrencyListAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update an account currency list</summary>
         /// <param name="body">The updated account currency list</param>
-        /// <response code="204">The account was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No currency for the account</response>
         /// <returns>The account was successfully updated.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("accounts/current/currency")]
-        public System.Threading.Tasks.Task UpdateAccountCurrencyList([Microsoft.AspNetCore.Mvc.FromBody] UpdateAccountCurrencyList body)
-        {
-            return this.implementation.UpdateAccountCurrencyListAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateAccountCurrencyListAsync(UpdateAccountCurrencyList body);
+    
+        /// <summary>Update an account currency list</summary>
+        /// <param name="body">The updated account currency list</param>
+        /// <returns>The account was successfully updated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateAccountCurrencyListAsync(UpdateAccountCurrencyList body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get an account country list</summary>
-        /// <response code="200">The country list of the account that matches the request</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Country List not found</response>
         /// <returns>The country list of the account that matches the request</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("accounts/current/country")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Country>>> GetAccountCountryList()
-        {
-            return this.implementation.GetAccountCountryListAsync();
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Country>>> GetAccountCountryListAsync();
+    
+        /// <summary>Get an account country list</summary>
+        /// <returns>The country list of the account that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Country>>> GetAccountCountryListAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update an account country list</summary>
         /// <param name="body">The updated account country list</param>
-        /// <response code="204">The account was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No country List for the account</response>
         /// <returns>The account was successfully updated.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("accounts/current/country")]
-        public System.Threading.Tasks.Task UpdateAccountCountryList([Microsoft.AspNetCore.Mvc.FromBody] UpdateAccountCountryList body)
-        {
-            return this.implementation.UpdateAccountCountryListAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateAccountCountryListAsync(UpdateAccountCountryList body);
+    
+        /// <summary>Update an account country list</summary>
+        /// <param name="body">The updated account country list</param>
+        /// <returns>The account was successfully updated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateAccountCountryListAsync(UpdateAccountCountryList body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get an account language list</summary>
-        /// <response code="200">The country list of the account that matches the request</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Language List not found</response>
         /// <returns>The country list of the account that matches the request</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("accounts/current/language")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Language>>> GetAccountLanguages()
-        {
-            return this.implementation.GetAccountLanguagesAsync();
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Language>>> GetAccountLanguagesAsync();
     
-    }
+        /// <summary>Get an account language list</summary>
+        /// <returns>The country list of the account that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Language>>> GetAccountLanguagesAsync(System.Threading.CancellationToken cancellationToken);
     
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface IAuthenticationController
-    {
         /// <summary>Gets the authentication methods for the account.</summary>
         /// <param name="accountId">The account id</param>
         /// <param name="accountIdentifier">The account identifier</param>
-        /// <response code="200">The authentication methods for the account.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No authentication methods for the account</response>
         /// <returns>The authentication methods for the account.</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<AuthenticationMethod>>> GetAuthMethodsAsync(int? accountId, string accountIdentifier);
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync(int? accountId, string accountIdentifier);
+    
+        /// <summary>Gets the authentication methods for the account.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="accountIdentifier">The account identifier</param>
+        /// <returns>The authentication methods for the account.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync(int? accountId, string accountIdentifier, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Sets an authentication methods for the account.</summary>
-        /// <response code="204">The authentication methods was successfully set.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No authentication methods for the account</response>
         /// <returns>The authentication methods was successfully set.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetAuthMethodAsync(AuthenticationMethod body);
     
+        /// <summary>Sets an authentication methods for the account.</summary>
+        /// <returns>The authentication methods was successfully set.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task SetAuthMethodAsync(AuthenticationMethod body, System.Threading.CancellationToken cancellationToken);
+    
         /// <summary>Delete an authentication methods for the account.</summary>
         /// <param name="id">The authentication method identifier</param>
-        /// <response code="204">The authentication method was deleted.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No authentication methods for the account</response>
         /// <returns>The authentication method was deleted.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteAuthMethodAsync(int id);
     
-        /// <summary>Determines if the provided credentials are valid.</summary>
-        /// <response code="200">Credientials were valid.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="401">Credientials are invalid.</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchies not found</response>
-        /// <returns>Credientials were valid.</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthVerificationResult>> AuthFormsHasAccessAsync(FormsAuthCrediential body);
-    
-        /// <summary>Request to start the forgot password process for a given username.</summary>
-        /// <response code="200">The person was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Persons not found</response>
-        /// <returns>The person was successfully updated</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPasswordAsync(FormsAuthPasswordChangeRequest body);
-    
-        /// <summary>Adds jti to a black list.</summary>
-        /// <response code="204">The blacklist item was successfully added.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Adding blacklist not found</response>
-        /// <returns>The blacklist item was successfully added.</returns>
-        System.Threading.Tasks.Task BlacklistAsync(FormsAuthBlacklistRequest body);
-    
-        /// <summary>Checks the jti to see if it is blacklisted</summary>
-        /// <param name="id">The SSO Identity Provider id</param>
-        /// <response code="200">The BlackList Return Object</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">SSO Identity Provider not found</response>
-        /// <returns>The BlackList Return Object</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthBlacklistResponse>> GetJTIFromBlacklistAsync(System.Guid id);
-    
-        /// <summary>Gets the password rules for the account.</summary>
-        /// <response code="200">The password rules for the account.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No password rules for the account</response>
-        /// <returns>The password rules for the account.</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<FormsAuthPasswordRule>>> GetPasswordRulesAsync();
-    
-        /// <summary>Adds password rules for the account.</summary>
-        /// <response code="204">The authentication rules were added.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No password rules for the account</response>
-        /// <returns>The authentication rules were added.</returns>
-        System.Threading.Tasks.Task AddPasswordRulesAsync(System.Collections.Generic.IEnumerable<FormsAuthPasswordRule> body);
-    
-        /// <summary>Deletes a password rule for the account.</summary>
-        /// <param name="id">The password rule identifier</param>
-        /// <response code="204">The password rule was removed for the account.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No password rules for the account</response>
-        /// <returns>The password rule was removed for the account.</returns>
-        System.Threading.Tasks.Task DeletePasswordRuleAsync(int id);
-    
-        /// <summary>Get a list of SSO Identity Providers</summary>
-        /// <param name="trustName">The trust name of the identity providers to get.</param>
-        /// <response code="200">The SSO Identity Providers</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">SSO Identity Providers not found</response>
-        /// <returns>The SSO Identity Providers</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<SsoIdentityProvider>>> GetSsoIdpAsync(string trustName);
-    
-        /// <summary>Update an existing SSO Identity Provider.</summary>
-        /// <param name="body">The updated SSO Identity Provider object</param>
-        /// <response code="204">The SSO Identity Provider was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Identity Provider not found</response>
-        /// <returns>The SSO Identity Provider was successfully updated.</returns>
-        System.Threading.Tasks.Task UpdateSsoIdpAsync(SsoIdentityProvider body);
-    
-        /// <summary>Create a new SSO Identity Provider</summary>
-        /// <param name="body">The new SSO Identity Provider schema</param>
-        /// <response code="201">The new SSO Identity Provider identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <returns>The new SSO Identity Provider identifier</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateSsoIdpAsync(SsoIdentityProvider body);
-    
-        /// <summary>Get a SSO Identity Provider by the id</summary>
-        /// <param name="id">The SSO Identity Provider id</param>
-        /// <response code="200">The SSO Identity Provider</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">SSO Identity Provider not found</response>
-        /// <returns>The SSO Identity Provider</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpByIdAsync(int id);
-    
-        /// <summary>Get a list of SSO Service Providers</summary>
-        /// <param name="velocityServiceProvidersOnly">Whether to only include VelocityEHS service providers.</param>
-        /// <response code="200">The list of SSO Service Providers</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">SSO Service Providers not found</response>
-        /// <returns>The list of SSO Service Providers</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<SsoServiceProvider>>> GetSsoSpAsync(bool? velocityServiceProvidersOnly);
-    
-        /// <summary>Update existing SSO Service Provider</summary>
-        /// <param name="body">The updated SSO Service Provider object</param>
-        /// <response code="204">The hierarchy was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">SSO Service Provider not found</response>
-        /// <returns>The hierarchy was successfully updated.</returns>
-        System.Threading.Tasks.Task UpdateSsoSpAsync(SsoServiceProvider body);
-    
-        /// <summary>Create a new SSO Identity Provider</summary>
-        /// <param name="body">The new SSO Service Provider schema</param>
-        /// <response code="201">The new hierarchy identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <returns>The new hierarchy identifier</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateSsoSpAsync(SsoServiceProvider body);
-    
-        /// <summary>Get a SSO Service Provider by the id</summary>
-        /// <param name="id">The SSO Service Provider id</param>
-        /// <response code="200">The SSO Service Provider</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">SSO Service Provider not found</response>
-        /// <returns>The SSO Service Provider</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpByIdAsync(int id);
-    
-        /// <summary>Requests a code for multi-factor authentication.</summary>
-        /// <param name="deliveryMethod">The method in which to deliver the forgot password information.</param>
-        /// <response code="200">Verification code successfully requested.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <returns>Verification code successfully requested.</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<IdentityVerification>> RequestAuthVerificationCodeAsync(DeliveryMethod? deliveryMethod);
-    
-        /// <summary>Verifies a code for multi-factor authentication.</summary>
-        /// <param name="body">The identity verification information</param>
-        /// <response code="204">Verification code successfully validated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <returns>Verification code successfully validated.</returns>
-        System.Threading.Tasks.Task VerifyAuthVerificationCodeAsync(IdentityVerification body);
-    
-        /// <summary>Validates Password based on account, person and password rules</summary>
-        /// <param name="password">password to be passed in</param>
-        /// <response code="200">Password validation result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Invalid entry for password</response>
-        /// <returns>Password validation result</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePasswordAsync(string password);
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    [Microsoft.AspNetCore.Mvc.Route("api")]
-    public partial class AuthenticationController : Microsoft.AspNetCore.Mvc.Controller
-    {
-        private IAuthenticationController implementation;
-    
-        public AuthenticationController(IAuthenticationController implementation)
-        {
-            this.implementation = implementation;
-        }
-    
-        /// <summary>Gets the authentication methods for the account.</summary>
-        /// <param name="accountId">The account id</param>
-        /// <param name="accountIdentifier">The account identifier</param>
-        /// <response code="200">The authentication methods for the account.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No authentication methods for the account</response>
-        /// <returns>The authentication methods for the account.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/methods")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<AuthenticationMethod>>> GetAuthMethods(int? accountId, string accountIdentifier)
-        {
-            return this.implementation.GetAuthMethodsAsync(accountId, accountIdentifier);
-        }
-    
-        /// <summary>Sets an authentication methods for the account.</summary>
-        /// <response code="204">The authentication methods was successfully set.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No authentication methods for the account</response>
-        /// <returns>The authentication methods was successfully set.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/methods")]
-        public System.Threading.Tasks.Task SetAuthMethod([Microsoft.AspNetCore.Mvc.FromBody] AuthenticationMethod body)
-        {
-            return this.implementation.SetAuthMethodAsync(body);
-        }
-    
         /// <summary>Delete an authentication methods for the account.</summary>
         /// <param name="id">The authentication method identifier</param>
-        /// <response code="204">The authentication method was deleted.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No authentication methods for the account</response>
         /// <returns>The authentication method was deleted.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("auth/methods")]
-        public System.Threading.Tasks.Task DeleteAuthMethod(int id)
-        {
-            return this.implementation.DeleteAuthMethodAsync(id);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task DeleteAuthMethodAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Determines if the provided credentials are valid.</summary>
-        /// <response code="200">Credientials were valid.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="401">Credientials are invalid.</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchies not found</response>
         /// <returns>Credientials were valid.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/forms/login")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthVerificationResult>> AuthFormsHasAccess([Microsoft.AspNetCore.Mvc.FromBody] FormsAuthCrediential body)
-        {
-            return this.implementation.AuthFormsHasAccessAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthVerificationResult>> AuthFormsHasAccessAsync(FormsAuthCrediential body);
+    
+        /// <summary>Determines if the provided credentials are valid.</summary>
+        /// <returns>Credientials were valid.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthVerificationResult>> AuthFormsHasAccessAsync(FormsAuthCrediential body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Request to start the forgot password process for a given username.</summary>
-        /// <response code="200">The person was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Persons not found</response>
         /// <returns>The person was successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/forms/forgotPassword")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPassword([Microsoft.AspNetCore.Mvc.FromBody] FormsAuthPasswordChangeRequest body)
-        {
-            return this.implementation.ForgotPasswordAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPasswordAsync(FormsAuthPasswordChangeRequest body);
+    
+        /// <summary>Request to start the forgot password process for a given username.</summary>
+        /// <returns>The person was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPasswordAsync(FormsAuthPasswordChangeRequest body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Adds jti to a black list.</summary>
-        /// <response code="204">The blacklist item was successfully added.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Adding blacklist not found</response>
         /// <returns>The blacklist item was successfully added.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/forms/blacklist")]
-        public System.Threading.Tasks.Task Blacklist([Microsoft.AspNetCore.Mvc.FromBody] FormsAuthBlacklistRequest body)
-        {
-            return this.implementation.BlacklistAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task BlacklistAsync(FormsAuthBlacklistRequest body);
+    
+        /// <summary>Adds jti to a black list.</summary>
+        /// <returns>The blacklist item was successfully added.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task BlacklistAsync(FormsAuthBlacklistRequest body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Checks the jti to see if it is blacklisted</summary>
         /// <param name="id">The SSO Identity Provider id</param>
-        /// <response code="200">The BlackList Return Object</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">SSO Identity Provider not found</response>
         /// <returns>The BlackList Return Object</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/forms/blacklist/{id}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthBlacklistResponse>> GetJTIFromBlacklist(System.Guid id)
-        {
-            return this.implementation.GetJTIFromBlacklistAsync(id);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthBlacklistResponse>> GetJTIFromBlacklistAsync(System.Guid id);
+    
+        /// <summary>Checks the jti to see if it is blacklisted</summary>
+        /// <param name="id">The SSO Identity Provider id</param>
+        /// <returns>The BlackList Return Object</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthBlacklistResponse>> GetJTIFromBlacklistAsync(System.Guid id, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Gets the password rules for the account.</summary>
-        /// <response code="200">The password rules for the account.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No password rules for the account</response>
         /// <returns>The password rules for the account.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/forms/rules")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<FormsAuthPasswordRule>>> GetPasswordRules()
-        {
-            return this.implementation.GetPasswordRulesAsync();
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<FormsAuthPasswordRule>>> GetPasswordRulesAsync();
+    
+        /// <summary>Gets the password rules for the account.</summary>
+        /// <returns>The password rules for the account.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<FormsAuthPasswordRule>>> GetPasswordRulesAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Adds password rules for the account.</summary>
-        /// <response code="204">The authentication rules were added.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No password rules for the account</response>
         /// <returns>The authentication rules were added.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/forms/rules")]
-        public System.Threading.Tasks.Task AddPasswordRules([Microsoft.AspNetCore.Mvc.FromBody] System.Collections.Generic.IEnumerable<FormsAuthPasswordRule> body)
-        {
-            return this.implementation.AddPasswordRulesAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task AddPasswordRulesAsync(System.Collections.Generic.IEnumerable<FormsAuthPasswordRule> body);
+    
+        /// <summary>Adds password rules for the account.</summary>
+        /// <returns>The authentication rules were added.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task AddPasswordRulesAsync(System.Collections.Generic.IEnumerable<FormsAuthPasswordRule> body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Deletes a password rule for the account.</summary>
         /// <param name="id">The password rule identifier</param>
-        /// <response code="204">The password rule was removed for the account.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No password rules for the account</response>
         /// <returns>The password rule was removed for the account.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("auth/forms/rules")]
-        public System.Threading.Tasks.Task DeletePasswordRule(int id)
-        {
-            return this.implementation.DeletePasswordRuleAsync(id);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DeletePasswordRuleAsync(int id);
+    
+        /// <summary>Deletes a password rule for the account.</summary>
+        /// <param name="id">The password rule identifier</param>
+        /// <returns>The password rule was removed for the account.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task DeletePasswordRuleAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get a list of SSO Identity Providers</summary>
         /// <param name="trustName">The trust name of the identity providers to get.</param>
-        /// <response code="200">The SSO Identity Providers</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">SSO Identity Providers not found</response>
         /// <returns>The SSO Identity Providers</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/sso/idp")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<SsoIdentityProvider>>> GetSsoIdp(string trustName)
-        {
-            return this.implementation.GetSsoIdpAsync(trustName);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<SsoIdentityProvider>>> GetSsoIdpAsync(string trustName);
+    
+        /// <summary>Get a list of SSO Identity Providers</summary>
+        /// <param name="trustName">The trust name of the identity providers to get.</param>
+        /// <returns>The SSO Identity Providers</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<SsoIdentityProvider>>> GetSsoIdpAsync(string trustName, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update an existing SSO Identity Provider.</summary>
         /// <param name="body">The updated SSO Identity Provider object</param>
-        /// <response code="204">The SSO Identity Provider was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Identity Provider not found</response>
         /// <returns>The SSO Identity Provider was successfully updated.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("auth/sso/idp")]
-        public System.Threading.Tasks.Task UpdateSsoIdp([Microsoft.AspNetCore.Mvc.FromBody] SsoIdentityProvider body)
-        {
-            return this.implementation.UpdateSsoIdpAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateSsoIdpAsync(SsoIdentityProvider body);
+    
+        /// <summary>Update an existing SSO Identity Provider.</summary>
+        /// <param name="body">The updated SSO Identity Provider object</param>
+        /// <returns>The SSO Identity Provider was successfully updated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateSsoIdpAsync(SsoIdentityProvider body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Create a new SSO Identity Provider</summary>
         /// <param name="body">The new SSO Identity Provider schema</param>
-        /// <response code="201">The new SSO Identity Provider identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The new SSO Identity Provider identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/sso/idp")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateSsoIdp([Microsoft.AspNetCore.Mvc.FromBody] SsoIdentityProvider body)
-        {
-            return this.implementation.CreateSsoIdpAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateSsoIdpAsync(SsoIdentityProvider body);
+    
+        /// <summary>Create a new SSO Identity Provider</summary>
+        /// <param name="body">The new SSO Identity Provider schema</param>
+        /// <returns>The new SSO Identity Provider identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateSsoIdpAsync(SsoIdentityProvider body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get a SSO Identity Provider by the id</summary>
         /// <param name="id">The SSO Identity Provider id</param>
-        /// <response code="200">The SSO Identity Provider</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">SSO Identity Provider not found</response>
         /// <returns>The SSO Identity Provider</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/sso/idp/{id}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpById(int id)
-        {
-            return this.implementation.GetSsoIdpByIdAsync(id);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpByIdAsync(int id);
+    
+        /// <summary>Get a SSO Identity Provider by the id</summary>
+        /// <param name="id">The SSO Identity Provider id</param>
+        /// <returns>The SSO Identity Provider</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoIdentityProvider>> GetSsoIdpByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get a list of SSO Service Providers</summary>
         /// <param name="velocityServiceProvidersOnly">Whether to only include VelocityEHS service providers.</param>
-        /// <response code="200">The list of SSO Service Providers</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">SSO Service Providers not found</response>
         /// <returns>The list of SSO Service Providers</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/sso/sp")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<SsoServiceProvider>>> GetSsoSp(bool? velocityServiceProvidersOnly)
-        {
-            return this.implementation.GetSsoSpAsync(velocityServiceProvidersOnly);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<SsoServiceProvider>>> GetSsoSpAsync(bool? velocityServiceProvidersOnly);
+    
+        /// <summary>Get a list of SSO Service Providers</summary>
+        /// <param name="velocityServiceProvidersOnly">Whether to only include VelocityEHS service providers.</param>
+        /// <returns>The list of SSO Service Providers</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<SsoServiceProvider>>> GetSsoSpAsync(bool? velocityServiceProvidersOnly, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update existing SSO Service Provider</summary>
         /// <param name="body">The updated SSO Service Provider object</param>
-        /// <response code="204">The hierarchy was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">SSO Service Provider not found</response>
         /// <returns>The hierarchy was successfully updated.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("auth/sso/sp")]
-        public System.Threading.Tasks.Task UpdateSsoSp([Microsoft.AspNetCore.Mvc.FromBody] SsoServiceProvider body)
-        {
-            return this.implementation.UpdateSsoSpAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateSsoSpAsync(SsoServiceProvider body);
+    
+        /// <summary>Update existing SSO Service Provider</summary>
+        /// <param name="body">The updated SSO Service Provider object</param>
+        /// <returns>The hierarchy was successfully updated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateSsoSpAsync(SsoServiceProvider body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Create a new SSO Identity Provider</summary>
         /// <param name="body">The new SSO Service Provider schema</param>
-        /// <response code="201">The new hierarchy identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The new hierarchy identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/sso/sp")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateSsoSp([Microsoft.AspNetCore.Mvc.FromBody] SsoServiceProvider body)
-        {
-            return this.implementation.CreateSsoSpAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateSsoSpAsync(SsoServiceProvider body);
+    
+        /// <summary>Create a new SSO Identity Provider</summary>
+        /// <param name="body">The new SSO Service Provider schema</param>
+        /// <returns>The new hierarchy identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateSsoSpAsync(SsoServiceProvider body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get a SSO Service Provider by the id</summary>
         /// <param name="id">The SSO Service Provider id</param>
-        /// <response code="200">The SSO Service Provider</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">SSO Service Provider not found</response>
         /// <returns>The SSO Service Provider</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/sso/sp/{id}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpById(int id)
-        {
-            return this.implementation.GetSsoSpByIdAsync(id);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpByIdAsync(int id);
+    
+        /// <summary>Get a SSO Service Provider by the id</summary>
+        /// <param name="id">The SSO Service Provider id</param>
+        /// <returns>The SSO Service Provider</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoServiceProvider>> GetSsoSpByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Requests a code for multi-factor authentication.</summary>
         /// <param name="deliveryMethod">The method in which to deliver the forgot password information.</param>
-        /// <response code="200">Verification code successfully requested.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>Verification code successfully requested.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/2fa/requestCode")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<IdentityVerification>> RequestAuthVerificationCode(DeliveryMethod? deliveryMethod)
-        {
-            return this.implementation.RequestAuthVerificationCodeAsync(deliveryMethod);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<IdentityVerification>> RequestAuthVerificationCodeAsync(DeliveryMethod? deliveryMethod);
+    
+        /// <summary>Requests a code for multi-factor authentication.</summary>
+        /// <param name="deliveryMethod">The method in which to deliver the forgot password information.</param>
+        /// <returns>Verification code successfully requested.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<IdentityVerification>> RequestAuthVerificationCodeAsync(DeliveryMethod? deliveryMethod, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Verifies a code for multi-factor authentication.</summary>
         /// <param name="body">The identity verification information</param>
-        /// <response code="204">Verification code successfully validated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>Verification code successfully validated.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/2fa/verifyCode")]
-        public System.Threading.Tasks.Task VerifyAuthVerificationCode([Microsoft.AspNetCore.Mvc.FromBody] IdentityVerification body)
-        {
-            return this.implementation.VerifyAuthVerificationCodeAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task VerifyAuthVerificationCodeAsync(IdentityVerification body);
+    
+        /// <summary>Verifies a code for multi-factor authentication.</summary>
+        /// <param name="body">The identity verification information</param>
+        /// <returns>Verification code successfully validated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task VerifyAuthVerificationCodeAsync(IdentityVerification body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Validates Password based on account, person and password rules</summary>
         /// <param name="password">password to be passed in</param>
-        /// <response code="200">Password validation result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Invalid entry for password</response>
         /// <returns>Password validation result</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/validatepassword/{password}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePassword(string password)
-        {
-            return this.implementation.ValidatePasswordAsync(password);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePasswordAsync(string password);
     
-    }
+        /// <summary>Validates Password based on account, person and password rules</summary>
+        /// <param name="password">password to be passed in</param>
+        /// <returns>Password validation result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePasswordAsync(string password, System.Threading.CancellationToken cancellationToken);
     
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface IConfigurationController
-    {
         /// <summary>Get the product configuration summary</summary>
-        /// <response code="200">The product configuration summary</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Product config not found</response>
         /// <returns>The product configuration summary</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductConfigSummaryAsync();
+    
+        /// <summary>Get the product configuration summary</summary>
+        /// <returns>The product configuration summary</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductConfigSummaryAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get the workflow configuration for a state</summary>
         /// <param name="category">The name of the category to get the workflow configuration for.</param>
         /// <param name="state">The name of the state to get the workflow configuration for.</param>
-        /// <response code="200">The state's workflow configuration</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Configuration not found</response>
         /// <returns>The state's workflow configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigByNameAsync(string category, string state);
     
         /// <summary>Get the workflow configuration for a state</summary>
-        /// <param name="categoryId">The id of the category to get the workflow configuration for.</param>
-        /// <param name="stateId">The id of the state to get the workflow configuration for.</param>
-        /// <response code="200">The state's workflow configuration</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Configuration not found</response>
-        /// <returns>The state's workflow configuration</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigRawAsync(int categoryId, int stateId);
-    
-        /// <summary>Get the workflow configurations summaries</summary>
-        /// <param name="productId">The id of the product to get the workflow config summary for.</param>
-        /// <param name="lastModified">Only include configurations that have changed since this date.</param>
-        /// <response code="200">The state's workflow configuration</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Configuration not found</response>
-        /// <returns>The state's workflow configuration</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetWorkflowConfigsSummaryAsync(int? productId, System.DateTimeOffset? lastModified);
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    [Microsoft.AspNetCore.Mvc.Route("api")]
-    public partial class ConfigurationController : Microsoft.AspNetCore.Mvc.Controller
-    {
-        private IConfigurationController implementation;
-    
-        public ConfigurationController(IConfigurationController implementation)
-        {
-            this.implementation = implementation;
-        }
-    
-        /// <summary>Get the product configuration summary</summary>
-        /// <response code="200">The product configuration summary</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Product config not found</response>
-        /// <returns>The product configuration summary</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("config/products/summary/raw")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductConfigSummary()
-        {
-            return this.implementation.GetProductConfigSummaryAsync();
-        }
-    
-        /// <summary>Get the workflow configuration for a state</summary>
         /// <param name="category">The name of the category to get the workflow configuration for.</param>
         /// <param name="state">The name of the state to get the workflow configuration for.</param>
-        /// <response code="200">The state's workflow configuration</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Configuration not found</response>
         /// <returns>The state's workflow configuration</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("config/workflows/raw")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigByName(string category, string state)
-        {
-            return this.implementation.GetStateWorkflowConfigByNameAsync(category, state);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigByNameAsync(string category, string state, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get the workflow configuration for a state</summary>
         /// <param name="categoryId">The id of the category to get the workflow configuration for.</param>
         /// <param name="stateId">The id of the state to get the workflow configuration for.</param>
-        /// <response code="200">The state's workflow configuration</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Configuration not found</response>
         /// <returns>The state's workflow configuration</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("config/workflows/{categoryId}/{stateId}/raw")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigRaw(int categoryId, int stateId)
-        {
-            return this.implementation.GetStateWorkflowConfigRawAsync(categoryId, stateId);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigRawAsync(int categoryId, int stateId);
+    
+        /// <summary>Get the workflow configuration for a state</summary>
+        /// <param name="categoryId">The id of the category to get the workflow configuration for.</param>
+        /// <param name="stateId">The id of the state to get the workflow configuration for.</param>
+        /// <returns>The state's workflow configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigRawAsync(int categoryId, int stateId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get the workflow configurations summaries</summary>
         /// <param name="productId">The id of the product to get the workflow config summary for.</param>
         /// <param name="lastModified">Only include configurations that have changed since this date.</param>
-        /// <response code="200">The state's workflow configuration</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Configuration not found</response>
         /// <returns>The state's workflow configuration</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("config/workflows/summary/raw")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetWorkflowConfigsSummary(int? productId, System.DateTimeOffset? lastModified)
-        {
-            return this.implementation.GetWorkflowConfigsSummaryAsync(productId, lastModified);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetWorkflowConfigsSummaryAsync(int? productId, System.DateTimeOffset? lastModified);
     
-    }
+        /// <summary>Get the workflow configurations summaries</summary>
+        /// <param name="productId">The id of the product to get the workflow config summary for.</param>
+        /// <param name="lastModified">Only include configurations that have changed since this date.</param>
+        /// <returns>The state's workflow configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetWorkflowConfigsSummaryAsync(int? productId, System.DateTimeOffset? lastModified, System.Threading.CancellationToken cancellationToken);
     
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface IHierarchyController
-    {
         /// <summary>Return a list all Hierarchies</summary>
-        /// <response code="200">A list of Hierarchies</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchies not found</response>
         /// <returns>A list of Hierarchies</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Hierarchy>>> GetHierarchiesAsync();
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Hierarchy>>> GetHierarchiesAsync();
+    
+        /// <summary>Return a list all Hierarchies</summary>
+        /// <returns>A list of Hierarchies</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Hierarchy>>> GetHierarchiesAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update existing Hierarchy</summary>
         /// <param name="body">The updated Hierarchy object</param>
-        /// <response code="204">The hierarchy was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchy not found</response>
         /// <returns>The hierarchy was successfully updated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateHierarchyAsync(UpdateHierarchyParams body);
     
-        /// <summary>Create new Hierarchy</summary>
-        /// <param name="body">The new Hierarchy schema</param>
-        /// <response code="201">The new hierarchy identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <returns>The new hierarchy identifier</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateHierarchyAsync(NewHierarchyParams body);
-    
-        /// <summary>Get a Hierarchy by id</summary>
-        /// <param name="hierarchyId">The Hierarchy identifier</param>
-        /// <response code="200">A Hierarchy by id</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchy not found</response>
-        /// <returns>A Hierarchy by id</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Hierarchy>> GetHierarchyAsync(int? hierarchyId);
-    
-        /// <summary>Delete a Hierarchy by Hierarchy id</summary>
-        /// <param name="hierarchyId">The Hierarchy identifier</param>
-        /// <response code="204">Delete Hierarchy result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchy not found</response>
-        /// <returns>Delete Hierarchy result</returns>
-        System.Threading.Tasks.Task DeleteHierarchyAsync(int? hierarchyId);
-    
-        /// <summary>Hierarchy creation validation</summary>
-        /// <param name="body">The new Hierarchy object</param>
-        /// <response code="200">Create Hierarchy validation result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchy not found</response>
-        /// <returns>Create Hierarchy validation result</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanCreateHierarchyAsync(NewHierarchyParams body);
-    
-        /// <summary>Hierarchy update validation</summary>
-        /// <param name="body">The updated Hierarchy object</param>
-        /// <response code="200">Update Hierarchy validation result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchy not found</response>
-        /// <returns>Update Hierarchy validation result</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanUpdateHierarchyAsync(UpdateHierarchyParams body);
-    
-        /// <summary>Hierarchy deletion validation</summary>
-        /// <param name="hierarchyId">The hierarchy identifier</param>
-        /// <response code="200">Delete Hierarchy validation result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchy not found</response>
-        /// <returns>Delete Hierarchy validation result</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteHierarchyAsync(int? hierarchyId);
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    [Microsoft.AspNetCore.Mvc.Route("api")]
-    public partial class HierarchyController : Microsoft.AspNetCore.Mvc.Controller
-    {
-        private IHierarchyController implementation;
-    
-        public HierarchyController(IHierarchyController implementation)
-        {
-            this.implementation = implementation;
-        }
-    
-        /// <summary>Return a list all Hierarchies</summary>
-        /// <response code="200">A list of Hierarchies</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchies not found</response>
-        /// <returns>A list of Hierarchies</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("hierarchies")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Hierarchy>>> GetHierarchies()
-        {
-            return this.implementation.GetHierarchiesAsync();
-        }
-    
         /// <summary>Update existing Hierarchy</summary>
         /// <param name="body">The updated Hierarchy object</param>
-        /// <response code="204">The hierarchy was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchy not found</response>
         /// <returns>The hierarchy was successfully updated.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("hierarchies")]
-        public System.Threading.Tasks.Task UpdateHierarchy([Microsoft.AspNetCore.Mvc.FromBody] UpdateHierarchyParams body)
-        {
-            return this.implementation.UpdateHierarchyAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateHierarchyAsync(UpdateHierarchyParams body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Create new Hierarchy</summary>
         /// <param name="body">The new Hierarchy schema</param>
-        /// <response code="201">The new hierarchy identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The new hierarchy identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("hierarchies")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateHierarchy([Microsoft.AspNetCore.Mvc.FromBody] NewHierarchyParams body)
-        {
-            return this.implementation.CreateHierarchyAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateHierarchyAsync(NewHierarchyParams body);
+    
+        /// <summary>Create new Hierarchy</summary>
+        /// <param name="body">The new Hierarchy schema</param>
+        /// <returns>The new hierarchy identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateHierarchyAsync(NewHierarchyParams body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get a Hierarchy by id</summary>
         /// <param name="hierarchyId">The Hierarchy identifier</param>
-        /// <response code="200">A Hierarchy by id</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchy not found</response>
         /// <returns>A Hierarchy by id</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("hierarchies/{hierarchyId}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Hierarchy>> GetHierarchy(int? hierarchyId)
-        {
-            return this.implementation.GetHierarchyAsync(hierarchyId);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Hierarchy>> GetHierarchyAsync(int? hierarchyId);
+    
+        /// <summary>Get a Hierarchy by id</summary>
+        /// <param name="hierarchyId">The Hierarchy identifier</param>
+        /// <returns>A Hierarchy by id</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Hierarchy>> GetHierarchyAsync(int? hierarchyId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Delete a Hierarchy by Hierarchy id</summary>
         /// <param name="hierarchyId">The Hierarchy identifier</param>
-        /// <response code="204">Delete Hierarchy result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchy not found</response>
         /// <returns>Delete Hierarchy result</returns>
-        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("hierarchies/{hierarchyId}")]
-        public System.Threading.Tasks.Task DeleteHierarchy(int? hierarchyId)
-        {
-            return this.implementation.DeleteHierarchyAsync(hierarchyId);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DeleteHierarchyAsync(int? hierarchyId);
+    
+        /// <summary>Delete a Hierarchy by Hierarchy id</summary>
+        /// <param name="hierarchyId">The Hierarchy identifier</param>
+        /// <returns>Delete Hierarchy result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task DeleteHierarchyAsync(int? hierarchyId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Hierarchy creation validation</summary>
         /// <param name="body">The new Hierarchy object</param>
-        /// <response code="200">Create Hierarchy validation result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchy not found</response>
         /// <returns>Create Hierarchy validation result</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("hierarchies/createValidate")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanCreateHierarchy([Microsoft.AspNetCore.Mvc.FromBody] NewHierarchyParams body)
-        {
-            return this.implementation.CanCreateHierarchyAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanCreateHierarchyAsync(NewHierarchyParams body);
+    
+        /// <summary>Hierarchy creation validation</summary>
+        /// <param name="body">The new Hierarchy object</param>
+        /// <returns>Create Hierarchy validation result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanCreateHierarchyAsync(NewHierarchyParams body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Hierarchy update validation</summary>
         /// <param name="body">The updated Hierarchy object</param>
-        /// <response code="200">Update Hierarchy validation result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchy not found</response>
         /// <returns>Update Hierarchy validation result</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("hierarchies/updateValidate")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanUpdateHierarchy([Microsoft.AspNetCore.Mvc.FromBody] UpdateHierarchyParams body)
-        {
-            return this.implementation.CanUpdateHierarchyAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanUpdateHierarchyAsync(UpdateHierarchyParams body);
+    
+        /// <summary>Hierarchy update validation</summary>
+        /// <param name="body">The updated Hierarchy object</param>
+        /// <returns>Update Hierarchy validation result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanUpdateHierarchyAsync(UpdateHierarchyParams body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Hierarchy deletion validation</summary>
         /// <param name="hierarchyId">The hierarchy identifier</param>
-        /// <response code="200">Delete Hierarchy validation result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchy not found</response>
         /// <returns>Delete Hierarchy validation result</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("hierarchies/deleteValidate")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteHierarchy(int? hierarchyId)
-        {
-            return this.implementation.CanDeleteHierarchyAsync(hierarchyId);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteHierarchyAsync(int? hierarchyId);
     
-    }
+        /// <summary>Hierarchy deletion validation</summary>
+        /// <param name="hierarchyId">The hierarchy identifier</param>
+        /// <returns>Delete Hierarchy validation result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteHierarchyAsync(int? hierarchyId, System.Threading.CancellationToken cancellationToken);
     
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface IInternationalizationController
-    {
         /// <summary>Add translations into Database received from The Translation Tool</summary>
-        /// <response code="204">The translation requests were successfully created. The reason why reponse 204 returned instead of 201 because we are not returning any Id for this API.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The translation requests were successfully created. The reason why reponse 204 returned instead of 201 because we are not returning any Id for this API.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetTranslationsAsync(SetTranslation body);
     
+        /// <summary>Add translations into Database received from The Translation Tool</summary>
+        /// <returns>The translation requests were successfully created. The reason why reponse 204 returned instead of 201 because we are not returning any Id for this API.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task SetTranslationsAsync(SetTranslation body, System.Threading.CancellationToken cancellationToken);
+    
         /// <summary>Get Translation Requests by params</summary>
         /// <param name="fromDate">Start date of range for getTranslationRequests</param>
         /// <param name="toDate">End date of range for getTranslationRequests</param>
-        /// <response code="200">A list of translation requests founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Translation request not found</response>
         /// <returns>A list of translation requests founded using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<TranslationRequest>>> GetTranslationRequestsAsync(System.DateTimeOffset? fromDate, System.DateTimeOffset? toDate);
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<TranslationRequest>>> GetTranslationRequestsAsync(System.DateTimeOffset? fromDate, System.DateTimeOffset? toDate);
+    
+        /// <summary>Get Translation Requests by params</summary>
+        /// <param name="fromDate">Start date of range for getTranslationRequests</param>
+        /// <param name="toDate">End date of range for getTranslationRequests</param>
+        /// <returns>A list of translation requests founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<TranslationRequest>>> GetTranslationRequestsAsync(System.DateTimeOffset? fromDate, System.DateTimeOffset? toDate, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Updates a sent based on translation requests</summary>
-        /// <response code="204">The translation requests were successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Translation request not found</response>
         /// <returns>The translation requests were successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateSentTranslationRequestsAsync(UpdateSentTranslationRequests body);
     
+        /// <summary>Updates a sent based on translation requests</summary>
+        /// <returns>The translation requests were successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateSentTranslationRequestsAsync(UpdateSentTranslationRequests body, System.Threading.CancellationToken cancellationToken);
+    
         /// <summary>Create machine translation request</summary>
         /// <param name="body">The new translation schema</param>
-        /// <response code="201">The new translation identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The new translation identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateMachineTranslationRequestAsync(MachineTranslation body);
     
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    [Microsoft.AspNetCore.Mvc.Route("api")]
-    public partial class InternationalizationController : Microsoft.AspNetCore.Mvc.Controller
-    {
-        private IInternationalizationController implementation;
-    
-        public InternationalizationController(IInternationalizationController implementation)
-        {
-            this.implementation = implementation;
-        }
-    
-        /// <summary>Add translations into Database received from The Translation Tool</summary>
-        /// <response code="204">The translation requests were successfully created. The reason why reponse 204 returned instead of 201 because we are not returning any Id for this API.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <returns>The translation requests were successfully created. The reason why reponse 204 returned instead of 201 because we are not returning any Id for this API.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("translations")]
-        public System.Threading.Tasks.Task SetTranslations([Microsoft.AspNetCore.Mvc.FromBody] SetTranslation body)
-        {
-            return this.implementation.SetTranslationsAsync(body);
-        }
-    
-        /// <summary>Get Translation Requests by params</summary>
-        /// <param name="fromDate">Start date of range for getTranslationRequests</param>
-        /// <param name="toDate">End date of range for getTranslationRequests</param>
-        /// <response code="200">A list of translation requests founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Translation request not found</response>
-        /// <returns>A list of translation requests founded using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("translations/request")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<TranslationRequest>>> GetTranslationRequests(System.DateTimeOffset? fromDate, System.DateTimeOffset? toDate)
-        {
-            return this.implementation.GetTranslationRequestsAsync(fromDate, toDate);
-        }
-    
-        /// <summary>Updates a sent based on translation requests</summary>
-        /// <response code="204">The translation requests were successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Translation request not found</response>
-        /// <returns>The translation requests were successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("translations/request")]
-        public System.Threading.Tasks.Task UpdateSentTranslationRequests([Microsoft.AspNetCore.Mvc.FromBody] UpdateSentTranslationRequests body)
-        {
-            return this.implementation.UpdateSentTranslationRequestsAsync(body);
-        }
-    
         /// <summary>Create machine translation request</summary>
         /// <param name="body">The new translation schema</param>
-        /// <response code="201">The new translation identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The new translation identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("translations/machine")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateMachineTranslationRequest([Microsoft.AspNetCore.Mvc.FromBody] MachineTranslation body)
-        {
-            return this.implementation.CreateMachineTranslationRequestAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateMachineTranslationRequestAsync(MachineTranslation body, System.Threading.CancellationToken cancellationToken);
     
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface ILocalizationController
-    {
         /// <summary>Get UnitSystem Conversion Rate</summary>
         /// <param name="fromUnitId">Original Id of Unit</param>
         /// <param name="fromUnitValue">Original Value of Unit</param>
         /// <param name="toUnitSystemId">Converted Id of Unit System</param>
-        /// <response code="200">A Conversion value founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Unit System not found</response>
         /// <returns>A Conversion value founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<UnitSystem>> GetUnitSystemConversionAsync(int? fromUnitId, double? fromUnitValue, int? toUnitSystemId);
     
-        /// <summary>Get Currency Conversion Rate</summary>
-        /// <param name="fromCurrencyId">Id of original currency</param>
-        /// <param name="toCurrencyId">Id of converting currency</param>
-        /// <param name="year">Year of the conversion</param>
-        /// <response code="200">A conversion rate founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Currency not found</response>
-        /// <returns>A conversion rate founded using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Currency>> GetCurrencyConversionRateAsync(int? fromCurrencyId, int? toCurrencyId, int? year);
-    
-        /// <summary>Get Currency list by searching</summary>
-        /// <response code="200">A currency list founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">A currency list not found</response>
-        /// <returns>A currency list founded using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Currency>>> GetCurrencyForSearchAsync(string searchText);
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    [Microsoft.AspNetCore.Mvc.Route("api")]
-    public partial class LocalizationController : Microsoft.AspNetCore.Mvc.Controller
-    {
-        private ILocalizationController implementation;
-    
-        public LocalizationController(ILocalizationController implementation)
-        {
-            this.implementation = implementation;
-        }
-    
         /// <summary>Get UnitSystem Conversion Rate</summary>
         /// <param name="fromUnitId">Original Id of Unit</param>
         /// <param name="fromUnitValue">Original Value of Unit</param>
         /// <param name="toUnitSystemId">Converted Id of Unit System</param>
-        /// <response code="200">A Conversion value founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Unit System not found</response>
         /// <returns>A Conversion value founded using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("localization/unitSystem")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<UnitSystem>> GetUnitSystemConversion(int? fromUnitId, double? fromUnitValue, int? toUnitSystemId)
-        {
-            return this.implementation.GetUnitSystemConversionAsync(fromUnitId, fromUnitValue, toUnitSystemId);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<UnitSystem>> GetUnitSystemConversionAsync(int? fromUnitId, double? fromUnitValue, int? toUnitSystemId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get Currency Conversion Rate</summary>
         /// <param name="fromCurrencyId">Id of original currency</param>
         /// <param name="toCurrencyId">Id of converting currency</param>
         /// <param name="year">Year of the conversion</param>
-        /// <response code="200">A conversion rate founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Currency not found</response>
         /// <returns>A conversion rate founded using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("localization/currency")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Currency>> GetCurrencyConversionRate(int? fromCurrencyId, int? toCurrencyId, int? year)
-        {
-            return this.implementation.GetCurrencyConversionRateAsync(fromCurrencyId, toCurrencyId, year);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Currency>> GetCurrencyConversionRateAsync(int? fromCurrencyId, int? toCurrencyId, int? year);
+    
+        /// <summary>Get Currency Conversion Rate</summary>
+        /// <param name="fromCurrencyId">Id of original currency</param>
+        /// <param name="toCurrencyId">Id of converting currency</param>
+        /// <param name="year">Year of the conversion</param>
+        /// <returns>A conversion rate founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Currency>> GetCurrencyConversionRateAsync(int? fromCurrencyId, int? toCurrencyId, int? year, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get Currency list by searching</summary>
-        /// <response code="200">A currency list founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">A currency list not found</response>
         /// <returns>A currency list founded using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("localization/search/{searchText}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Currency>>> GetCurrencyForSearch(string searchText)
-        {
-            return this.implementation.GetCurrencyForSearchAsync(searchText);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Currency>>> GetCurrencyForSearchAsync(string searchText);
     
-    }
+        /// <summary>Get Currency list by searching</summary>
+        /// <returns>A currency list founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Currency>>> GetCurrencyForSearchAsync(string searchText, System.Threading.CancellationToken cancellationToken);
     
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface ILocationController
-    {
         /// <summary>Search for locations by params</summary>
         /// <param name="id">The location identifier</param>
         /// <param name="locationType">The location type</param>
@@ -1248,234 +692,96 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <param name="locationStatuses">The array of selected statuses</param>
         /// <param name="limit">The amount of locations return per request</param>
         /// <param name="offset">The position for first location to be returned in the collection</param>
-        /// <response code="200">A list of locations founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Locations not found</response>
         /// <returns>A list of locations founded using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationsAsync(int? id, LocationType? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? limit, int? offset);
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationsAsync(int? id, LocationType? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? limit, int? offset);
+    
+        /// <summary>Search for locations by params</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <param name="hierarchyId">The hierarchy identifier</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <param name="limit">The amount of locations return per request</param>
+        /// <param name="offset">The position for first location to be returned in the collection</param>
+        /// <returns>A list of locations founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationsAsync(int? id, LocationType? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? limit, int? offset, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update existing location</summary>
         /// <param name="body">The updated location schema</param>
-        /// <response code="204">The location was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location not found</response>
         /// <returns>The location was successfully updated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateLocationAsync(Location body);
     
-        /// <summary>Create new location</summary>
-        /// <param name="body">The new location schema</param>
-        /// <response code="201">The new location identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <returns>The new location identifier</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateLocationAsync(NewLocationParams body);
-    
-        /// <summary>Delete a location by location id</summary>
-        /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type</param>
-        /// <response code="204">Location deletion result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location not found</response>
-        /// <returns>Location deletion result</returns>
-        System.Threading.Tasks.Task DeleteLocationAsync(int id, LocationType locationType);
-    
-        /// <summary>Get a location by location id</summary>
-        /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">The location type</param>
-        /// <response code="200">A location with provided identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location not found</response>
-        /// <returns>A location with provided identifier</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationByIdAsync(int locationId, LocationType locationType);
-    
-        /// <summary>Get locations by location name</summary>
-        /// <param name="locationName">The location name</param>
-        /// <param name="hierarchyId">The hierarchy identifier</param>
-        /// <param name="locationTypes">The array of selected location types</param>
-        /// <param name="locationStatuses">The array of selected statuses</param>
-        /// <response code="200">A list of locations founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location not found</response>
-        /// <returns>A list of locations founded using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationsByNameAsync(string locationName, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationType> locationTypes, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses);
-    
-        /// <summary>Get locations by traverse the location tree</summary>
-        /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type</param>
-        /// <param name="hierarchyId">The hierarchy identifier</param>
-        /// <param name="locationStatuses">The array of selected statuses</param>
-        /// <param name="levels">The number of level to traverse within hierarchy</param>
-        /// <response code="200">A list of locations founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Locations not found</response>
-        /// <returns>A list of locations founded using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetTraversedLocationsAsync(int id, LocationType locationType, int hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels);
-    
-        /// <summary>Get immediate child locations or location groups</summary>
-        /// <param name="id">The location identifier</param>
-        /// <param name="locationTypes">The array of selected types</param>
-        /// <param name="locationStatuses">The array of selected statuses</param>
-        /// <response code="200">A list of locations founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Locations not found</response>
-        /// <returns>A list of locations founded using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetChildLocationsAsync(int id, System.Collections.Generic.IEnumerable<LocationType> locationTypes, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses);
-    
-        /// <summary>Get child locations count</summary>
-        /// <param name="id">The location identifier</param>
-        /// <param name="locationStatuses">The array of selected statuses</param>
-        /// <param name="levels">The number of level to traverse within hierarchy</param>
-        /// <response code="200">A count of locations found using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Locations not found</response>
-        /// <returns>A count of locations found using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<int>> GetChildLocationsCountAsync(int id, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels);
-    
-        /// <summary>Get child location groups count</summary>
-        /// <param name="id">The location identifier</param>
-        /// <param name="locationStatuses">The array of selected statuses</param>
-        /// <param name="levels">The number of level to traverse within hierarchy</param>
-        /// <response code="200">A count of locations found using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Locations not found</response>
-        /// <returns>A count of locations found using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<int>> GetChildLocationGroupsCountAsync(int id, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels);
-    
-        /// <summary>Move location and all children under another location group</summary>
-        /// <response code="204">The location successfully moved.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location not found</response>
-        /// <returns>The location successfully moved.</returns>
-        System.Threading.Tasks.Task MoveLocationAsync(MovingLocationParams body);
-    
-        /// <summary>Validation of location creation</summary>
-        /// <param name="body">The new location object</param>
-        /// <response code="200">Create location validation result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location not found</response>
-        /// <returns>Create location validation result</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanCreateLocationAsync(NewLocationParams body);
-    
-        /// <summary>Validation of location deleting</summary>
-        /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type</param>
-        /// <response code="200">Delete location validation result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location not found</response>
-        /// <returns>Delete location validation result</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocationAsync(int id, LocationType locationType);
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    [Microsoft.AspNetCore.Mvc.Route("api")]
-    public partial class LocationController : Microsoft.AspNetCore.Mvc.Controller
-    {
-        private ILocationController implementation;
-    
-        public LocationController(ILocationController implementation)
-        {
-            this.implementation = implementation;
-        }
-    
-        /// <summary>Search for locations by params</summary>
-        /// <param name="id">The location identifier</param>
-        /// <param name="locationType">The location type</param>
-        /// <param name="hierarchyId">The hierarchy identifier</param>
-        /// <param name="locationStatuses">The array of selected statuses</param>
-        /// <param name="limit">The amount of locations return per request</param>
-        /// <param name="offset">The position for first location to be returned in the collection</param>
-        /// <response code="200">A list of locations founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Locations not found</response>
-        /// <returns>A list of locations founded using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocations(int? id, LocationType? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? limit, int? offset)
-        {
-            return this.implementation.GetLocationsAsync(id, locationType, hierarchyId, locationStatuses, limit, offset);
-        }
-    
         /// <summary>Update existing location</summary>
         /// <param name="body">The updated location schema</param>
-        /// <response code="204">The location was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location not found</response>
         /// <returns>The location was successfully updated.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("locations")]
-        public System.Threading.Tasks.Task UpdateLocation([Microsoft.AspNetCore.Mvc.FromBody] Location body)
-        {
-            return this.implementation.UpdateLocationAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateLocationAsync(Location body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Create new location</summary>
         /// <param name="body">The new location schema</param>
-        /// <response code="201">The new location identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The new location identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locations")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateLocation([Microsoft.AspNetCore.Mvc.FromBody] NewLocationParams body)
-        {
-            return this.implementation.CreateLocationAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateLocationAsync(NewLocationParams body);
+    
+        /// <summary>Create new location</summary>
+        /// <param name="body">The new location schema</param>
+        /// <returns>The new location identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateLocationAsync(NewLocationParams body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Delete a location by location id</summary>
         /// <param name="id">The location identifier</param>
         /// <param name="locationType">The location type</param>
-        /// <response code="204">Location deletion result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location not found</response>
         /// <returns>Location deletion result</returns>
-        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("locations")]
-        public System.Threading.Tasks.Task DeleteLocation(int id, LocationType locationType)
-        {
-            return this.implementation.DeleteLocationAsync(id, locationType);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DeleteLocationAsync(int id, LocationType locationType);
+    
+        /// <summary>Delete a location by location id</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <returns>Location deletion result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task DeleteLocationAsync(int id, LocationType locationType, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get a location by location id</summary>
         /// <param name="locationId">The location identifier</param>
         /// <param name="locationType">The location type</param>
-        /// <response code="200">A location with provided identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location not found</response>
         /// <returns>A location with provided identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/{locationId}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationById(int locationId, LocationType locationType)
-        {
-            return this.implementation.GetLocationByIdAsync(locationId, locationType);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationByIdAsync(int locationId, LocationType locationType);
+    
+        /// <summary>Get a location by location id</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <returns>A location with provided identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationByIdAsync(int locationId, LocationType locationType, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get locations by location name</summary>
         /// <param name="locationName">The location name</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="locationTypes">The array of selected location types</param>
         /// <param name="locationStatuses">The array of selected statuses</param>
-        /// <response code="200">A list of locations founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location not found</response>
         /// <returns>A list of locations founded using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/search")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationsByName(string locationName, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationType> locationTypes, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses)
-        {
-            return this.implementation.GetLocationsByNameAsync(locationName, hierarchyId, locationTypes, locationStatuses);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationsByNameAsync(string locationName, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationType> locationTypes, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses);
+    
+        /// <summary>Get locations by location name</summary>
+        /// <param name="locationName">The location name</param>
+        /// <param name="hierarchyId">The hierarchy identifier</param>
+        /// <param name="locationTypes">The array of selected location types</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <returns>A list of locations founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationsByNameAsync(string locationName, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationType> locationTypes, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get locations by traverse the location tree</summary>
         /// <param name="id">The location identifier</param>
@@ -1483,536 +789,313 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="locationStatuses">The array of selected statuses</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
-        /// <response code="200">A list of locations founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Locations not found</response>
         /// <returns>A list of locations founded using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/traverse")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetTraversedLocations(int id, LocationType locationType, int hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels)
-        {
-            return this.implementation.GetTraversedLocationsAsync(id, locationType, hierarchyId, locationStatuses, levels);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetTraversedLocationsAsync(int id, LocationType locationType, int hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels);
+    
+        /// <summary>Get locations by traverse the location tree</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <param name="hierarchyId">The hierarchy identifier</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <returns>A list of locations founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetTraversedLocationsAsync(int id, LocationType locationType, int hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get immediate child locations or location groups</summary>
         /// <param name="id">The location identifier</param>
         /// <param name="locationTypes">The array of selected types</param>
         /// <param name="locationStatuses">The array of selected statuses</param>
-        /// <response code="200">A list of locations founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Locations not found</response>
         /// <returns>A list of locations founded using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/childLocations")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetChildLocations(int id, System.Collections.Generic.IEnumerable<LocationType> locationTypes, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses)
-        {
-            return this.implementation.GetChildLocationsAsync(id, locationTypes, locationStatuses);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetChildLocationsAsync(int id, System.Collections.Generic.IEnumerable<LocationType> locationTypes, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses);
+    
+        /// <summary>Get immediate child locations or location groups</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationTypes">The array of selected types</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <returns>A list of locations founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetChildLocationsAsync(int id, System.Collections.Generic.IEnumerable<LocationType> locationTypes, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get child locations count</summary>
         /// <param name="id">The location identifier</param>
         /// <param name="locationStatuses">The array of selected statuses</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
-        /// <response code="200">A count of locations found using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Locations not found</response>
         /// <returns>A count of locations found using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/childLocationsCount")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<int>> GetChildLocationsCount(int id, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels)
-        {
-            return this.implementation.GetChildLocationsCountAsync(id, locationStatuses, levels);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<int>> GetChildLocationsCountAsync(int id, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels);
+    
+        /// <summary>Get child locations count</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <returns>A count of locations found using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<int>> GetChildLocationsCountAsync(int id, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get child location groups count</summary>
         /// <param name="id">The location identifier</param>
         /// <param name="locationStatuses">The array of selected statuses</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
-        /// <response code="200">A count of locations found using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Locations not found</response>
         /// <returns>A count of locations found using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/childLocationGroupsCount")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<int>> GetChildLocationGroupsCount(int id, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels)
-        {
-            return this.implementation.GetChildLocationGroupsCountAsync(id, locationStatuses, levels);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<int>> GetChildLocationGroupsCountAsync(int id, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels);
+    
+        /// <summary>Get child location groups count</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <returns>A count of locations found using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<int>> GetChildLocationGroupsCountAsync(int id, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Move location and all children under another location group</summary>
-        /// <response code="204">The location successfully moved.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location not found</response>
         /// <returns>The location successfully moved.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locations/move")]
-        public System.Threading.Tasks.Task MoveLocation([Microsoft.AspNetCore.Mvc.FromBody] MovingLocationParams body)
-        {
-            return this.implementation.MoveLocationAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task MoveLocationAsync(MovingLocationParams body);
+    
+        /// <summary>Move location and all children under another location group</summary>
+        /// <returns>The location successfully moved.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task MoveLocationAsync(MovingLocationParams body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Validation of location creation</summary>
         /// <param name="body">The new location object</param>
-        /// <response code="200">Create location validation result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location not found</response>
         /// <returns>Create location validation result</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locations/creationValidate")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanCreateLocation([Microsoft.AspNetCore.Mvc.FromBody] NewLocationParams body)
-        {
-            return this.implementation.CanCreateLocationAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanCreateLocationAsync(NewLocationParams body);
+    
+        /// <summary>Validation of location creation</summary>
+        /// <param name="body">The new location object</param>
+        /// <returns>Create location validation result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanCreateLocationAsync(NewLocationParams body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Validation of location deleting</summary>
         /// <param name="id">The location identifier</param>
         /// <param name="locationType">The location type</param>
-        /// <response code="200">Delete location validation result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location not found</response>
         /// <returns>Delete location validation result</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locations/deletionValidate")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocation(int id, LocationType locationType)
-        {
-            return this.implementation.CanDeleteLocationAsync(id, locationType);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocationAsync(int id, LocationType locationType);
     
-    }
+        /// <summary>Validation of location deleting</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <returns>Delete location validation result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocationAsync(int id, LocationType locationType, System.Threading.CancellationToken cancellationToken);
     
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface IListController
-    {
         /// <summary>Search for lists based on params</summary>
         /// <param name="statusFilters">The array of selected statuses to include</param>
         /// <param name="productFilters">The array of selected products to include</param>
-        /// <response code="200">A list of lists found using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Lists not found</response>
         /// <returns>A list of lists found using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<List>>> GetListsAsync(System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters);
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<List>>> GetListsAsync(System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters);
+    
+        /// <summary>Search for lists based on params</summary>
+        /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <param name="productFilters">The array of selected products to include</param>
+        /// <returns>A list of lists found using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<List>>> GetListsAsync(System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update existing list</summary>
         /// <param name="body">The updated list schema</param>
-        /// <response code="204">The list was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List not found</response>
         /// <returns>The list was successfully updated.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateListAsync(UpdateListParams body);
     
-        /// <summary>Create new list</summary>
-        /// <param name="body">The list schema</param>
-        /// <response code="201">The new list identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <returns>The new list identifier</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateListAsync(List body);
-    
-        /// <summary>Delete a list by list id</summary>
-        /// <param name="listId">The list identifier</param>
-        /// <response code="204">List deletion result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List not found</response>
-        /// <returns>List deletion result</returns>
-        System.Threading.Tasks.Task DeleteListAsync(int listId);
-    
-        /// <summary>Get a list by list id</summary>
-        /// <param name="listId">The list to be returned</param>
-        /// <response code="200">A list with provided identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List not found</response>
-        /// <returns>A list with provided identifier</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId);
-    
-        /// <summary>Get lists by list name</summary>
-        /// <param name="listName">The lists to be returned</param>
-        /// <response code="200">A list of lists found using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List not found</response>
-        /// <returns>A list of lists found using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListSearch>>> GetListsByNameAsync(string listName);
-    
-        /// <summary>Search for list items based on params</summary>
-        /// <param name="listId">The list the list items retrieved belong to (null will return all lists)</param>
-        /// <param name="listStatusFilters">The array of selected statuses of lists to include</param>
-        /// <param name="listItemStatusFilters">The array of selected statuses list items to include</param>
-        /// <response code="200">A list of list items found using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List item not found</response>
-        /// <returns>A list of list items found using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItem>>> GetListItemsAsync(int? listId, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters);
-    
-        /// <summary>Update existing list item</summary>
-        /// <param name="body">The updated list item schema</param>
-        /// <response code="204">The list item was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List Item not found</response>
-        /// <returns>The list item was successfully updated</returns>
-        System.Threading.Tasks.Task UpdateListItemAsync(UpdateListItemParams body);
-    
-        /// <summary>Create new list item</summary>
-        /// <param name="body">The new list item schema</param>
-        /// <response code="201">The new list item identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <returns>The new list item identifier</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201MultipleResponses>> CreateListItemAsync(NewListItemParams body);
-    
-        /// <summary>Delete a list item by list item id</summary>
-        /// <param name="listItemId">The list item identifier</param>
-        /// <response code="204">List Item deletion result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List Item not found</response>
-        /// <returns>List Item deletion result</returns>
-        System.Threading.Tasks.Task DeleteListItemAsync(int listItemId);
-    
-        /// <summary>Get a list item by list item id</summary>
-        /// <param name="listItemId">The list item to be returned</param>
-        /// <response code="200">A list item with provided identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List Item not found</response>
-        /// <returns>A list item with provided identifier</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ListItem>> GetListItemByIdAsync(int listItemId);
-    
-        /// <summary>Get list items by list item name</summary>
-        /// <param name="listItemName">The list items to be returned</param>
-        /// <response code="200">A list of list items found using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List Item not found</response>
-        /// <returns>A list of list items found using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItemSearch>>> GetListItemsByNameAsync(string listItemName);
-    
-        /// <summary>Reorders all list items in a list</summary>
-        /// <param name="body">The reorder list item schema</param>
-        /// <response code="204">The list item reorder was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List Item not found</response>
-        /// <returns>The list item reorder was successfully updated</returns>
-        System.Threading.Tasks.Task ReorderListItemAsync(ReorderListItemParams body);
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    [Microsoft.AspNetCore.Mvc.Route("api")]
-    public partial class ListController : Microsoft.AspNetCore.Mvc.Controller
-    {
-        private IListController implementation;
-    
-        public ListController(IListController implementation)
-        {
-            this.implementation = implementation;
-        }
-    
-        /// <summary>Search for lists based on params</summary>
-        /// <param name="statusFilters">The array of selected statuses to include</param>
-        /// <param name="productFilters">The array of selected products to include</param>
-        /// <response code="200">A list of lists found using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Lists not found</response>
-        /// <returns>A list of lists found using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<List>>> GetLists(System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters)
-        {
-            return this.implementation.GetListsAsync(statusFilters, productFilters);
-        }
-    
         /// <summary>Update existing list</summary>
         /// <param name="body">The updated list schema</param>
-        /// <response code="204">The list was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List not found</response>
         /// <returns>The list was successfully updated.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("lists")]
-        public System.Threading.Tasks.Task UpdateList([Microsoft.AspNetCore.Mvc.FromBody] UpdateListParams body)
-        {
-            return this.implementation.UpdateListAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateListAsync(UpdateListParams body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Create new list</summary>
         /// <param name="body">The list schema</param>
-        /// <response code="201">The new list identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The new list identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lists")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateList([Microsoft.AspNetCore.Mvc.FromBody] List body)
-        {
-            return this.implementation.CreateListAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateListAsync(List body);
+    
+        /// <summary>Create new list</summary>
+        /// <param name="body">The list schema</param>
+        /// <returns>The new list identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateListAsync(List body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Delete a list by list id</summary>
         /// <param name="listId">The list identifier</param>
-        /// <response code="204">List deletion result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List not found</response>
         /// <returns>List deletion result</returns>
-        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("lists")]
-        public System.Threading.Tasks.Task DeleteList(int listId)
-        {
-            return this.implementation.DeleteListAsync(listId);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DeleteListAsync(int listId);
+    
+        /// <summary>Delete a list by list id</summary>
+        /// <param name="listId">The list identifier</param>
+        /// <returns>List deletion result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task DeleteListAsync(int listId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get a list by list id</summary>
         /// <param name="listId">The list to be returned</param>
-        /// <response code="200">A list with provided identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List not found</response>
         /// <returns>A list with provided identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/{listId}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListById(int listId)
-        {
-            return this.implementation.GetListByIdAsync(listId);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId);
+    
+        /// <summary>Get a list by list id</summary>
+        /// <param name="listId">The list to be returned</param>
+        /// <returns>A list with provided identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get lists by list name</summary>
         /// <param name="listName">The lists to be returned</param>
-        /// <response code="200">A list of lists found using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List not found</response>
         /// <returns>A list of lists found using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/search")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListSearch>>> GetListsByName(string listName)
-        {
-            return this.implementation.GetListsByNameAsync(listName);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListSearch>>> GetListsByNameAsync(string listName);
+    
+        /// <summary>Get lists by list name</summary>
+        /// <param name="listName">The lists to be returned</param>
+        /// <returns>A list of lists found using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListSearch>>> GetListsByNameAsync(string listName, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Search for list items based on params</summary>
         /// <param name="listId">The list the list items retrieved belong to (null will return all lists)</param>
         /// <param name="listStatusFilters">The array of selected statuses of lists to include</param>
         /// <param name="listItemStatusFilters">The array of selected statuses list items to include</param>
-        /// <response code="200">A list of list items found using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List item not found</response>
         /// <returns>A list of list items found using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/items")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItem>>> GetListItems(int? listId, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters)
-        {
-            return this.implementation.GetListItemsAsync(listId, listStatusFilters, listItemStatusFilters);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListItem>>> GetListItemsAsync(int? listId, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters);
+    
+        /// <summary>Search for list items based on params</summary>
+        /// <param name="listId">The list the list items retrieved belong to (null will return all lists)</param>
+        /// <param name="listStatusFilters">The array of selected statuses of lists to include</param>
+        /// <param name="listItemStatusFilters">The array of selected statuses list items to include</param>
+        /// <returns>A list of list items found using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListItem>>> GetListItemsAsync(int? listId, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update existing list item</summary>
         /// <param name="body">The updated list item schema</param>
-        /// <response code="204">The list item was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List Item not found</response>
         /// <returns>The list item was successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("lists/items")]
-        public System.Threading.Tasks.Task UpdateListItem([Microsoft.AspNetCore.Mvc.FromBody] UpdateListItemParams body)
-        {
-            return this.implementation.UpdateListItemAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateListItemAsync(UpdateListItemParams body);
+    
+        /// <summary>Update existing list item</summary>
+        /// <param name="body">The updated list item schema</param>
+        /// <returns>The list item was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateListItemAsync(UpdateListItemParams body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Create new list item</summary>
         /// <param name="body">The new list item schema</param>
-        /// <response code="201">The new list item identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The new list item identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lists/items")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201MultipleResponses>> CreateListItem([Microsoft.AspNetCore.Mvc.FromBody] NewListItemParams body)
-        {
-            return this.implementation.CreateListItemAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201MultipleResponses>> CreateListItemAsync(NewListItemParams body);
+    
+        /// <summary>Create new list item</summary>
+        /// <param name="body">The new list item schema</param>
+        /// <returns>The new list item identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201MultipleResponses>> CreateListItemAsync(NewListItemParams body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Delete a list item by list item id</summary>
         /// <param name="listItemId">The list item identifier</param>
-        /// <response code="204">List Item deletion result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List Item not found</response>
         /// <returns>List Item deletion result</returns>
-        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("lists/items")]
-        public System.Threading.Tasks.Task DeleteListItem(int listItemId)
-        {
-            return this.implementation.DeleteListItemAsync(listItemId);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DeleteListItemAsync(int listItemId);
+    
+        /// <summary>Delete a list item by list item id</summary>
+        /// <param name="listItemId">The list item identifier</param>
+        /// <returns>List Item deletion result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task DeleteListItemAsync(int listItemId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get a list item by list item id</summary>
         /// <param name="listItemId">The list item to be returned</param>
-        /// <response code="200">A list item with provided identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List Item not found</response>
         /// <returns>A list item with provided identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/items/{listItemId}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ListItem>> GetListItemById(int listItemId)
-        {
-            return this.implementation.GetListItemByIdAsync(listItemId);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ListItem>> GetListItemByIdAsync(int listItemId);
+    
+        /// <summary>Get a list item by list item id</summary>
+        /// <param name="listItemId">The list item to be returned</param>
+        /// <returns>A list item with provided identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ListItem>> GetListItemByIdAsync(int listItemId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get list items by list item name</summary>
         /// <param name="listItemName">The list items to be returned</param>
-        /// <response code="200">A list of list items found using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List Item not found</response>
         /// <returns>A list of list items found using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/items/search")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItemSearch>>> GetListItemsByName(string listItemName)
-        {
-            return this.implementation.GetListItemsByNameAsync(listItemName);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListItemSearch>>> GetListItemsByNameAsync(string listItemName);
+    
+        /// <summary>Get list items by list item name</summary>
+        /// <param name="listItemName">The list items to be returned</param>
+        /// <returns>A list of list items found using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListItemSearch>>> GetListItemsByNameAsync(string listItemName, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Reorders all list items in a list</summary>
         /// <param name="body">The reorder list item schema</param>
-        /// <response code="204">The list item reorder was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List Item not found</response>
         /// <returns>The list item reorder was successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("lists/items/reorder")]
-        public System.Threading.Tasks.Task ReorderListItem([Microsoft.AspNetCore.Mvc.FromBody] ReorderListItemParams body)
-        {
-            return this.implementation.ReorderListItemAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ReorderListItemAsync(ReorderListItemParams body);
     
-    }
+        /// <summary>Reorders all list items in a list</summary>
+        /// <param name="body">The reorder list item schema</param>
+        /// <returns>The list item reorder was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task ReorderListItemAsync(ReorderListItemParams body, System.Threading.CancellationToken cancellationToken);
     
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface ILocationListController
-    {
         /// <summary>Get a list of available location Ids by location list identifier</summary>
         /// <param name="listId">The location list identifier</param>
-        /// <response code="200">A List of available location identifier for this location list</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location list not found</response>
         /// <returns>A List of available location identifier for this location list</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LocationListAvailability>> GetLocationListAvailabilityByIdAsync(int listId);
     
-        /// <summary>Set availability for a location list</summary>
-        /// <param name="listId">The location list identifier</param>
-        /// <param name="body">The updated availability for selected location list</param>
-        /// <response code="204">The availability was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location list not found</response>
-        /// <returns>The availability was successfully updated</returns>
-        System.Threading.Tasks.Task SetLocationListAvailabilityAsync(int listId, LocationListAvailabilityDetails body);
-    
-        /// <summary>Get availability location structure for a location list</summary>
-        /// <param name="listId">The location list identifier</param>
-        /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">The location type</param>
-        /// <param name="hierarchyId">The hierarchy identifier</param>
-        /// <param name="levels">The number of level to traverse within hierarchy</param>
-        /// <response code="200">A list of locations with statuses founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location list not found</response>
-        /// <returns>A list of locations with statuses founded using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListAvailabilityStructureAsync(int listId, int locationId, LocationType locationType, int hierarchyId, int? levels);
-    
-        /// <summary>Get a list of available location list Ids by location identifier</summary>
-        /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">The location type</param>
-        /// <response code="200">A List of available location list identifier for this location</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location not found</response>
-        /// <returns>A List of available location list identifier for this location</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<int>>> GetLocationListAvailabilityByLocationIdAsync(int locationId, LocationType locationType);
-    
-        /// <summary>Get a list of available location Ids by location list item identifier</summary>
-        /// <param name="listItemId">The location list item identifier</param>
-        /// <response code="200">A List of available location identifier for this location list item</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location list item not found</response>
-        /// <returns>A List of available location identifier for this location list item</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LocationListAvailability>> GetLocationListItemAvailabilityByIdAsync(int listItemId);
-    
-        /// <summary>Set availability for a location list item</summary>
-        /// <param name="listItemId">The location list item identifier</param>
-        /// <param name="body">The updated availability for selected location list item</param>
-        /// <response code="204">The availability was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location list item not found</response>
-        /// <returns>The availability was successfully updated</returns>
-        System.Threading.Tasks.Task SetLocationListItemAvailabilityAsync(int listItemId, LocationListAvailabilityDetails body);
-    
-        /// <summary>Get availability location structure for a location list item</summary>
-        /// <param name="listItemId">The location list item identifier</param>
-        /// <param name="locationId">The location identifier</param>
-        /// <param name="locationType">The location type</param>
-        /// <param name="hierarchyId">The hierarchy identifier</param>
-        /// <param name="levels">The number of level to traverse within hierarchy</param>
-        /// <response code="200">A list of locations with statuses founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location list not found</response>
-        /// <returns>A list of locations with statuses founded using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListItemAvailabilityStructureAsync(int listItemId, int locationId, LocationType locationType, int hierarchyId, int? levels);
-    
-        /// <summary>Get a list of available location list item Ids by parent List and location identifier</summary>
-        /// <param name="locationId">The location identifier</param>
-        /// <param name="listId">The parent list identifier</param>
-        /// <param name="locationType">The location type</param>
-        /// <response code="200">A List of available location item list identifier for this location</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location not found</response>
-        /// <returns>A List of available location item list identifier for this location</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<int>>> GetLocationListItemAvailabilityByLocationIdAsync(int locationId, int listId, LocationType locationType);
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    [Microsoft.AspNetCore.Mvc.Route("api")]
-    public partial class LocationListController : Microsoft.AspNetCore.Mvc.Controller
-    {
-        private ILocationListController implementation;
-    
-        public LocationListController(ILocationListController implementation)
-        {
-            this.implementation = implementation;
-        }
-    
         /// <summary>Get a list of available location Ids by location list identifier</summary>
         /// <param name="listId">The location list identifier</param>
-        /// <response code="200">A List of available location identifier for this location list</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location list not found</response>
         /// <returns>A List of available location identifier for this location list</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/{listId}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LocationListAvailability>> GetLocationListAvailabilityById(int listId)
-        {
-            return this.implementation.GetLocationListAvailabilityByIdAsync(listId);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LocationListAvailability>> GetLocationListAvailabilityByIdAsync(int listId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Set availability for a location list</summary>
         /// <param name="listId">The location list identifier</param>
         /// <param name="body">The updated availability for selected location list</param>
-        /// <response code="204">The availability was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location list not found</response>
         /// <returns>The availability was successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("locationlists/{listId}")]
-        public System.Threading.Tasks.Task SetLocationListAvailability(int listId, [Microsoft.AspNetCore.Mvc.FromBody] LocationListAvailabilityDetails body)
-        {
-            return this.implementation.SetLocationListAvailabilityAsync(listId, body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetLocationListAvailabilityAsync(int listId, LocationListAvailabilityDetails body);
+    
+        /// <summary>Set availability for a location list</summary>
+        /// <param name="listId">The location list identifier</param>
+        /// <param name="body">The updated availability for selected location list</param>
+        /// <returns>The availability was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task SetLocationListAvailabilityAsync(int listId, LocationListAvailabilityDetails body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get availability location structure for a location list</summary>
         /// <param name="listId">The location list identifier</param>
@@ -2020,57 +1103,63 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
-        /// <response code="200">A list of locations with statuses founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location list not found</response>
         /// <returns>A list of locations with statuses founded using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locationlists/{listId}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListAvailabilityStructure(int listId, int locationId, LocationType locationType, int hierarchyId, int? levels)
-        {
-            return this.implementation.GetLocationListAvailabilityStructureAsync(listId, locationId, locationType, hierarchyId, levels);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListAvailabilityStructureAsync(int listId, int locationId, LocationType locationType, int hierarchyId, int? levels);
+    
+        /// <summary>Get availability location structure for a location list</summary>
+        /// <param name="listId">The location list identifier</param>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <param name="hierarchyId">The hierarchy identifier</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <returns>A list of locations with statuses founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListAvailabilityStructureAsync(int listId, int locationId, LocationType locationType, int hierarchyId, int? levels, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get a list of available location list Ids by location identifier</summary>
         /// <param name="locationId">The location identifier</param>
         /// <param name="locationType">The location type</param>
-        /// <response code="200">A List of available location list identifier for this location</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location not found</response>
         /// <returns>A List of available location list identifier for this location</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/locations/{locationId}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<int>>> GetLocationListAvailabilityByLocationId(int locationId, LocationType locationType)
-        {
-            return this.implementation.GetLocationListAvailabilityByLocationIdAsync(locationId, locationType);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<int>>> GetLocationListAvailabilityByLocationIdAsync(int locationId, LocationType locationType);
+    
+        /// <summary>Get a list of available location list Ids by location identifier</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <returns>A List of available location list identifier for this location</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<int>>> GetLocationListAvailabilityByLocationIdAsync(int locationId, LocationType locationType, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get a list of available location Ids by location list item identifier</summary>
         /// <param name="listItemId">The location list item identifier</param>
-        /// <response code="200">A List of available location identifier for this location list item</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location list item not found</response>
         /// <returns>A List of available location identifier for this location list item</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/items/{listItemId}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LocationListAvailability>> GetLocationListItemAvailabilityById(int listItemId)
-        {
-            return this.implementation.GetLocationListItemAvailabilityByIdAsync(listItemId);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LocationListAvailability>> GetLocationListItemAvailabilityByIdAsync(int listItemId);
+    
+        /// <summary>Get a list of available location Ids by location list item identifier</summary>
+        /// <param name="listItemId">The location list item identifier</param>
+        /// <returns>A List of available location identifier for this location list item</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LocationListAvailability>> GetLocationListItemAvailabilityByIdAsync(int listItemId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Set availability for a location list item</summary>
         /// <param name="listItemId">The location list item identifier</param>
         /// <param name="body">The updated availability for selected location list item</param>
-        /// <response code="204">The availability was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location list item not found</response>
         /// <returns>The availability was successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("locationlists/items/{listItemId}")]
-        public System.Threading.Tasks.Task SetLocationListItemAvailability(int listItemId, [Microsoft.AspNetCore.Mvc.FromBody] LocationListAvailabilityDetails body)
-        {
-            return this.implementation.SetLocationListItemAvailabilityAsync(listItemId, body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetLocationListItemAvailabilityAsync(int listItemId, LocationListAvailabilityDetails body);
+    
+        /// <summary>Set availability for a location list item</summary>
+        /// <param name="listItemId">The location list item identifier</param>
+        /// <param name="body">The updated availability for selected location list item</param>
+        /// <returns>The availability was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task SetLocationListItemAvailabilityAsync(int listItemId, LocationListAvailabilityDetails body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get availability location structure for a location list item</summary>
         /// <param name="listItemId">The location list item identifier</param>
@@ -2078,107 +1167,77 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <param name="locationType">The location type</param>
         /// <param name="hierarchyId">The hierarchy identifier</param>
         /// <param name="levels">The number of level to traverse within hierarchy</param>
-        /// <response code="200">A list of locations with statuses founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location list not found</response>
         /// <returns>A list of locations with statuses founded using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locationlists/items/{listItemId}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListItemAvailabilityStructure(int listItemId, int locationId, LocationType locationType, int hierarchyId, int? levels)
-        {
-            return this.implementation.GetLocationListItemAvailabilityStructureAsync(listItemId, locationId, locationType, hierarchyId, levels);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListItemAvailabilityStructureAsync(int listItemId, int locationId, LocationType locationType, int hierarchyId, int? levels);
+    
+        /// <summary>Get availability location structure for a location list item</summary>
+        /// <param name="listItemId">The location list item identifier</param>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <param name="hierarchyId">The hierarchy identifier</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <returns>A list of locations with statuses founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Location>>> GetLocationListItemAvailabilityStructureAsync(int listItemId, int locationId, LocationType locationType, int hierarchyId, int? levels, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get a list of available location list item Ids by parent List and location identifier</summary>
         /// <param name="locationId">The location identifier</param>
         /// <param name="listId">The parent list identifier</param>
         /// <param name="locationType">The location type</param>
-        /// <response code="200">A List of available location item list identifier for this location</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Location not found</response>
         /// <returns>A List of available location item list identifier for this location</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/items/locations/{locationId}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<int>>> GetLocationListItemAvailabilityByLocationId(int locationId, int listId, LocationType locationType)
-        {
-            return this.implementation.GetLocationListItemAvailabilityByLocationIdAsync(locationId, listId, locationType);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<int>>> GetLocationListItemAvailabilityByLocationIdAsync(int locationId, int listId, LocationType locationType);
     
-    }
+        /// <summary>Get a list of available location list item Ids by parent List and location identifier</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="listId">The parent list identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <returns>A List of available location item list identifier for this location</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<int>>> GetLocationListItemAvailabilityByLocationIdAsync(int locationId, int listId, LocationType locationType, System.Threading.CancellationToken cancellationToken);
     
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface IMobileController
-    {
         /// <summary>Insert a white listed mobile access token</summary>
         /// <param name="body">The token to be persisted</param>
-        /// <response code="204">token is successfully inserted for user</response>
         /// <returns>token is successfully inserted for user</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task InsertMobileTokenAsync(AddSessionTokenRequest body);
     
-        /// <summary>Perform a check to determine whether token is still valid</summary>
-        /// <param name="body">Provides information about the token to be verified</param>
-        /// <response code="204">token in question is still valid</response>
-        /// <response code="401">token is no longer valid, user is unauthorized</response>
-        /// <returns>token in question is still valid</returns>
-        System.Threading.Tasks.Task VerifyMobileTokenAsync(SessionToken body);
-    
-        /// <summary>Perform a log out from mobile device</summary>
-        /// <param name="body">The token to be removed</param>
-        /// <response code="204">token is removed successfully</response>
-        /// <response code="401">the token does not exist (not authorized to log out)</response>
-        /// <returns>token is removed successfully</returns>
-        System.Threading.Tasks.Task RemoveMobileTokenAsync(SessionToken body);
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    [Microsoft.AspNetCore.Mvc.Route("api")]
-    public partial class MobileController : Microsoft.AspNetCore.Mvc.Controller
-    {
-        private IMobileController implementation;
-    
-        public MobileController(IMobileController implementation)
-        {
-            this.implementation = implementation;
-        }
-    
         /// <summary>Insert a white listed mobile access token</summary>
         /// <param name="body">The token to be persisted</param>
-        /// <response code="204">token is successfully inserted for user</response>
         /// <returns>token is successfully inserted for user</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("mobile/auth/addToken")]
-        public System.Threading.Tasks.Task InsertMobileToken([Microsoft.AspNetCore.Mvc.FromBody] AddSessionTokenRequest body)
-        {
-            return this.implementation.InsertMobileTokenAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task InsertMobileTokenAsync(AddSessionTokenRequest body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Perform a check to determine whether token is still valid</summary>
         /// <param name="body">Provides information about the token to be verified</param>
-        /// <response code="204">token in question is still valid</response>
-        /// <response code="401">token is no longer valid, user is unauthorized</response>
         /// <returns>token in question is still valid</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("mobile/auth/access")]
-        public System.Threading.Tasks.Task VerifyMobileToken([Microsoft.AspNetCore.Mvc.FromBody] SessionToken body)
-        {
-            return this.implementation.VerifyMobileTokenAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task VerifyMobileTokenAsync(SessionToken body);
+    
+        /// <summary>Perform a check to determine whether token is still valid</summary>
+        /// <param name="body">Provides information about the token to be verified</param>
+        /// <returns>token in question is still valid</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task VerifyMobileTokenAsync(SessionToken body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Perform a log out from mobile device</summary>
         /// <param name="body">The token to be removed</param>
-        /// <response code="204">token is removed successfully</response>
-        /// <response code="401">the token does not exist (not authorized to log out)</response>
         /// <returns>token is removed successfully</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("mobile/auth/logout")]
-        public System.Threading.Tasks.Task RemoveMobileToken([Microsoft.AspNetCore.Mvc.FromBody] SessionToken body)
-        {
-            return this.implementation.RemoveMobileTokenAsync(body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RemoveMobileTokenAsync(SessionToken body);
     
-    }
+        /// <summary>Perform a log out from mobile device</summary>
+        /// <param name="body">The token to be removed</param>
+        /// <returns>token is removed successfully</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task RemoveMobileTokenAsync(SessionToken body, System.Threading.CancellationToken cancellationToken);
     
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface IPersonController
-    {
         /// <summary>Search for persons by params</summary>
         /// <param name="employmentStatus">Status of the person ( active = 11, inactive = 12 )</param>
         /// <param name="displayName">Display Name of the Person</param>
@@ -2209,232 +1268,138 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <param name="pageSize">Page Size of the Person</param>
         /// <param name="sortBy">Param for sortBy</param>
         /// <param name="sortOrder">Param for sortOrder</param>
-        /// <response code="200">A list of persons founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Persons not found</response>
         /// <returns>A list of persons founded using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Person>>> GetPersonsAsync(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder);
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Person>>> GetPersonsAsync(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder);
+    
+        /// <summary>Search for persons by params</summary>
+        /// <param name="employmentStatus">Status of the person ( active = 11, inactive = 12 )</param>
+        /// <param name="displayName">Display Name of the Person</param>
+        /// <param name="location">Associated Location to the person</param>
+        /// <param name="emailAddress">Email address of the person</param>
+        /// <param name="firstName">First Name of the person</param>
+        /// <param name="lastName">Last Name of the person</param>
+        /// <param name="countryDivision">State or Province of the person</param>
+        /// <param name="country">Country of the person</param>
+        /// <param name="relationshipToCompany">Relationship Type</param>
+        /// <param name="contractingCompany">Contracting company of the person</param>
+        /// <param name="customerName">Customer's Name of the Person</param>
+        /// <param name="supervisor">Supervisor of the Person</param>
+        /// <param name="startDateStart">Start date of range for Hire Date of the Person</param>
+        /// <param name="startDateEnd">End date of range for Hire Date of the Person</param>
+        /// <param name="endDateStart">Start date of range for End Date of the Person</param>
+        /// <param name="endDateEnd">End date of range for End Date of the Person</param>
+        /// <param name="currentPositionStartDateStart">Start date of range for Current Position Start Date of the Person</param>
+        /// <param name="currentPositionStartDateEnd">End date of range for Current Position Start Date of the Person</param>
+        /// <param name="employeeID">EmployeeID</param>
+        /// <param name="currentPosition">Current Position of the Person</param>
+        /// <param name="loginAccessRequired">Person requires login access or not</param>
+        /// <param name="username">Username of the person</param>
+        /// <param name="loginExpirationDateStart">Start date of range for Expiry Date of the Person</param>
+        /// <param name="loginExpirationDateEnd">End date of range for Expiry Date of the Person</param>
+        /// <param name="contactPreference">Contact Type of the person email/phone</param>
+        /// <param name="pageNumber">Page Number of the Person</param>
+        /// <param name="pageSize">Page Size of the Person</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of persons founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Person>>> GetPersonsAsync(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Updates a person based on person id</summary>
-        /// <response code="204">The person was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Persons not found</response>
         /// <returns>The person was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdatePersonAsync(UpdatePersonParams body);
     
+        /// <summary>Updates a person based on person id</summary>
+        /// <returns>The person was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdatePersonAsync(UpdatePersonParams body, System.Threading.CancellationToken cancellationToken);
+    
         /// <summary>Creates a new person and returns the person id</summary>
-        /// <response code="201">The new person identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Person not found</response>
         /// <returns>The new person identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreatePersonAsync(Person body);
     
+        /// <summary>Creates a new person and returns the person id</summary>
+        /// <returns>The new person identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreatePersonAsync(Person body, System.Threading.CancellationToken cancellationToken);
+    
         /// <summary>Delete a person by person id</summary>
         /// <param name="personId">The person identifier</param>
-        /// <response code="204">Person has been deleted</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Person not found</response>
         /// <returns>Person has been deleted</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeletePersonAsync(int personId);
     
-        /// <summary>Returns the person based on person id</summary>
-        /// <response code="200">OK</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Person not found</response>
-        /// <returns>OK</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Person>> GetPersonByIdAsync(int personId);
-    
-        /// <summary>Update the password for the current user.</summary>
-        /// <response code="204">The person was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Persons not found</response>
-        /// <returns>The person was successfully updated</returns>
-        System.Threading.Tasks.Task UpdatePersonsPasswordAsync(int personId, FormsAuthPasswordUpdate body);
-    
-        /// <summary>Returns the person's personalization based on person id</summary>
-        /// <response code="200">OK</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Person not found</response>
-        /// <returns>OK</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalizationAsync(int personId);
-    
-        /// <summary>Updates a personalization based on person id</summary>
-        /// <response code="204">The person was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Persons not found</response>
-        /// <returns>The person was successfully updated</returns>
-        System.Threading.Tasks.Task UpdatePersonPersonalizationAsync(int personId, UpdatePersonalization body);
-    
-        /// <summary>Returns persons based on name</summary>
-        /// <param name="pageNumber">Page Number of the Person</param>
-        /// <param name="pageSize">Page Size of the Person</param>
-        /// <response code="200">OK</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Persons not found</response>
-        /// <returns>OK</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Person>>> GetPersonsByNameAsync(string name, int? pageNumber, int? pageSize);
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    [Microsoft.AspNetCore.Mvc.Route("api")]
-    public partial class PersonController : Microsoft.AspNetCore.Mvc.Controller
-    {
-        private IPersonController implementation;
-    
-        public PersonController(IPersonController implementation)
-        {
-            this.implementation = implementation;
-        }
-    
-        /// <summary>Search for persons by params</summary>
-        /// <param name="employmentStatus">Status of the person ( active = 11, inactive = 12 )</param>
-        /// <param name="displayName">Display Name of the Person</param>
-        /// <param name="location">Associated Location to the person</param>
-        /// <param name="emailAddress">Email address of the person</param>
-        /// <param name="firstName">First Name of the person</param>
-        /// <param name="lastName">Last Name of the person</param>
-        /// <param name="countryDivision">State or Province of the person</param>
-        /// <param name="country">Country of the person</param>
-        /// <param name="relationshipToCompany">Relationship Type</param>
-        /// <param name="contractingCompany">Contracting company of the person</param>
-        /// <param name="customerName">Customer's Name of the Person</param>
-        /// <param name="supervisor">Supervisor of the Person</param>
-        /// <param name="startDateStart">Start date of range for Hire Date of the Person</param>
-        /// <param name="startDateEnd">End date of range for Hire Date of the Person</param>
-        /// <param name="endDateStart">Start date of range for End Date of the Person</param>
-        /// <param name="endDateEnd">End date of range for End Date of the Person</param>
-        /// <param name="currentPositionStartDateStart">Start date of range for Current Position Start Date of the Person</param>
-        /// <param name="currentPositionStartDateEnd">End date of range for Current Position Start Date of the Person</param>
-        /// <param name="employeeID">EmployeeID</param>
-        /// <param name="currentPosition">Current Position of the Person</param>
-        /// <param name="loginAccessRequired">Person requires login access or not</param>
-        /// <param name="username">Username of the person</param>
-        /// <param name="loginExpirationDateStart">Start date of range for Expiry Date of the Person</param>
-        /// <param name="loginExpirationDateEnd">End date of range for Expiry Date of the Person</param>
-        /// <param name="contactPreference">Contact Type of the person email/phone</param>
-        /// <param name="pageNumber">Page Number of the Person</param>
-        /// <param name="pageSize">Page Size of the Person</param>
-        /// <param name="sortBy">Param for sortBy</param>
-        /// <param name="sortOrder">Param for sortOrder</param>
-        /// <response code="200">A list of persons founded using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Persons not found</response>
-        /// <returns>A list of persons founded using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Person>>> GetPersons(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder)
-        {
-            return this.implementation.GetPersonsAsync(employmentStatus, displayName, location, emailAddress, firstName, lastName, countryDivision, country, relationshipToCompany, contractingCompany, customerName, supervisor, startDateStart, startDateEnd, endDateStart, endDateEnd, currentPositionStartDateStart, currentPositionStartDateEnd, employeeID, currentPosition, loginAccessRequired, username, loginExpirationDateStart, loginExpirationDateEnd, contactPreference, pageNumber, pageSize, sortBy, sortOrder);
-        }
-    
-        /// <summary>Updates a person based on person id</summary>
-        /// <response code="204">The person was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Persons not found</response>
-        /// <returns>The person was successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("persons")]
-        public System.Threading.Tasks.Task UpdatePerson([Microsoft.AspNetCore.Mvc.FromBody] UpdatePersonParams body)
-        {
-            return this.implementation.UpdatePersonAsync(body);
-        }
-    
-        /// <summary>Creates a new person and returns the person id</summary>
-        /// <response code="201">The new person identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Person not found</response>
-        /// <returns>The new person identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("persons")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreatePerson([Microsoft.AspNetCore.Mvc.FromBody] Person body)
-        {
-            return this.implementation.CreatePersonAsync(body);
-        }
-    
         /// <summary>Delete a person by person id</summary>
         /// <param name="personId">The person identifier</param>
-        /// <response code="204">Person has been deleted</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Person not found</response>
         /// <returns>Person has been deleted</returns>
-        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("persons")]
-        public System.Threading.Tasks.Task DeletePerson(int personId)
-        {
-            return this.implementation.DeletePersonAsync(personId);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task DeletePersonAsync(int personId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Returns the person based on person id</summary>
-        /// <response code="200">OK</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Person not found</response>
         /// <returns>OK</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons/{personId}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Person>> GetPersonById(int personId)
-        {
-            return this.implementation.GetPersonByIdAsync(personId);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Person>> GetPersonByIdAsync(int personId);
+    
+        /// <summary>Returns the person based on person id</summary>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Person>> GetPersonByIdAsync(int personId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update the password for the current user.</summary>
-        /// <response code="204">The person was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Persons not found</response>
         /// <returns>The person was successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("persons/{personId}/setPassword")]
-        public System.Threading.Tasks.Task UpdatePersonsPassword(int personId, [Microsoft.AspNetCore.Mvc.FromBody] FormsAuthPasswordUpdate body)
-        {
-            return this.implementation.UpdatePersonsPasswordAsync(personId, body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdatePersonsPasswordAsync(int personId, FormsAuthPasswordUpdate body);
+    
+        /// <summary>Update the password for the current user.</summary>
+        /// <returns>The person was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdatePersonsPasswordAsync(int personId, FormsAuthPasswordUpdate body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Returns the person's personalization based on person id</summary>
-        /// <response code="200">OK</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Person not found</response>
         /// <returns>OK</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons/{personId}/personalization")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalization(int personId)
-        {
-            return this.implementation.GetPersonPersonalizationAsync(personId);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalizationAsync(int personId);
+    
+        /// <summary>Returns the person's personalization based on person id</summary>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalizationAsync(int personId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Updates a personalization based on person id</summary>
-        /// <response code="204">The person was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Persons not found</response>
         /// <returns>The person was successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("persons/{personId}/personalization")]
-        public System.Threading.Tasks.Task UpdatePersonPersonalization(int personId, [Microsoft.AspNetCore.Mvc.FromBody] UpdatePersonalization body)
-        {
-            return this.implementation.UpdatePersonPersonalizationAsync(personId, body);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdatePersonPersonalizationAsync(int personId, UpdatePersonalization body);
+    
+        /// <summary>Updates a personalization based on person id</summary>
+        /// <returns>The person was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdatePersonPersonalizationAsync(int personId, UpdatePersonalization body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Returns persons based on name</summary>
         /// <param name="pageNumber">Page Number of the Person</param>
         /// <param name="pageSize">Page Size of the Person</param>
-        /// <response code="200">OK</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Persons not found</response>
         /// <returns>OK</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons/search/{name}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Person>>> GetPersonsByName(string name, int? pageNumber, int? pageSize)
-        {
-            return this.implementation.GetPersonsByNameAsync(name, pageNumber, pageSize);
-        }
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Person>>> GetPersonsByNameAsync(string name, int? pageNumber, int? pageSize);
+    
+        /// <summary>Returns persons based on name</summary>
+        /// <param name="pageNumber">Page Number of the Person</param>
+        /// <param name="pageSize">Page Size of the Person</param>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Person>>> GetPersonsByNameAsync(string name, int? pageNumber, int? pageSize, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -2454,7 +1419,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     
         /// <summary>the array of nested detail errors</summary>
         [Newtonsoft.Json.JsonProperty("errors", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<RequestErrorDetail> Errors { get; set; }
+        public System.Collections.Generic.ICollection<RequestErrorDetail> Errors { get; set; }
     
         public string ToJson() 
         {
@@ -2520,7 +1485,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <summary>The new object identifiers</summary>
         [Newtonsoft.Json.JsonProperty("ids", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.IList<int> Ids { get; set; } = new System.Collections.Generic.List<int>();
+        public System.Collections.Generic.ICollection<int> Ids { get; set; } = new System.Collections.ObjectModel.Collection<int>();
     
         public string ToJson() 
         {
@@ -2625,11 +1590,11 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     {
         /// <summary>list of currency Id list to add</summary>
         [Newtonsoft.Json.JsonProperty("addCurrencyIdList", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> AddCurrencyIdList { get; set; }
+        public System.Collections.Generic.ICollection<int> AddCurrencyIdList { get; set; }
     
         /// <summary>list of currency Id list to delete</summary>
         [Newtonsoft.Json.JsonProperty("deleteCurrencyIdList", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> DeleteCurrencyIdList { get; set; }
+        public System.Collections.Generic.ICollection<int> DeleteCurrencyIdList { get; set; }
     
         public string ToJson() 
         {
@@ -2648,11 +1613,11 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     {
         /// <summary>list of country Id list to add</summary>
         [Newtonsoft.Json.JsonProperty("addCountryIdList", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> AddCountryIdList { get; set; }
+        public System.Collections.Generic.ICollection<int> AddCountryIdList { get; set; }
     
         /// <summary>list of country Id list to delete</summary>
         [Newtonsoft.Json.JsonProperty("deleteCountryIdList", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> DeleteCountryIdList { get; set; }
+        public System.Collections.Generic.ICollection<int> DeleteCountryIdList { get; set; }
     
         public string ToJson() 
         {
@@ -3169,7 +2134,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public bool Isvalid { get; set; }
     
         [Newtonsoft.Json.JsonProperty("unfollowedrules", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<FormsAuthPasswordRule> Unfollowedrules { get; set; }
+        public System.Collections.Generic.ICollection<FormsAuthPasswordRule> Unfollowedrules { get; set; }
     
         public string ToJson() 
         {
@@ -3392,7 +2357,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     {
         /// <summary>List of Id of translation Requested</summary>
         [Newtonsoft.Json.JsonProperty("translationRequestIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> TranslationRequestIds { get; set; }
+        public System.Collections.Generic.ICollection<int> TranslationRequestIds { get; set; }
     
         public string ToJson() 
         {
@@ -3675,7 +2640,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     
         /// <summary>The location path</summary>
         [Newtonsoft.Json.JsonProperty("paths", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<string> Paths { get; set; }
+        public System.Collections.Generic.ICollection<string> Paths { get; set; }
     
         /// <summary>The available status for Location List</summary>
         [Newtonsoft.Json.JsonProperty("isAvailable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3776,7 +2741,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     
         /// <summary>The array of location parent identifiers</summary>
         [Newtonsoft.Json.JsonProperty("parentIds", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> ParentIds { get; set; }
+        public System.Collections.Generic.ICollection<int> ParentIds { get; set; }
     
         /// <summary>The hierarchy identifier</summary>
         [Newtonsoft.Json.JsonProperty("hierarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3896,7 +2861,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     
         /// <summary>The array of list item values</summary>
         [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<string> Values { get; set; }
+        public System.Collections.Generic.ICollection<string> Values { get; set; }
     
         public string ToJson() 
         {
@@ -3945,7 +2910,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     
         /// <summary>The array of list item values</summary>
         [Newtonsoft.Json.JsonProperty("listitems", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<ListItem> Listitems { get; set; }
+        public System.Collections.Generic.ICollection<ListItem> Listitems { get; set; }
     
         public string ToJson() 
         {
@@ -3975,7 +2940,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public int Listid { get; set; }
     
         [Newtonsoft.Json.JsonProperty("productids", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> Productids { get; set; }
+        public System.Collections.Generic.ICollection<int> Productids { get; set; }
     
         [Newtonsoft.Json.JsonProperty("listtext", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Listtext { get; set; }
@@ -4014,7 +2979,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public bool? Itemseditable { get; set; }
     
         [Newtonsoft.Json.JsonProperty("productlist", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> Productlist { get; set; }
+        public System.Collections.Generic.ICollection<int> Productlist { get; set; }
     
         [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Value { get; set; }
@@ -4050,10 +3015,10 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public bool? Itemseditable { get; set; }
     
         [Newtonsoft.Json.JsonProperty("addproductlist", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> Addproductlist { get; set; }
+        public System.Collections.Generic.ICollection<int> Addproductlist { get; set; }
     
         [Newtonsoft.Json.JsonProperty("removeproductlist", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> Removeproductlist { get; set; }
+        public System.Collections.Generic.ICollection<int> Removeproductlist { get; set; }
     
         [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Value { get; set; }
@@ -4080,7 +3045,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public string Listtext { get; set; }
     
         [Newtonsoft.Json.JsonProperty("productids", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> Productids { get; set; }
+        public System.Collections.Generic.ICollection<int> Productids { get; set; }
     
         [Newtonsoft.Json.JsonProperty("statusid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int Statusid { get; set; }
@@ -4102,11 +3067,11 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     {
         /// <summary>The array of location identifiers</summary>
         [Newtonsoft.Json.JsonProperty("location", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> Location { get; set; }
+        public System.Collections.Generic.ICollection<int> Location { get; set; }
     
         /// <summary>The array of location group identifiers</summary>
         [Newtonsoft.Json.JsonProperty("locationGroup", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> LocationGroup { get; set; }
+        public System.Collections.Generic.ICollection<int> LocationGroup { get; set; }
     
         public string ToJson() 
         {
@@ -4150,7 +3115,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public int? PersonId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("locations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> Locations { get; set; }
+        public System.Collections.Generic.ICollection<int> Locations { get; set; }
     
         [Newtonsoft.Json.JsonProperty("locationNames", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IDictionary<string, string> LocationNames { get; set; }
@@ -4309,10 +3274,10 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public string Username { get; set; }
     
         [Newtonsoft.Json.JsonProperty("addLocations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> AddLocations { get; set; }
+        public System.Collections.Generic.ICollection<int> AddLocations { get; set; }
     
         [Newtonsoft.Json.JsonProperty("deleteLocations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> DeleteLocations { get; set; }
+        public System.Collections.Generic.ICollection<int> DeleteLocations { get; set; }
     
         [Newtonsoft.Json.JsonProperty("firstName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string FirstName { get; set; }
@@ -4424,6 +3389,41 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         [System.Runtime.Serialization.EnumMember(Value = @"phone")]
         Phone = 1,
     
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class SwaggerException : System.Exception
+    {
+        public int StatusCode { get; private set; }
+
+        public string Response { get; private set; }
+
+        public System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>> Headers { get; private set; }
+
+        public SwaggerException(string message, int statusCode, string response, System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Exception innerException) 
+            : base(message + "\n\nStatus: " + statusCode + "\nResponse: \n" + response.Substring(0, response.Length >= 512 ? 512 : response.Length), innerException)
+        {
+            StatusCode = statusCode;
+            Response = response; 
+            Headers = headers;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("HTTP Response: \n\n{0}\n\n{1}", Response, base.ToString());
+        }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class SwaggerException<TResult> : SwaggerException
+    {
+        public TResult Result { get; private set; }
+
+        public SwaggerException(string message, int statusCode, string response, System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>> headers, TResult result, System.Exception innerException) 
+            : base(message, statusCode, response, headers, innerException)
+        {
+            Result = result;
+        }
     }
 
     #pragma warning restore

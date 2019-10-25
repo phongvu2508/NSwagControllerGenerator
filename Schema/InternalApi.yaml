@@ -8,20 +8,22 @@ info:
     url: https://www.ehs.com
     email: support@ehs.com
 servers:
-  - url: 'https://odev6web01.ehs.dev/ehs-internal-api/api'
+  - url: 'https://odev6web01.ad.velocityehs.com/ehs-internal-api/api'
     description: Development
-  - url: 'https://ovev6apifarm.ehs.dev/alpha/api'
-    description: Verification - Alpha
 tags:
   - name: Account
   - name: Authentication
+  - name: Configuration
   - name: Hierarchy
+  - name: Internationalization
+  - name: Localization
   - name: Location
   - name: List
   - name: LocationList
+  - name: Mobile
   - name: Person
 paths:
-# Accounts
+# Account
   /accounts:
     get:
       tags:
@@ -30,6 +32,7 @@ paths:
       description: Return all accounts in the instance.
       operationId: getAccounts
       parameters:
+        - $ref: '#/components/parameters/LanguageHeader'
         - name: accountId
           in: query
           description: The account id
@@ -82,10 +85,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -114,10 +117,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -153,53 +156,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
-  /accounts/{accountId}:
-    get:
-      tags:
-      - Account
-      summary: Get an account by the account id
-      description: Get an account by the account id
-      operationId: getAccountById
-      parameters:
-        - name: accountId
-          in: path
-          description: The account id
-          required: true
-          explode: true
-          schema:
-            type: integer
-            format: int32
-            example: 13
-            nullable: true
-      responses:
-        200:
-          description: The account
-          content:
-            application/json:
-              schema:
-                  $ref: '#/components/schemas/Account'
-            application/xml:
-              schema:
-                  $ref: '#/components/schemas/Account'
-        400:
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-        403:
-          description: You do not have sufficient rights to this resource
-        404:
-          description: Account not found
   /accounts/userInfo:
     get:
       tags:
@@ -260,14 +222,302 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
           description: No authentication methods for the account
+  /accounts/current:
+    get:
+      tags:
+      - Account
+      summary: Get an account by the account id
+      description: Get an account by the account id
+      operationId: getAccountById
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      responses:
+        200:
+          description: The account
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/Account'
+            application/xml:
+              schema:
+                  $ref: '#/components/schemas/Account'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Account not found
+  /accounts/current/personalization:
+    get:
+      tags:
+      - Account
+      summary: Gets the personalization information for an account.
+      description: Gets the personalization information for an account.
+      operationId: getAccountPersonalization
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      responses:
+        200:
+          description: The personalization of the account that matches the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Personalization'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Personalization'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Account not found
+    put:
+      summary: Updates a personalization based on account id
+      operationId: updateAccountPersonalization
+      tags:
+        - Account
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePersonalization"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/UpdatePersonalization"
+      responses:
+        204:
+          description: The account was successfully updated
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Account not found
+  /accounts/current/currency:
+    get:
+      tags:
+      - Account
+      summary: Get an account currency list
+      description: Get an account currency list
+      operationId: getAccountCurrencyList
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      responses:
+        200:
+          description: The currency list of the account that matches the request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Currency'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Currency'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Currency List not found
+    put:
+      tags:
+      - Account
+      summary: Update an account currency list
+      description: Update an account currency list
+      operationId: updateAccountCurrencyList
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The updated account currency list
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAccountCurrencyList'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/UpdateAccountCurrencyList'
+        required: true
+      responses:
+        204:
+          description: The account was successfully updated.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: No currency for the account
+  /accounts/current/country:
+    get:
+      tags:
+      - Account
+      summary: Get an account country list
+      description: Get an account country list
+      operationId: getAccountCountryList
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      responses:
+        200:
+          description: The country list of the account that matches the request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Country'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Country'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Country List not found
+    put:
+      tags:
+      - Account
+      summary: Update an account country list
+      description: Update an account country list
+      operationId: updateAccountCountryList
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The updated account country list
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAccountCountryList'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/UpdateAccountCountryList'
+        required: true
+      responses:
+        204:
+          description: The account was successfully updated.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: No country List for the account
+  /accounts/current/language:
+    get:
+      tags:
+      - Account
+      summary: Get an account language list
+      description: Get an account language list
+      operationId: getAccountLanguages
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      responses:
+        200:
+          description: The country list of the account that matches the request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Language'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Language'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Language List not found
 # Authentication
   /auth/methods:
     get:
@@ -318,10 +568,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -351,10 +601,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -386,10 +636,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -428,10 +678,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         401:
           description: Credientials are invalid.
         403:
@@ -471,14 +721,90 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
           description: Persons not found
+  /auth/forms/blacklist:
+   post:
+      summary: Adds jti to a black list.
+      operationId: blacklist
+      tags:
+        - Authentication
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FormsAuthBlacklistRequest"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/FormsAuthBlacklistRequest"
+      responses:
+        204:
+          description: The blacklist item was successfully added.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Adding blacklist not found
+  /auth/forms/blacklist/{id}:
+   get:
+      tags:
+      - Authentication
+      summary: Checks the jti to see if it is blacklisted
+      description: returns boolean value based on id
+      operationId: getJTIFromBlacklist
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: id
+          in: path
+          description: The SSO Identity Provider id
+          required: true
+          explode: true
+          schema:
+            type: string
+            format: guid
+            example: 00000000-0000-0000-0000-000000000000
+      responses:
+        200:
+          description: The BlackList Return Object
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/FormsAuthBlacklistResponse'
+            application/xml:
+              schema:
+                  $ref: '#/components/schemas/FormsAuthBlacklistResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: SSO Identity Provider not found
   /auth/forms/rules:
     get:
       tags:
@@ -508,10 +834,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -545,10 +871,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -580,15 +906,59 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
           description: No password rules for the account
   /auth/sso/idp:
+    get:
+      tags:
+      - Authentication
+      summary: Get a list of SSO Identity Providers
+      description: Get a list of SSO Identity Providers
+      operationId: getSsoIdp
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: trustName
+          in: query
+          description: The trust name of the identity providers to get.
+          explode: true
+          required: false
+          schema:
+            type: string
+            nullable: true
+      responses:
+        200:
+          description: The SSO Identity Providers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SsoIdentityProvider'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SsoIdentityProvider'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: SSO Identity Providers not found
     put:
       tags:
       - Authentication
@@ -616,10 +986,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -658,10 +1028,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
   /auth/sso/idp/{id}:
@@ -698,26 +1068,70 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
           description: SSO Identity Provider not found
   /auth/sso/sp:
+    get:
+      tags:
+      - Authentication
+      summary: Get a list of SSO Service Providers
+      description: Get a list of SSO Service Providers
+      operationId: getSsoSp
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: velocityServiceProvidersOnly
+          in: query
+          description: Whether to only include VelocityEHS service providers.
+          explode: true
+          required: false
+          schema:
+            type: boolean
+            nullable: true
+      responses:
+        200:
+          description: The list of SSO Service Providers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SsoServiceProvider'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SsoServiceProvider'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: SSO Service Providers not found
     put:
       tags:
       - Authentication
-      summary: Update existing account
-      description: Update existing account
+      summary: Update existing SSO Service Provider
+      description: Update existing SSO Service Provider
       operationId: updateSsoSp
       parameters:
         - $ref: '#/components/parameters/AccountHeader'
         - $ref: '#/components/parameters/LanguageHeader'
       requestBody:
-        description: The updated account object
+        description: The updated SSO Service Provider object
         content:
           application/json:
             schema:
@@ -734,14 +1148,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
-          description: Account not found
+          description: SSO Service Provider not found
     post:
       tags:
       - Authentication
@@ -752,7 +1166,7 @@ paths:
         - $ref: '#/components/parameters/AccountHeader'
         - $ref: '#/components/parameters/LanguageHeader'
       requestBody:
-        description: The new account schema
+        description: The new SSO Service Provider schema
         content:
           application/json:
             schema:
@@ -776,25 +1190,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
   /auth/sso/sp/{id}:
     get:
       tags:
       - Authentication
-      summary: Get an account by the account id
-      description: Get an account by the account id
+      summary: Get a SSO Service Provider by the id
+      description: Get a SSO Service Provider by the id
       operationId: getSsoSpById
       parameters:
         - $ref: '#/components/parameters/AccountHeader'
         - $ref: '#/components/parameters/LanguageHeader'
         - name: id
           in: path
-          description: The account id
+          description: The SSO Service Provider id
           required: true
           explode: true
           schema:
@@ -803,7 +1217,7 @@ paths:
             example: 13
       responses:
         200:
-          description: The account
+          description: The SSO Service Provider
           content:
             application/json:
               schema:
@@ -816,14 +1230,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
-          description: Account not found
+          description: SSO Service Provider not found
   /auth/2fa/requestCode:
     get:
       tags:
@@ -858,10 +1272,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
   /auth/2fa/verifyCode:
@@ -876,7 +1290,7 @@ paths:
         - $ref: '#/components/parameters/IdentityHeader'
         - $ref: '#/components/parameters/LanguageHeader'
       requestBody:
-        description: The new account schema
+        description: The identity verification information
         content:
           application/json:
             schema:
@@ -893,13 +1307,229 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
-# Hierarchies
+  /auth/validatepassword/{password}:
+    get:
+      tags:
+      - Authentication
+      summary: Validates Password based on account, person and password rules
+      description: Validates Password based on account, person and password rules
+      operationId: validatePassword
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: password
+          in: path
+          description: password to be passed in
+          required: true
+          explode: true
+          schema:
+            type: string
+            nullable: true
+      responses:
+        200:
+          description: Password validation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordValidationResult'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Invalid entry for password
+# Configuration
+  /config/products/summary/raw:
+    get:
+      tags:
+      - Configuration
+      summary: Get the product configuration summary
+      description: Get the product configuration summary
+      operationId: getProductConfigSummary
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      responses:
+        200:
+          description: The product configuration summary
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Product config not found
+  /config/workflows/raw:
+    get:
+      tags:
+      - Configuration
+      summary: Get the workflow configuration for a state
+      description: Get the workflow configuration for a state
+      operationId: getStateWorkflowConfigByName
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: category
+          in: query
+          description: The name of the category to get the workflow configuration for.
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: nearmiss
+        - name: state
+          in: query
+          description: The name of the state to get the workflow configuration for.
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: investigation
+      responses:
+        200:
+          description: The state's workflow configuration
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Configuration not found
+  /config/workflows/{categoryId}/{stateId}/raw:
+    get:
+      tags:
+      - Configuration
+      summary: Get the workflow configuration for a state
+      description: Get the workflow configuration for a state
+      operationId: getStateWorkflowConfigRaw
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: categoryId
+          in: path
+          description: The id of the category to get the workflow configuration for.
+          required: true
+          explode: true
+          schema:
+            type: integer
+            example: 11
+        - name: stateId
+          in: path
+          description: The id of the state to get the workflow configuration for.
+          required: true
+          explode: true
+          schema:
+            type: integer
+            example: 14
+      responses:
+        200:
+          description: The state's workflow configuration
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Configuration not found
+  /config/workflows/summary/raw:
+    get:
+      tags:
+      - Configuration
+      summary: Get the workflow configurations summaries
+      description: Get the workflow configurations summaries
+      operationId: getWorkflowConfigsSummary
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: productId
+          in: query
+          description: The id of the product to get the workflow config summary for.
+          required: false
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+            example: 1
+        - name: lastModified
+          in: query
+          description: Only include configurations that have changed since this date.
+          required: false
+          explode: true
+          schema:
+            type: string
+            nullable: true
+            format: date-time
+            example: "2019-11-01 10:40:52"
+      responses:
+        200:
+          description: The state's workflow configuration
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Configuration not found
+# Hierarchy
   /hierarchies:
     get:
       tags:
@@ -930,10 +1560,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -966,10 +1596,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -1009,10 +1639,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
   /hierarchies/{hierarchyId}:
@@ -1052,10 +1682,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -1089,10 +1719,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -1133,10 +1763,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -1177,10 +1807,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -1222,15 +1852,346 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
           description: Hierarchy not found
-# Locations
+# Internationalization
+  '/translations':
+    post:
+      tags:
+      - Internationalization
+      summary: Add translations into Database received from The Translation Tool
+      description: Add translations into Database received from The Translation Tool
+      operationId: setTranslations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetTranslation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/SetTranslation'
+      responses:
+        204:
+          description: The translation requests were successfully created. The reason why reponse 204 returned instead of 201 because we are not returning any Id for this API.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  '/translations/request':
+    get:
+      tags:
+      - Internationalization
+      summary: Get Translation Requests by params
+      description: Get Translation Requests by params
+      operationId: getTranslationRequests
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: fromDate
+          in: query
+          description: Start date of range for getTranslationRequests
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+        - name: toDate
+          in: query
+          description: End date of range for getTranslationRequests
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+      responses:
+        200:
+          description: A list of translation requests founded using provided criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TranslationRequest'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TranslationRequest'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Translation request not found
+    put:
+      summary: Updates a sent based on translation requests
+      operationId: updateSentTranslationRequests
+      tags:
+        - Internationalization
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateSentTranslationRequests"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/UpdateSentTranslationRequests"
+      responses:
+        204:
+          description: The translation requests were successfully updated
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Translation request not found
+  '/translations/machine':
+    post:
+      tags:
+      - Internationalization
+      summary: Create machine translation request
+      description: Create machine translation request
+      operationId: createMachineTranslationRequest
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        description: The new translation schema
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MachineTranslation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/MachineTranslation'
+        required: true
+      responses:
+        201:
+          description: The new translation identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+# Localization
+  '/localization/unitSystem':
+    get:
+      tags:
+      - Localization
+      summary: Get UnitSystem Conversion Rate
+      description: Get UnitSystem Conversion Rate
+      operationId: getUnitSystemConversion 
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: fromUnitId
+          in: query
+          description: Original Id of Unit
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            nullable: true
+        - name: fromUnitValue
+          in: query
+          description: Original Value of Unit
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: number
+            nullable: true
+        - name: toUnitSystemId
+          in: query
+          description: Converted Id of Unit System
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            nullable: true
+      responses:
+        200:
+          description: A Conversion value founded using provided criteria
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/UnitSystem'
+            application/xml:
+              schema:
+                  $ref: '#/components/schemas/UnitSystem'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Unit System not found
+  '/localization/currency':
+    get:
+      tags:
+      - Localization
+      summary: Get Currency Conversion Rate
+      description: Get Currency Conversion Rate
+      operationId: getCurrencyConversionRate
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: fromCurrencyId
+          in: query
+          description: Id of original currency
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            nullable: true
+        - name: toCurrencyId
+          in: query
+          description: Id of converting currency
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            nullable: true
+        - name: year
+          in: query
+          description: Year of the conversion
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            nullable: true
+      responses:
+        200:
+          description: A conversion rate founded using provided criteria
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/Currency'
+            application/xml:
+              schema:
+                  $ref: '#/components/schemas/Currency'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Currency not found
+  '/localization/search/{searchText}':
+    get:
+      tags:
+      - Localization
+      summary: Get Currency list by searching
+      description: Get Currency list by searching
+      operationId: getCurrencyForSearch
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: searchText
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A currency list founded using provided criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Currency'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Currency'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: A currency list not found
+# Location
   /locations:
     get:
       tags:
@@ -1312,10 +2273,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -1348,10 +2309,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -1391,10 +2352,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
     delete:
@@ -1431,10 +2392,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -1481,10 +2442,81 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Location not found
+  /locations/search:
+    get:
+      tags:
+      - Location
+      summary: Get locations by location name
+      description: Get locations by location name
+      operationId: getLocationsByName
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: locationName
+          in: query
+          description: The location name
+          required: true
+          style: form
+          explode: false
+          schema:
+            type: string
+        - name: hierarchyId
+          in: query
+          description: The hierarchy identifier
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 11
+        - name: locationTypes
+          in: query
+          description: The array of selected location types
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/LocationType'
+        - name: locationStatuses
+          in: query
+          description: The array of selected statuses
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/LocationStatus'
+      responses:
+        200:
+          description: A list of locations founded using provided criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -1565,10 +2597,202 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Locations not found
+  /locations/childLocations:
+    get:
+      tags:
+      - Location
+      summary: Get immediate child locations or location groups
+      description: Get immediate child locations or location groups
+      operationId: getChildLocations
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: id
+          in: query
+          description: The location identifier
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+        - name: locationTypes
+          in: query
+          description: The array of selected types
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/LocationType'
+        - name: locationStatuses
+          in: query
+          description: The array of selected statuses
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/LocationStatus'
+      responses:
+        200:
+          description: A list of locations founded using provided criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Locations not found
+  /locations/childLocationsCount:
+    get:
+      tags:
+      - Location
+      summary: Get child locations count
+      description: Get child locations count
+      operationId: getChildLocationsCount
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: id
+          in: query
+          description: The location identifier
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+        - name: locationStatuses
+          in: query
+          description: The array of selected statuses
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/LocationStatus'
+        - name: levels
+          in: query
+          description: The number of level to traverse within hierarchy
+          required: false
+          style: form
+          explode: true
+          schema:
+            minimum: -1
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: A count of locations found using provided criteria
+          content:
+           application/json:
+             schema:
+               type: integer
+               format: int32
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Locations not found
+  /locations/childLocationGroupsCount:
+    get:
+      tags:
+      - Location
+      summary: Get child location groups count
+      description: Get child location groups count
+      operationId: getChildLocationGroupsCount
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: id
+          in: query
+          description: The location identifier
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+        - name: locationStatuses
+          in: query
+          description: The array of selected statuses
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/LocationStatus'
+        - name: levels
+          in: query
+          description: The number of level to traverse within hierarchy
+          required: false
+          style: form
+          explode: true
+          schema:
+            minimum: -1
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: A count of locations found using provided criteria
+          content:
+           application/json:
+             schema:
+               type: integer
+               format: int32
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -1601,10 +2825,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -1645,10 +2869,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -1695,15 +2919,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
           description: Location not found
-# Lists
+# List
   /lists:
     get:
       summary: Search for lists based on params
@@ -1713,6 +2937,7 @@ paths:
         - List
       parameters:
         - $ref: "#/components/parameters/AccountHeader"
+        - $ref: '#/components/parameters/IdentityHeader'
         - $ref: "#/components/parameters/LanguageHeader"
         - in: query
           name: statusFilters
@@ -1748,10 +2973,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -1784,10 +3009,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -1827,10 +3052,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
     delete:
@@ -1859,10 +3084,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -1876,6 +3101,7 @@ paths:
         - List
       parameters:
         - $ref: "#/components/parameters/AccountHeader"
+        - $ref: '#/components/parameters/IdentityHeader'
         - $ref: "#/components/parameters/LanguageHeader"
         - in: path
           name: listId
@@ -1885,26 +3111,6 @@ paths:
             minimum: 0
             type: integer
             format: int32
-        - in: query
-          name: statusFilters
-          description: The array of selected statuses to include
-          required: false
-          schema:
-            type: array
-            items:
-              type: integer
-              format: int32
-              example: 1
-        - in: query
-          name: productFilters
-          description: The array of selected products to include
-          required: false
-          schema:
-            type: array
-            items:
-              type: integer
-              format: int32
-              example: 1
       responses:
         200:
           description: A list with provided identifier
@@ -1920,10 +3126,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -1937,8 +3143,9 @@ paths:
         - List
       parameters:
         - $ref: "#/components/parameters/AccountHeader"
+        - $ref: '#/components/parameters/IdentityHeader'
         - $ref: "#/components/parameters/LanguageHeader"
-        - in: path
+        - in: query
           name: listName
           description: The lists to be returned
           required: true
@@ -1958,10 +3165,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -2019,10 +3226,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -2055,10 +3262,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -2098,10 +3305,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
     delete:
@@ -2130,10 +3337,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -2157,26 +3364,6 @@ paths:
             minimum: 0
             type: integer
             format: int32
-        - in: query
-          name: listStatusFilters
-          description: The array of selected statuses lists to include
-          required: false
-          schema:
-            type: array
-            items:
-              type: integer
-              format: int32
-              example: 1
-        - in: query
-          name: listItemStatusFilters
-          description: The array of selected statuses list items to include
-          required: false
-          schema:
-            type: array
-            items:
-              type: integer
-              format: int32
-              example: 1
       responses:
         200:
           description: A list item with provided identifier
@@ -2192,10 +3379,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -2209,8 +3396,9 @@ paths:
         - List
       parameters:
         - $ref: "#/components/parameters/AccountHeader"
+        - $ref: '#/components/parameters/IdentityHeader'
         - $ref: "#/components/parameters/LanguageHeader"
-        - in: path
+        - in: query
           name: listItemName
           description: The list items to be returned
           required: true
@@ -2230,10 +3418,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -2267,15 +3455,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
           description: List Item not found
-# LocationLists
+# LocationList
   /locationlists/{listId}:
     get:
       tags:
@@ -2311,10 +3499,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -2356,10 +3544,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -2433,10 +3621,10 @@ paths:
           content:
             application/json:
                 schema:
-                  $ref: '#/components/schemas/BadRequestError'
+                  $ref: '#/components/schemas/RequestError'
             application/xml:
                 schema:
-                  $ref: '#/components/schemas/BadRequestError'
+                  $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -2488,10 +3676,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -2531,10 +3719,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -2576,10 +3764,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -2653,10 +3841,10 @@ paths:
           content:
             application/json:
                 schema:
-                  $ref: '#/components/schemas/BadRequestError'
+                  $ref: '#/components/schemas/RequestError'
             application/xml:
                 schema:
-                  $ref: '#/components/schemas/BadRequestError'
+                  $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -2715,15 +3903,87 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
           description: Location not found
-# Persons
+# Mobile
+  /mobile/auth/addToken:
+    post:
+      tags:
+      - Mobile
+      summary: Insert a white listed mobile access token
+      description: Inserts a long living access token that can be used to grant access to mobile
+      operationId: insertMobileToken
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+      requestBody:
+        description: The token to be persisted
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddSessionTokenRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/AddSessionTokenRequest'
+      responses:
+        204:
+          description: token is successfully inserted for user
+  /mobile/auth/access:
+    post:
+      tags:
+      - Mobile
+      summary: Perform a check to determine whether token is still valid
+      description: Using the long living token to determine whether user remains logged in
+      operationId: verifyMobileToken
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+      requestBody:
+        description: Provides information about the token to be verified
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SessionToken'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/SessionToken'
+      responses:
+        204:
+          description: token in question is still valid
+        401:
+          description: token is no longer valid, user is unauthorized
+        
+  /mobile/auth/logout:
+    post:
+      tags:
+      - Mobile
+      summary: Perform a log out from mobile device
+      description: Remove a white listed mobile access token when logging out
+      operationId: removeMobileToken
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+      requestBody:
+        description: The token to be removed
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SessionToken'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/SessionToken'
+      responses:
+        204:
+          description: token is removed successfully
+        401:
+          description: the token does not exist (not authorized to log out)
+# Person
   '/persons':
     get:
       tags:
@@ -3046,10 +4306,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -3080,10 +4340,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -3121,10 +4381,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -3157,10 +4417,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -3197,10 +4457,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -3239,10 +4499,91 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Persons not found
+  '/persons/{personId}/personalization':
+    get:
+      summary: Returns the person's personalization based on person id
+      operationId: getPersonPersonalization 
+      tags:
+        - Person
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - in: path
+          name: personId
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Personalization'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Personalization'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Person not found
+    put:
+      summary: Updates a personalization based on person id
+      operationId: updatePersonPersonalization
+      tags:
+        - Person
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - in: path
+          name: personId
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePersonalization"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/UpdatePersonalization"
+      responses:
+        204:
+          description: The person was successfully updated
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -3294,10 +4635,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BadRequestError'
+                $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
         404:
@@ -3336,23 +4677,45 @@ components:
         format: int32
   schemas:
 # Common
-    BadRequestError:
+    RequestError:
       required:
-      - errorCode
+      - code
+      - message
       type: object
       properties:
-        errorCode:
+        code:
           type: integer
           description: The error code if existed
           format: int32
           example: 61001
-        errorMessages:
+        message:
+          type: string
+          description: The error message
+          format: string
+          example: validation errors
+        errors:
           type: array
-          description: The error messages
+          description: the array of nested detail errors
           items:
-            type: string
-            format: string
-            example: object already exists
+              $ref: '#/components/schemas/RequestErrorDetail'
+    RequestErrorDetail:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: The error code if existed
+          format: int32
+          example: 001
+        name:
+          type: string
+          description: The error name / attribute name
+          format: string
+          example: displayName
+        message:
+          type: string
+          description: The error message
+          format: string
+          example: displayName required
     Status201Response:
       required:
       - id
@@ -3375,7 +4738,7 @@ components:
             type: integer
             format: int32
             example: 11
-# Accounts
+# Account
     Account:
       type: object
       properties:
@@ -3426,6 +4789,11 @@ components:
           type: boolean
           example: false
           nullable: true
+        disableMachineTranslations:
+          description: Whether the machine translation is allowed.
+          type: boolean
+          example: false
+          nullable: true
     AccountUser:
       type: object
       properties:
@@ -3454,6 +4822,67 @@ components:
           type: string
           format: string
           example: "*******312"
+    UpdateAccountCurrencyList:
+      type: object
+      properties:
+        addCurrencyIdList:
+          description: list of currency Id list to add
+          type: array
+          nullable: true
+          items:
+            type: integer
+            format: int32
+            example: [ 1, 2 ]
+        deleteCurrencyIdList:
+          description: list of currency Id list to delete
+          type: array
+          nullable: true
+          items:
+            type: integer
+            format: int32
+            example: [ 1, 2 ]
+    UpdateAccountCountryList:
+      type: object
+      properties:
+        addCountryIdList:
+          description: list of country Id list to add
+          type: array
+          nullable: true
+          items:
+            type: integer
+            format: int32
+            example: 1
+        deleteCountryIdList:
+          description: list of country Id list to delete
+          type: array
+          nullable: true
+          items:
+            type: integer
+            format: int32
+            example: 1
+    Language:
+      type: object
+      properties:
+        languageId:
+          type: integer
+          nullable: true
+          example: 12
+        languageCode:
+          type: string
+          nullable: true
+          example: 12
+        languageName:
+          type: string
+          nullable: true
+          example: 12
+        nativeLanguage:
+          type: string
+          nullable: true
+          example: 12
+        defaultLanguage:
+          type: boolean
+          nullable: true
+          example: 12
 # Authentication
     AuthenticationMethod:
       type: object
@@ -3514,6 +4943,30 @@ components:
           type: string
           format: guid
           example: 00000000-0000-0000-0000-000000000000
+    FormsAuthBlacklistRequest:
+      type: object
+      required:
+        - jti
+        - expirydate
+      properties:
+        jti:
+          description: The id of the json web token
+          type: string
+          format: guid
+          example: 00000000-0000-0000-0000-000000000000
+        expirydate:
+          format: date-time
+          type: string
+          example: "1995-09-07 10:40:52"
+    FormsAuthBlacklistResponse:
+      type: object
+      required:
+        - blacklistresponsecode
+      properties:
+        blacklistresponsecode:
+          description: The boolean value whether the jti exists
+          type: boolean
+          example: true
     FormsAuthPasswordRule:
       type: object
       properties:
@@ -3556,6 +5009,7 @@ components:
         - personId
         - passwordChangeRequired
         - identityVerificationRequired
+        - isLocked
       properties:
         personId:
           description: The id of the person being authenticated.
@@ -3570,6 +5024,10 @@ components:
           description: Whether the user required additional identity verification.
           type: boolean
           example: false
+        isLocked:
+          description: Whether the user is locked
+          type: boolean
+          example: true
     SsoIdentityProvider:
       type: object
       properties:
@@ -3779,7 +5237,52 @@ components:
           type: integer
           format: int32
           example: 13377331
-# Hierarchies
+    SessionToken:
+      type: object
+      properties:
+        token:
+          description: Token to store
+          format: string
+          type: string
+          example: df53gdt58algij53lfi2
+        issued:
+          nullable: true
+          description: Date and time the token was issued
+          type: string
+          format: date-time
+          example: 2019-08-23
+    AddSessionTokenRequest:
+      type: object
+      properties:
+        userId:
+          description: PersonId associated with the token
+          type: integer
+          example: 291
+        token:
+          description: Token to store
+          format: string
+          type: string
+          example: df53gdt58algij53lfi2
+        issued:
+          nullable: true
+          description: Date and time the token was issued
+          type: string
+          format: date-time
+          example: 2019-08-23
+    PasswordValidationResult:
+      type: object
+      properties:
+        isvalid:
+          description: Token to store
+          format: bool
+          type: boolean
+          example: 0
+        unfollowedrules:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/FormsAuthPasswordRule'
+# Hierarchy
     Hierarchy:
       type: object
       required:
@@ -3839,7 +5342,370 @@ components:
           type: integer
           format: int32
           example: 11
-# Locations
+# Internationalization
+    TranslationRequest:
+      type: object
+      properties:
+        translationRequestId:
+          description: Id of Translation Requested
+          type: integer
+          nullable: true
+          example: 1
+        accountId:
+          description: Unique Id of Account
+          type: string
+          nullable: true
+          example: 1
+        textTypeId:
+          description: Id of Text Type
+          type: integer
+          nullable: true
+          example: 1
+        textId:
+          description: Id of Text
+          type: integer
+          nullable: true
+          example: 1
+        columnName:
+          description: Name of Column
+          type: string
+          nullable: true
+          example: "Value"
+        text:
+          description: Original Text
+          type: string
+          nullable: true
+          example: "Incident"
+        description:
+          description: Description of the text
+          type: string
+          nullable: true
+          example: "Description of Text"
+        maxLength:
+          description: Max length of the text
+          type: integer
+          nullable: true
+          example: 255
+        languageID:
+          description: Id of the language
+          type: integer
+          nullable: true
+          example: 255
+        languageIdentifier:
+          description: Identifier of Language
+          type: string
+          nullable: true
+          example: "Kr"
+    SetTranslation:
+      description: The properties name for the SetTranslation is with Capital letter because these are properties of Json which need to be able to read from DB
+      type: object
+      properties:
+        AccountID:
+          description: Unique Id of Account
+          type: string
+          nullable: true
+          example: 1
+        TextTypeID:
+          description: Id of Text Type
+          type: integer
+          nullable: true
+          example: 1
+        TextID:
+          description: Id of Text
+          type: integer
+          nullable: true
+          example: 1
+        ColumnName:
+          description: Name of Column
+          type: string
+          nullable: true
+          example: "Single column"
+        LanguageID:
+          description: Id of the Language
+          type: integer
+          nullable: true
+          example: 1
+        TranslatedText:
+          description: Translated Text
+          type: string
+          nullable: true
+          example: "Incident"
+    MachineTranslation:
+      type: object
+      properties:
+        accountId:
+          description: Unique Id of account
+          type: integer
+          nullable: true
+          example: 1
+        personId:
+          description: Unique Id of person
+          type: integer
+          nullable: true
+          example: 1
+        originalLanguage:
+          description:  Original Language
+          type: string
+          format: string
+          nullable: true
+          example: "Korean"
+        translatedLanguageId:
+          description: Id of Translated Language
+          type: integer
+          nullable: true
+          example: 1
+    UpdateSentTranslationRequests:
+      type: object
+      properties:
+        translationRequestIds:
+          description: List of Id of translation Requested
+          type: array
+          nullable: true
+          items:
+            type: integer
+            format: int32
+            example: [1,2,3]
+# Localization
+    Currency:
+      type: object
+      properties:
+        currencyId:
+          description: Currency Id
+          type: integer
+          nullable: true
+          example: 1
+        currencyCode:
+          description: Currency Code
+          type: string
+          nullable: true
+          example: "GBP"
+        currencyDescription:
+          description: Currency Description
+          type: string
+          nullable: true
+          example: "Pounds Sterling"
+        currencyDisplayString:
+          description: Currency Display String
+          type: string
+          nullable: true
+          example: "CurrencyCode - CurrencyDescription"
+        defaultCurrency:
+          description: Default Currency
+          type: boolean
+          nullable: true
+          example: true
+    Country:
+      type: object
+      properties:
+        countryId:
+          description: Currency Id
+          type: integer
+          nullable: true
+          example: 1
+        commonCountryName:
+          description: Currency Code
+          type: string
+          nullable: true
+          example: "Canada"
+        formalCountryName:
+          description: Currency Description
+          type: string
+          nullable: true
+          example: "Canada"
+        nativeCountryName:
+          description: Default Currency
+          type: string
+          nullable: true
+          example: "Canada"
+        iSOCode:
+          description: Default Currency
+          type: string
+          nullable: true
+          example: "CAN"
+    UnitSystem:
+      type: object
+      properties:
+        toUnitValue:
+          description: Output of Unit value
+          type: number
+          nullable: true
+          example: 1
+        toUnitId:
+          description: Output of Unit id
+          type: number
+          nullable: true
+          example: 1
+    Personalization:
+      type: object
+      properties:
+        accountId:
+          description: The unique account id
+          type: integer
+          format: int32
+          example: 13
+          nullable: true
+        personId:
+          description: The unique person id
+          type: integer
+          nullable: true
+          example: 1
+        languageId:
+          description: The Preference of dateFormat language id
+          type: integer
+          format: int32
+          nullable: true
+          example: 1
+        dateFormat:
+          description: The dateFormat for personalization
+          type: string
+          format: string
+          nullable: true
+          example: "YYYY-MM-DD"
+        dateFormatUserPreference:
+          description: The Preference of dateFormat for personalization
+          type: boolean
+          nullable: true
+          example: true
+        numberFormat:
+          description: The numberFormat for personalization
+          type: string
+          format: string
+          nullable: true
+          example: "#,###.##"
+        numberFormatUserPreference:
+          description: The Preference of numberFormat for personalization
+          type: boolean
+          nullable: true
+          example: true
+        timeFormat:
+          description: The timeFormat for personalization
+          type: string
+          format: string
+          nullable: true
+          example: "12-HourClock"
+        timeFormatUserPreference:
+          description: The Preference of timeFormat for personalization
+          type: boolean
+          nullable: true
+          example: true
+        timeZoneId:
+          description: Time zone Id for personalization
+          type: integer
+          format: int32
+          nullable: true
+          example: 1
+        timeZoneName:
+          description: The timeZoneName for personalization
+          type: string
+          format: string
+          nullable: true
+          example: "Eastern Standard Time"
+        timeZoneOffset:
+          description: The timeZoneOffset for personalization
+          type: number
+          nullable: true
+          example: 11.111
+        currencyId:
+          description: Currency Id for personalization
+          type: integer
+          format: int32
+          nullable: true
+          example: 1
+        currencyCode:
+          description: The currencyCode for personalization
+          type: string
+          format: string
+          nullable: true
+          example: "CAD"
+        unitSystemId:
+          description: unitSystem Id for personalization
+          type: integer
+          format: int32
+          nullable: true
+          example: 1
+        unitSystem:
+          description: unitSystem for personalization
+          type: string
+          format: string
+          nullable: true
+          example: "Customary(US)"
+        unitSystemUserPreference:
+          description: The Preference of unitSystem for personalization
+          type: boolean
+          nullable: true
+          example: true
+    UpdatePersonalization:
+      type: object
+      properties:
+        personId:
+          description: The unique person id
+          type: integer
+          format: int32
+          nullable: true
+          example: 1
+        languageId:
+          description: The Preference of dateFormat language id
+          type: integer
+          format: int32
+          nullable: true
+          example: 1
+        dateFormat:
+          description: The dateFormat for personalization
+          type: string
+          format: string
+          nullable: true
+          example: "YYYY-MM-DD"
+        dateFormatUserPreference:
+          description: The Preference of dateFormat for personalization
+          type: boolean
+          nullable: true
+          example: true
+        numberFormat:
+          description: The numberFormat for personalization
+          type: string
+          format: string
+          nullable: true
+          example: "#,###.##"
+        numberFormatUserPreference:
+          description: The Preference of numberFormat for personalization
+          type: boolean
+          nullable: true
+          example: true
+        timeFormat:
+          description: The timeFormat for personalization
+          type: string
+          format: string
+          nullable: true
+          example: "12-HourClock"
+        timeFormatUserPreference:
+          description: The Preference of timeFormat for personalization
+          type: boolean
+          nullable: true
+          example: true
+        timeZoneId:
+          description: Time zone Id for personalization
+          type: integer
+          format: int32
+          nullable: true
+          example: 1
+        currencyId:
+          description: Currency Id for personalization
+          type: integer
+          format: int32
+          nullable: true
+          example: 1
+        unitSystemId:
+          description: unitSystem Id for personalization
+          type: integer
+          format: int32
+          nullable: true
+          example: 1
+        unitSystemUserPreference:
+          description: The Preference of unitSystem for personalization
+          type: boolean
+          nullable: true
+          example: true
+# Location
     Location:
       required:
       - locationType
@@ -3873,12 +5739,72 @@ components:
           description: The hierarchy identifier
           format: int32
           example: 10
+        paths:
+          type: array
+          nullable: true
+          description: The location path
+          items:
+            type: string
         isAvailable:
           type: boolean
           nullable: true
           description: The available status for Location List
           format: boolean
           example: true
+        sicCode:
+          type: string
+          nullable: true
+          description: The SIC code
+          format: string
+          example: 0387
+        naicsCode:
+          type: integer
+          nullable: true
+          description: The NAICS code
+          format: int32
+          example: 336212
+        oshaEstablishmentName:
+          type: string
+          nullable: true
+          description: The OSHA Establishment Name
+          format: string
+          example: Springdale Water
+        oshaEstablishmentTypeId:
+          type: integer
+          nullable: true
+          description: The OSHA establishment type identifier
+          format: int32
+          example: 10
+        streetAddress:
+          type: string
+          nullable: true
+          description: The street address
+          format: string
+          example: 586 Argus Road
+        city:
+          type: string
+          nullable: true
+          description: The city name
+          format: string
+          example: Chicago
+        zipCode:
+          type: string
+          nullable: true
+          description: The zip code
+          format: string
+          example: 90210
+        stateId:
+          type: integer
+          nullable: true
+          description: The state identifier
+          format: int32
+          example: 10
+        industryDescription:
+          type: string
+          nullable: true
+          description: The industry description
+          format: string
+          example: Manufacture of motor truck trailers
     MovingLocationParams:
       required:
       - locationId
@@ -3926,6 +5852,60 @@ components:
           description: The hierarchy identifier
           format: int32
           example: 10
+        sicCode:
+          type: string
+          nullable: true
+          description: The SIC code
+          format: string
+          example: 0387
+        naicsCode:
+          type: integer
+          nullable: true
+          description: The NAICS code
+          format: int32
+          example: 336212
+        oshaEstablishmentName:
+          type: string
+          nullable: true
+          description: The OSHA Establishment Name
+          format: string
+          example: Springdale Water
+        oshaEstablishmentTypeId:
+          type: integer
+          nullable: true
+          description: The OSHA establishment type identifier
+          format: int32
+          example: 10
+        streetAddress:
+          type: string
+          nullable: true
+          description: The street address
+          format: string
+          example: 586 Argus Road
+        city:
+          type: string
+          nullable: true
+          description: The city name
+          format: string
+          example: Chicago
+        zipCode:
+          type: string
+          nullable: true
+          description: The zip code
+          format: string
+          example: 90210
+        stateId:
+          type: integer
+          nullable: true
+          description: The state identifier
+          format: int32
+          example: 10
+        industryDescription:
+          type: string
+          nullable: true
+          description: The industry description
+          format: string
+          example: Manufacture of motor truck trailers
     LocationType:
       type: string
       enum:
@@ -3937,7 +5917,7 @@ components:
         - Active
         - Inactive
         - Archived
-# Lists
+# List
     ListItem:
       type: object
       properties:
@@ -4081,7 +6061,7 @@ components:
             type: integer
         statusid:
           type: integer
-# Location Lists
+# LocationList
     LocationListAvailability:
         type: object
         properties:
@@ -4114,21 +6094,25 @@ components:
                 additionalProperties:
                   type: boolean
                 example: {"1": true, "2": false}
-# Persons
+# Person
     Person:
       type: object
       properties:
         personId:
           type: integer
           nullable: true
-        createdByPersonId:
-          type: integer
+        locations:
+          type: array
           nullable: true
+          items:
+            type: integer
+        locationNames:
+          type: object
+          additionalProperties:
+            type: string
+          example: {"1": "Toronto", "2": "Oakville"}
         loginAccessRequired:
           type: boolean
-          nullable: true
-        displayName:
-          type: string
           nullable: true
         username:
           type: string
@@ -4138,6 +6122,12 @@ components:
           type: integer
           nullable: true
           example: 12
+        statusName:
+          type: string
+          nullable: true
+        displayName:
+          type: string
+          nullable: true
         firstName:
           type: string
           nullable: true
@@ -4146,13 +6136,11 @@ components:
           type: string
           nullable: true
           example: Doe
-        locations:
-          type: array
-          nullable: true
-          items:
-            type: integer
         genderId: 
           type: integer
+          nullable: true
+        gender:
+          type: string
           nullable: true
         dateOfBirth:
           format: date-time
@@ -4182,15 +6170,27 @@ components:
         countryDivisionId:
           type: integer
           nullable: true
+        countryDivisionName:
+          type: string
+          nullable: true
         countryId:
           type: integer
+          nullable: true
+        CountryName:
+          type: string
           nullable: true
         postalCode:
           type: string
           nullable: true
           example: A1A 1A1
-        relationshipId:
+        languageId:
           type: integer
+          nullable: true
+        relationshipTypeId:
+          type: integer
+          nullable: true
+        relationshipType:
+          type: string
           nullable: true
         currentPosition:
           type: string
@@ -4198,6 +6198,9 @@ components:
           example: EHS Manager
         supervisorId:
           type: integer
+          nullable: true
+        supervisorName:
+          type: string
           nullable: true
         hireDate:
           type: string
@@ -4221,21 +6224,33 @@ components:
         contractingCompanyId:
           type: integer
           nullable: true
-        customerid:
+        contractingCompanyName:
+          type: string
+          nullable: true
+        customerId:
           type: integer
           nullable: true
-        contactTypeId:
-          type: integer
+        customerName:
+          type: string
           nullable: true
         locked:
           type: boolean
           nullable: true
           example: false
+        contactTypeId:
+          type: integer
+          nullable: true
+        contactTypeName:
+          type: string
+          nullable: true
         expiryDate:
           type: string
           format: date-time
           nullable: true
           example: "2029-01-01 12:00:00"
+        createdByPersonId:
+          type: integer
+          nullable: true
         personDetails:
           type: string
           nullable: true
@@ -4246,7 +6261,7 @@ components:
         personId:
           type: integer
           nullable: true
-        updatedByPersonID:
+        updatedByPersonId:
           type: integer
           nullable: true
         statusId:
@@ -4323,7 +6338,10 @@ components:
           type: string
           nullable: true
           example: A1A 1A1
-        relationshipId:
+        languageId:
+          type: integer
+          nullable: true
+        relationshipTypeId:
           type: integer
           nullable: true
         currentPosition:
@@ -4355,7 +6373,7 @@ components:
         contractingCompanyId:
           type: integer
           nullable: true
-        customerid:
+        customerId:
           type: integer
           nullable: true
         contactTypeId:

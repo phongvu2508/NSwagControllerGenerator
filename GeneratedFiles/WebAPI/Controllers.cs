@@ -9,6 +9,105 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
     #pragma warning disable
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface IAccountController
+    {
+        /// <summary>Gets the personalization information for an account.</summary>
+        /// <response code="200">The personalization of the account that matches the request</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Account not found</response>
+        /// <returns>The personalization of the account that matches the request</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetAccountPersonalizationAsync();
+    
+        /// <summary>Updates a personalization based on account id</summary>
+        /// <response code="204">The account was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Account not found</response>
+        /// <returns>The account was successfully updated</returns>
+        System.Threading.Tasks.Task UpdateAccountPersonalizationAsync(UpdatePersonalization body);
+    
+        /// <summary>Get an account currency list</summary>
+        /// <response code="200">The currency list of the account that matches the request</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Currency List not found</response>
+        /// <returns>The currency list of the account that matches the request</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Currency>>> GetAccountCurrencyListAsync();
+    
+        /// <summary>Update an account currency list</summary>
+        /// <param name="body">The updated account currency list</param>
+        /// <response code="204">The account was successfully updated.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">No currency for the account</response>
+        /// <returns>The account was successfully updated.</returns>
+        System.Threading.Tasks.Task UpdateAccountCurrencyListAsync(UpdateAccountCurrencyList body);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class AccountController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private IAccountController implementation;
+    
+        public AccountController(IAccountController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <summary>Gets the personalization information for an account.</summary>
+        /// <response code="200">The personalization of the account that matches the request</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Account not found</response>
+        /// <returns>The personalization of the account that matches the request</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("account/personalization")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetAccountPersonalization()
+        {
+            return this.implementation.GetAccountPersonalizationAsync();
+        }
+    
+        /// <summary>Updates a personalization based on account id</summary>
+        /// <response code="204">The account was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Account not found</response>
+        /// <returns>The account was successfully updated</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("account/personalization")]
+        public System.Threading.Tasks.Task UpdateAccountPersonalization([Microsoft.AspNetCore.Mvc.FromBody] UpdatePersonalization body)
+        {
+            return this.implementation.UpdateAccountPersonalizationAsync(body);
+        }
+    
+        /// <summary>Get an account currency list</summary>
+        /// <response code="200">The currency list of the account that matches the request</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Currency List not found</response>
+        /// <returns>The currency list of the account that matches the request</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("account/currency")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Currency>>> GetAccountCurrencyList()
+        {
+            return this.implementation.GetAccountCurrencyListAsync();
+        }
+    
+        /// <summary>Update an account currency list</summary>
+        /// <param name="body">The updated account currency list</param>
+        /// <response code="204">The account was successfully updated.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">No currency for the account</response>
+        /// <returns>The account was successfully updated.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("account/currency")]
+        public System.Threading.Tasks.Task UpdateAccountCurrencyList([Microsoft.AspNetCore.Mvc.FromBody] UpdateAccountCurrencyList body)
+        {
+            return this.implementation.UpdateAccountCurrencyListAsync(body);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
     public interface IGlobalSearchController
     {
         /// <response code="200">the current users navigation</response>
@@ -35,6 +134,43 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<GlobalSearchResult>> GetGlobalSearchResults([Microsoft.AspNetCore.Mvc.FromBody] GlobalSearchParameters body)
         {
             return this.implementation.GetGlobalSearchResultsAsync(body);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface IInternationalizationController
+    {
+        /// <summary>Create machine translation request</summary>
+        /// <param name="body">The new machine translation request</param>
+        /// <response code="201">The new translation identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new translation identifier</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateMachineTranslationRequestAsync(MachineTranslation body);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class InternationalizationController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private IInternationalizationController implementation;
+    
+        public InternationalizationController(IInternationalizationController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <summary>Create machine translation request</summary>
+        /// <param name="body">The new machine translation request</param>
+        /// <response code="201">The new translation identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new translation identifier</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("translations/machine")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateMachineTranslationRequest([Microsoft.AspNetCore.Mvc.FromBody] MachineTranslation body)
+        {
+            return this.implementation.CreateMachineTranslationRequestAsync(body);
         }
     
     }
@@ -76,6 +212,23 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <returns>the current user</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<User>> GetCurrentUserAsync();
     
+        /// <summary>Unlocks the current user</summary>
+        /// <response code="204">The current user was successfully unlocked.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Current User not found</response>
+        /// <returns>The current user was successfully unlocked.</returns>
+        System.Threading.Tasks.Task UnlockCurrentUserAsync();
+    
+        /// <summary>Update the password for the current user.</summary>
+        /// <param name="body">Password Parameters</param>
+        /// <response code="204">The current user was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Current User not found</response>
+        /// <returns>The current user was successfully updated</returns>
+        System.Threading.Tasks.Task UpdateCurrentUserPasswordAsync(PasswordParams body);
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
@@ -91,10 +244,570 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="200">the current user</response>
         /// <response code="204">The current user could not be found.</response>
         /// <returns>the current user</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("users/me"), Microsoft.AspNetCore.Authorization.Authorize]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("users/me")]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<User>> GetCurrentUser()
         {
             return this.implementation.GetCurrentUserAsync();
+        }
+    
+        /// <summary>Unlocks the current user</summary>
+        /// <response code="204">The current user was successfully unlocked.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Current User not found</response>
+        /// <returns>The current user was successfully unlocked.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("users/me"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task UnlockCurrentUser()
+        {
+            return this.implementation.UnlockCurrentUserAsync();
+        }
+    
+        /// <summary>Update the password for the current user.</summary>
+        /// <param name="body">Password Parameters</param>
+        /// <response code="204">The current user was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Current User not found</response>
+        /// <returns>The current user was successfully updated</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("users/me/setPassword"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task UpdateCurrentUserPassword([Microsoft.AspNetCore.Mvc.FromBody] PasswordParams body)
+        {
+            return this.implementation.UpdateCurrentUserPasswordAsync(body);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface ILoginController
+    {
+        /// <param name="body">The login request body</param>
+        /// <response code="200">The login succeeded</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The login succeeded</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LoginResponse>> LoginAsync(LoginParams body);
+    
+        /// <summary>Validates Password based on account, person and password rules</summary>
+        /// <param name="body">The Password Parameters</param>
+        /// <response code="200">Password validation result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Invalid entry for password</response>
+        /// <returns>Password validation result</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePasswordAsync(PasswordParams body);
+    
+        /// <summary>Gets the password rules for the account.</summary>
+        /// <response code="200">The password rules for the account.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">No password rules for the account</response>
+        /// <returns>The password rules for the account.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<FormsAuthPasswordRule>>> GetPasswordRulesAsync();
+    
+        /// <summary>Gets the expiry datetime of the json web token.</summary>
+        /// <response code="200">The expiry of the token.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Token not found for the account</response>
+        /// <returns>The expiry of the token.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<TokenExpiry>> GettokenexpiryAsync();
+    
+        /// <summary>logout current user.</summary>
+        /// <response code="204">The current user was successfully logged out</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Current User not found</response>
+        /// <returns>The current user was successfully logged out</returns>
+        System.Threading.Tasks.Task LogoutAsync();
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class LoginController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private ILoginController implementation;
+    
+        public LoginController(ILoginController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <param name="body">The login request body</param>
+        /// <response code="200">The login succeeded</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The login succeeded</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("login")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LoginResponse>> Login([Microsoft.AspNetCore.Mvc.FromBody] LoginParams body)
+        {
+            return this.implementation.LoginAsync(body);
+        }
+    
+        /// <summary>Validates Password based on account, person and password rules</summary>
+        /// <param name="body">The Password Parameters</param>
+        /// <response code="200">Password validation result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Invalid entry for password</response>
+        /// <returns>Password validation result</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("validatepassword"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePassword([Microsoft.AspNetCore.Mvc.FromBody] PasswordParams body)
+        {
+            return this.implementation.ValidatePasswordAsync(body);
+        }
+    
+        /// <summary>Gets the password rules for the account.</summary>
+        /// <response code="200">The password rules for the account.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">No password rules for the account</response>
+        /// <returns>The password rules for the account.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("rules"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<FormsAuthPasswordRule>>> GetPasswordRules()
+        {
+            return this.implementation.GetPasswordRulesAsync();
+        }
+    
+        /// <summary>Gets the expiry datetime of the json web token.</summary>
+        /// <response code="200">The expiry of the token.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Token not found for the account</response>
+        /// <returns>The expiry of the token.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("checktokenexpiry"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<TokenExpiry>> Gettokenexpiry()
+        {
+            return this.implementation.GettokenexpiryAsync();
+        }
+    
+        /// <summary>logout current user.</summary>
+        /// <response code="204">The current user was successfully logged out</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Current User not found</response>
+        /// <returns>The current user was successfully logged out</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("logout"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task Logout()
+        {
+            return this.implementation.LogoutAsync();
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface IHierarchyController
+    {
+        /// <summary>Return a list all Hierarchies</summary>
+        /// <response code="200">A list of Hierarchies</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Hierarchies not found</response>
+        /// <returns>A list of Hierarchies</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Hierarchy>>> GetHierarchiesAsync();
+    
+        /// <summary>Update existing Hierarchy</summary>
+        /// <param name="body">The updated Hierarchy object</param>
+        /// <response code="204">The hierarchy was successfully updated.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Hierarchy not found</response>
+        /// <returns>The hierarchy was successfully updated.</returns>
+        System.Threading.Tasks.Task UpdateHierarchyAsync(UpdateHierarchyParams body);
+    
+        /// <summary>Create new Hierarchy</summary>
+        /// <param name="body">The new Hierarchy schema</param>
+        /// <response code="201">The new hierarchy identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new hierarchy identifier</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateHierarchyAsync(NewHierarchyParams body);
+    
+        /// <summary>Get a Hierarchy by id</summary>
+        /// <param name="hierarchyId">The Hierarchy identifier</param>
+        /// <response code="200">A Hierarchy by id</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Hierarchy not found</response>
+        /// <returns>A Hierarchy by id</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Hierarchy>> GetHierarchyAsync(int? hierarchyId);
+    
+        /// <summary>Delete a Hierarchy by Hierarchy id</summary>
+        /// <param name="hierarchyId">The Hierarchy identifier</param>
+        /// <response code="204">Delete Hierarchy result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Hierarchy not found</response>
+        /// <returns>Delete Hierarchy result</returns>
+        System.Threading.Tasks.Task DeleteHierarchyAsync(int? hierarchyId);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class HierarchyController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private IHierarchyController implementation;
+    
+        public HierarchyController(IHierarchyController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <summary>Return a list all Hierarchies</summary>
+        /// <response code="200">A list of Hierarchies</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Hierarchies not found</response>
+        /// <returns>A list of Hierarchies</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("hierarchies")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Hierarchy>>> GetHierarchies()
+        {
+            return this.implementation.GetHierarchiesAsync();
+        }
+    
+        /// <summary>Update existing Hierarchy</summary>
+        /// <param name="body">The updated Hierarchy object</param>
+        /// <response code="204">The hierarchy was successfully updated.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Hierarchy not found</response>
+        /// <returns>The hierarchy was successfully updated.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("hierarchies")]
+        public System.Threading.Tasks.Task UpdateHierarchy([Microsoft.AspNetCore.Mvc.FromBody] UpdateHierarchyParams body)
+        {
+            return this.implementation.UpdateHierarchyAsync(body);
+        }
+    
+        /// <summary>Create new Hierarchy</summary>
+        /// <param name="body">The new Hierarchy schema</param>
+        /// <response code="201">The new hierarchy identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new hierarchy identifier</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("hierarchies")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateHierarchy([Microsoft.AspNetCore.Mvc.FromBody] NewHierarchyParams body)
+        {
+            return this.implementation.CreateHierarchyAsync(body);
+        }
+    
+        /// <summary>Get a Hierarchy by id</summary>
+        /// <param name="hierarchyId">The Hierarchy identifier</param>
+        /// <response code="200">A Hierarchy by id</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Hierarchy not found</response>
+        /// <returns>A Hierarchy by id</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("hierarchies/{hierarchyId}")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Hierarchy>> GetHierarchy(int? hierarchyId)
+        {
+            return this.implementation.GetHierarchyAsync(hierarchyId);
+        }
+    
+        /// <summary>Delete a Hierarchy by Hierarchy id</summary>
+        /// <param name="hierarchyId">The Hierarchy identifier</param>
+        /// <response code="204">Delete Hierarchy result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Hierarchy not found</response>
+        /// <returns>Delete Hierarchy result</returns>
+        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("hierarchies/{hierarchyId}")]
+        public System.Threading.Tasks.Task DeleteHierarchy(int? hierarchyId)
+        {
+            return this.implementation.DeleteHierarchyAsync(hierarchyId);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface ILocationController
+    {
+        /// <summary>Search for locations by params</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <param name="hierarchyId">The hierarchy identifier</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <param name="limit">The amount of locations return per request</param>
+        /// <param name="offset">The position for first location to be returned in the collection</param>
+        /// <response code="200">A list of locations founded using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Locations not found</response>
+        /// <returns>A list of locations founded using provided criteria</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationsAsync(int? id, LocationType? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? limit, int? offset);
+    
+        /// <summary>Update existing location</summary>
+        /// <param name="body">The updated location schema</param>
+        /// <response code="204">The location was successfully updated.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location not found</response>
+        /// <returns>The location was successfully updated.</returns>
+        System.Threading.Tasks.Task UpdateLocationAsync(Location body);
+    
+        /// <summary>Create new location</summary>
+        /// <param name="body">The new location schema</param>
+        /// <response code="201">The new location identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new location identifier</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateLocationAsync(NewLocationParams body);
+    
+        /// <summary>Delete a location by location id</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <response code="204">Location deletion result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location not found</response>
+        /// <returns>Location deletion result</returns>
+        System.Threading.Tasks.Task DeleteLocationAsync(int id, LocationType locationType);
+    
+        /// <summary>Get a location by location id</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <response code="200">A location with provided identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location not found</response>
+        /// <returns>A location with provided identifier</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationByIdAsync(int locationId, LocationType locationType);
+    
+        /// <summary>Get locations by location name</summary>
+        /// <param name="locationName">The location name</param>
+        /// <param name="hierarchyId">The hierarchy identifier</param>
+        /// <param name="locationTypes">The array of selected location types</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <response code="200">A list of locations founded using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location not found</response>
+        /// <returns>A list of locations founded using provided criteria</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationsByNameAsync(string locationName, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationType> locationTypes, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses);
+    
+        /// <summary>Get locations by traverse the location tree</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <param name="hierarchyId">The hierarchy identifier</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <response code="200">A list of locations founded using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Locations not found</response>
+        /// <returns>A list of locations founded using provided criteria</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetTraversedLocationsAsync(int id, LocationType locationType, int hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels);
+    
+        /// <summary>Get immediate child locations or location groups</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationTypes">The array of selected types</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <response code="200">A list of locations founded using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Locations not found</response>
+        /// <returns>A list of locations founded using provided criteria</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetChildLocationsAsync(int id, System.Collections.Generic.IEnumerable<LocationType> locationTypes, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses);
+    
+        /// <summary>Get child locations count</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <response code="200">A count of locations found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Locations not found</response>
+        /// <returns>A count of locations found using provided criteria</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<int>> GetChildLocationsCountAsync(int id, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels);
+    
+        /// <summary>Get child location groups count</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <response code="200">A count of locations found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Locations not found</response>
+        /// <returns>A count of locations found using provided criteria</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<int>> GetChildLocationGroupsCountAsync(int id, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels);
+    
+        /// <summary>Move location and all children under another location group</summary>
+        /// <response code="204">The location successfully moved.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location not found</response>
+        /// <returns>The location successfully moved.</returns>
+        System.Threading.Tasks.Task MoveLocationAsync(MovingLocationParams body);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class LocationController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private ILocationController implementation;
+    
+        public LocationController(ILocationController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <summary>Search for locations by params</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <param name="hierarchyId">The hierarchy identifier</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <param name="limit">The amount of locations return per request</param>
+        /// <param name="offset">The position for first location to be returned in the collection</param>
+        /// <response code="200">A list of locations founded using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Locations not found</response>
+        /// <returns>A list of locations founded using provided criteria</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocations(int? id, LocationType? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? limit, int? offset)
+        {
+            return this.implementation.GetLocationsAsync(id, locationType, hierarchyId, locationStatuses, limit, offset);
+        }
+    
+        /// <summary>Update existing location</summary>
+        /// <param name="body">The updated location schema</param>
+        /// <response code="204">The location was successfully updated.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location not found</response>
+        /// <returns>The location was successfully updated.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("locations")]
+        public System.Threading.Tasks.Task UpdateLocation([Microsoft.AspNetCore.Mvc.FromBody] Location body)
+        {
+            return this.implementation.UpdateLocationAsync(body);
+        }
+    
+        /// <summary>Create new location</summary>
+        /// <param name="body">The new location schema</param>
+        /// <response code="201">The new location identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new location identifier</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locations")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateLocation([Microsoft.AspNetCore.Mvc.FromBody] NewLocationParams body)
+        {
+            return this.implementation.CreateLocationAsync(body);
+        }
+    
+        /// <summary>Delete a location by location id</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <response code="204">Location deletion result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location not found</response>
+        /// <returns>Location deletion result</returns>
+        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("locations")]
+        public System.Threading.Tasks.Task DeleteLocation(int id, LocationType locationType)
+        {
+            return this.implementation.DeleteLocationAsync(id, locationType);
+        }
+    
+        /// <summary>Get a location by location id</summary>
+        /// <param name="locationId">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <response code="200">A location with provided identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location not found</response>
+        /// <returns>A location with provided identifier</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/{locationId}")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationById(int locationId, LocationType locationType)
+        {
+            return this.implementation.GetLocationByIdAsync(locationId, locationType);
+        }
+    
+        /// <summary>Get locations by location name</summary>
+        /// <param name="locationName">The location name</param>
+        /// <param name="hierarchyId">The hierarchy identifier</param>
+        /// <param name="locationTypes">The array of selected location types</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <response code="200">A list of locations founded using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location not found</response>
+        /// <returns>A list of locations founded using provided criteria</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/search")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationsByName(string locationName, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationType> locationTypes, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses)
+        {
+            return this.implementation.GetLocationsByNameAsync(locationName, hierarchyId, locationTypes, locationStatuses);
+        }
+    
+        /// <summary>Get locations by traverse the location tree</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationType">The location type</param>
+        /// <param name="hierarchyId">The hierarchy identifier</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <response code="200">A list of locations founded using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Locations not found</response>
+        /// <returns>A list of locations founded using provided criteria</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/traverse")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetTraversedLocations(int id, LocationType locationType, int hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels)
+        {
+            return this.implementation.GetTraversedLocationsAsync(id, locationType, hierarchyId, locationStatuses, levels);
+        }
+    
+        /// <summary>Get immediate child locations or location groups</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationTypes">The array of selected types</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <response code="200">A list of locations founded using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Locations not found</response>
+        /// <returns>A list of locations founded using provided criteria</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/childLocations")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetChildLocations(int id, System.Collections.Generic.IEnumerable<LocationType> locationTypes, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses)
+        {
+            return this.implementation.GetChildLocationsAsync(id, locationTypes, locationStatuses);
+        }
+    
+        /// <summary>Get child locations count</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <response code="200">A count of locations found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Locations not found</response>
+        /// <returns>A count of locations found using provided criteria</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/childLocationsCount")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<int>> GetChildLocationsCount(int id, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels)
+        {
+            return this.implementation.GetChildLocationsCountAsync(id, locationStatuses, levels);
+        }
+    
+        /// <summary>Get child location groups count</summary>
+        /// <param name="id">The location identifier</param>
+        /// <param name="locationStatuses">The array of selected statuses</param>
+        /// <param name="levels">The number of level to traverse within hierarchy</param>
+        /// <response code="200">A count of locations found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Locations not found</response>
+        /// <returns>A count of locations found using provided criteria</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/childLocationGroupsCount")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<int>> GetChildLocationGroupsCount(int id, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels)
+        {
+            return this.implementation.GetChildLocationGroupsCountAsync(id, locationStatuses, levels);
+        }
+    
+        /// <summary>Move location and all children under another location group</summary>
+        /// <response code="204">The location successfully moved.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Location not found</response>
+        /// <returns>The location successfully moved.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locations/move")]
+        public System.Threading.Tasks.Task MoveLocation([Microsoft.AspNetCore.Mvc.FromBody] MovingLocationParams body)
+        {
+            return this.implementation.MoveLocationAsync(body);
         }
     
     }
@@ -608,6 +1321,22 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <returns>OK</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Person>> GetPersonByIdAsync(int personId);
     
+        /// <summary>Returns the person's personalization based on person id</summary>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Person not found</response>
+        /// <returns>OK</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalizationAsync(int personId);
+    
+        /// <summary>Updates a personalization based on person id</summary>
+        /// <response code="204">The person was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Persons not found</response>
+        /// <returns>The person was successfully updated</returns>
+        System.Threading.Tasks.Task UpdatePersonPersonalizationAsync(int personId, UpdatePersonalization body);
+    
         /// <summary>Returns persons based on name</summary>
         /// <param name="pageNumber">Page Number of the Person</param>
         /// <param name="pageSize">Page Size of the Person</param>
@@ -720,6 +1449,30 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Person>> GetPersonById(int personId)
         {
             return this.implementation.GetPersonByIdAsync(personId);
+        }
+    
+        /// <summary>Returns the person's personalization based on person id</summary>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Person not found</response>
+        /// <returns>OK</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons/{personId}/personalization")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalization(int personId)
+        {
+            return this.implementation.GetPersonPersonalizationAsync(personId);
+        }
+    
+        /// <summary>Updates a personalization based on person id</summary>
+        /// <response code="204">The person was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Persons not found</response>
+        /// <returns>The person was successfully updated</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("persons/{personId}/personalization")]
+        public System.Threading.Tasks.Task UpdatePersonPersonalization(int personId, [Microsoft.AspNetCore.Mvc.FromBody] UpdatePersonalization body)
+        {
+            return this.implementation.UpdatePersonPersonalizationAsync(personId, body);
         }
     
         /// <summary>Returns persons based on name</summary>
@@ -890,6 +1643,9 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         [Newtonsoft.Json.JsonProperty("LinkUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string LinkUrl { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("NewTab", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool NewTab { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -954,24 +1710,56 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class BadRequestError 
+    public partial class RequestError 
     {
         /// <summary>The error code if existed</summary>
-        [Newtonsoft.Json.JsonProperty("errorCode", Required = Newtonsoft.Json.Required.Always)]
-        public int ErrorCode { get; set; }
+        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Always)]
+        public int Code { get; set; }
     
-        /// <summary>The error messages</summary>
-        [Newtonsoft.Json.JsonProperty("errorMessages", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<string> ErrorMessages { get; set; }
+        /// <summary>The error message</summary>
+        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Message { get; set; }
+    
+        /// <summary>the array of nested detail errors</summary>
+        [Newtonsoft.Json.JsonProperty("errors", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<RequestErrorDetail> Errors { get; set; }
     
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static BadRequestError FromJson(string data)
+        public static RequestError FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<BadRequestError>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class RequestErrorDetail 
+    {
+        /// <summary>The error code if existed</summary>
+        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Code { get; set; }
+    
+        /// <summary>The error name / attribute name</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>The error message</summary>
+        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Message { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static RequestErrorDetail FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RequestErrorDetail>(data);
         }
     
     }
@@ -1016,6 +1804,84 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Hierarchy 
+    {
+        /// <summary>The Hierarchy name</summary>
+        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>Idendifying hierarchy as Default or not</summary>
+        [Newtonsoft.Json.JsonProperty("IsDefault", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsDefault { get; set; }
+    
+        /// <summary>The hierarchy identifier</summary>
+        [Newtonsoft.Json.JsonProperty("HierarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? HierarchyId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Hierarchy FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Hierarchy>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class NewHierarchyParams 
+    {
+        /// <summary>The Hierarchy name</summary>
+        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Name { get; set; }
+    
+        /// <summary>Idendifying hierarchy as Default or not</summary>
+        [Newtonsoft.Json.JsonProperty("IsDefault", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsDefault { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static NewHierarchyParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<NewHierarchyParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdateHierarchyParams 
+    {
+        /// <summary>The Hierarchy name</summary>
+        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>Idendifying hierarchy as Default or not</summary>
+        [Newtonsoft.Json.JsonProperty("IsDefault", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsDefault { get; set; }
+    
+        /// <summary>The hierarchy identifier</summary>
+        [Newtonsoft.Json.JsonProperty("HierarchyId", Required = Newtonsoft.Json.Required.Always)]
+        public int HierarchyId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdateHierarchyParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateHierarchyParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Location 
     {
         /// <summary>The location identifier</summary>
@@ -1043,6 +1909,50 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         [Newtonsoft.Json.JsonProperty("hierarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? HierarchyId { get; set; }
     
+        /// <summary>The location path</summary>
+        [Newtonsoft.Json.JsonProperty("paths", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<string> Paths { get; set; }
+    
+        /// <summary>The available status for Location List</summary>
+        [Newtonsoft.Json.JsonProperty("isAvailable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsAvailable { get; set; }
+    
+        /// <summary>The SIC code</summary>
+        [Newtonsoft.Json.JsonProperty("sicCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SicCode { get; set; }
+    
+        /// <summary>The NAICS code</summary>
+        [Newtonsoft.Json.JsonProperty("naicsCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? NaicsCode { get; set; }
+    
+        /// <summary>The OSHA Establishment Name</summary>
+        [Newtonsoft.Json.JsonProperty("oshaEstablishmentName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string OshaEstablishmentName { get; set; }
+    
+        /// <summary>The OSHA establishment type identifier</summary>
+        [Newtonsoft.Json.JsonProperty("oshaEstablishmentTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? OshaEstablishmentTypeId { get; set; }
+    
+        /// <summary>The street address</summary>
+        [Newtonsoft.Json.JsonProperty("streetAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string StreetAddress { get; set; }
+    
+        /// <summary>The city name</summary>
+        [Newtonsoft.Json.JsonProperty("city", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string City { get; set; }
+    
+        /// <summary>The zip code</summary>
+        [Newtonsoft.Json.JsonProperty("zipCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ZipCode { get; set; }
+    
+        /// <summary>The state identifier</summary>
+        [Newtonsoft.Json.JsonProperty("stateId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StateId { get; set; }
+    
+        /// <summary>The industry description</summary>
+        [Newtonsoft.Json.JsonProperty("industryDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string IndustryDescription { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -1051,6 +1961,103 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         public static Location FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Location>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class MovingLocationParams 
+    {
+        /// <summary>The location identifier</summary>
+        [Newtonsoft.Json.JsonProperty("locationId", Required = Newtonsoft.Json.Required.Always)]
+        public int LocationId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationType", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LocationType LocationType { get; set; }
+    
+        /// <summary>The location parent identifier</summary>
+        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.Always)]
+        public int ParentId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static MovingLocationParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<MovingLocationParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class NewLocationParams 
+    {
+        /// <summary>The location name</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Name { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationType", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LocationType LocationType { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationStatus", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LocationStatus LocationStatus { get; set; }
+    
+        /// <summary>The array of location parent identifiers</summary>
+        [Newtonsoft.Json.JsonProperty("parentIds", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> ParentIds { get; set; }
+    
+        /// <summary>The hierarchy identifier</summary>
+        [Newtonsoft.Json.JsonProperty("hierarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? HierarchyId { get; set; }
+    
+        /// <summary>The SIC code</summary>
+        [Newtonsoft.Json.JsonProperty("sicCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SicCode { get; set; }
+    
+        /// <summary>The NAICS code</summary>
+        [Newtonsoft.Json.JsonProperty("naicsCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? NaicsCode { get; set; }
+    
+        /// <summary>The OSHA Establishment Name</summary>
+        [Newtonsoft.Json.JsonProperty("oshaEstablishmentName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string OshaEstablishmentName { get; set; }
+    
+        /// <summary>The OSHA establishment type identifier</summary>
+        [Newtonsoft.Json.JsonProperty("oshaEstablishmentTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? OshaEstablishmentTypeId { get; set; }
+    
+        /// <summary>The street address</summary>
+        [Newtonsoft.Json.JsonProperty("streetAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string StreetAddress { get; set; }
+    
+        /// <summary>The city name</summary>
+        [Newtonsoft.Json.JsonProperty("city", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string City { get; set; }
+    
+        /// <summary>The zip code</summary>
+        [Newtonsoft.Json.JsonProperty("zipCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ZipCode { get; set; }
+    
+        /// <summary>The state identifier</summary>
+        [Newtonsoft.Json.JsonProperty("stateId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StateId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static NewLocationParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<NewLocationParams>(data);
         }
     
     }
@@ -1272,14 +2279,14 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? PersonId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("createdByPersonId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? CreatedByPersonId { get; set; }
+        [Newtonsoft.Json.JsonProperty("locations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> Locations { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationNames", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IDictionary<string, string> LocationNames { get; set; }
     
         [Newtonsoft.Json.JsonProperty("loginAccessRequired", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? LoginAccessRequired { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string DisplayName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Username { get; set; }
@@ -1287,17 +2294,23 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         [Newtonsoft.Json.JsonProperty("statusId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? StatusId { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("statusName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string StatusName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DisplayName { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("firstName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string FirstName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("lastName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string LastName { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("locations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> Locations { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("genderId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? GenderId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("gender", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Gender { get; set; }
     
         [Newtonsoft.Json.JsonProperty("dateOfBirth", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? DateOfBirth { get; set; }
@@ -1320,20 +2333,35 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         [Newtonsoft.Json.JsonProperty("countryDivisionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CountryDivisionId { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("countryDivisionName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CountryDivisionName { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("countryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CountryId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("CountryName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CountryName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("postalCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PostalCode { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("relationshipId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? RelationshipId { get; set; }
+        [Newtonsoft.Json.JsonProperty("languageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LanguageId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("relationshipTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RelationshipTypeId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("relationshipType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RelationshipType { get; set; }
     
         [Newtonsoft.Json.JsonProperty("currentPosition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CurrentPosition { get; set; }
     
         [Newtonsoft.Json.JsonProperty("supervisorId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? SupervisorId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("supervisorName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SupervisorName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("hireDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? HireDate { get; set; }
@@ -1350,17 +2378,29 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         [Newtonsoft.Json.JsonProperty("contractingCompanyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? ContractingCompanyId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("customerid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Customerid { get; set; }
+        [Newtonsoft.Json.JsonProperty("contractingCompanyName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ContractingCompanyName { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("contactTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? ContactTypeId { get; set; }
+        [Newtonsoft.Json.JsonProperty("customerId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CustomerId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("customerName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CustomerName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("locked", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? Locked { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("contactTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ContactTypeId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("contactTypeName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ContactTypeName { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("expiryDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? ExpiryDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("createdByPersonId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CreatedByPersonId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("personDetails", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PersonDetails { get; set; }
@@ -1383,8 +2423,8 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? PersonId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("updatedByPersonID", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? UpdatedByPersonID { get; set; }
+        [Newtonsoft.Json.JsonProperty("updatedByPersonId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? UpdatedByPersonId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("statusId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? StatusId { get; set; }
@@ -1440,8 +2480,8 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         [Newtonsoft.Json.JsonProperty("postalCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PostalCode { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("relationshipId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? RelationshipId { get; set; }
+        [Newtonsoft.Json.JsonProperty("RelationshipTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RelationshipTypeId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("currentPosition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CurrentPosition { get; set; }
@@ -1464,8 +2504,8 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         [Newtonsoft.Json.JsonProperty("contractingCompanyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? ContractingCompanyId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("customerid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Customerid { get; set; }
+        [Newtonsoft.Json.JsonProperty("customerId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CustomerId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("contactTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? ContactTypeId { get; set; }
@@ -1487,6 +2527,370 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         public static UpdatePersonParams FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdatePersonParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Personalization 
+    {
+        /// <summary>The unique person id</summary>
+        [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PersonId { get; set; }
+    
+        /// <summary>The dateFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("dateFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DateFormat { get; set; }
+    
+        /// <summary>The Preference of dateFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("dateFormatUserPreference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DateFormatUserPreference { get; set; }
+    
+        /// <summary>The numberFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("numberFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string NumberFormat { get; set; }
+    
+        /// <summary>The Preference of numberFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("numberFormatUserPreference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NumberFormatUserPreference { get; set; }
+    
+        /// <summary>The timeFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("timeFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TimeFormat { get; set; }
+    
+        /// <summary>The Preference of timeFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("timeFormatUserPreference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TimeFormatUserPreference { get; set; }
+    
+        /// <summary>Time zone Id for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TimeZoneId { get; set; }
+    
+        /// <summary>The timeZoneName for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TimeZoneName { get; set; }
+    
+        /// <summary>The timeZoneOffset for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneOffset", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? TimeZoneOffset { get; set; }
+    
+        /// <summary>Currency Id for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("currencyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CurrencyId { get; set; }
+    
+        /// <summary>The currencyCode for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("currencyCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CurrencyCode { get; set; }
+    
+        /// <summary>unitSystem Id for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("unitSystemId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? UnitSystemId { get; set; }
+    
+        /// <summary>unitSystem for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("unitSystem", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string UnitSystem { get; set; }
+    
+        /// <summary>The Preference of unitSystem for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("unitSystemUserPreference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? UnitSystemUserPreference { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Personalization FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Personalization>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdatePersonalization 
+    {
+        /// <summary>The unique person id</summary>
+        [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PersonId { get; set; }
+    
+        /// <summary>The dateFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("dateFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DateFormat { get; set; }
+    
+        /// <summary>The Preference of dateFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("dateFormatUserPreference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DateFormatUserPreference { get; set; }
+    
+        /// <summary>The numberFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("numberFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string NumberFormat { get; set; }
+    
+        /// <summary>The Preference of numberFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("numberFormatUserPreference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NumberFormatUserPreference { get; set; }
+    
+        /// <summary>The timeFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("timeFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TimeFormat { get; set; }
+    
+        /// <summary>The Preference of timeFormat for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("timeFormatUserPreference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TimeFormatUserPreference { get; set; }
+    
+        /// <summary>Time zone Id for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TimeZoneId { get; set; }
+    
+        /// <summary>Currency Id for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("currencyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CurrencyId { get; set; }
+    
+        /// <summary>unitSystem Id for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("unitSystemId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? UnitSystemId { get; set; }
+    
+        /// <summary>The Preference of unitSystem for personalization</summary>
+        [Newtonsoft.Json.JsonProperty("unitSystemUserPreference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? UnitSystemUserPreference { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdatePersonalization FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdatePersonalization>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class MachineTranslation 
+    {
+        /// <summary>Unique Id of person</summary>
+        [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PersonId { get; set; }
+    
+        /// <summary>Original Language</summary>
+        [Newtonsoft.Json.JsonProperty("originalLanguage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string OriginalLanguage { get; set; }
+    
+        /// <summary>Id of Translated Language</summary>
+        [Newtonsoft.Json.JsonProperty("translatedLanguageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TranslatedLanguageId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static MachineTranslation FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<MachineTranslation>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdateAccountCurrencyList 
+    {
+        /// <summary>list of currency Id list to add</summary>
+        [Newtonsoft.Json.JsonProperty("addCurrencyIdList", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> AddCurrencyIdList { get; set; }
+    
+        /// <summary>list of currency Id list to delete</summary>
+        [Newtonsoft.Json.JsonProperty("deleteCurrencyIdList", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> DeleteCurrencyIdList { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdateAccountCurrencyList FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateAccountCurrencyList>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LoginParams 
+    {
+        /// <summary>The account id</summary>
+        [Newtonsoft.Json.JsonProperty("accountid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Accountid { get; set; }
+    
+        /// <summary>The language id</summary>
+        [Newtonsoft.Json.JsonProperty("languageid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Languageid { get; set; }
+    
+        /// <summary>The username</summary>
+        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Username { get; set; }
+    
+        /// <summary>The password</summary>
+        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Password { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LoginParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LoginParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class PasswordParams 
+    {
+        /// <summary>The password</summary>
+        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Password { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static PasswordParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PasswordParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LoginResponse 
+    {
+        /// <summary>The jwt token generated</summary>
+        [Newtonsoft.Json.JsonProperty("token", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Token { get; set; }
+    
+        /// <summary>An identity verification required</summary>
+        [Newtonsoft.Json.JsonProperty("identityverificationrequired", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Identityverificationrequired { get; set; }
+    
+        /// <summary>A password change is required</summary>
+        [Newtonsoft.Json.JsonProperty("passwordchangerequired", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Passwordchangerequired { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LoginResponse FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LoginResponse>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class PasswordValidationResult 
+    {
+        /// <summary>boolean if password validation succeeded</summary>
+        [Newtonsoft.Json.JsonProperty("isvalid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool Isvalid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("unfollowedrules", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<FormsAuthPasswordRule> Unfollowedrules { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static PasswordValidationResult FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PasswordValidationResult>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormsAuthPasswordRule 
+    {
+        /// <summary>The id of the password rule.</summary>
+        [Newtonsoft.Json.JsonProperty("ruleId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RuleId { get; set; }
+    
+        /// <summary>The description of the password rule.</summary>
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        /// <summary>The value for the rule.</summary>
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormsAuthPasswordRule FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthPasswordRule>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class TokenExpiry 
+    {
+        /// <summary>Token Expiry</summary>
+        [Newtonsoft.Json.JsonProperty("tokenexpiry", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? Tokenexpiry { get; set; }
+    
+        /// <summary>The epoch remaining time.</summary>
+        [Newtonsoft.Json.JsonProperty("epochvalue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? Epochvalue { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static TokenExpiry FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<TokenExpiry>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Currency 
+    {
+        /// <summary>Currency Id</summary>
+        [Newtonsoft.Json.JsonProperty("currencyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CurrencyId { get; set; }
+    
+        /// <summary>Currency Code</summary>
+        [Newtonsoft.Json.JsonProperty("currencyCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CurrencyCode { get; set; }
+    
+        /// <summary>Currency Description</summary>
+        [Newtonsoft.Json.JsonProperty("currencyDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CurrencyDescription { get; set; }
+    
+        /// <summary>Default Currency</summary>
+        [Newtonsoft.Json.JsonProperty("defaultCurrency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DefaultCurrency { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Currency FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Currency>(data);
         }
     
     }

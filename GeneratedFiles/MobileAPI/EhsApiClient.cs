@@ -4,9 +4,9 @@
 // </auto-generated>
 //----------------------
 
-using VelocityEhs.UI.Web.Ehs.Application.Contracts;
+using VelocityEhs.UI.Web.Ehs.MobileApi.EhsClient.Contracts;
 
-namespace VelocityEhs.UI.Web.Ehs.Infrastructure
+namespace VelocityEhs.UI.Web.Ehs.MobileApi.EhsClient
 {
     #pragma warning disable
 
