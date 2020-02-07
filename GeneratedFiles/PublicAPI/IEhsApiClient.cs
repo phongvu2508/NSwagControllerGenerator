@@ -20,19 +20,19 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         /// <summary>Return all accounts in the instance.</summary>
         /// <param name="accountId">The account id</param>
         /// <param name="externalId">The external account id</param>
-        /// <param name="accountIdentifier">The account identifier</param>
+        /// <param name="companyDomain">The company domain</param>
         /// <returns>The matching account</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Account>>> GetAccountsAsync(int? accountId, System.Guid? externalId, string accountIdentifier);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Account>>> GetAccountsAsync(int? accountId, System.Guid? externalId, string companyDomain);
     
         /// <summary>Return all accounts in the instance.</summary>
         /// <param name="accountId">The account id</param>
         /// <param name="externalId">The external account id</param>
-        /// <param name="accountIdentifier">The account identifier</param>
+        /// <param name="companyDomain">The company domain</param>
         /// <returns>The matching account</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Account>>> GetAccountsAsync(int? accountId, System.Guid? externalId, string accountIdentifier, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Account>>> GetAccountsAsync(int? accountId, System.Guid? externalId, string companyDomain, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update an existing account</summary>
         /// <param name="body">The updated account object</param>
@@ -61,21 +61,28 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateAccountAsync(Account body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Gets the basic user information for an accounts user.</summary>
-        /// <param name="username">Username of the person</param>
-        /// <param name="emailAddress">Email address of the person</param>
-        /// <param name="phoneNumber">Phone number of the person</param>
         /// <returns>The basic details of the user that matches the request</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfoAsync(string username, string emailAddress, string phoneNumber);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfoAsync();
     
         /// <summary>Gets the basic user information for an accounts user.</summary>
-        /// <param name="username">Username of the person</param>
-        /// <param name="emailAddress">Email address of the person</param>
-        /// <param name="phoneNumber">Phone number of the person</param>
         /// <returns>The basic details of the user that matches the request</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfoAsync(string username, string emailAddress, string phoneNumber, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfoAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Request the user be sent their basic user info.</summary>
+        /// <param name="contactInfo">Phone number of the person</param>
+        /// <returns>Any matching user will be sent their basic user info.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RequestUserInfoAsync(string contactInfo);
+    
+        /// <summary>Request the user be sent their basic user info.</summary>
+        /// <param name="contactInfo">Phone number of the person</param>
+        /// <returns>Any matching user will be sent their basic user info.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task RequestUserInfoAsync(string contactInfo, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get an account by the account id</summary>
         /// <returns>The account</returns>
@@ -87,6 +94,28 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Account>> GetAccountByIdAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Gets the super admin for an account.</summary>
+        /// <returns>The super admin of the account that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Person>> GetAccountSuperAdminAsync();
+    
+        /// <summary>Gets the super admin for an account.</summary>
+        /// <returns>The super admin of the account that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Person>> GetAccountSuperAdminAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Gets the super admin for an account.</summary>
+        /// <returns>The new admin identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateAccountSuperAdminAsync(Person body);
+    
+        /// <summary>Gets the super admin for an account.</summary>
+        /// <returns>The new admin identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateAccountSuperAdminAsync(Person body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Gets the personalization information for an account.</summary>
         /// <returns>The personalization of the account that matches the request</returns>
@@ -171,18 +200,18 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
     
         /// <summary>Gets the authentication methods for the account.</summary>
         /// <param name="accountId">The account id</param>
-        /// <param name="accountIdentifier">The account identifier</param>
+        /// <param name="companyDomain">The company domain</param>
         /// <returns>The authentication methods for the account.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync(int? accountId, string accountIdentifier);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync(int? accountId, string companyDomain);
     
         /// <summary>Gets the authentication methods for the account.</summary>
         /// <param name="accountId">The account id</param>
-        /// <param name="accountIdentifier">The account identifier</param>
+        /// <param name="companyDomain">The company domain</param>
         /// <returns>The authentication methods for the account.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync(int? accountId, string accountIdentifier, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync(int? accountId, string companyDomain, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Sets an authentication methods for the account.</summary>
         /// <returns>The authentication methods was successfully set.</returns>
@@ -220,15 +249,58 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthVerificationResult>> AuthFormsHasAccessAsync(FormsAuthCrediential body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Request to start the forgot password process for a given username.</summary>
+        /// <param name="accountId">The account id</param>
         /// <returns>The person was successfully updated</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPasswordAsync(FormsAuthPasswordChangeRequest body);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPasswordAsync(int accountId, FormsAuthPasswordChangeRequest body);
     
         /// <summary>Request to start the forgot password process for a given username.</summary>
+        /// <param name="accountId">The account id</param>
         /// <returns>The person was successfully updated</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPasswordAsync(FormsAuthPasswordChangeRequest body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPasswordAsync(int accountId, FormsAuthPasswordChangeRequest body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Validates Password based on account, person and password rules</summary>
+        /// <param name="accountId">The account id</param>
+        /// <returns>Password validation result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePasswordAsync(int accountId, FormsAuthPasswordUpdate body);
+    
+        /// <summary>Validates Password based on account, person and password rules</summary>
+        /// <param name="accountId">The account id</param>
+        /// <returns>Password validation result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePasswordAsync(int accountId, FormsAuthPasswordUpdate body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Update the password for a user</summary>
+        /// <param name="accountId">The account id</param>
+        /// <returns>The person's password was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ResetPersonsPasswordAsync(int accountId, FormsAuthPasswordUpdate body);
+    
+        /// <summary>Update the password for a user</summary>
+        /// <param name="accountId">The account id</param>
+        /// <returns>The person's password was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task ResetPersonsPasswordAsync(int accountId, FormsAuthPasswordUpdate body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get the forms authentication state for a user</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="personId">The person identifier</param>
+        /// <returns>The person's forms auth state.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthState>> GetFormsAuthStateAsync(int accountId, int personId);
+    
+        /// <summary>Get the forms authentication state for a user</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="personId">The person identifier</param>
+        /// <returns>The person's forms auth state.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthState>> GetFormsAuthStateAsync(int accountId, int personId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Adds jti to a black list.</summary>
         /// <returns>The blacklist item was successfully added.</returns>
@@ -255,15 +327,17 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthBlacklistResponse>> GetJTIFromBlacklistAsync(System.Guid id, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Gets the password rules for the account.</summary>
+        /// <param name="accountId">The account id</param>
         /// <returns>The password rules for the account.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<FormsAuthPasswordRule>>> GetPasswordRulesAsync();
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<FormsAuthPasswordRule>>> GetPasswordRulesAsync(int accountId);
     
         /// <summary>Gets the password rules for the account.</summary>
+        /// <param name="accountId">The account id</param>
         /// <returns>The password rules for the account.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<FormsAuthPasswordRule>>> GetPasswordRulesAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<FormsAuthPasswordRule>>> GetPasswordRulesAsync(int accountId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Adds password rules for the account.</summary>
         /// <returns>The authentication rules were added.</returns>
@@ -288,6 +362,43 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task DeletePasswordRuleAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get the forms authentication key for a user to assist in their authentication.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="personId">The person identifier</param>
+        /// <returns>The person's forms auth state.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthKey>> GetFormsAuthKeyAsync(int accountId, int personId);
+    
+        /// <summary>Get the forms authentication key for a user to assist in their authentication.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="personId">The person identifier</param>
+        /// <returns>The person's forms auth state.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthKey>> GetFormsAuthKeyAsync(int accountId, int personId, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Determine if a forms auth key is valid.</summary>
+        /// <returns>The provided key was valid.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ValidateFormsAuthKeyAsync(FormsAuthKey body);
+    
+        /// <summary>Determine if a forms auth key is valid.</summary>
+        /// <returns>The provided key was valid.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task ValidateFormsAuthKeyAsync(FormsAuthKey body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Valid the login from an sso provider.</summary>
+        /// <returns>Credientials were valid.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoAuthVerificationResult>> AuthSsoHasAccessAsync(SsoAuthCrediential body);
+    
+        /// <summary>Valid the login from an sso provider.</summary>
+        /// <returns>Credientials were valid.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoAuthVerificationResult>> AuthSsoHasAccessAsync(SsoAuthCrediential body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get a list of SSO Identity Providers</summary>
         /// <param name="trustName">The trust name of the identity providers to get.</param>
@@ -419,18 +530,35 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task VerifyAuthVerificationCodeAsync(IdentityVerification body, System.Threading.CancellationToken cancellationToken);
     
-        /// <summary>Validates Password based on account, person and password rules</summary>
-        /// <param name="password">password to be passed in</param>
-        /// <returns>Password validation result</returns>
+        /// <summary>Get the form configuration for a state.</summary>
+        /// <param name="category">The name of the category to get the form configuration for.</param>
+        /// <param name="state">The name of the state to get the form configuration for.</param>
+        /// <returns>The state's form configuration</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePasswordAsync(string password);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateFormConfigByNameAsync(string category, string state);
     
-        /// <summary>Validates Password based on account, person and password rules</summary>
-        /// <param name="password">password to be passed in</param>
-        /// <returns>Password validation result</returns>
+        /// <summary>Get the form configuration for a state.</summary>
+        /// <param name="category">The name of the category to get the form configuration for.</param>
+        /// <param name="state">The name of the state to get the form configuration for.</param>
+        /// <returns>The state's form configuration</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePasswordAsync(string password, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateFormConfigByNameAsync(string category, string state, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get the form configuration for a state.</summary>
+        /// <param name="categoryId">The id of the category to get the form configuration for.</param>
+        /// <param name="productStateId">The id of the product state to get the form configuration for.</param>
+        /// <returns>The state's form configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateFormConfigAsync(int categoryId, int productStateId);
+    
+        /// <summary>Get the form configuration for a state.</summary>
+        /// <param name="categoryId">The id of the category to get the form configuration for.</param>
+        /// <param name="productStateId">The id of the product state to get the form configuration for.</param>
+        /// <returns>The state's form configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateFormConfigAsync(int categoryId, int productStateId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get the product configuration summary</summary>
         /// <returns>The product configuration summary</returns>
@@ -442,6 +570,32 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductConfigSummaryAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get a view configuration</summary>
+        /// <param name="name">The name of the view to get the configuration for.</param>
+        /// <returns>The view configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetViewConfigByNameAsync(string name);
+    
+        /// <summary>Get a view configuration</summary>
+        /// <param name="name">The name of the view to get the configuration for.</param>
+        /// <returns>The view configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetViewConfigByNameAsync(string name, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get a view configuration</summary>
+        /// <param name="viewId">The id of the view to get the configuration for.</param>
+        /// <returns>The view configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetViewConfigByIdAsync(int viewId);
+    
+        /// <summary>Get a view configuration</summary>
+        /// <param name="viewId">The id of the view to get the configuration for.</param>
+        /// <returns>The view configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetViewConfigByIdAsync(int viewId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get the workflow configuration for a state</summary>
         /// <param name="category">The name of the category to get the workflow configuration for.</param>
@@ -460,18 +614,18 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
     
         /// <summary>Get the workflow configuration for a state</summary>
         /// <param name="categoryId">The id of the category to get the workflow configuration for.</param>
-        /// <param name="stateId">The id of the state to get the workflow configuration for.</param>
+        /// <param name="productStateId">The id of the product state to get the workflow configuration for.</param>
         /// <returns>The state's workflow configuration</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigRawAsync(int categoryId, int stateId);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigRawAsync(int categoryId, int productStateId);
     
         /// <summary>Get the workflow configuration for a state</summary>
         /// <param name="categoryId">The id of the category to get the workflow configuration for.</param>
-        /// <param name="stateId">The id of the state to get the workflow configuration for.</param>
+        /// <param name="productStateId">The id of the product state to get the workflow configuration for.</param>
         /// <returns>The state's workflow configuration</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigRawAsync(int categoryId, int stateId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigRawAsync(int categoryId, int productStateId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get the workflow configurations summaries</summary>
         /// <param name="productId">The id of the product to get the workflow config summary for.</param>
@@ -487,6 +641,75 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetWorkflowConfigsSummaryAsync(int? productId, System.DateTimeOffset? lastModified, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get the list of contracting companies that match the parameters.</summary>
+        /// <param name="contractorName">The text the contractor's name should include</param>
+        /// <param name="contractorType">The list of contractor types to include</param>
+        /// <param name="status">The status of contractors to include</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <returns>A list of Contracting Companies</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ContractingCompaniesResponse>> GetContractingCompaniesAsync(string contractorName, System.Collections.Generic.IEnumerable<int> contractorType, int? status, int? pageNumber, int? pageSize);
+    
+        /// <summary>Get the list of contracting companies that match the parameters.</summary>
+        /// <param name="contractorName">The text the contractor's name should include</param>
+        /// <param name="contractorType">The list of contractor types to include</param>
+        /// <param name="status">The status of contractors to include</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <returns>A list of Contracting Companies</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ContractingCompaniesResponse>> GetContractingCompaniesAsync(string contractorName, System.Collections.Generic.IEnumerable<int> contractorType, int? status, int? pageNumber, int? pageSize, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Update a contracting company.</summary>
+        /// <returns>The Contracting Company was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateContractingCompanyAsync(UpdateContractingCompanyParams body);
+    
+        /// <summary>Update a contracting company.</summary>
+        /// <returns>The Contracting Company was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task UpdateContractingCompanyAsync(UpdateContractingCompanyParams body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Create a new contracting company.</summary>
+        /// <returns>The new contracting conpanies identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Status201Response>>> CreateContractingCompanyAsync(ContractingCompany body);
+    
+        /// <summary>Create a new contracting company.</summary>
+        /// <returns>The new contracting conpanies identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Status201Response>>> CreateContractingCompanyAsync(ContractingCompany body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Delete a contracting company.</summary>
+        /// <param name="id">The identifier of the contracting company to delete.</param>
+        /// <returns>The contracting company was succesfully deleted.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DeleteContractingCompanyAsync(int id);
+    
+        /// <summary>Delete a contracting company.</summary>
+        /// <param name="id">The identifier of the contracting company to delete.</param>
+        /// <returns>The contracting company was succesfully deleted.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task DeleteContractingCompanyAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get a contracting company.</summary>
+        /// <param name="id">The identifier of the contracting company to get.</param>
+        /// <returns>The matching contracting company.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ContractingCompany>> GetContractingCompanyAsync(int id);
+    
+        /// <summary>Get a contracting company.</summary>
+        /// <param name="id">The identifier of the contracting company to get.</param>
+        /// <returns>The matching contracting company.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ContractingCompany>> GetContractingCompanyAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Return a list all Hierarchies</summary>
         /// <returns>A list of Hierarchies</returns>
@@ -593,13 +816,13 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         /// <summary>Add translations into Database received from The Translation Tool</summary>
         /// <returns>The translation requests were successfully created. The reason why reponse 204 returned instead of 201 because we are not returning any Id for this API.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task SetTranslationsAsync(SetTranslation body);
+        System.Threading.Tasks.Task SetTranslationsAsync(System.Collections.Generic.IEnumerable<SetTranslation> body);
     
         /// <summary>Add translations into Database received from The Translation Tool</summary>
         /// <returns>The translation requests were successfully created. The reason why reponse 204 returned instead of 201 because we are not returning any Id for this API.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task SetTranslationsAsync(SetTranslation body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task SetTranslationsAsync(System.Collections.Generic.IEnumerable<SetTranslation> body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get Translation Requests by params</summary>
         /// <param name="fromDate">Start date of range for getTranslationRequests</param>
@@ -684,6 +907,17 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Currency>>> GetCurrencyForSearchAsync(string searchText, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get Timezone list</summary>
+        /// <returns>A timezone list founded</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<TimeZoneList>>> GetTimeZonesAsync();
+    
+        /// <summary>Get Timezone list</summary>
+        /// <returns>A timezone list founded</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<TimeZoneList>>> GetTimeZonesAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Search for locations by params</summary>
         /// <param name="id">The location identifier</param>
@@ -893,6 +1127,36 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocationAsync(int id, LocationType locationType, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Validate unique location name</summary>
+        /// <param name="locationName">The location name</param>
+        /// <returns>The location name is unique.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ValidateUniqueLocationAsync(string locationName);
+    
+        /// <summary>Validate unique location name</summary>
+        /// <param name="locationName">The location name</param>
+        /// <returns>The location name is unique.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task ValidateUniqueLocationAsync(string locationName, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Validate unique location group name under a parent location group</summary>
+        /// <param name="locationGroupId">The parent location group identifier</param>
+        /// <param name="parentLocationGroupId">The parent location group identifier</param>
+        /// <param name="locationGroupName">The location name</param>
+        /// <returns>The location group name is unique.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ValidateUniqueLocationGroupAsync(int? locationGroupId, int? parentLocationGroupId, string locationGroupName);
+    
+        /// <summary>Validate unique location group name under a parent location group</summary>
+        /// <param name="locationGroupId">The parent location group identifier</param>
+        /// <param name="parentLocationGroupId">The parent location group identifier</param>
+        /// <param name="locationGroupName">The location name</param>
+        /// <returns>The location group name is unique.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task ValidateUniqueLocationGroupAsync(int? locationGroupId, int? parentLocationGroupId, string locationGroupName, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Search for lists based on params</summary>
         /// <param name="statusFilters">The array of selected statuses to include</param>
@@ -1199,6 +1463,342 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<int>>> GetLocationListItemAvailabilityByLocationIdAsync(int locationId, int listId, LocationType locationType, System.Threading.CancellationToken cancellationToken);
     
+        /// <summary>Get categories via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of categories via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCategoriesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CategoryRepositoryAdapterFilters body);
+    
+        /// <summary>Get categories via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of categories via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCategoriesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CategoryRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get contractors via a lookup</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of contractors via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupContractorsAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LookupRequest body);
+    
+        /// <summary>Get contractors via a lookup</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of contractors via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupContractorsAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LookupRequest body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get contractors via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of contractors via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupContractorsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, ContractorRepositoryAdapterFilters body);
+    
+        /// <summary>Get contractors via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of contractors via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupContractorsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, ContractorRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get countries via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of countries via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCountriesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CountryRepositoryAdapterFilters body);
+    
+        /// <summary>Get countries via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of countries via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCountriesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CountryRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get country divisions via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of country divisions via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCountryDivisionsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CountryDivisionRepositoryAdapterFilters body);
+    
+        /// <summary>Get country divisions via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of country divisions via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCountryDivisionsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CountryDivisionRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get currencies via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of currencies via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCurrenciesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CurrencyRepositoryAdapterFilters body);
+    
+        /// <summary>Get currencies via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of currencies via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCurrenciesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CurrencyRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get genders via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of genders via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupGendersByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, GenderRepositoryAdapterFilters body);
+    
+        /// <summary>Get genders via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of genders via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupGendersByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, GenderRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get list items via a lookup</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of list items via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupListItemsAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LookupRequest body);
+    
+        /// <summary>Get list items via a lookup</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of list items via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupListItemsAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LookupRequest body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get list items via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of list items via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupListItemsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, ListItemRepositoryAdapterFilters body);
+    
+        /// <summary>Get list items via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of list items via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupListItemsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, ListItemRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get locations via a lookup</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of locations via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupLocationsResponse>> LookupLocationsAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LookupRequest body);
+    
+        /// <summary>Get locations via a lookup</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of locations via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupLocationsResponse>> LookupLocationsAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LookupRequest body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get locations via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of locations via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupLocationsResponse>> LookupLocationsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LocationRepositoryAdapterFilters body);
+    
+        /// <summary>Get locations via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of locations via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupLocationsResponse>> LookupLocationsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LocationRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get personRelationshipTypes via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of personRelationshipTypes via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupPersonRelationshipTypesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, PersonRelationshipTypeRepositoryAdapterFilters body);
+    
+        /// <summary>Get personRelationshipTypes via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of personRelationshipTypes via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupPersonRelationshipTypesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, PersonRelationshipTypeRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get persons via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of persons via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupPersonsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, PersonRepositoryAdapterFilters body);
+    
+        /// <summary>Get persons via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of persons via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupPersonsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, PersonRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get roles via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of roles via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupRolesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, RoleRepositoryAdapterFilters body);
+    
+        /// <summary>Get roles via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of roles via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupRolesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, RoleRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get states via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of states via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupStatesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, StateRepositoryAdapterFilters body);
+    
+        /// <summary>Get states via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of states via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupStatesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, StateRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get units via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of units via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupUnitsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, UnitRepositoryAdapterFilters body);
+    
+        /// <summary>Get units via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of units via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupUnitsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, UnitRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken);
+    
         /// <summary>Insert a white listed mobile access token</summary>
         /// <param name="body">The token to be persisted</param>
         /// <returns>token is successfully inserted for user</returns>
@@ -1238,39 +1838,86 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task RemoveMobileTokenAsync(SessionToken body, System.Threading.CancellationToken cancellationToken);
     
-        /// <summary>Search for persons by params</summary>
-        /// <param name="employmentStatus">Status of the person ( active = 11, inactive = 12 )</param>
-        /// <param name="displayName">Display Name of the Person</param>
-        /// <param name="location">Associated Location to the person</param>
-        /// <param name="emailAddress">Email address of the person</param>
-        /// <param name="firstName">First Name of the person</param>
-        /// <param name="lastName">Last Name of the person</param>
-        /// <param name="countryDivision">State or Province of the person</param>
-        /// <param name="country">Country of the person</param>
-        /// <param name="relationshipToCompany">Relationship Type</param>
-        /// <param name="contractingCompany">Contracting company of the person</param>
-        /// <param name="customerName">Customer's Name of the Person</param>
-        /// <param name="supervisor">Supervisor of the Person</param>
-        /// <param name="startDateStart">Start date of range for Hire Date of the Person</param>
-        /// <param name="startDateEnd">End date of range for Hire Date of the Person</param>
-        /// <param name="endDateStart">Start date of range for End Date of the Person</param>
-        /// <param name="endDateEnd">End date of range for End Date of the Person</param>
-        /// <param name="currentPositionStartDateStart">Start date of range for Current Position Start Date of the Person</param>
-        /// <param name="currentPositionStartDateEnd">End date of range for Current Position Start Date of the Person</param>
-        /// <param name="employeeID">EmployeeID</param>
-        /// <param name="currentPosition">Current Position of the Person</param>
-        /// <param name="loginAccessRequired">Person requires login access or not</param>
-        /// <param name="username">Username of the person</param>
-        /// <param name="loginExpirationDateStart">Start date of range for Expiry Date of the Person</param>
-        /// <param name="loginExpirationDateEnd">End date of range for Expiry Date of the Person</param>
-        /// <param name="contactPreference">Contact Type of the person email/phone</param>
-        /// <param name="pageNumber">Page Number of the Person</param>
-        /// <param name="pageSize">Page Size of the Person</param>
-        /// <param name="sortBy">Param for sortBy</param>
-        /// <param name="sortOrder">Param for sortOrder</param>
-        /// <returns>A list of persons founded using provided criteria</returns>
+        /// <summary>Mobile endpoint for getting a list of responsibilities available to mobile</summary>
+        /// <returns>Raw extract of list item exclusion</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Person>>> GetPersonsAsync(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<MobileReponsibilities>> GetMobileResponsibilitiesAsync();
+    
+        /// <summary>Mobile endpoint for getting a list of responsibilities available to mobile</summary>
+        /// <returns>Raw extract of list item exclusion</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<MobileReponsibilities>> GetMobileResponsibilitiesAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get list exclusion</summary>
+        /// <returns>Raw extract of list exclusion</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListExclusion>>> GetListExclusionAsync();
+    
+        /// <summary>Get list exclusion</summary>
+        /// <returns>Raw extract of list exclusion</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListExclusion>>> GetListExclusionAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get list item Exclusion</summary>
+        /// <returns>Raw extract of list item exclusion</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListItemExclusion>>> GetListItemExclusionAsync();
+    
+        /// <summary>Get list item Exclusion</summary>
+        /// <returns>Raw extract of list item exclusion</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListItemExclusion>>> GetListItemExclusionAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Adds a new notification into queue</summary>
+        /// <returns>The notification rule dentifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> AddNotificationRuleAsync(NotificationRule body);
+    
+        /// <summary>Adds a new notification into queue</summary>
+        /// <returns>The notification rule dentifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> AddNotificationRuleAsync(NotificationRule body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>updates a notification rule</summary>
+        /// <returns>The notification rule identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> UpdateNotificationRuleAsync(int notificationTriggerId, NotificationRule body);
+    
+        /// <summary>updates a notification rule</summary>
+        /// <returns>The notification rule identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> UpdateNotificationRuleAsync(int notificationTriggerId, NotificationRule body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>deletes a notification rule</summary>
+        /// <returns>Notification Rule has been deleted</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DeleteNotificationRuleAsync(int notificationTriggerId);
+    
+        /// <summary>deletes a notification rule</summary>
+        /// <returns>Notification Rule has been deleted</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task DeleteNotificationRuleAsync(int notificationTriggerId, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Returns the notification rules</summary>
+        /// <param name="notificationId">The notification id.</param>
+        /// <param name="notificationTriggerId">The notification trigger id.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<NotificationRules>> GetNotificationRulesAsync(int notificationId, int notificationTriggerId);
+    
+        /// <summary>Returns the notification rules</summary>
+        /// <param name="notificationId">The notification id.</param>
+        /// <param name="notificationTriggerId">The notification trigger id.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<NotificationRules>> GetNotificationRulesAsync(int notificationId, int notificationTriggerId, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Search for persons by params</summary>
         /// <param name="employmentStatus">Status of the person ( active = 11, inactive = 12 )</param>
@@ -1298,14 +1945,48 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         /// <param name="loginExpirationDateStart">Start date of range for Expiry Date of the Person</param>
         /// <param name="loginExpirationDateEnd">End date of range for Expiry Date of the Person</param>
         /// <param name="contactPreference">Contact Type of the person email/phone</param>
-        /// <param name="pageNumber">Page Number of the Person</param>
-        /// <param name="pageSize">Page Size of the Person</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of persons founded using provided criteria</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PersonsResponse>> GetPersonsAsync(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder);
+    
+        /// <summary>Search for persons by params</summary>
+        /// <param name="employmentStatus">Status of the person ( active = 11, inactive = 12 )</param>
+        /// <param name="displayName">Display Name of the Person</param>
+        /// <param name="location">Associated Location to the person</param>
+        /// <param name="emailAddress">Email address of the person</param>
+        /// <param name="firstName">First Name of the person</param>
+        /// <param name="lastName">Last Name of the person</param>
+        /// <param name="countryDivision">State or Province of the person</param>
+        /// <param name="country">Country of the person</param>
+        /// <param name="relationshipToCompany">Relationship Type</param>
+        /// <param name="contractingCompany">Contracting company of the person</param>
+        /// <param name="customerName">Customer's Name of the Person</param>
+        /// <param name="supervisor">Supervisor of the Person</param>
+        /// <param name="startDateStart">Start date of range for Hire Date of the Person</param>
+        /// <param name="startDateEnd">End date of range for Hire Date of the Person</param>
+        /// <param name="endDateStart">Start date of range for End Date of the Person</param>
+        /// <param name="endDateEnd">End date of range for End Date of the Person</param>
+        /// <param name="currentPositionStartDateStart">Start date of range for Current Position Start Date of the Person</param>
+        /// <param name="currentPositionStartDateEnd">End date of range for Current Position Start Date of the Person</param>
+        /// <param name="employeeID">EmployeeID</param>
+        /// <param name="currentPosition">Current Position of the Person</param>
+        /// <param name="loginAccessRequired">Person requires login access or not</param>
+        /// <param name="username">Username of the person</param>
+        /// <param name="loginExpirationDateStart">Start date of range for Expiry Date of the Person</param>
+        /// <param name="loginExpirationDateEnd">End date of range for Expiry Date of the Person</param>
+        /// <param name="contactPreference">Contact Type of the person email/phone</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
         /// <param name="sortBy">Param for sortBy</param>
         /// <param name="sortOrder">Param for sortOrder</param>
         /// <returns>A list of persons founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Person>>> GetPersonsAsync(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PersonsResponse>> GetPersonsAsync(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Updates a person based on person id</summary>
         /// <returns>The person was successfully updated</returns>
@@ -1364,16 +2045,31 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task UpdatePersonsPasswordAsync(int personId, FormsAuthPasswordUpdate body, System.Threading.CancellationToken cancellationToken);
     
-        /// <summary>Returns the person's personalization based on person id</summary>
-        /// <returns>OK</returns>
+        /// <summary>Validate the password for the provided user.</summary>
+        /// <returns>Password validation result</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalizationAsync(int personId);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePersonsPasswordAsync(int personId, FormsAuthPasswordUpdate body);
+    
+        /// <summary>Validate the password for the provided user.</summary>
+        /// <returns>Password validation result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePersonsPasswordAsync(int personId, FormsAuthPasswordUpdate body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Returns the person's personalization based on person id</summary>
+        /// <param name="browserCountryISOCode">Detected user's country ISO Code</param>
+        /// <param name="browserTimeZoneName">Detected user's timezone name</param>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalizationAsync(int personId, string browserCountryISOCode, string browserTimeZoneName);
+    
+        /// <summary>Returns the person's personalization based on person id</summary>
+        /// <param name="browserCountryISOCode">Detected user's country ISO Code</param>
+        /// <param name="browserTimeZoneName">Detected user's timezone name</param>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalizationAsync(int personId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalizationAsync(int personId, string browserCountryISOCode, string browserTimeZoneName, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Updates a personalization based on person id</summary>
         /// <returns>The person was successfully updated</returns>
@@ -1387,19 +2083,178 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         System.Threading.Tasks.Task UpdatePersonPersonalizationAsync(int personId, UpdatePersonalization body, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Returns persons based on name</summary>
-        /// <param name="pageNumber">Page Number of the Person</param>
-        /// <param name="pageSize">Page Size of the Person</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Person>>> GetPersonsByNameAsync(string name, int? pageNumber, int? pageSize);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PersonsResponse>> GetPersonsByNameAsync(string name, int? pageNumber, int? pageSize);
     
         /// <summary>Returns persons based on name</summary>
-        /// <param name="pageNumber">Page Number of the Person</param>
-        /// <param name="pageSize">Page Size of the Person</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Person>>> GetPersonsByNameAsync(string name, int? pageNumber, int? pageSize, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PersonsResponse>> GetPersonsByNameAsync(string name, int? pageNumber, int? pageSize, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Validate person attributes</summary>
+        /// <param name="ruleSet">the array of rule set we need validate on person</param>
+        /// <returns>validation succcess without errors</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ValidatePersonAsync(System.Collections.Generic.IEnumerable<PersonValidationRuleSet> ruleSet, Person body);
+    
+        /// <summary>Validate person attributes</summary>
+        /// <param name="ruleSet">the array of rule set we need validate on person</param>
+        /// <returns>validation succcess without errors</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task ValidatePersonAsync(System.Collections.Generic.IEnumerable<PersonValidationRuleSet> ruleSet, Person body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Create a new record.</summary>
+        /// <param name="productId">The id of the configuration product to create the record under.</param>
+        /// <returns>The records entity data.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> CreateEntityDataAsync(int productId, System.IO.Stream body);
+    
+        /// <summary>Create a new record.</summary>
+        /// <param name="productId">The id of the configuration product to create the record under.</param>
+        /// <returns>The records entity data.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> CreateEntityDataAsync(int productId, System.IO.Stream body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get a records entity data.</summary>
+        /// <param name="productId">The id of the configuration product to get the record from.</param>
+        /// <param name="recordId">The id of the  record.</param>
+        /// <returns>The records entity data.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetEntityDataAsync(int productId, int recordId);
+    
+        /// <summary>Get a records entity data.</summary>
+        /// <param name="productId">The id of the configuration product to get the record from.</param>
+        /// <param name="recordId">The id of the  record.</param>
+        /// <returns>The records entity data.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetEntityDataAsync(int productId, int recordId, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Update a records entity data.</summary>
+        /// <param name="productId">The id of the configuration product to update the record.</param>
+        /// <param name="recordId">The id of the  record.</param>
+        /// <returns>The records entity data.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> UpdateEntityDataAsync(int productId, int recordId, System.IO.Stream body);
+    
+        /// <summary>Update a records entity data.</summary>
+        /// <param name="productId">The id of the configuration product to update the record.</param>
+        /// <param name="recordId">The id of the  record.</param>
+        /// <returns>The records entity data.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> UpdateEntityDataAsync(int productId, int recordId, System.IO.Stream body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Deletes a records.</summary>
+        /// <param name="productId">The id of the configuration product for the record.</param>
+        /// <param name="recordId">The id of therecord.</param>
+        /// <returns>The records was successfully deleted</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DeleteRecordAsync(int productId, int recordId);
+    
+        /// <summary>Deletes a records.</summary>
+        /// <param name="productId">The id of the configuration product for the record.</param>
+        /// <param name="recordId">The id of therecord.</param>
+        /// <returns>The records was successfully deleted</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task DeleteRecordAsync(int productId, int recordId, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get the product records for a view.</summary>
+        /// <param name="productId">The id of the configuration product to get records for.</param>
+        /// <returns>The product records to include in a view.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductRecordsAsync(int productId, System.IO.Stream body);
+    
+        /// <summary>Get the product records for a view.</summary>
+        /// <param name="productId">The id of the configuration product to get records for.</param>
+        /// <returns>The product records to include in a view.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductRecordsAsync(int productId, System.IO.Stream body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get the product records for a view.</summary>
+        /// <param name="productId">The id of the configuration product to get records for.</param>
+        /// <param name="viewId">The id of the view to get product records for.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <param name="body">The non default filters applied along with the view filters</param>
+        /// <returns>The product records to include in a view.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductRecordsForViewAsync(int productId, int viewId, int? pageNumber, int? pageSize, string sortBy, string sortOrder, System.IO.Stream body);
+    
+        /// <summary>Get the product records for a view.</summary>
+        /// <param name="productId">The id of the configuration product to get records for.</param>
+        /// <param name="viewId">The id of the view to get product records for.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <param name="body">The non default filters applied along with the view filters</param>
+        /// <returns>The product records to include in a view.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductRecordsForViewAsync(int productId, int viewId, int? pageNumber, int? pageSize, string sortBy, string sortOrder, System.IO.Stream body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get a list of archived product records.</summary>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>The applicable archived product records.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ArchivedRecordResponse>> SearchArchivedRecordsAsync(int? pageNumber, int? pageSize, string sortBy, string sortOrder, ArchivedRecordSearchParams body);
+    
+        /// <summary>Get a list of archived product records.</summary>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>The applicable archived product records.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ArchivedRecordResponse>> SearchArchivedRecordsAsync(int? pageNumber, int? pageSize, string sortBy, string sortOrder, ArchivedRecordSearchParams body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Restore a set of archived product records and their children</summary>
+        /// <returns>The achived records were successfully restored.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RestoreArchivedRecordsAsync(System.Collections.Generic.IEnumerable<ArchivedRecordIds> body);
+    
+        /// <summary>Restore a set of archived product records and their children</summary>
+        /// <returns>The achived records were successfully restored.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task RestoreArchivedRecordsAsync(System.Collections.Generic.IEnumerable<ArchivedRecordIds> body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Permanently delete a set of archived product records and their children.</summary>
+        /// <returns>The achived records were successfully deleted.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DeleteArchivedRecordsAsync(System.Collections.Generic.IEnumerable<ArchivedRecordIds> body);
+    
+        /// <summary>Permanently delete a set of archived product records and their children.</summary>
+        /// <returns>The achived records were successfully deleted.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task DeleteArchivedRecordsAsync(System.Collections.Generic.IEnumerable<ArchivedRecordIds> body, System.Threading.CancellationToken cancellationToken);
+    
+        /// <returns>current version of API</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetversionAsync();
+    
+        /// <returns>current version of API</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetversionAsync(System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -1437,8 +2292,12 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
     public partial class RequestErrorDetail 
     {
         /// <summary>The error code if existed</summary>
-        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Code { get; set; }
+        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Code { get; set; }
+    
+        /// <summary>The error id / attribute id</summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Id { get; set; }
     
         /// <summary>The error name / attribute name</summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1500,19 +2359,57 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ResponseList 
+    {
+        /// <summary>Total count of items in this response set. If this response is
+        /// paginated, then the length of the `items` array will be less than or
+        /// equal to the `totalCount`.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("totalCount", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalCount { get; set; }
+    
+        /// <summary>The data point to sort on.</summary>
+        [Newtonsoft.Json.JsonProperty("sortOrder", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SortOrder { get; set; }
+    
+        /// <summary>The direction to apply the sorting.</summary>
+        [Newtonsoft.Json.JsonProperty("sortDirection", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SortDirection { get; set; }
+    
+        /// <summary>The current page number.</summary>
+        [Newtonsoft.Json.JsonProperty("pageNumber", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int PageNumber { get; set; }
+    
+        /// <summary>The number of items available on a given page.</summary>
+        [Newtonsoft.Json.JsonProperty("pageSize", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int PageSize { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ResponseList FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseList>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Account 
     {
         /// <summary>The unique account id</summary>
-        [Newtonsoft.Json.JsonProperty("accountId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? AccountId { get; set; }
+        [Newtonsoft.Json.JsonProperty("accountId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int AccountId { get; set; }
     
         /// <summary>The external account id</summary>
         [Newtonsoft.Json.JsonProperty("externalAccountId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Guid? ExternalAccountId { get; set; }
     
-        /// <summary>The account identifier</summary>
-        [Newtonsoft.Json.JsonProperty("accountIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string AccountIdentifier { get; set; }
+        /// <summary>The company domain</summary>
+        [Newtonsoft.Json.JsonProperty("companyDomain", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CompanyDomain { get; set; }
     
         /// <summary>The name of the account</summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1538,6 +2435,10 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("disableMachineTranslations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? DisableMachineTranslations { get; set; }
     
+        /// <summary>Enables a system notification.</summary>
+        [Newtonsoft.Json.JsonProperty("enableSystemNotifications", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? EnableSystemNotifications { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -1557,9 +2458,9 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("accountId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int AccountId { get; set; }
     
-        /// <summary>The account identifier</summary>
-        [Newtonsoft.Json.JsonProperty("accountIdentifier", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string AccountIdentifier { get; set; }
+        /// <summary>The company domain</summary>
+        [Newtonsoft.Json.JsonProperty("companyDomain", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CompanyDomain { get; set; }
     
         /// <summary>The obscured username of the user.</summary>
         [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1693,8 +2594,8 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         public string Password { get; set; }
     
         /// <summary>The forgot password key</summary>
-        [Newtonsoft.Json.JsonProperty("forgotPasswordKey", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Guid? ForgotPasswordKey { get; set; }
+        [Newtonsoft.Json.JsonProperty("forgotPasswordKey", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ForgotPasswordKey { get; set; }
     
         public string ToJson() 
         {
@@ -1704,6 +2605,29 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         public static FormsAuthPasswordUpdate FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthPasswordUpdate>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormsAuthState 
+    {
+        /// <summary>Whether the user is required to change their password or not.</summary>
+        [Newtonsoft.Json.JsonProperty("passwordChangeRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool PasswordChangeRequired { get; set; }
+    
+        /// <summary>Whether the user is locked</summary>
+        [Newtonsoft.Json.JsonProperty("isLocked", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsLocked { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormsAuthState FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthState>(data);
         }
     
     }
@@ -1743,7 +2667,7 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         /// <summary>The forgot password key</summary>
         [Newtonsoft.Json.JsonProperty("forgotPasswordKey", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Guid ForgotPasswordKey { get; set; }
+        public string ForgotPasswordKey { get; set; }
     
         public string ToJson() 
         {
@@ -1830,6 +2754,10 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class FormsAuthCrediential 
     {
+        /// <summary>Unique identifier for the customer account</summary>
+        [Newtonsoft.Json.JsonProperty("accountId", Required = Newtonsoft.Json.Required.Always)]
+        public int AccountId { get; set; }
+    
         /// <summary>The username</summary>
         [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -1859,6 +2787,18 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Always)]
         public int PersonId { get; set; }
     
+        /// <summary>The id of the language for the current user.</summary>
+        [Newtonsoft.Json.JsonProperty("languageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LanguageId { get; set; }
+    
+        /// <summary>The display of the person being authenticated.</summary>
+        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DisplayName { get; set; }
+    
+        /// <summary>The email of the person being authenticated.</summary>
+        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Email { get; set; }
+    
         /// <summary>Whether the user is required to change their password or not.</summary>
         [Newtonsoft.Json.JsonProperty("passwordChangeRequired", Required = Newtonsoft.Json.Required.Always)]
         public bool PasswordChangeRequired { get; set; }
@@ -1879,6 +2819,71 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         public static FormsAuthVerificationResult FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthVerificationResult>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormsAuthKey 
+    {
+        /// <summary>The forms auth key used to ensure only the specific user is performing an authentication action prior to full authentication.</summary>
+        [Newtonsoft.Json.JsonProperty("key", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Key { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormsAuthKey FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthKey>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class SsoAuthCrediential 
+    {
+        /// <summary>The connection name that maps to the account.</summary>
+        [Newtonsoft.Json.JsonProperty("ssoConnection", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SsoConnection { get; set; }
+    
+        /// <summary>The serialized SSO user information.</summary>
+        [Newtonsoft.Json.JsonProperty("ssoLoginUser", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SsoLoginUser { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static SsoAuthCrediential FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SsoAuthCrediential>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class SsoAuthVerificationResult 
+    {
+        /// <summary>The id of the account the person is authenticated against.</summary>
+        [Newtonsoft.Json.JsonProperty("accountId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int AccountId { get; set; }
+    
+        /// <summary>The id of the person being authenticated.</summary>
+        [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int PersonId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static SsoAuthVerificationResult FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SsoAuthVerificationResult>(data);
         }
     
     }
@@ -2149,6 +3154,44 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LookupFilterConfig 
+    {
+        /// <summary>The binding name the filter is being applied to.</summary>
+        [Newtonsoft.Json.JsonProperty("binding", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Binding { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("operation", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LookupFilterOperation? Operation { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LookupFilterConfig FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LookupFilterConfig>(data);
+        }
+    
+    }
+    
+    /// <summary>The filter operation being performed.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum LookupFilterOperation
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"Equals")]
+        Equals = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"NotEquals")]
+        NotEquals = 1,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Hierarchy 
     {
         /// <summary>The Hierarchy name</summary>
@@ -2162,6 +3205,10 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         /// <summary>The hierarchy identifier</summary>
         [Newtonsoft.Json.JsonProperty("HierarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? HierarchyId { get; set; }
+    
+        /// <summary>The hierarchy root group identifier</summary>
+        [Newtonsoft.Json.JsonProperty("RootLocationGroupID", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RootLocationGroupID { get; set; }
     
         public string ToJson() 
         {
@@ -2309,6 +3356,14 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("TranslatedText", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string TranslatedText { get; set; }
     
+        /// <summary>Id of the Translation Request</summary>
+        [Newtonsoft.Json.JsonProperty("TranslationRequestID", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TranslationRequestID { get; set; }
+    
+        /// <summary>Original Text</summary>
+        [Newtonsoft.Json.JsonProperty("DefaultText", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DefaultText { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -2367,6 +3422,37 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         public static UpdateSentTranslationRequests FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateSentTranslationRequests>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class TimeZoneList 
+    {
+        /// <summary>Timezone Id</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TimeZoneId { get; set; }
+    
+        /// <summary>Timezone Name</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TimeZoneName { get; set; }
+    
+        /// <summary>Timezone Description</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TimeZoneDescription { get; set; }
+    
+        /// <summary>Timezone Offset</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneOffset", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? TimeZoneOffset { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static TimeZoneList FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<TimeZoneList>(data);
         }
     
     }
@@ -2626,9 +3712,9 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public LocationType LocationType { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("locationStatus", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("locationStatus", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public LocationStatus LocationStatus { get; set; }
+        public LocationStatus? LocationStatus { get; set; }
     
         /// <summary>The location parent identifiers</summary>
         [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2638,6 +3724,10 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("hierarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? HierarchyId { get; set; }
     
+        /// <summary>The level of the node on hierarchy</summary>
+        [Newtonsoft.Json.JsonProperty("level", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Level { get; set; }
+    
         /// <summary>The location path</summary>
         [Newtonsoft.Json.JsonProperty("paths", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> Paths { get; set; }
@@ -2645,6 +3735,10 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         /// <summary>The available status for Location List</summary>
         [Newtonsoft.Json.JsonProperty("isAvailable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? IsAvailable { get; set; }
+    
+        /// <summary>The partial available status for Location List</summary>
+        [Newtonsoft.Json.JsonProperty("isPartialAvailable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsPartialAvailable { get; set; }
     
         /// <summary>The SIC code</summary>
         [Newtonsoft.Json.JsonProperty("sicCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3109,6 +4203,643 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LookupRequest 
+    {
+        [Newtonsoft.Json.JsonProperty("context", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ConfigurationContext Context { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("filters", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<LookupFilterConfig> Filters { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LookupRequest FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LookupRequest>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LookupItem 
+    {
+        /// <summary>The unique id of the lookup item.</summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        public int Id { get; set; }
+    
+        /// <summary>The optional parent id of the lookup item.</summary>
+        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ParentId { get; set; }
+    
+        /// <summary>The display value of the lookup item.</summary>
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Value { get; set; }
+    
+        /// <summary>The optional secondary display value of the lookup item.</summary>
+        [Newtonsoft.Json.JsonProperty("secondaryValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SecondaryValue { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LookupItem FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LookupItem>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LookupResponse : ResponseList
+    {
+        [Newtonsoft.Json.JsonProperty("records", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<LookupItem> Records { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LookupResponse FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LookupResponse>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LookupLocationsResponse : ResponseList
+    {
+        [Newtonsoft.Json.JsonProperty("records", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<LocationLookupItem> Records { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LookupLocationsResponse FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LookupLocationsResponse>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CategoryRepositoryAdapterFilters 
+    {
+        /// <summary>Filter to optionally include categories of a specific configuration product.</summary>
+        [Newtonsoft.Json.JsonProperty("configurationProductId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ConfigurationProductId { get; set; }
+    
+        /// <summary>Filter to optionally include a specific category.</summary>
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CategoryId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static CategoryRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CategoryRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ContractorRepositoryAdapterFilters 
+    {
+        /// <summary>The unique id of the contrator to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("contractorId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ContractorId { get; set; }
+    
+        /// <summary>The status to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("statusId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StatusId { get; set; }
+    
+        /// <summary>The list of contrator types to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("types", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> Types { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ContractorRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ContractorRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CountryRepositoryAdapterFilters 
+    {
+        /// <summary>Temporary property to make CountryRepositoryAdapterFilters type</summary>
+        [Newtonsoft.Json.JsonProperty("countryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CountryId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static CountryRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CountryRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CountryDivisionRepositoryAdapterFilters 
+    {
+        /// <summary>The unique identifier of the parent country.</summary>
+        [Newtonsoft.Json.JsonProperty("countryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CountryId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static CountryDivisionRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CountryDivisionRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CurrencyRepositoryAdapterFilters 
+    {
+        /// <summary>Filter to optionally include only the default currency</summary>
+        [Newtonsoft.Json.JsonProperty("isDefault", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsDefault { get; set; }
+    
+        /// <summary>The list of ids of currencies to optionally include.</summary>
+        [Newtonsoft.Json.JsonProperty("includeCurrencyIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> IncludeCurrencyIds { get; set; }
+    
+        /// <summary>The list of ids of currencies to optionally exclude.</summary>
+        [Newtonsoft.Json.JsonProperty("excludeCurrencyIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> ExcludeCurrencyIds { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static CurrencyRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CurrencyRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class GenderRepositoryAdapterFilters 
+    {
+        /// <summary>Temporary property to make GenderRepositoryAdapterFilters type</summary>
+        [Newtonsoft.Json.JsonProperty("genderId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? GenderId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static GenderRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<GenderRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ListItemRepositoryAdapterFilters 
+    {
+        /// <summary>The list id to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("listId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ListId { get; set; }
+    
+        /// <summary>The location id to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("locationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LocationId { get; set; }
+    
+        /// <summary>The list of ids of list items to optionally include.</summary>
+        [Newtonsoft.Json.JsonProperty("includeListItemIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> IncludeListItemIds { get; set; }
+    
+        /// <summary>The list of ids of list items to optionally exclude.</summary>
+        [Newtonsoft.Json.JsonProperty("excludeListItemIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> ExcludeListItemIds { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ListItemRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListItemRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LocationRepositoryAdapterFilters 
+    {
+        /// <summary>The unique id for the location within its type.</summary>
+        [Newtonsoft.Json.JsonProperty("locationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LocationId { get; set; }
+    
+        /// <summary>The id of the hierarchy to optionally limit locations to.</summary>
+        [Newtonsoft.Json.JsonProperty("hierarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? HierarchyId { get; set; }
+    
+        /// <summary>The id of the parent location group to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ParentId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LocationType? LocationType { get; set; }
+    
+        /// <summary>The list of location statuses to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("locationStatuses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> LocationStatuses { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LocationRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LocationRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class PersonRelationshipTypeRepositoryAdapterFilters 
+    {
+        /// <summary>The list of ids of person relationship types to optionally include.</summary>
+        [Newtonsoft.Json.JsonProperty("includePersonRelationshipTypeIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> IncludePersonRelationshipTypeIds { get; set; }
+    
+        /// <summary>The list of ids of person relationship types to optionally exclude.</summary>
+        [Newtonsoft.Json.JsonProperty("excludePersonRelationshipTypeIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> ExcludePersonRelationshipTypeIds { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static PersonRelationshipTypeRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PersonRelationshipTypeRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class PersonRepositoryAdapterFilters 
+    {
+        /// <summary>The id of the person optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PersonId { get; set; }
+    
+        /// <summary>The id of the person to optional filter to the people report to them.</summary>
+        [Newtonsoft.Json.JsonProperty("reportsTo", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ReportsTo { get; set; }
+    
+        /// <summary>The id of the person to optional filter to the person who supervises them.</summary>
+        [Newtonsoft.Json.JsonProperty("supervises", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Supervises { get; set; }
+    
+        /// <summary>Optionally filter by whether the person has login access.</summary>
+        [Newtonsoft.Json.JsonProperty("hasLoginAccess", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HasLoginAccess { get; set; }
+    
+        /// <summary>Optionally filter to people who are members of a specific group.</summary>
+        [Newtonsoft.Json.JsonProperty("memberOf", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string MemberOf { get; set; }
+    
+        /// <summary>The id of the location to optional filter to people who have that location set.</summary>
+        [Newtonsoft.Json.JsonProperty("locationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LocationId { get; set; }
+    
+        /// <summary>The id of the relationship type to optionally filter people by.</summary>
+        [Newtonsoft.Json.JsonProperty("relationshipTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RelationshipTypeId { get; set; }
+    
+        /// <summary>The list of person statuses to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("personStatuses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> PersonStatuses { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static PersonRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PersonRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class RoleRepositoryAdapterFilters 
+    {
+        /// <summary>The specific role to filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("roleId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RoleId { get; set; }
+    
+        /// <summary>The unique id of the role type to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("roleTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RoleTypeId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static RoleRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RoleRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class StateRepositoryAdapterFilters 
+    {
+        /// <summary>Filter to optionally include state of a specific configuration product.</summary>
+        [Newtonsoft.Json.JsonProperty("configurationProductId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ConfigurationProductId { get; set; }
+    
+        /// <summary>Filter to optionally include states of a specific category.</summary>
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CategoryId { get; set; }
+    
+        /// <summary>Filter to optionally include a specific state.</summary>
+        [Newtonsoft.Json.JsonProperty("stateId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StateId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static StateRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<StateRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UnitRepositoryAdapterFilters 
+    {
+        /// <summary>The id of the unit system to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("unitSystem", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? UnitSystem { get; set; }
+    
+        /// <summary>The list of ids of unit types to optionally include.</summary>
+        [Newtonsoft.Json.JsonProperty("unitTypes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> UnitTypes { get; set; }
+    
+        /// <summary>Filter to optionally include only base units.</summary>
+        [Newtonsoft.Json.JsonProperty("isBase", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsBase { get; set; }
+    
+        /// <summary>The scale of the units to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("unitScale", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string UnitScale { get; set; }
+    
+        /// <summary>The list of ids of units to optionally include.</summary>
+        [Newtonsoft.Json.JsonProperty("includeUnitIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> IncludeUnitIds { get; set; }
+    
+        /// <summary>The list of ids of units to optionally exclude.</summary>
+        [Newtonsoft.Json.JsonProperty("excludeUnitIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> ExcludeUnitIds { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UnitRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UnitRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LocationLookupItem 
+    {
+        /// <summary>The hierarchy the location is represented in.</summary>
+        [Newtonsoft.Json.JsonProperty("hierarchyId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int HierarchyId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LocationType LocationType { get; set; }
+    
+        /// <summary>The unique id of the location for the type.</summary>
+        [Newtonsoft.Json.JsonProperty("locationId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int LocationId { get; set; }
+    
+        /// <summary>The unique id of the parent location group.</summary>
+        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ParentId { get; set; }
+    
+        /// <summary>The display name of the location.</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>The path for the location with in the hierarchy.</summary>
+        [Newtonsoft.Json.JsonProperty("path", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Path { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LocationLookupItem FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LocationLookupItem>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ListExclusion 
+    {
+        [Newtonsoft.Json.JsonProperty("ListExclusionId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ListExclusionId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ListId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ListId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LocationGroupId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LocationGroupId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LocationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LocationId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ListExclusion FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListExclusion>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ListItemExclusion 
+    {
+        [Newtonsoft.Json.JsonProperty("ListItemExclusionId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ListItemExclusionId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ListItemId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ListItemId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LocationGroupId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LocationGroupId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LocationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LocationId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ListItemExclusion FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListItemExclusion>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class MobileReponsibilities 
+    {
+        [Newtonsoft.Json.JsonProperty("ProductResponsibilities", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<ProductResponsibilities> ProductResponsibilities { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static MobileReponsibilities FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<MobileReponsibilities>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ProductResponsibilities 
+    {
+        [Newtonsoft.Json.JsonProperty("ConfigurationProductId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ConfigurationProductId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("RecordIds", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> RecordIds { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ProductResponsibilities FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProductResponsibilities>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class NotificationRule 
+    {
+        [Newtonsoft.Json.JsonProperty("notificationId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int NotificationId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("deliveryMethodId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int DeliveryMethodId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("sendToAllEmployees", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? SendToAllEmployees { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("daysValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? DaysValue { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("effectiveDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? EffectiveDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("applicability", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Applicability Applicability { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("recipients", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Recipients Recipients { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("filterCriteria", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public FilterCriteria FilterCriteria { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static NotificationRule FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<NotificationRule>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class NotificationRules 
+    {
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<NotificationRule> Items { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static NotificationRules FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<NotificationRules>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Person 
     {
         [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3253,6 +4984,25 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class PersonsResponse : ResponseList
+    {
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<Person> Items { get; set; } = new System.Collections.ObjectModel.Collection<Person>();
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static PersonsResponse FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PersonsResponse>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class UpdatePersonParams 
     {
         [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3315,9 +5065,6 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("postalCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PostalCode { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("languageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? LanguageId { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("relationshipTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? RelationshipTypeId { get; set; }
     
@@ -3354,9 +5101,6 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         [Newtonsoft.Json.JsonProperty("expiryDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? ExpiryDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("personDetails", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string PersonDetails { get; set; }
-    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -3365,6 +5109,282 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         public static UpdatePersonParams FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdatePersonParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum PersonValidationRuleSet
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"Personal")]
+        Personal = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Employment")]
+        Employment = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Login")]
+        Login = 2,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class BaseContractingCompany 
+    {
+        /// <summary>The unique identifier for the contracting company</summary>
+        [Newtonsoft.Json.JsonProperty("contractingCompanyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ContractingCompanyId { get; set; }
+    
+        /// <summary>The display name of the company</summary>
+        [Newtonsoft.Json.JsonProperty("companyName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CompanyName { get; set; }
+    
+        /// <summary>The description of the company</summary>
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        /// <summary>The company's status in the system</summary>
+        [Newtonsoft.Json.JsonProperty("statusId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StatusId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("phoneNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PhoneNumber { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("address", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Address { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("city", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string City { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("countryDivisionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CountryDivisionId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("countryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CountryId { get; set; }
+    
+        /// <summary>The zip code portion of the companys address</summary>
+        [Newtonsoft.Json.JsonProperty("zipCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ZipCode { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static BaseContractingCompany FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<BaseContractingCompany>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ContractingCompany : BaseContractingCompany
+    {
+        /// <summary>The list of company's type</summary>
+        [Newtonsoft.Json.JsonProperty("contractorTypes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> ContractorTypes { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ContractingCompany FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ContractingCompany>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdateContractingCompanyParams : BaseContractingCompany
+    {
+        /// <summary>The list of company's type to add</summary>
+        [Newtonsoft.Json.JsonProperty("addContractorTypes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> AddContractorTypes { get; set; }
+    
+        /// <summary>The list of company's type to remove</summary>
+        [Newtonsoft.Json.JsonProperty("deleteContractorTypes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> DeleteContractorTypes { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdateContractingCompanyParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateContractingCompanyParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ContractingCompaniesResponse : ResponseList
+    {
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<ContractingCompany> Items { get; set; } = new System.Collections.ObjectModel.Collection<ContractingCompany>();
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ContractingCompaniesResponse FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ContractingCompaniesResponse>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ConfigurationContext 
+    {
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IDictionary<string, string> Data { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ConfigurationContext FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ConfigurationContext>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ArchivedRecord 
+    {
+        /// <summary>The unique id of the archived record.</summary>
+        [Newtonsoft.Json.JsonProperty("recordArchiveID", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RecordArchiveID { get; set; }
+    
+        /// <summary>The parent of the archived record.</summary>
+        [Newtonsoft.Json.JsonProperty("parentRecordArchiveId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ParentRecordArchiveId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Value Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ArchivedRecord FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ArchivedRecord>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ArchivedRecordSearchParams 
+    {
+        /// <summary>The parent of the record archive ID.</summary>
+        [Newtonsoft.Json.JsonProperty("parentRecordArchiveId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ParentRecordArchiveId { get; set; }
+    
+        /// <summary>Filter to only include records created after the provided date.</summary>
+        [Newtonsoft.Json.JsonProperty("startDateCreated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTimeOffset? StartDateCreated { get; set; }
+    
+        /// <summary>Filter to only include records created prior to the provided date.</summary>
+        [Newtonsoft.Json.JsonProperty("endDateCreated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTimeOffset? EndDateCreated { get; set; }
+    
+        /// <summary>Filter to only include records deleted after the provided date.</summary>
+        [Newtonsoft.Json.JsonProperty("startDateDeleted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTimeOffset? StartDateDeleted { get; set; }
+    
+        /// <summary>Filter to only include records deleted prior to the provided date.</summary>
+        [Newtonsoft.Json.JsonProperty("endDateDeleted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTimeOffset? EndDateDeleted { get; set; }
+    
+        /// <summary>The list of categories to include deleted records from.</summary>
+        [Newtonsoft.Json.JsonProperty("categoryFilters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> CategoryFilters { get; set; }
+    
+        /// <summary>The list of locations to include deleted records from.</summary>
+        [Newtonsoft.Json.JsonProperty("locationFilters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> LocationFilters { get; set; }
+    
+        /// <summary>Limit the results to only those deleted by this person.</summary>
+        [Newtonsoft.Json.JsonProperty("deletedById", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? DeletedById { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ArchivedRecordSearchParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ArchivedRecordSearchParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ArchivedRecordIds 
+    {
+        /// <summary>The unique id of the archived record to modify.</summary>
+        [Newtonsoft.Json.JsonProperty("recordArchiveId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int RecordArchiveId { get; set; }
+    
+        /// <summary>The unique id of the child archived record to modify.</summary>
+        [Newtonsoft.Json.JsonProperty("childRecordArchiveIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> ChildRecordArchiveIds { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ArchivedRecordIds FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ArchivedRecordIds>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdateArchivedRecords : System.Collections.ObjectModel.Collection<ArchivedRecordIds>
+    {
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdateArchivedRecords FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateArchivedRecords>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ArchivedRecordResponse : ResponseList
+    {
+        [Newtonsoft.Json.JsonProperty("records", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<ArchivedRecord> Records { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ArchivedRecordResponse FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ArchivedRecordResponse>(data);
         }
     
     }
@@ -3389,6 +5409,117 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Application.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"phone")]
         Phone = 1,
     
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Applicability 
+    {
+        [Newtonsoft.Json.JsonProperty("heirarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? HeirarchyId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> Locations { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationGroups", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> LocationGroups { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Applicability FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Applicability>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Recipients 
+    {
+        [Newtonsoft.Json.JsonProperty("persons", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> Persons { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("roles", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<int> Roles { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Recipients FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Recipients>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FilterCriteria 
+    {
+        [Newtonsoft.Json.JsonProperty("expression", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Expression { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FilterCriteria FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FilterCriteria>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Value 
+    {
+        /// <summary>The name of the category the record belongs to.</summary>
+        [Newtonsoft.Json.JsonProperty("category", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Category { get; set; }
+    
+        /// <summary>The title of the record.</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+    
+        /// <summary>The delimited list of locations the record exists at.</summary>
+        [Newtonsoft.Json.JsonProperty("location", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Location { get; set; }
+    
+        /// <summary>The date the record was originally created.</summary>
+        [Newtonsoft.Json.JsonProperty("dateCreated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? DateCreated { get; set; }
+    
+        /// <summary>The date the record was last deleted.</summary>
+        [Newtonsoft.Json.JsonProperty("dateDeleted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? DateDeleted { get; set; }
+    
+        /// <summary>The id of the person that deleted the record.</summary>
+        [Newtonsoft.Json.JsonProperty("personDeleted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PersonDeleted { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Value FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Value>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    internal class DateFormatConverter : Newtonsoft.Json.Converters.IsoDateTimeConverter
+    {
+        public DateFormatConverter()
+        {
+            DateTimeFormat = "yyyy-MM-dd";
+        }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]

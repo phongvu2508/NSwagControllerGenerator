@@ -14,13 +14,13 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <summary>Return all accounts in the instance.</summary>
         /// <param name="accountId">The account id</param>
         /// <param name="externalId">The external account id</param>
-        /// <param name="accountIdentifier">The account identifier</param>
+        /// <param name="companyDomain">The company domain</param>
         /// <response code="200">The matching account</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Accounts not found</response>
         /// <returns>The matching account</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Account>>> GetAccountsAsync(int? accountId, System.Guid? externalId, string accountIdentifier);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Account>>> GetAccountsAsync(int? accountId, System.Guid? externalId, string companyDomain);
     
         /// <summary>Update an existing account</summary>
         /// <param name="body">The updated account object</param>
@@ -40,15 +40,18 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateAccountAsync(Account body);
     
         /// <summary>Gets the basic user information for an accounts user.</summary>
-        /// <param name="username">Username of the person</param>
-        /// <param name="emailAddress">Email address of the person</param>
-        /// <param name="phoneNumber">Phone number of the person</param>
         /// <response code="200">The basic details of the user that matches the request</response>
         /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No authentication methods for the account</response>
+        /// <response code="404">No user info for the account</response>
         /// <returns>The basic details of the user that matches the request</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfoAsync(string username, string emailAddress, string phoneNumber);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfoAsync();
+    
+        /// <summary>Request the user be sent their basic user info.</summary>
+        /// <param name="contactInfo">Phone number of the person</param>
+        /// <response code="204">Any matching user will be sent their basic user info.</response>
+        /// <response code="400">Bad request</response>
+        /// <returns>Any matching user will be sent their basic user info.</returns>
+        System.Threading.Tasks.Task RequestUserInfoAsync(string contactInfo);
     
         /// <summary>Get an account by the account id</summary>
         /// <response code="200">The account</response>
@@ -57,6 +60,21 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Account not found</response>
         /// <returns>The account</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Account>> GetAccountByIdAsync();
+    
+        /// <summary>Gets the super admin for an account.</summary>
+        /// <response code="200">The super admin of the account that matches the request</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Super admin not found</response>
+        /// <returns>The super admin of the account that matches the request</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Person>> GetAccountSuperAdminAsync();
+    
+        /// <summary>Gets the super admin for an account.</summary>
+        /// <response code="201">The new admin identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new admin identifier</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateAccountSuperAdminAsync(Person body);
     
         /// <summary>Gets the personalization information for an account.</summary>
         /// <response code="200">The personalization of the account that matches the request</response>
@@ -132,16 +150,16 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <summary>Return all accounts in the instance.</summary>
         /// <param name="accountId">The account id</param>
         /// <param name="externalId">The external account id</param>
-        /// <param name="accountIdentifier">The account identifier</param>
+        /// <param name="companyDomain">The company domain</param>
         /// <response code="200">The matching account</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Accounts not found</response>
         /// <returns>The matching account</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("accounts")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Account>>> GetAccounts(int? accountId, System.Guid? externalId, string accountIdentifier)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Account>>> GetAccounts(int? accountId, System.Guid? externalId, string companyDomain)
         {
-            return this.implementation.GetAccountsAsync(accountId, externalId, accountIdentifier);
+            return this.implementation.GetAccountsAsync(accountId, externalId, companyDomain);
         }
     
         /// <summary>Update an existing account</summary>
@@ -170,18 +188,25 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         }
     
         /// <summary>Gets the basic user information for an accounts user.</summary>
-        /// <param name="username">Username of the person</param>
-        /// <param name="emailAddress">Email address of the person</param>
-        /// <param name="phoneNumber">Phone number of the person</param>
         /// <response code="200">The basic details of the user that matches the request</response>
         /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No authentication methods for the account</response>
+        /// <response code="404">No user info for the account</response>
         /// <returns>The basic details of the user that matches the request</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("accounts/userInfo")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfo(string username, string emailAddress, string phoneNumber)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfo()
         {
-            return this.implementation.GetUserInfoAsync(username, emailAddress, phoneNumber);
+            return this.implementation.GetUserInfoAsync();
+        }
+    
+        /// <summary>Request the user be sent their basic user info.</summary>
+        /// <param name="contactInfo">Phone number of the person</param>
+        /// <response code="204">Any matching user will be sent their basic user info.</response>
+        /// <response code="400">Bad request</response>
+        /// <returns>Any matching user will be sent their basic user info.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("accounts/request/userInfo")]
+        public System.Threading.Tasks.Task RequestUserInfo(string contactInfo)
+        {
+            return this.implementation.RequestUserInfoAsync(contactInfo);
         }
     
         /// <summary>Get an account by the account id</summary>
@@ -194,6 +219,29 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Account>> GetAccountById()
         {
             return this.implementation.GetAccountByIdAsync();
+        }
+    
+        /// <summary>Gets the super admin for an account.</summary>
+        /// <response code="200">The super admin of the account that matches the request</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Super admin not found</response>
+        /// <returns>The super admin of the account that matches the request</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("accounts/current/admin")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Person>> GetAccountSuperAdmin()
+        {
+            return this.implementation.GetAccountSuperAdminAsync();
+        }
+    
+        /// <summary>Gets the super admin for an account.</summary>
+        /// <response code="201">The new admin identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new admin identifier</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("accounts/current/admin")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateAccountSuperAdmin([Microsoft.AspNetCore.Mvc.FromBody] Person body)
+        {
+            return this.implementation.CreateAccountSuperAdminAsync(body);
         }
     
         /// <summary>Gets the personalization information for an account.</summary>
@@ -289,13 +337,13 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     {
         /// <summary>Gets the authentication methods for the account.</summary>
         /// <param name="accountId">The account id</param>
-        /// <param name="accountIdentifier">The account identifier</param>
+        /// <param name="companyDomain">The company domain</param>
         /// <response code="200">The authentication methods for the account.</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">No authentication methods for the account</response>
         /// <returns>The authentication methods for the account.</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<AuthenticationMethod>>> GetAuthMethodsAsync(int? accountId, string accountIdentifier);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<AuthenticationMethod>>> GetAuthMethodsAsync(int? accountId, string companyDomain);
     
         /// <summary>Sets an authentication methods for the account.</summary>
         /// <response code="204">The authentication methods was successfully set.</response>
@@ -324,12 +372,39 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthVerificationResult>> AuthFormsHasAccessAsync(FormsAuthCrediential body);
     
         /// <summary>Request to start the forgot password process for a given username.</summary>
+        /// <param name="accountId">The account id</param>
         /// <response code="200">The person was successfully updated</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Persons not found</response>
         /// <returns>The person was successfully updated</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPasswordAsync(FormsAuthPasswordChangeRequest body);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPasswordAsync(int accountId, FormsAuthPasswordChangeRequest body);
+    
+        /// <summary>Validates Password based on account, person and password rules</summary>
+        /// <param name="accountId">The account id</param>
+        /// <response code="200">Password validation result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>Password validation result</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePasswordAsync(int accountId, FormsAuthPasswordUpdate body);
+    
+        /// <summary>Update the password for a user</summary>
+        /// <param name="accountId">The account id</param>
+        /// <response code="204">The person's password was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The person's password was successfully updated</returns>
+        System.Threading.Tasks.Task ResetPersonsPasswordAsync(int accountId, FormsAuthPasswordUpdate body);
+    
+        /// <summary>Get the forms authentication state for a user</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="personId">The person identifier</param>
+        /// <response code="200">The person's forms auth state.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">No forms auth state available.</response>
+        /// <returns>The person's forms auth state.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthState>> GetFormsAuthStateAsync(int accountId, int personId);
     
         /// <summary>Adds jti to a black list.</summary>
         /// <response code="204">The blacklist item was successfully added.</response>
@@ -349,12 +424,13 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthBlacklistResponse>> GetJTIFromBlacklistAsync(System.Guid id);
     
         /// <summary>Gets the password rules for the account.</summary>
+        /// <param name="accountId">The account id</param>
         /// <response code="200">The password rules for the account.</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">No password rules for the account</response>
         /// <returns>The password rules for the account.</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<FormsAuthPasswordRule>>> GetPasswordRulesAsync();
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<FormsAuthPasswordRule>>> GetPasswordRulesAsync(int accountId);
     
         /// <summary>Adds password rules for the account.</summary>
         /// <response code="204">The authentication rules were added.</response>
@@ -372,6 +448,31 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">No password rules for the account</response>
         /// <returns>The password rule was removed for the account.</returns>
         System.Threading.Tasks.Task DeletePasswordRuleAsync(int id);
+    
+        /// <summary>Get the forms authentication key for a user to assist in their authentication.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="personId">The person identifier</param>
+        /// <response code="200">The person's forms auth state.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The person's forms auth state.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthKey>> GetFormsAuthKeyAsync(int accountId, int personId);
+    
+        /// <summary>Determine if a forms auth key is valid.</summary>
+        /// <response code="204">The provided key was valid.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="422">The provided key was not valid.</response>
+        /// <returns>The provided key was valid.</returns>
+        System.Threading.Tasks.Task ValidateFormsAuthKeyAsync(FormsAuthKey body);
+    
+        /// <summary>Valid the login from an sso provider.</summary>
+        /// <response code="200">Credientials were valid.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="401">Credientials are invalid.</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>Credientials were valid.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoAuthVerificationResult>> AuthSsoHasAccessAsync(SsoAuthCrediential body);
     
         /// <summary>Get a list of SSO Identity Providers</summary>
         /// <param name="trustName">The trust name of the identity providers to get.</param>
@@ -459,15 +560,6 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <returns>Verification code successfully validated.</returns>
         System.Threading.Tasks.Task VerifyAuthVerificationCodeAsync(IdentityVerification body);
     
-        /// <summary>Validates Password based on account, person and password rules</summary>
-        /// <param name="password">password to be passed in</param>
-        /// <response code="200">Password validation result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Invalid entry for password</response>
-        /// <returns>Password validation result</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePasswordAsync(string password);
-    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
@@ -483,16 +575,16 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     
         /// <summary>Gets the authentication methods for the account.</summary>
         /// <param name="accountId">The account id</param>
-        /// <param name="accountIdentifier">The account identifier</param>
+        /// <param name="companyDomain">The company domain</param>
         /// <response code="200">The authentication methods for the account.</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">No authentication methods for the account</response>
         /// <returns>The authentication methods for the account.</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/methods")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<AuthenticationMethod>>> GetAuthMethods(int? accountId, string accountIdentifier)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<AuthenticationMethod>>> GetAuthMethods(int? accountId, string companyDomain)
         {
-            return this.implementation.GetAuthMethodsAsync(accountId, accountIdentifier);
+            return this.implementation.GetAuthMethodsAsync(accountId, companyDomain);
         }
     
         /// <summary>Sets an authentication methods for the account.</summary>
@@ -534,15 +626,54 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         }
     
         /// <summary>Request to start the forgot password process for a given username.</summary>
+        /// <param name="accountId">The account id</param>
         /// <response code="200">The person was successfully updated</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Persons not found</response>
         /// <returns>The person was successfully updated</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/forms/forgotPassword")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPassword([Microsoft.AspNetCore.Mvc.FromBody] FormsAuthPasswordChangeRequest body)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPassword(int accountId, [Microsoft.AspNetCore.Mvc.FromBody] FormsAuthPasswordChangeRequest body)
         {
-            return this.implementation.ForgotPasswordAsync(body);
+            return this.implementation.ForgotPasswordAsync(accountId, body);
+        }
+    
+        /// <summary>Validates Password based on account, person and password rules</summary>
+        /// <param name="accountId">The account id</param>
+        /// <response code="200">Password validation result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>Password validation result</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/forms/validatePassword")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePassword(int accountId, [Microsoft.AspNetCore.Mvc.FromBody] FormsAuthPasswordUpdate body)
+        {
+            return this.implementation.ValidatePasswordAsync(accountId, body);
+        }
+    
+        /// <summary>Update the password for a user</summary>
+        /// <param name="accountId">The account id</param>
+        /// <response code="204">The person's password was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The person's password was successfully updated</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("auth/forms/resetPassword")]
+        public System.Threading.Tasks.Task ResetPersonsPassword(int accountId, [Microsoft.AspNetCore.Mvc.FromBody] FormsAuthPasswordUpdate body)
+        {
+            return this.implementation.ResetPersonsPasswordAsync(accountId, body);
+        }
+    
+        /// <summary>Get the forms authentication state for a user</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="personId">The person identifier</param>
+        /// <response code="200">The person's forms auth state.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">No forms auth state available.</response>
+        /// <returns>The person's forms auth state.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/forms/authState")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthState>> GetFormsAuthState(int accountId, int personId)
+        {
+            return this.implementation.GetFormsAuthStateAsync(accountId, personId);
         }
     
         /// <summary>Adds jti to a black list.</summary>
@@ -571,15 +702,16 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         }
     
         /// <summary>Gets the password rules for the account.</summary>
+        /// <param name="accountId">The account id</param>
         /// <response code="200">The password rules for the account.</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">No password rules for the account</response>
         /// <returns>The password rules for the account.</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/forms/rules")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<FormsAuthPasswordRule>>> GetPasswordRules()
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<FormsAuthPasswordRule>>> GetPasswordRules(int accountId)
         {
-            return this.implementation.GetPasswordRulesAsync();
+            return this.implementation.GetPasswordRulesAsync(accountId);
         }
     
         /// <summary>Adds password rules for the account.</summary>
@@ -605,6 +737,43 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public System.Threading.Tasks.Task DeletePasswordRule(int id)
         {
             return this.implementation.DeletePasswordRuleAsync(id);
+        }
+    
+        /// <summary>Get the forms authentication key for a user to assist in their authentication.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="personId">The person identifier</param>
+        /// <response code="200">The person's forms auth state.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The person's forms auth state.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/forms/key")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthKey>> GetFormsAuthKey(int accountId, int personId)
+        {
+            return this.implementation.GetFormsAuthKeyAsync(accountId, personId);
+        }
+    
+        /// <summary>Determine if a forms auth key is valid.</summary>
+        /// <response code="204">The provided key was valid.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="422">The provided key was not valid.</response>
+        /// <returns>The provided key was valid.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/forms/key/validate")]
+        public System.Threading.Tasks.Task ValidateFormsAuthKey([Microsoft.AspNetCore.Mvc.FromBody] FormsAuthKey body)
+        {
+            return this.implementation.ValidateFormsAuthKeyAsync(body);
+        }
+    
+        /// <summary>Valid the login from an sso provider.</summary>
+        /// <response code="200">Credientials were valid.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="401">Credientials are invalid.</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>Credientials were valid.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/sso/login")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoAuthVerificationResult>> AuthSsoHasAccess([Microsoft.AspNetCore.Mvc.FromBody] SsoAuthCrediential body)
+        {
+            return this.implementation.AuthSsoHasAccessAsync(body);
         }
     
         /// <summary>Get a list of SSO Identity Providers</summary>
@@ -733,24 +902,31 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
             return this.implementation.VerifyAuthVerificationCodeAsync(body);
         }
     
-        /// <summary>Validates Password based on account, person and password rules</summary>
-        /// <param name="password">password to be passed in</param>
-        /// <response code="200">Password validation result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Invalid entry for password</response>
-        /// <returns>Password validation result</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/validatepassword/{password}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePassword(string password)
-        {
-            return this.implementation.ValidatePasswordAsync(password);
-        }
-    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
     public interface IConfigurationController
     {
+        /// <summary>Get the form configuration for a state.</summary>
+        /// <param name="category">The name of the category to get the form configuration for.</param>
+        /// <param name="state">The name of the state to get the form configuration for.</param>
+        /// <response code="200">The state's form configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The state's form configuration</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateFormConfigByNameAsync(string category, string state);
+    
+        /// <summary>Get the form configuration for a state.</summary>
+        /// <param name="categoryId">The id of the category to get the form configuration for.</param>
+        /// <param name="productStateId">The id of the product state to get the form configuration for.</param>
+        /// <response code="200">The state's form configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The state's form configuration</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateFormConfigAsync(int categoryId, int productStateId);
+    
         /// <summary>Get the product configuration summary</summary>
         /// <response code="200">The product configuration summary</response>
         /// <response code="400">Bad request</response>
@@ -758,6 +934,24 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Product config not found</response>
         /// <returns>The product configuration summary</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductConfigSummaryAsync();
+    
+        /// <summary>Get a view configuration</summary>
+        /// <param name="name">The name of the view to get the configuration for.</param>
+        /// <response code="200">The view configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The view configuration</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetViewConfigByNameAsync(string name);
+    
+        /// <summary>Get a view configuration</summary>
+        /// <param name="viewId">The id of the view to get the configuration for.</param>
+        /// <response code="200">The view configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The view configuration</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetViewConfigByIdAsync(int viewId);
     
         /// <summary>Get the workflow configuration for a state</summary>
         /// <param name="category">The name of the category to get the workflow configuration for.</param>
@@ -771,13 +965,13 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     
         /// <summary>Get the workflow configuration for a state</summary>
         /// <param name="categoryId">The id of the category to get the workflow configuration for.</param>
-        /// <param name="stateId">The id of the state to get the workflow configuration for.</param>
+        /// <param name="productStateId">The id of the product state to get the workflow configuration for.</param>
         /// <response code="200">The state's workflow configuration</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Configuration not found</response>
         /// <returns>The state's workflow configuration</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigRawAsync(int categoryId, int stateId);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigRawAsync(int categoryId, int productStateId);
     
         /// <summary>Get the workflow configurations summaries</summary>
         /// <param name="productId">The id of the product to get the workflow config summary for.</param>
@@ -802,6 +996,34 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
             this.implementation = implementation;
         }
     
+        /// <summary>Get the form configuration for a state.</summary>
+        /// <param name="category">The name of the category to get the form configuration for.</param>
+        /// <param name="state">The name of the state to get the form configuration for.</param>
+        /// <response code="200">The state's form configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The state's form configuration</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("config/forms/raw")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateFormConfigByName(string category, string state)
+        {
+            return this.implementation.GetStateFormConfigByNameAsync(category, state);
+        }
+    
+        /// <summary>Get the form configuration for a state.</summary>
+        /// <param name="categoryId">The id of the category to get the form configuration for.</param>
+        /// <param name="productStateId">The id of the product state to get the form configuration for.</param>
+        /// <response code="200">The state's form configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The state's form configuration</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("config/forms/{categoryId}/{productStateId}/raw")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateFormConfig(int categoryId, int productStateId)
+        {
+            return this.implementation.GetStateFormConfigAsync(categoryId, productStateId);
+        }
+    
         /// <summary>Get the product configuration summary</summary>
         /// <response code="200">The product configuration summary</response>
         /// <response code="400">Bad request</response>
@@ -812,6 +1034,32 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductConfigSummary()
         {
             return this.implementation.GetProductConfigSummaryAsync();
+        }
+    
+        /// <summary>Get a view configuration</summary>
+        /// <param name="name">The name of the view to get the configuration for.</param>
+        /// <response code="200">The view configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The view configuration</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("config/views/raw")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetViewConfigByName(string name)
+        {
+            return this.implementation.GetViewConfigByNameAsync(name);
+        }
+    
+        /// <summary>Get a view configuration</summary>
+        /// <param name="viewId">The id of the view to get the configuration for.</param>
+        /// <response code="200">The view configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The view configuration</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("config/views/{viewId}/raw")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetViewConfigById(int viewId)
+        {
+            return this.implementation.GetViewConfigByIdAsync(viewId);
         }
     
         /// <summary>Get the workflow configuration for a state</summary>
@@ -830,16 +1078,16 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     
         /// <summary>Get the workflow configuration for a state</summary>
         /// <param name="categoryId">The id of the category to get the workflow configuration for.</param>
-        /// <param name="stateId">The id of the state to get the workflow configuration for.</param>
+        /// <param name="productStateId">The id of the product state to get the workflow configuration for.</param>
         /// <response code="200">The state's workflow configuration</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Configuration not found</response>
         /// <returns>The state's workflow configuration</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("config/workflows/{categoryId}/{stateId}/raw")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigRaw(int categoryId, int stateId)
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("config/workflows/{categoryId}/{productStateId}/raw")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigRaw(int categoryId, int productStateId)
         {
-            return this.implementation.GetStateWorkflowConfigRawAsync(categoryId, stateId);
+            return this.implementation.GetStateWorkflowConfigRawAsync(categoryId, productStateId);
         }
     
         /// <summary>Get the workflow configurations summaries</summary>
@@ -854,6 +1102,136 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetWorkflowConfigsSummary(int? productId, System.DateTimeOffset? lastModified)
         {
             return this.implementation.GetWorkflowConfigsSummaryAsync(productId, lastModified);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface IContractingCompanyController
+    {
+        /// <summary>Get the list of contracting companies that match the parameters.</summary>
+        /// <param name="contractorName">The text the contractor's name should include</param>
+        /// <param name="contractorType">The list of contractor types to include</param>
+        /// <param name="status">The status of contractors to include</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <response code="200">A list of Contracting Companies</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Contracting Company not found</response>
+        /// <returns>A list of Contracting Companies</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ContractingCompaniesResponse>> GetContractingCompaniesAsync(string contractorName, System.Collections.Generic.IEnumerable<int> contractorType, int? status, int? pageNumber, int? pageSize);
+    
+        /// <summary>Update a contracting company.</summary>
+        /// <response code="204">The Contracting Company was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Contracting Company not found</response>
+        /// <returns>The Contracting Company was successfully updated</returns>
+        System.Threading.Tasks.Task UpdateContractingCompanyAsync(UpdateContractingCompanyParams body);
+    
+        /// <summary>Create a new contracting company.</summary>
+        /// <response code="201">The new contracting conpanies identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new contracting conpanies identifier</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Status201Response>>> CreateContractingCompanyAsync(ContractingCompany body);
+    
+        /// <summary>Delete a contracting company.</summary>
+        /// <param name="id">The identifier of the contracting company to delete.</param>
+        /// <response code="204">The contracting company was succesfully deleted.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Contracting Company not found</response>
+        /// <returns>The contracting company was succesfully deleted.</returns>
+        System.Threading.Tasks.Task DeleteContractingCompanyAsync(int id);
+    
+        /// <summary>Get a contracting company.</summary>
+        /// <param name="id">The identifier of the contracting company to get.</param>
+        /// <response code="200">The matching contracting company.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Contracting Company not found</response>
+        /// <returns>The matching contracting company.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ContractingCompany>> GetContractingCompanyAsync(int id);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    [Microsoft.AspNetCore.Mvc.Route("api")]
+    public partial class ContractingCompanyController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private IContractingCompanyController implementation;
+    
+        public ContractingCompanyController(IContractingCompanyController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <summary>Get the list of contracting companies that match the parameters.</summary>
+        /// <param name="contractorName">The text the contractor's name should include</param>
+        /// <param name="contractorType">The list of contractor types to include</param>
+        /// <param name="status">The status of contractors to include</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <response code="200">A list of Contracting Companies</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Contracting Company not found</response>
+        /// <returns>A list of Contracting Companies</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("contractingCompanies")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ContractingCompaniesResponse>> GetContractingCompanies(string contractorName, System.Collections.Generic.IEnumerable<int> contractorType, int? status, int? pageNumber, int? pageSize)
+        {
+            return this.implementation.GetContractingCompaniesAsync(contractorName, contractorType, status, pageNumber, pageSize);
+        }
+    
+        /// <summary>Update a contracting company.</summary>
+        /// <response code="204">The Contracting Company was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Contracting Company not found</response>
+        /// <returns>The Contracting Company was successfully updated</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("contractingCompanies")]
+        public System.Threading.Tasks.Task UpdateContractingCompany([Microsoft.AspNetCore.Mvc.FromBody] UpdateContractingCompanyParams body)
+        {
+            return this.implementation.UpdateContractingCompanyAsync(body);
+        }
+    
+        /// <summary>Create a new contracting company.</summary>
+        /// <response code="201">The new contracting conpanies identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new contracting conpanies identifier</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("contractingCompanies")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Status201Response>>> CreateContractingCompany([Microsoft.AspNetCore.Mvc.FromBody] ContractingCompany body)
+        {
+            return this.implementation.CreateContractingCompanyAsync(body);
+        }
+    
+        /// <summary>Delete a contracting company.</summary>
+        /// <param name="id">The identifier of the contracting company to delete.</param>
+        /// <response code="204">The contracting company was succesfully deleted.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Contracting Company not found</response>
+        /// <returns>The contracting company was succesfully deleted.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("contractingCompanies")]
+        public System.Threading.Tasks.Task DeleteContractingCompany(int id)
+        {
+            return this.implementation.DeleteContractingCompanyAsync(id);
+        }
+    
+        /// <summary>Get a contracting company.</summary>
+        /// <param name="id">The identifier of the contracting company to get.</param>
+        /// <response code="200">The matching contracting company.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Contracting Company not found</response>
+        /// <returns>The matching contracting company.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("contractingCompanies/{id}")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ContractingCompany>> GetContractingCompany(int id)
+        {
+            return this.implementation.GetContractingCompanyAsync(id);
         }
     
     }
@@ -1056,7 +1434,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The translation requests were successfully created. The reason why reponse 204 returned instead of 201 because we are not returning any Id for this API.</returns>
-        System.Threading.Tasks.Task SetTranslationsAsync(SetTranslation body);
+        System.Threading.Tasks.Task SetTranslationsAsync(System.Collections.Generic.IEnumerable<SetTranslation> body);
     
         /// <summary>Get Translation Requests by params</summary>
         /// <param name="fromDate">Start date of range for getTranslationRequests</param>
@@ -1103,7 +1481,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The translation requests were successfully created. The reason why reponse 204 returned instead of 201 because we are not returning any Id for this API.</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("translations")]
-        public System.Threading.Tasks.Task SetTranslations([Microsoft.AspNetCore.Mvc.FromBody] SetTranslation body)
+        public System.Threading.Tasks.Task SetTranslations([Microsoft.AspNetCore.Mvc.FromBody] System.Collections.Generic.IEnumerable<SetTranslation> body)
         {
             return this.implementation.SetTranslationsAsync(body);
         }
@@ -1181,6 +1559,14 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <returns>A currency list founded using provided criteria</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Currency>>> GetCurrencyForSearchAsync(string searchText);
     
+        /// <summary>Get Timezone list</summary>
+        /// <response code="200">A timezone list founded</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">A timezone list not found</response>
+        /// <returns>A timezone list founded</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<TimeZoneList>>> GetTimeZonesAsync();
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
@@ -1234,6 +1620,18 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Currency>>> GetCurrencyForSearch(string searchText)
         {
             return this.implementation.GetCurrencyForSearchAsync(searchText);
+        }
+    
+        /// <summary>Get Timezone list</summary>
+        /// <response code="200">A timezone list founded</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">A timezone list not found</response>
+        /// <returns>A timezone list founded</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("localization/timezone")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<TimeZoneList>>> GetTimeZones()
+        {
+            return this.implementation.GetTimeZonesAsync();
         }
     
     }
@@ -1376,6 +1774,26 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Location not found</response>
         /// <returns>Delete location validation result</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocationAsync(int id, LocationType locationType);
+    
+        /// <summary>Validate unique location name</summary>
+        /// <param name="locationName">The location name</param>
+        /// <response code="204">The location name is unique.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="422">ValidationError</response>
+        /// <returns>The location name is unique.</returns>
+        System.Threading.Tasks.Task ValidateUniqueLocationAsync(string locationName);
+    
+        /// <summary>Validate unique location group name under a parent location group</summary>
+        /// <param name="locationGroupId">The parent location group identifier</param>
+        /// <param name="parentLocationGroupId">The parent location group identifier</param>
+        /// <param name="locationGroupName">The location name</param>
+        /// <response code="204">The location group name is unique.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="422">ValidationError</response>
+        /// <returns>The location group name is unique.</returns>
+        System.Threading.Tasks.Task ValidateUniqueLocationGroupAsync(int? locationGroupId, int? parentLocationGroupId, string locationGroupName);
     
     }
     
@@ -1576,6 +1994,34 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<bool>> CanDeleteLocation(int id, LocationType locationType)
         {
             return this.implementation.CanDeleteLocationAsync(id, locationType);
+        }
+    
+        /// <summary>Validate unique location name</summary>
+        /// <param name="locationName">The location name</param>
+        /// <response code="204">The location name is unique.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="422">ValidationError</response>
+        /// <returns>The location name is unique.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/validateUniqueLocation")]
+        public System.Threading.Tasks.Task ValidateUniqueLocation(string locationName)
+        {
+            return this.implementation.ValidateUniqueLocationAsync(locationName);
+        }
+    
+        /// <summary>Validate unique location group name under a parent location group</summary>
+        /// <param name="locationGroupId">The parent location group identifier</param>
+        /// <param name="parentLocationGroupId">The parent location group identifier</param>
+        /// <param name="locationGroupName">The location name</param>
+        /// <response code="204">The location group name is unique.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="422">ValidationError</response>
+        /// <returns>The location group name is unique.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/validateUniqueLocationGroup")]
+        public System.Threading.Tasks.Task ValidateUniqueLocationGroup(int? locationGroupId, int? parentLocationGroupId, string locationGroupName)
+        {
+            return this.implementation.ValidateUniqueLocationGroupAsync(locationGroupId, parentLocationGroupId, locationGroupName);
         }
     
     }
@@ -2107,6 +2553,472 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface ILookupController
+    {
+        /// <summary>Get categories via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of categories via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of categories via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCategoriesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CategoryRepositoryAdapterFilters body);
+    
+        /// <summary>Get contractors via a lookup</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of contractors via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of contractors via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupContractorsAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LookupRequest body);
+    
+        /// <summary>Get contractors via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of contractors via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of contractors via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupContractorsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, ContractorRepositoryAdapterFilters body);
+    
+        /// <summary>Get countries via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of countries via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of countries via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCountriesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CountryRepositoryAdapterFilters body);
+    
+        /// <summary>Get country divisions via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of country divisions via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of country divisions via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCountryDivisionsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CountryDivisionRepositoryAdapterFilters body);
+    
+        /// <summary>Get currencies via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of currencies via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of currencies via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCurrenciesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CurrencyRepositoryAdapterFilters body);
+    
+        /// <summary>Get genders via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of genders via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of genders via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupGendersByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, GenderRepositoryAdapterFilters body);
+    
+        /// <summary>Get list items via a lookup</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of list items via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of list items via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupListItemsAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LookupRequest body);
+    
+        /// <summary>Get list items via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of list items via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of list items via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupListItemsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, ListItemRepositoryAdapterFilters body);
+    
+        /// <summary>Get locations via a lookup</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of locations via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of locations via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupLocationsResponse>> LookupLocationsAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LookupRequest body);
+    
+        /// <summary>Get locations via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of locations via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of locations via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupLocationsResponse>> LookupLocationsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LocationRepositoryAdapterFilters body);
+    
+        /// <summary>Get personRelationshipTypes via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of personRelationshipTypes via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of personRelationshipTypes via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupPersonRelationshipTypesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, PersonRelationshipTypeRepositoryAdapterFilters body);
+    
+        /// <summary>Get persons via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of persons via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of persons via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupPersonsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, PersonRepositoryAdapterFilters body);
+    
+        /// <summary>Get roles via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of roles via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of roles via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupRolesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, RoleRepositoryAdapterFilters body);
+    
+        /// <summary>Get states via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of states via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of states via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupStatesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, StateRepositoryAdapterFilters body);
+    
+        /// <summary>Get units via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of units via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of units via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupUnitsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, UnitRepositoryAdapterFilters body);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    [Microsoft.AspNetCore.Mvc.Route("api")]
+    public partial class LookupController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private ILookupController implementation;
+    
+        public LookupController(ILookupController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <summary>Get categories via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of categories via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of categories via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/categories/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCategoriesByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] CategoryRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupCategoriesByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get contractors via a lookup</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of contractors via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of contractors via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/contractors")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupContractors(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] LookupRequest body)
+        {
+            return this.implementation.LookupContractorsAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get contractors via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of contractors via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of contractors via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/contractors/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupContractorsByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] ContractorRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupContractorsByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get countries via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of countries via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of countries via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/countries/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCountriesByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] CountryRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupCountriesByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get country divisions via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of country divisions via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of country divisions via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/countryDivisions/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCountryDivisionsByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] CountryDivisionRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupCountryDivisionsByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get currencies via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of currencies via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of currencies via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/currencies/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCurrenciesByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] CurrencyRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupCurrenciesByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get genders via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of genders via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of genders via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/genders/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupGendersByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] GenderRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupGendersByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get list items via a lookup</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of list items via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of list items via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/listitems")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupListItems(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] LookupRequest body)
+        {
+            return this.implementation.LookupListItemsAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get list items via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of list items via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of list items via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/listitems/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupListItemsByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] ListItemRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupListItemsByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get locations via a lookup</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of locations via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of locations via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/locations")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupLocationsResponse>> LookupLocations(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] LookupRequest body)
+        {
+            return this.implementation.LookupLocationsAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get locations via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of locations via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of locations via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/locations/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupLocationsResponse>> LookupLocationsByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] LocationRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupLocationsByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get personRelationshipTypes via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of personRelationshipTypes via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of personRelationshipTypes via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/personRelationshipTypes/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupPersonRelationshipTypesByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] PersonRelationshipTypeRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupPersonRelationshipTypesByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get persons via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of persons via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of persons via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/persons/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupPersonsByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] PersonRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupPersonsByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get roles via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of roles via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of roles via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/roles/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupRolesByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] RoleRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupRolesByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get states via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of states via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of states via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/states/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupStatesByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] StateRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupStatesByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get units via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of units via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of units via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/units/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupUnitsByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] UnitRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupUnitsByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
     public interface IMobileController
     {
         /// <summary>Insert a white listed mobile access token</summary>
@@ -2128,6 +3040,12 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="401">the token does not exist (not authorized to log out)</response>
         /// <returns>token is removed successfully</returns>
         System.Threading.Tasks.Task RemoveMobileTokenAsync(SessionToken body);
+    
+        /// <summary>Mobile endpoint for getting a list of responsibilities available to mobile</summary>
+        /// <response code="200">Raw extract of list item exclusion</response>
+        /// <response code="401">Credientials are invalid.</response>
+        /// <returns>Raw extract of list item exclusion</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<MobileReponsibilities>> GetMobileResponsibilitiesAsync();
     
     }
     
@@ -2174,6 +3092,170 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
             return this.implementation.RemoveMobileTokenAsync(body);
         }
     
+        /// <summary>Mobile endpoint for getting a list of responsibilities available to mobile</summary>
+        /// <response code="200">Raw extract of list item exclusion</response>
+        /// <response code="401">Credientials are invalid.</response>
+        /// <returns>Raw extract of list item exclusion</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("mobile/records/responsibilities")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<MobileReponsibilities>> GetMobileResponsibilities()
+        {
+            return this.implementation.GetMobileResponsibilitiesAsync();
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface IMobileConfigController
+    {
+        /// <summary>Get list exclusion</summary>
+        /// <response code="200">Raw extract of list exclusion</response>
+        /// <returns>Raw extract of list exclusion</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListExclusion>>> GetListExclusionAsync();
+    
+        /// <summary>Get list item Exclusion</summary>
+        /// <response code="200">Raw extract of list item exclusion</response>
+        /// <returns>Raw extract of list item exclusion</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItemExclusion>>> GetListItemExclusionAsync();
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    [Microsoft.AspNetCore.Mvc.Route("api")]
+    public partial class MobileConfigController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private IMobileConfigController implementation;
+    
+        public MobileConfigController(IMobileConfigController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <summary>Get list exclusion</summary>
+        /// <response code="200">Raw extract of list exclusion</response>
+        /// <returns>Raw extract of list exclusion</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("mobile/config/listExclusions")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListExclusion>>> GetListExclusion()
+        {
+            return this.implementation.GetListExclusionAsync();
+        }
+    
+        /// <summary>Get list item Exclusion</summary>
+        /// <response code="200">Raw extract of list item exclusion</response>
+        /// <returns>Raw extract of list item exclusion</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("mobile/config/listItemExclusions")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItemExclusion>>> GetListItemExclusion()
+        {
+            return this.implementation.GetListItemExclusionAsync();
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface INotificationController
+    {
+        /// <summary>Adds a new notification into queue</summary>
+        /// <response code="201">The notification rule dentifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Notification rule not added</response>
+        /// <response code="422">ValidationError</response>
+        /// <returns>The notification rule dentifier</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> AddNotificationRuleAsync(NotificationRule body);
+    
+        /// <summary>updates a notification rule</summary>
+        /// <response code="201">The notification rule identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Notification rule not updated</response>
+        /// <response code="422">ValidationError</response>
+        /// <returns>The notification rule identifier</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> UpdateNotificationRuleAsync(int notificationTriggerId, NotificationRule body);
+    
+        /// <summary>deletes a notification rule</summary>
+        /// <response code="204">Notification Rule has been deleted</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Notification Rule not found</response>
+        /// <returns>Notification Rule has been deleted</returns>
+        System.Threading.Tasks.Task DeleteNotificationRuleAsync(int notificationTriggerId);
+    
+        /// <summary>Returns the notification rules</summary>
+        /// <param name="notificationId">The notification id.</param>
+        /// <param name="notificationTriggerId">The notification trigger id.</param>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Notification rule not found</response>
+        /// <response code="422">ValidationError</response>
+        /// <returns>OK</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<NotificationRules>> GetNotificationRulesAsync(int notificationId, int notificationTriggerId);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    [Microsoft.AspNetCore.Mvc.Route("api")]
+    public partial class NotificationController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private INotificationController implementation;
+    
+        public NotificationController(INotificationController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <summary>Adds a new notification into queue</summary>
+        /// <response code="201">The notification rule dentifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Notification rule not added</response>
+        /// <response code="422">ValidationError</response>
+        /// <returns>The notification rule dentifier</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("notification/addrule")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> AddNotificationRule([Microsoft.AspNetCore.Mvc.FromBody] NotificationRule body)
+        {
+            return this.implementation.AddNotificationRuleAsync(body);
+        }
+    
+        /// <summary>updates a notification rule</summary>
+        /// <response code="201">The notification rule identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Notification rule not updated</response>
+        /// <response code="422">ValidationError</response>
+        /// <returns>The notification rule identifier</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("notification/updaterule/{notificationTriggerId}")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> UpdateNotificationRule(int notificationTriggerId, [Microsoft.AspNetCore.Mvc.FromBody] NotificationRule body)
+        {
+            return this.implementation.UpdateNotificationRuleAsync(notificationTriggerId, body);
+        }
+    
+        /// <summary>deletes a notification rule</summary>
+        /// <response code="204">Notification Rule has been deleted</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Notification Rule not found</response>
+        /// <returns>Notification Rule has been deleted</returns>
+        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("notification/deleterule/{notificationTriggerId}")]
+        public System.Threading.Tasks.Task DeleteNotificationRule(int notificationTriggerId)
+        {
+            return this.implementation.DeleteNotificationRuleAsync(notificationTriggerId);
+        }
+    
+        /// <summary>Returns the notification rules</summary>
+        /// <param name="notificationId">The notification id.</param>
+        /// <param name="notificationTriggerId">The notification trigger id.</param>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Notification rule not found</response>
+        /// <response code="422">ValidationError</response>
+        /// <returns>OK</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("notification/getrules/{notificationId}/{notificationTriggerId}")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<NotificationRules>> GetNotificationRules(int notificationId, int notificationTriggerId)
+        {
+            return this.implementation.GetNotificationRulesAsync(notificationId, notificationTriggerId);
+        }
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
@@ -2205,8 +3287,8 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <param name="loginExpirationDateStart">Start date of range for Expiry Date of the Person</param>
         /// <param name="loginExpirationDateEnd">End date of range for Expiry Date of the Person</param>
         /// <param name="contactPreference">Contact Type of the person email/phone</param>
-        /// <param name="pageNumber">Page Number of the Person</param>
-        /// <param name="pageSize">Page Size of the Person</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
         /// <param name="sortBy">Param for sortBy</param>
         /// <param name="sortOrder">Param for sortOrder</param>
         /// <response code="200">A list of persons founded using provided criteria</response>
@@ -2214,13 +3296,14 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Persons not found</response>
         /// <returns>A list of persons founded using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Person>>> GetPersonsAsync(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PersonsResponse>> GetPersonsAsync(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder);
     
         /// <summary>Updates a person based on person id</summary>
         /// <response code="204">The person was successfully updated</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Persons not found</response>
+        /// <response code="422">ValidationError</response>
         /// <returns>The person was successfully updated</returns>
         System.Threading.Tasks.Task UpdatePersonAsync(UpdatePersonParams body);
     
@@ -2229,6 +3312,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Person not found</response>
+        /// <response code="422">ValidationError</response>
         /// <returns>The new person identifier</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreatePersonAsync(Person body);
     
@@ -2257,13 +3341,23 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <returns>The person was successfully updated</returns>
         System.Threading.Tasks.Task UpdatePersonsPasswordAsync(int personId, FormsAuthPasswordUpdate body);
     
+        /// <summary>Validate the password for the provided user.</summary>
+        /// <response code="200">Password validation result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Persons not found</response>
+        /// <returns>Password validation result</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePersonsPasswordAsync(int personId, FormsAuthPasswordUpdate body);
+    
         /// <summary>Returns the person's personalization based on person id</summary>
+        /// <param name="browserCountryISOCode">Detected user's country ISO Code</param>
+        /// <param name="browserTimeZoneName">Detected user's timezone name</param>
         /// <response code="200">OK</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Person not found</response>
         /// <returns>OK</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalizationAsync(int personId);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalizationAsync(int personId, string browserCountryISOCode, string browserTimeZoneName);
     
         /// <summary>Updates a personalization based on person id</summary>
         /// <response code="204">The person was successfully updated</response>
@@ -2274,14 +3368,24 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         System.Threading.Tasks.Task UpdatePersonPersonalizationAsync(int personId, UpdatePersonalization body);
     
         /// <summary>Returns persons based on name</summary>
-        /// <param name="pageNumber">Page Number of the Person</param>
-        /// <param name="pageSize">Page Size of the Person</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
         /// <response code="200">OK</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Persons not found</response>
         /// <returns>OK</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Person>>> GetPersonsByNameAsync(string name, int? pageNumber, int? pageSize);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PersonsResponse>> GetPersonsByNameAsync(string name, int? pageNumber, int? pageSize);
+    
+        /// <summary>Validate person attributes</summary>
+        /// <param name="ruleSet">the array of rule set we need validate on person</param>
+        /// <response code="204">validation succcess without errors</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Person not found</response>
+        /// <response code="422">ValidationError</response>
+        /// <returns>validation succcess without errors</returns>
+        System.Threading.Tasks.Task ValidatePersonAsync(System.Collections.Generic.IEnumerable<PersonValidationRuleSet> ruleSet, Person body);
     
     }
     
@@ -2322,8 +3426,8 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <param name="loginExpirationDateStart">Start date of range for Expiry Date of the Person</param>
         /// <param name="loginExpirationDateEnd">End date of range for Expiry Date of the Person</param>
         /// <param name="contactPreference">Contact Type of the person email/phone</param>
-        /// <param name="pageNumber">Page Number of the Person</param>
-        /// <param name="pageSize">Page Size of the Person</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
         /// <param name="sortBy">Param for sortBy</param>
         /// <param name="sortOrder">Param for sortOrder</param>
         /// <response code="200">A list of persons founded using provided criteria</response>
@@ -2332,7 +3436,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="404">Persons not found</response>
         /// <returns>A list of persons founded using provided criteria</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Person>>> GetPersons(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PersonsResponse>> GetPersons(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder)
         {
             return this.implementation.GetPersonsAsync(employmentStatus, displayName, location, emailAddress, firstName, lastName, countryDivision, country, relationshipToCompany, contractingCompany, customerName, supervisor, startDateStart, startDateEnd, endDateStart, endDateEnd, currentPositionStartDateStart, currentPositionStartDateEnd, employeeID, currentPosition, loginAccessRequired, username, loginExpirationDateStart, loginExpirationDateEnd, contactPreference, pageNumber, pageSize, sortBy, sortOrder);
         }
@@ -2342,6 +3446,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Persons not found</response>
+        /// <response code="422">ValidationError</response>
         /// <returns>The person was successfully updated</returns>
         [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("persons")]
         public System.Threading.Tasks.Task UpdatePerson([Microsoft.AspNetCore.Mvc.FromBody] UpdatePersonParams body)
@@ -2354,6 +3459,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Person not found</response>
+        /// <response code="422">ValidationError</response>
         /// <returns>The new person identifier</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("persons")]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreatePerson([Microsoft.AspNetCore.Mvc.FromBody] Person body)
@@ -2398,16 +3504,30 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
             return this.implementation.UpdatePersonsPasswordAsync(personId, body);
         }
     
+        /// <summary>Validate the password for the provided user.</summary>
+        /// <response code="200">Password validation result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Persons not found</response>
+        /// <returns>Password validation result</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("persons/{personId}/validatePassword")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePersonsPassword(int personId, [Microsoft.AspNetCore.Mvc.FromBody] FormsAuthPasswordUpdate body)
+        {
+            return this.implementation.ValidatePersonsPasswordAsync(personId, body);
+        }
+    
         /// <summary>Returns the person's personalization based on person id</summary>
+        /// <param name="browserCountryISOCode">Detected user's country ISO Code</param>
+        /// <param name="browserTimeZoneName">Detected user's timezone name</param>
         /// <response code="200">OK</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Person not found</response>
         /// <returns>OK</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons/{personId}/personalization")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalization(int personId)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalization(int personId, string browserCountryISOCode, string browserTimeZoneName)
         {
-            return this.implementation.GetPersonPersonalizationAsync(personId);
+            return this.implementation.GetPersonPersonalizationAsync(personId, browserCountryISOCode, browserTimeZoneName);
         }
     
         /// <summary>Updates a personalization based on person id</summary>
@@ -2423,17 +3543,285 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         }
     
         /// <summary>Returns persons based on name</summary>
-        /// <param name="pageNumber">Page Number of the Person</param>
-        /// <param name="pageSize">Page Size of the Person</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
         /// <response code="200">OK</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Persons not found</response>
         /// <returns>OK</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons/search/{name}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Person>>> GetPersonsByName(string name, int? pageNumber, int? pageSize)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PersonsResponse>> GetPersonsByName(string name, int? pageNumber, int? pageSize)
         {
             return this.implementation.GetPersonsByNameAsync(name, pageNumber, pageSize);
+        }
+    
+        /// <summary>Validate person attributes</summary>
+        /// <param name="ruleSet">the array of rule set we need validate on person</param>
+        /// <response code="204">validation succcess without errors</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Person not found</response>
+        /// <response code="422">ValidationError</response>
+        /// <returns>validation succcess without errors</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("persons/validate")]
+        public System.Threading.Tasks.Task ValidatePerson(System.Collections.Generic.IEnumerable<PersonValidationRuleSet> ruleSet, [Microsoft.AspNetCore.Mvc.FromBody] Person body)
+        {
+            return this.implementation.ValidatePersonAsync(ruleSet, body);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface IRecordController
+    {
+        /// <summary>Create a new record.</summary>
+        /// <param name="productId">The id of the configuration product to create the record under.</param>
+        /// <response code="200">The records entity data.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The records entity data.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> CreateEntityDataAsync(int productId, System.IO.Stream body);
+    
+        /// <summary>Get a records entity data.</summary>
+        /// <param name="productId">The id of the configuration product to get the record from.</param>
+        /// <param name="recordId">The id of the  record.</param>
+        /// <response code="200">The records entity data.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Record not found</response>
+        /// <returns>The records entity data.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetEntityDataAsync(int productId, int recordId);
+    
+        /// <summary>Update a records entity data.</summary>
+        /// <param name="productId">The id of the configuration product to update the record.</param>
+        /// <param name="recordId">The id of the  record.</param>
+        /// <response code="200">The records entity data.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Record not found</response>
+        /// <returns>The records entity data.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> UpdateEntityDataAsync(int productId, int recordId, System.IO.Stream body);
+    
+        /// <summary>Deletes a records.</summary>
+        /// <param name="productId">The id of the configuration product for the record.</param>
+        /// <param name="recordId">The id of therecord.</param>
+        /// <response code="204">The records was successfully deleted</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Record not found</response>
+        /// <returns>The records was successfully deleted</returns>
+        System.Threading.Tasks.Task DeleteRecordAsync(int productId, int recordId);
+    
+        /// <summary>Get the product records for a view.</summary>
+        /// <param name="productId">The id of the configuration product to get records for.</param>
+        /// <response code="200">The product records to include in a view.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The product records to include in a view.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductRecordsAsync(int productId, System.IO.Stream body);
+    
+        /// <summary>Get the product records for a view.</summary>
+        /// <param name="productId">The id of the configuration product to get records for.</param>
+        /// <param name="viewId">The id of the view to get product records for.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <param name="body">The non default filters applied along with the view filters</param>
+        /// <response code="200">The product records to include in a view.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The product records to include in a view.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductRecordsForViewAsync(int productId, int viewId, int? pageNumber, int? pageSize, string sortBy, string sortOrder, System.IO.Stream body);
+    
+        /// <summary>Get a list of archived product records.</summary>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">The applicable archived product records.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The applicable archived product records.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ArchivedRecordResponse>> SearchArchivedRecordsAsync(int? pageNumber, int? pageSize, string sortBy, string sortOrder, ArchivedRecordSearchParams body);
+    
+        /// <summary>Restore a set of archived product records and their children</summary>
+        /// <response code="204">The achived records were successfully restored.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The achived records were successfully restored.</returns>
+        System.Threading.Tasks.Task RestoreArchivedRecordsAsync(System.Collections.Generic.IEnumerable<ArchivedRecordIds> body);
+    
+        /// <summary>Permanently delete a set of archived product records and their children.</summary>
+        /// <response code="204">The achived records were successfully deleted.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The achived records were successfully deleted.</returns>
+        System.Threading.Tasks.Task DeleteArchivedRecordsAsync(System.Collections.Generic.IEnumerable<ArchivedRecordIds> body);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    [Microsoft.AspNetCore.Mvc.Route("api")]
+    public partial class RecordController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private IRecordController implementation;
+    
+        public RecordController(IRecordController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <summary>Create a new record.</summary>
+        /// <param name="productId">The id of the configuration product to create the record under.</param>
+        /// <response code="200">The records entity data.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The records entity data.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("records/{productId}/data")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> CreateEntityData(int productId, [Microsoft.AspNetCore.Mvc.FromBody] System.IO.Stream body)
+        {
+            return this.implementation.CreateEntityDataAsync(productId, body);
+        }
+    
+        /// <summary>Get a records entity data.</summary>
+        /// <param name="productId">The id of the configuration product to get the record from.</param>
+        /// <param name="recordId">The id of the  record.</param>
+        /// <response code="200">The records entity data.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Record not found</response>
+        /// <returns>The records entity data.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("records/{productId}/{recordId}/data")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetEntityData(int productId, int recordId)
+        {
+            return this.implementation.GetEntityDataAsync(productId, recordId);
+        }
+    
+        /// <summary>Update a records entity data.</summary>
+        /// <param name="productId">The id of the configuration product to update the record.</param>
+        /// <param name="recordId">The id of the  record.</param>
+        /// <response code="200">The records entity data.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Record not found</response>
+        /// <returns>The records entity data.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("records/{productId}/{recordId}/data")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> UpdateEntityData(int productId, int recordId, [Microsoft.AspNetCore.Mvc.FromBody] System.IO.Stream body)
+        {
+            return this.implementation.UpdateEntityDataAsync(productId, recordId, body);
+        }
+    
+        /// <summary>Deletes a records.</summary>
+        /// <param name="productId">The id of the configuration product for the record.</param>
+        /// <param name="recordId">The id of therecord.</param>
+        /// <response code="204">The records was successfully deleted</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Record not found</response>
+        /// <returns>The records was successfully deleted</returns>
+        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("records/{productId}/{recordId}/data")]
+        public System.Threading.Tasks.Task DeleteRecord(int productId, int recordId)
+        {
+            return this.implementation.DeleteRecordAsync(productId, recordId);
+        }
+    
+        /// <summary>Get the product records for a view.</summary>
+        /// <param name="productId">The id of the configuration product to get records for.</param>
+        /// <response code="200">The product records to include in a view.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The product records to include in a view.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("records/{productId}/search/raw")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductRecords(int productId, [Microsoft.AspNetCore.Mvc.FromBody] System.IO.Stream body)
+        {
+            return this.implementation.GetProductRecordsAsync(productId, body);
+        }
+    
+        /// <summary>Get the product records for a view.</summary>
+        /// <param name="productId">The id of the configuration product to get records for.</param>
+        /// <param name="viewId">The id of the view to get product records for.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <param name="body">The non default filters applied along with the view filters</param>
+        /// <response code="200">The product records to include in a view.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The product records to include in a view.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("records/{productId}/search/view/{viewId}/raw")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductRecordsForView(int productId, int viewId, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] System.IO.Stream body)
+        {
+            return this.implementation.GetProductRecordsForViewAsync(productId, viewId, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get a list of archived product records.</summary>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">The applicable archived product records.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The applicable archived product records.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("records/archived/search")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ArchivedRecordResponse>> SearchArchivedRecords(int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] ArchivedRecordSearchParams body)
+        {
+            return this.implementation.SearchArchivedRecordsAsync(pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Restore a set of archived product records and their children</summary>
+        /// <response code="204">The achived records were successfully restored.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The achived records were successfully restored.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("records/archived/restore")]
+        public System.Threading.Tasks.Task RestoreArchivedRecords([Microsoft.AspNetCore.Mvc.FromBody] System.Collections.Generic.IEnumerable<ArchivedRecordIds> body)
+        {
+            return this.implementation.RestoreArchivedRecordsAsync(body);
+        }
+    
+        /// <summary>Permanently delete a set of archived product records and their children.</summary>
+        /// <response code="204">The achived records were successfully deleted.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The achived records were successfully deleted.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("records/archived/delete")]
+        public System.Threading.Tasks.Task DeleteArchivedRecords([Microsoft.AspNetCore.Mvc.FromBody] System.Collections.Generic.IEnumerable<ArchivedRecordIds> body)
+        {
+            return this.implementation.DeleteArchivedRecordsAsync(body);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface IMetadataController
+    {
+        /// <response code="200">current version of API</response>
+        /// <returns>current version of API</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetversionAsync();
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    [Microsoft.AspNetCore.Mvc.Route("api")]
+    public partial class MetadataController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private IMetadataController implementation;
+    
+        public MetadataController(IMetadataController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <response code="200">current version of API</response>
+        /// <returns>current version of API</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("meta/version")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> Getversion()
+        {
+            return this.implementation.GetversionAsync();
         }
     
     }
@@ -2472,8 +3860,12 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     public partial class RequestErrorDetail 
     {
         /// <summary>The error code if existed</summary>
-        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Code { get; set; }
+        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Code { get; set; }
+    
+        /// <summary>The error id / attribute id</summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Id { get; set; }
     
         /// <summary>The error name / attribute name</summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2535,19 +3927,57 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ResponseList 
+    {
+        /// <summary>Total count of items in this response set. If this response is
+        /// paginated, then the length of the `items` array will be less than or
+        /// equal to the `totalCount`.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("totalCount", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalCount { get; set; }
+    
+        /// <summary>The data point to sort on.</summary>
+        [Newtonsoft.Json.JsonProperty("sortOrder", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SortOrder { get; set; }
+    
+        /// <summary>The direction to apply the sorting.</summary>
+        [Newtonsoft.Json.JsonProperty("sortDirection", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SortDirection { get; set; }
+    
+        /// <summary>The current page number.</summary>
+        [Newtonsoft.Json.JsonProperty("pageNumber", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int PageNumber { get; set; }
+    
+        /// <summary>The number of items available on a given page.</summary>
+        [Newtonsoft.Json.JsonProperty("pageSize", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int PageSize { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ResponseList FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseList>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Account 
     {
         /// <summary>The unique account id</summary>
-        [Newtonsoft.Json.JsonProperty("accountId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? AccountId { get; set; }
+        [Newtonsoft.Json.JsonProperty("accountId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int AccountId { get; set; }
     
         /// <summary>The external account id</summary>
         [Newtonsoft.Json.JsonProperty("externalAccountId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Guid? ExternalAccountId { get; set; }
     
-        /// <summary>The account identifier</summary>
-        [Newtonsoft.Json.JsonProperty("accountIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string AccountIdentifier { get; set; }
+        /// <summary>The company domain</summary>
+        [Newtonsoft.Json.JsonProperty("companyDomain", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CompanyDomain { get; set; }
     
         /// <summary>The name of the account</summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2573,6 +4003,10 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         [Newtonsoft.Json.JsonProperty("disableMachineTranslations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? DisableMachineTranslations { get; set; }
     
+        /// <summary>Enables a system notification.</summary>
+        [Newtonsoft.Json.JsonProperty("enableSystemNotifications", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? EnableSystemNotifications { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -2592,9 +4026,9 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         [Newtonsoft.Json.JsonProperty("accountId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int AccountId { get; set; }
     
-        /// <summary>The account identifier</summary>
-        [Newtonsoft.Json.JsonProperty("accountIdentifier", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string AccountIdentifier { get; set; }
+        /// <summary>The company domain</summary>
+        [Newtonsoft.Json.JsonProperty("companyDomain", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CompanyDomain { get; set; }
     
         /// <summary>The obscured username of the user.</summary>
         [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2728,8 +4162,8 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public string Password { get; set; }
     
         /// <summary>The forgot password key</summary>
-        [Newtonsoft.Json.JsonProperty("forgotPasswordKey", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Guid? ForgotPasswordKey { get; set; }
+        [Newtonsoft.Json.JsonProperty("forgotPasswordKey", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ForgotPasswordKey { get; set; }
     
         public string ToJson() 
         {
@@ -2739,6 +4173,29 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public static FormsAuthPasswordUpdate FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthPasswordUpdate>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormsAuthState 
+    {
+        /// <summary>Whether the user is required to change their password or not.</summary>
+        [Newtonsoft.Json.JsonProperty("passwordChangeRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool PasswordChangeRequired { get; set; }
+    
+        /// <summary>Whether the user is locked</summary>
+        [Newtonsoft.Json.JsonProperty("isLocked", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsLocked { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormsAuthState FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthState>(data);
         }
     
     }
@@ -2778,7 +4235,7 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <summary>The forgot password key</summary>
         [Newtonsoft.Json.JsonProperty("forgotPasswordKey", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Guid ForgotPasswordKey { get; set; }
+        public string ForgotPasswordKey { get; set; }
     
         public string ToJson() 
         {
@@ -2865,6 +4322,10 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class FormsAuthCrediential 
     {
+        /// <summary>Unique identifier for the customer account</summary>
+        [Newtonsoft.Json.JsonProperty("accountId", Required = Newtonsoft.Json.Required.Always)]
+        public int AccountId { get; set; }
+    
         /// <summary>The username</summary>
         [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -2894,6 +4355,18 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Always)]
         public int PersonId { get; set; }
     
+        /// <summary>The id of the language for the current user.</summary>
+        [Newtonsoft.Json.JsonProperty("languageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LanguageId { get; set; }
+    
+        /// <summary>The display of the person being authenticated.</summary>
+        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DisplayName { get; set; }
+    
+        /// <summary>The email of the person being authenticated.</summary>
+        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Email { get; set; }
+    
         /// <summary>Whether the user is required to change their password or not.</summary>
         [Newtonsoft.Json.JsonProperty("passwordChangeRequired", Required = Newtonsoft.Json.Required.Always)]
         public bool PasswordChangeRequired { get; set; }
@@ -2914,6 +4387,71 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public static FormsAuthVerificationResult FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthVerificationResult>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormsAuthKey 
+    {
+        /// <summary>The forms auth key used to ensure only the specific user is performing an authentication action prior to full authentication.</summary>
+        [Newtonsoft.Json.JsonProperty("key", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Key { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormsAuthKey FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthKey>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class SsoAuthCrediential 
+    {
+        /// <summary>The connection name that maps to the account.</summary>
+        [Newtonsoft.Json.JsonProperty("ssoConnection", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SsoConnection { get; set; }
+    
+        /// <summary>The serialized SSO user information.</summary>
+        [Newtonsoft.Json.JsonProperty("ssoLoginUser", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SsoLoginUser { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static SsoAuthCrediential FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SsoAuthCrediential>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class SsoAuthVerificationResult 
+    {
+        /// <summary>The id of the account the person is authenticated against.</summary>
+        [Newtonsoft.Json.JsonProperty("accountId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int AccountId { get; set; }
+    
+        /// <summary>The id of the person being authenticated.</summary>
+        [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int PersonId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static SsoAuthVerificationResult FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SsoAuthVerificationResult>(data);
         }
     
     }
@@ -3184,6 +4722,44 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LookupFilterConfig 
+    {
+        /// <summary>The binding name the filter is being applied to.</summary>
+        [Newtonsoft.Json.JsonProperty("binding", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Binding { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("operation", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LookupFilterOperation? Operation { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LookupFilterConfig FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LookupFilterConfig>(data);
+        }
+    
+    }
+    
+    /// <summary>The filter operation being performed.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum LookupFilterOperation
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"Equals")]
+        Equals = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"NotEquals")]
+        NotEquals = 1,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Hierarchy 
     {
         /// <summary>The Hierarchy name</summary>
@@ -3197,6 +4773,10 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <summary>The hierarchy identifier</summary>
         [Newtonsoft.Json.JsonProperty("HierarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? HierarchyId { get; set; }
+    
+        /// <summary>The hierarchy root group identifier</summary>
+        [Newtonsoft.Json.JsonProperty("RootLocationGroupID", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RootLocationGroupID { get; set; }
     
         public string ToJson() 
         {
@@ -3344,6 +4924,14 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         [Newtonsoft.Json.JsonProperty("TranslatedText", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string TranslatedText { get; set; }
     
+        /// <summary>Id of the Translation Request</summary>
+        [Newtonsoft.Json.JsonProperty("TranslationRequestID", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TranslationRequestID { get; set; }
+    
+        /// <summary>Original Text</summary>
+        [Newtonsoft.Json.JsonProperty("DefaultText", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DefaultText { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -3402,6 +4990,37 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public static UpdateSentTranslationRequests FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateSentTranslationRequests>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class TimeZoneList 
+    {
+        /// <summary>Timezone Id</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TimeZoneId { get; set; }
+    
+        /// <summary>Timezone Name</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TimeZoneName { get; set; }
+    
+        /// <summary>Timezone Description</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TimeZoneDescription { get; set; }
+    
+        /// <summary>Timezone Offset</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneOffset", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? TimeZoneOffset { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static TimeZoneList FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<TimeZoneList>(data);
         }
     
     }
@@ -3661,9 +5280,9 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public LocationType LocationType { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("locationStatus", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("locationStatus", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public LocationStatus LocationStatus { get; set; }
+        public LocationStatus? LocationStatus { get; set; }
     
         /// <summary>The location parent identifiers</summary>
         [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3673,6 +5292,10 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         [Newtonsoft.Json.JsonProperty("hierarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? HierarchyId { get; set; }
     
+        /// <summary>The level of the node on hierarchy</summary>
+        [Newtonsoft.Json.JsonProperty("level", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Level { get; set; }
+    
         /// <summary>The location path</summary>
         [Newtonsoft.Json.JsonProperty("paths", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IList<string> Paths { get; set; }
@@ -3680,6 +5303,10 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         /// <summary>The available status for Location List</summary>
         [Newtonsoft.Json.JsonProperty("isAvailable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? IsAvailable { get; set; }
+    
+        /// <summary>The partial available status for Location List</summary>
+        [Newtonsoft.Json.JsonProperty("isPartialAvailable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsPartialAvailable { get; set; }
     
         /// <summary>The SIC code</summary>
         [Newtonsoft.Json.JsonProperty("sicCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -4144,6 +5771,643 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LookupRequest 
+    {
+        [Newtonsoft.Json.JsonProperty("context", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ConfigurationContext Context { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("filters", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<LookupFilterConfig> Filters { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LookupRequest FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LookupRequest>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LookupItem 
+    {
+        /// <summary>The unique id of the lookup item.</summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        public int Id { get; set; }
+    
+        /// <summary>The optional parent id of the lookup item.</summary>
+        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ParentId { get; set; }
+    
+        /// <summary>The display value of the lookup item.</summary>
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Value { get; set; }
+    
+        /// <summary>The optional secondary display value of the lookup item.</summary>
+        [Newtonsoft.Json.JsonProperty("secondaryValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SecondaryValue { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LookupItem FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LookupItem>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LookupResponse : ResponseList
+    {
+        [Newtonsoft.Json.JsonProperty("records", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<LookupItem> Records { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LookupResponse FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LookupResponse>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LookupLocationsResponse : ResponseList
+    {
+        [Newtonsoft.Json.JsonProperty("records", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<LocationLookupItem> Records { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LookupLocationsResponse FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LookupLocationsResponse>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CategoryRepositoryAdapterFilters 
+    {
+        /// <summary>Filter to optionally include categories of a specific configuration product.</summary>
+        [Newtonsoft.Json.JsonProperty("configurationProductId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ConfigurationProductId { get; set; }
+    
+        /// <summary>Filter to optionally include a specific category.</summary>
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CategoryId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static CategoryRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CategoryRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ContractorRepositoryAdapterFilters 
+    {
+        /// <summary>The unique id of the contrator to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("contractorId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ContractorId { get; set; }
+    
+        /// <summary>The status to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("statusId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StatusId { get; set; }
+    
+        /// <summary>The list of contrator types to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("types", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> Types { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ContractorRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ContractorRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CountryRepositoryAdapterFilters 
+    {
+        /// <summary>Temporary property to make CountryRepositoryAdapterFilters type</summary>
+        [Newtonsoft.Json.JsonProperty("countryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CountryId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static CountryRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CountryRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CountryDivisionRepositoryAdapterFilters 
+    {
+        /// <summary>The unique identifier of the parent country.</summary>
+        [Newtonsoft.Json.JsonProperty("countryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CountryId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static CountryDivisionRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CountryDivisionRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CurrencyRepositoryAdapterFilters 
+    {
+        /// <summary>Filter to optionally include only the default currency</summary>
+        [Newtonsoft.Json.JsonProperty("isDefault", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsDefault { get; set; }
+    
+        /// <summary>The list of ids of currencies to optionally include.</summary>
+        [Newtonsoft.Json.JsonProperty("includeCurrencyIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> IncludeCurrencyIds { get; set; }
+    
+        /// <summary>The list of ids of currencies to optionally exclude.</summary>
+        [Newtonsoft.Json.JsonProperty("excludeCurrencyIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> ExcludeCurrencyIds { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static CurrencyRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CurrencyRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class GenderRepositoryAdapterFilters 
+    {
+        /// <summary>Temporary property to make GenderRepositoryAdapterFilters type</summary>
+        [Newtonsoft.Json.JsonProperty("genderId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? GenderId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static GenderRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<GenderRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ListItemRepositoryAdapterFilters 
+    {
+        /// <summary>The list id to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("listId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ListId { get; set; }
+    
+        /// <summary>The location id to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("locationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LocationId { get; set; }
+    
+        /// <summary>The list of ids of list items to optionally include.</summary>
+        [Newtonsoft.Json.JsonProperty("includeListItemIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> IncludeListItemIds { get; set; }
+    
+        /// <summary>The list of ids of list items to optionally exclude.</summary>
+        [Newtonsoft.Json.JsonProperty("excludeListItemIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> ExcludeListItemIds { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ListItemRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListItemRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LocationRepositoryAdapterFilters 
+    {
+        /// <summary>The unique id for the location within its type.</summary>
+        [Newtonsoft.Json.JsonProperty("locationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LocationId { get; set; }
+    
+        /// <summary>The id of the hierarchy to optionally limit locations to.</summary>
+        [Newtonsoft.Json.JsonProperty("hierarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? HierarchyId { get; set; }
+    
+        /// <summary>The id of the parent location group to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ParentId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LocationType? LocationType { get; set; }
+    
+        /// <summary>The list of location statuses to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("locationStatuses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> LocationStatuses { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LocationRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LocationRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class PersonRelationshipTypeRepositoryAdapterFilters 
+    {
+        /// <summary>The list of ids of person relationship types to optionally include.</summary>
+        [Newtonsoft.Json.JsonProperty("includePersonRelationshipTypeIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> IncludePersonRelationshipTypeIds { get; set; }
+    
+        /// <summary>The list of ids of person relationship types to optionally exclude.</summary>
+        [Newtonsoft.Json.JsonProperty("excludePersonRelationshipTypeIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> ExcludePersonRelationshipTypeIds { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static PersonRelationshipTypeRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PersonRelationshipTypeRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class PersonRepositoryAdapterFilters 
+    {
+        /// <summary>The id of the person optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PersonId { get; set; }
+    
+        /// <summary>The id of the person to optional filter to the people report to them.</summary>
+        [Newtonsoft.Json.JsonProperty("reportsTo", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ReportsTo { get; set; }
+    
+        /// <summary>The id of the person to optional filter to the person who supervises them.</summary>
+        [Newtonsoft.Json.JsonProperty("supervises", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Supervises { get; set; }
+    
+        /// <summary>Optionally filter by whether the person has login access.</summary>
+        [Newtonsoft.Json.JsonProperty("hasLoginAccess", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HasLoginAccess { get; set; }
+    
+        /// <summary>Optionally filter to people who are members of a specific group.</summary>
+        [Newtonsoft.Json.JsonProperty("memberOf", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string MemberOf { get; set; }
+    
+        /// <summary>The id of the location to optional filter to people who have that location set.</summary>
+        [Newtonsoft.Json.JsonProperty("locationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LocationId { get; set; }
+    
+        /// <summary>The id of the relationship type to optionally filter people by.</summary>
+        [Newtonsoft.Json.JsonProperty("relationshipTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RelationshipTypeId { get; set; }
+    
+        /// <summary>The list of person statuses to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("personStatuses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> PersonStatuses { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static PersonRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PersonRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class RoleRepositoryAdapterFilters 
+    {
+        /// <summary>The specific role to filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("roleId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RoleId { get; set; }
+    
+        /// <summary>The unique id of the role type to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("roleTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RoleTypeId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static RoleRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RoleRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class StateRepositoryAdapterFilters 
+    {
+        /// <summary>Filter to optionally include state of a specific configuration product.</summary>
+        [Newtonsoft.Json.JsonProperty("configurationProductId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ConfigurationProductId { get; set; }
+    
+        /// <summary>Filter to optionally include states of a specific category.</summary>
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CategoryId { get; set; }
+    
+        /// <summary>Filter to optionally include a specific state.</summary>
+        [Newtonsoft.Json.JsonProperty("stateId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StateId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static StateRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<StateRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UnitRepositoryAdapterFilters 
+    {
+        /// <summary>The id of the unit system to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("unitSystem", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? UnitSystem { get; set; }
+    
+        /// <summary>The list of ids of unit types to optionally include.</summary>
+        [Newtonsoft.Json.JsonProperty("unitTypes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> UnitTypes { get; set; }
+    
+        /// <summary>Filter to optionally include only base units.</summary>
+        [Newtonsoft.Json.JsonProperty("isBase", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsBase { get; set; }
+    
+        /// <summary>The scale of the units to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("unitScale", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string UnitScale { get; set; }
+    
+        /// <summary>The list of ids of units to optionally include.</summary>
+        [Newtonsoft.Json.JsonProperty("includeUnitIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> IncludeUnitIds { get; set; }
+    
+        /// <summary>The list of ids of units to optionally exclude.</summary>
+        [Newtonsoft.Json.JsonProperty("excludeUnitIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> ExcludeUnitIds { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UnitRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UnitRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LocationLookupItem 
+    {
+        /// <summary>The hierarchy the location is represented in.</summary>
+        [Newtonsoft.Json.JsonProperty("hierarchyId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int HierarchyId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LocationType LocationType { get; set; }
+    
+        /// <summary>The unique id of the location for the type.</summary>
+        [Newtonsoft.Json.JsonProperty("locationId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int LocationId { get; set; }
+    
+        /// <summary>The unique id of the parent location group.</summary>
+        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ParentId { get; set; }
+    
+        /// <summary>The display name of the location.</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>The path for the location with in the hierarchy.</summary>
+        [Newtonsoft.Json.JsonProperty("path", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Path { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LocationLookupItem FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LocationLookupItem>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ListExclusion 
+    {
+        [Newtonsoft.Json.JsonProperty("ListExclusionId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ListExclusionId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ListId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ListId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LocationGroupId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LocationGroupId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LocationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LocationId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ListExclusion FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListExclusion>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ListItemExclusion 
+    {
+        [Newtonsoft.Json.JsonProperty("ListItemExclusionId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ListItemExclusionId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ListItemId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ListItemId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LocationGroupId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LocationGroupId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LocationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LocationId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ListItemExclusion FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListItemExclusion>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class MobileReponsibilities 
+    {
+        [Newtonsoft.Json.JsonProperty("ProductResponsibilities", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<ProductResponsibilities> ProductResponsibilities { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static MobileReponsibilities FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<MobileReponsibilities>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ProductResponsibilities 
+    {
+        [Newtonsoft.Json.JsonProperty("ConfigurationProductId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ConfigurationProductId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("RecordIds", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> RecordIds { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ProductResponsibilities FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProductResponsibilities>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class NotificationRule 
+    {
+        [Newtonsoft.Json.JsonProperty("notificationId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int NotificationId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("deliveryMethodId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int DeliveryMethodId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("sendToAllEmployees", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? SendToAllEmployees { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("daysValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? DaysValue { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("effectiveDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? EffectiveDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("applicability", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Applicability Applicability { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("recipients", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Recipients Recipients { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("filterCriteria", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public FilterCriteria FilterCriteria { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static NotificationRule FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<NotificationRule>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class NotificationRules 
+    {
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<NotificationRule> Items { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static NotificationRules FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<NotificationRules>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Person 
     {
         [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -4288,6 +6552,25 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class PersonsResponse : ResponseList
+    {
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IList<Person> Items { get; set; } = new System.Collections.Generic.List<Person>();
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static PersonsResponse FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PersonsResponse>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class UpdatePersonParams 
     {
         [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -4350,9 +6633,6 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         [Newtonsoft.Json.JsonProperty("postalCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PostalCode { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("languageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? LanguageId { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("relationshipTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? RelationshipTypeId { get; set; }
     
@@ -4389,9 +6669,6 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         [Newtonsoft.Json.JsonProperty("expiryDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? ExpiryDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("personDetails", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string PersonDetails { get; set; }
-    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -4400,6 +6677,282 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         public static UpdatePersonParams FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdatePersonParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum PersonValidationRuleSet
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"Personal")]
+        Personal = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Employment")]
+        Employment = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Login")]
+        Login = 2,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class BaseContractingCompany 
+    {
+        /// <summary>The unique identifier for the contracting company</summary>
+        [Newtonsoft.Json.JsonProperty("contractingCompanyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ContractingCompanyId { get; set; }
+    
+        /// <summary>The display name of the company</summary>
+        [Newtonsoft.Json.JsonProperty("companyName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CompanyName { get; set; }
+    
+        /// <summary>The description of the company</summary>
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        /// <summary>The company's status in the system</summary>
+        [Newtonsoft.Json.JsonProperty("statusId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StatusId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("phoneNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PhoneNumber { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("address", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Address { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("city", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string City { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("countryDivisionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CountryDivisionId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("countryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CountryId { get; set; }
+    
+        /// <summary>The zip code portion of the companys address</summary>
+        [Newtonsoft.Json.JsonProperty("zipCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ZipCode { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static BaseContractingCompany FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<BaseContractingCompany>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ContractingCompany : BaseContractingCompany
+    {
+        /// <summary>The list of company's type</summary>
+        [Newtonsoft.Json.JsonProperty("contractorTypes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> ContractorTypes { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ContractingCompany FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ContractingCompany>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdateContractingCompanyParams : BaseContractingCompany
+    {
+        /// <summary>The list of company's type to add</summary>
+        [Newtonsoft.Json.JsonProperty("addContractorTypes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> AddContractorTypes { get; set; }
+    
+        /// <summary>The list of company's type to remove</summary>
+        [Newtonsoft.Json.JsonProperty("deleteContractorTypes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> DeleteContractorTypes { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdateContractingCompanyParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateContractingCompanyParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ContractingCompaniesResponse : ResponseList
+    {
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IList<ContractingCompany> Items { get; set; } = new System.Collections.Generic.List<ContractingCompany>();
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ContractingCompaniesResponse FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ContractingCompaniesResponse>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ConfigurationContext 
+    {
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IDictionary<string, string> Data { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ConfigurationContext FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ConfigurationContext>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ArchivedRecord 
+    {
+        /// <summary>The unique id of the archived record.</summary>
+        [Newtonsoft.Json.JsonProperty("recordArchiveID", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RecordArchiveID { get; set; }
+    
+        /// <summary>The parent of the archived record.</summary>
+        [Newtonsoft.Json.JsonProperty("parentRecordArchiveId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ParentRecordArchiveId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Value Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ArchivedRecord FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ArchivedRecord>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ArchivedRecordSearchParams 
+    {
+        /// <summary>The parent of the record archive ID.</summary>
+        [Newtonsoft.Json.JsonProperty("parentRecordArchiveId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ParentRecordArchiveId { get; set; }
+    
+        /// <summary>Filter to only include records created after the provided date.</summary>
+        [Newtonsoft.Json.JsonProperty("startDateCreated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTimeOffset? StartDateCreated { get; set; }
+    
+        /// <summary>Filter to only include records created prior to the provided date.</summary>
+        [Newtonsoft.Json.JsonProperty("endDateCreated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTimeOffset? EndDateCreated { get; set; }
+    
+        /// <summary>Filter to only include records deleted after the provided date.</summary>
+        [Newtonsoft.Json.JsonProperty("startDateDeleted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTimeOffset? StartDateDeleted { get; set; }
+    
+        /// <summary>Filter to only include records deleted prior to the provided date.</summary>
+        [Newtonsoft.Json.JsonProperty("endDateDeleted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTimeOffset? EndDateDeleted { get; set; }
+    
+        /// <summary>The list of categories to include deleted records from.</summary>
+        [Newtonsoft.Json.JsonProperty("categoryFilters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> CategoryFilters { get; set; }
+    
+        /// <summary>The list of locations to include deleted records from.</summary>
+        [Newtonsoft.Json.JsonProperty("locationFilters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> LocationFilters { get; set; }
+    
+        /// <summary>Limit the results to only those deleted by this person.</summary>
+        [Newtonsoft.Json.JsonProperty("deletedById", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? DeletedById { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ArchivedRecordSearchParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ArchivedRecordSearchParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ArchivedRecordIds 
+    {
+        /// <summary>The unique id of the archived record to modify.</summary>
+        [Newtonsoft.Json.JsonProperty("recordArchiveId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int RecordArchiveId { get; set; }
+    
+        /// <summary>The unique id of the child archived record to modify.</summary>
+        [Newtonsoft.Json.JsonProperty("childRecordArchiveIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> ChildRecordArchiveIds { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ArchivedRecordIds FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ArchivedRecordIds>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdateArchivedRecords : System.Collections.ObjectModel.Collection<ArchivedRecordIds>
+    {
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdateArchivedRecords FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateArchivedRecords>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ArchivedRecordResponse : ResponseList
+    {
+        [Newtonsoft.Json.JsonProperty("records", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<ArchivedRecord> Records { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ArchivedRecordResponse FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ArchivedRecordResponse>(data);
         }
     
     }
@@ -4424,6 +6977,117 @@ namespace VelocityEhs.Service.InternalApi.Ehs.InstanceApi.Controllers
         [System.Runtime.Serialization.EnumMember(Value = @"phone")]
         Phone = 1,
     
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Applicability 
+    {
+        [Newtonsoft.Json.JsonProperty("heirarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? HeirarchyId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> Locations { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationGroups", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> LocationGroups { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Applicability FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Applicability>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Recipients 
+    {
+        [Newtonsoft.Json.JsonProperty("persons", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> Persons { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("roles", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> Roles { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Recipients FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Recipients>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FilterCriteria 
+    {
+        [Newtonsoft.Json.JsonProperty("expression", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Expression { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FilterCriteria FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FilterCriteria>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Value 
+    {
+        /// <summary>The name of the category the record belongs to.</summary>
+        [Newtonsoft.Json.JsonProperty("category", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Category { get; set; }
+    
+        /// <summary>The title of the record.</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+    
+        /// <summary>The delimited list of locations the record exists at.</summary>
+        [Newtonsoft.Json.JsonProperty("location", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Location { get; set; }
+    
+        /// <summary>The date the record was originally created.</summary>
+        [Newtonsoft.Json.JsonProperty("dateCreated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? DateCreated { get; set; }
+    
+        /// <summary>The date the record was last deleted.</summary>
+        [Newtonsoft.Json.JsonProperty("dateDeleted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? DateDeleted { get; set; }
+    
+        /// <summary>The id of the person that deleted the record.</summary>
+        [Newtonsoft.Json.JsonProperty("personDeleted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PersonDeleted { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Value FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Value>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    internal class DateFormatConverter : Newtonsoft.Json.Converters.IsoDateTimeConverter
+    {
+        public DateFormatConverter()
+        {
+            DateTimeFormat = "yyyy-MM-dd";
+        }
     }
 
     #pragma warning restore

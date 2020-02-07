@@ -10,18 +10,30 @@ info:
 servers:
   - url: 'https://odev6web01.ad.velocityehs.com/ehs-internal-api/api'
     description: Development
+  - url: 'https://ovev6apifarm.ehs.dev/alpha/api'
+    description: Verification - Alpha
+  - url: 'https://ovev6apifarm.ehs.dev/beta/api'
+    description: Verification - Beta
+  - url: 'https://ovev6apifarm.ehs.dev/delta/api'
+    description: Verification - Delta
 tags:
   - name: Account
   - name: Authentication
   - name: Configuration
+  - name: ContractingCompany
   - name: Hierarchy
   - name: Internationalization
   - name: Localization
   - name: Location
   - name: List
   - name: LocationList
+  - name: Lookup
   - name: Mobile
+  - name: MobileConfig
+  - name: Notification
   - name: Person
+  - name: Record
+  - name: Metadata
 paths:
 # Account
   /accounts:
@@ -55,9 +67,9 @@ paths:
             format: guid
             example: "FEB8B939-BDC0-DD11-8038-DFD6234E2644"
             nullable: true
-        - name: accountIdentifier
+        - name: companyDomain
           in: query
-          description: The account identifier
+          description: The company domain
           required: false
           style: form
           explode: true
@@ -170,43 +182,9 @@ paths:
       description: Gets the basic user information for an accounts user.
       operationId: getUserInfo
       parameters:
-        - name: x-account
-          in: header
-          description: Unique identifier for the customer account
-          required: false
-          style: simple
-          explode: false
-          schema:
-            type: integer
-            example: 1   
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
         - $ref: '#/components/parameters/LanguageHeader'
-        - name: username
-          in: query
-          description: Username of the person
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-            nullable: true
-        - name: emailAddress
-          in: query
-          description: Email address of the person
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-            nullable: true
-        - name: phoneNumber
-          in: query
-          description: Phone number of the person
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-            nullable: true 
       responses:
         200:
           description: The basic details of the user that matches the request
@@ -226,10 +204,36 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/RequestError'
-        403:
-          description: You do not have sufficient rights to this resource
         404:
-          description: No authentication methods for the account
+          description: No user info for the account
+  /accounts/request/userInfo:
+    post:
+      tags:
+      - Account
+      summary: Request the user be sent their basic user info.
+      description: Request the user be sent their basic user info.
+      operationId: requestUserInfo
+      parameters:
+        - name: contactInfo
+          in: query
+          description: Phone number of the person
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Any matching user will be sent their basic user info.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
   /accounts/current:
     get:
       tags:
@@ -264,6 +268,78 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Account not found
+  /accounts/current/admin:
+    get: 
+      tags:
+      - Account
+      summary: Gets the super admin for an account.
+      description: Gets the super admin for an account.
+      operationId: getAccountSuperAdmin
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      responses:
+        200:
+          description: The super admin of the account that matches the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Person'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Super admin not found
+    post: 
+      tags:
+      - Account
+      summary: Gets the super admin for an account.
+      description: Gets the super admin for an account.
+      operationId: createAccountSuperAdmin
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Person'
+      responses:
+        201:
+          description: The new admin identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
   /accounts/current/personalization:
     get:
       tags:
@@ -538,9 +614,9 @@ paths:
             format: int32
             example: 13
             nullable: true
-        - name: accountIdentifier
+        - name: companyDomain
           in: query
-          description: The account identifier
+          description: The company domain
           required: false
           style: form
           explode: true
@@ -651,9 +727,6 @@ paths:
       summary: Determines if the provided credentials are valid.
       description: Determines if the provided credentials are valid.
       operationId: authFormsHasAccess
-      parameters:
-        - $ref: '#/components/parameters/AccountHeader'
-        - $ref: '#/components/parameters/LanguageHeader'
       requestBody:
         required: true
         content:
@@ -688,15 +761,24 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Hierarchies not found
-  '/auth/forms/forgotPassword':
+  /auth/forms/forgotPassword:
     post:
       summary: Request to start the forgot password process for a given username.
       operationId: forgotPassword
       tags:
         - Authentication
       parameters:
-        - $ref: '#/components/parameters/AccountHeader'
-        - $ref: '#/components/parameters/LanguageHeader'
+        - name: accountId
+          in: query
+          description: The account id
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 13
+            nullable: false
       requestBody:
         required: true
         content:
@@ -729,6 +811,147 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Persons not found
+  /auth/forms/validatePassword:
+    post:
+      tags:
+      - Authentication
+      summary: Validates Password based on account, person and password rules
+      description: Validates Password based on account, person and password rules
+      operationId: validatePassword
+      parameters:
+        - name: accountId
+          in: query
+          description: The account id
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 13
+            nullable: false
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FormsAuthPasswordUpdate"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/FormsAuthPasswordUpdate"
+      responses:
+        200:
+          description: Password validation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordValidationResult'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /auth/forms/resetPassword:
+    put:
+      summary: Update the password for a user
+      operationId: resetPersonsPassword
+      tags:
+        - Authentication
+      parameters:
+        - name: accountId
+          in: query
+          description: The account id
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 13
+            nullable: false
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FormsAuthPasswordUpdate"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/FormsAuthPasswordUpdate"
+      responses:
+        204:
+          description: The person's password was successfully updated
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /auth/forms/authState:
+    get:
+      summary: Get the forms authentication state for a user
+      operationId: getFormsAuthState
+      tags:
+        - Authentication
+      parameters:
+        - name: accountId
+          in: query
+          description: The account id
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 13
+            nullable: false
+        - name: personId
+          in: query
+          description: The person identifier
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+        - $ref: '#/components/parameters/LanguageHeader'
+      responses:
+        200:
+          description: The person's forms auth state.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FormsAuthState"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/FormsAuthState"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: No forms auth state available.
   /auth/forms/blacklist:
    post:
       summary: Adds jti to a black list.
@@ -813,7 +1036,17 @@ paths:
       description: Gets the password rules for the account.
       operationId: getPasswordRules
       parameters:
-        - $ref: '#/components/parameters/AccountHeader'
+        - name: accountId
+          in: query
+          description: The account id
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 13
+            nullable: false
         - $ref: '#/components/parameters/LanguageHeader'
       responses:
         200:
@@ -914,6 +1147,125 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: No password rules for the account
+  /auth/forms/key:
+    get:
+      summary: Get the forms authentication key for a user to assist in their authentication.
+      operationId: getFormsAuthKey
+      tags:
+        - Authentication
+      parameters:
+        - name: accountId
+          in: query
+          description: The account id
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 13
+            nullable: false
+        - name: personId
+          in: query
+          description: The person identifier
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: The person's forms auth state.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FormsAuthKey"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/FormsAuthKey"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /auth/forms/key/validate:
+    post:
+      summary: Determine if a forms auth key is valid.
+      operationId: validateFormsAuthKey
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FormsAuthKey"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/FormsAuthKey"
+      responses:
+        204:
+          description: The provided key was valid.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        422:
+          description: The provided key was not valid.
+  /auth/sso/login:
+    post:
+      tags:
+      - Authentication
+      summary: Valid the login from an sso provider.
+      description: Valid the login from an sso provider.
+      operationId: authSsoHasAccess
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SsoAuthCrediential'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/SsoAuthCrediential'
+      responses:
+        200:
+          description: Credientials were valid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SsoAuthVerificationResult'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SsoAuthVerificationResult'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        401:
+          description: Credientials are invalid.
+        403:
+          description: You do not have sufficient rights to this resource
   /auth/sso/idp:
     get:
       tags:
@@ -1313,32 +1665,41 @@ paths:
                 $ref: '#/components/schemas/RequestError'
         403:
           description: You do not have sufficient rights to this resource
-  /auth/validatepassword/{password}:
+# Configuration
+  /config/forms/raw:
     get:
       tags:
-      - Authentication
-      summary: Validates Password based on account, person and password rules
-      description: Validates Password based on account, person and password rules
-      operationId: validatePassword
+      - Configuration
+      summary: Get the form configuration for a state.
+      description: Get the form configuration for a state.
+      operationId: getStateFormConfigByName
       parameters:
         - $ref: '#/components/parameters/AccountHeader'
         - $ref: '#/components/parameters/IdentityHeader'
         - $ref: '#/components/parameters/LanguageHeader'
-        - name: password
-          in: path
-          description: password to be passed in
+        - name: category
+          in: query
+          description: The name of the category to get the form configuration for.
           required: true
           explode: true
           schema:
             type: string
-            nullable: true
+            example: nearmiss
+        - name: state
+          in: query
+          description: The name of the state to get the form configuration for.
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: investigation
       responses:
         200:
-          description: Password validation result
+          description: The state's form configuration
           content:
-            application/json:
+            text/plain:
               schema:
-                $ref: '#/components/schemas/PasswordValidationResult'
+                type: string
         400:
           description: Bad request
           content:
@@ -1351,8 +1712,54 @@ paths:
         403:
           description: You do not have sufficient rights to this resource
         404:
-          description: Invalid entry for password
-# Configuration
+          description: Configuration not found
+  /config/forms/{categoryId}/{productStateId}/raw:
+    get:
+      tags:
+      - Configuration
+      summary: Get the form configuration for a state.
+      description: Get the form configuration for a state.
+      operationId: getStateFormConfig
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: categoryId
+          in: path
+          description: The id of the category to get the form configuration for.
+          required: true
+          explode: true
+          schema:
+            type: integer
+            example: 11
+        - name: productStateId
+          in: path
+          description: The id of the product state to get the form configuration for.
+          required: true
+          explode: true
+          schema:
+            type: integer
+            example: 14
+      responses:
+        200:
+          description: The state's form configuration
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Configuration not found
   /config/products/summary/raw:
     get:
       tags:
@@ -1384,6 +1791,85 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Product config not found
+  /config/views/raw:
+    get:
+      tags:
+      - Configuration
+      summary: Get a view configuration
+      description: Get a view configuration
+      operationId: getViewConfigByName
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: name
+          in: query
+          description: The name of the view to get the configuration for.
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: NearMisses
+      responses:
+        200:
+          description: The view configuration
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Configuration not found
+  /config/views/{viewId}/raw:
+    get:
+      tags:
+      - Configuration
+      summary: Get a view configuration
+      description: Get a view configuration
+      operationId: getViewConfigById
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: viewId
+          in: path
+          description: The id of the view to get the configuration for.
+          required: true
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 748569
+      responses:
+        200:
+          description: The view configuration
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Configuration not found
   /config/workflows/raw:
     get:
       tags:
@@ -1431,7 +1917,7 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Configuration not found
-  /config/workflows/{categoryId}/{stateId}/raw:
+  /config/workflows/{categoryId}/{productStateId}/raw:
     get:
       tags:
       - Configuration
@@ -1450,9 +1936,9 @@ paths:
           schema:
             type: integer
             example: 11
-        - name: stateId
+        - name: productStateId
           in: path
-          description: The id of the state to get the workflow configuration for.
+          description: The id of the product state to get the workflow configuration for.
           required: true
           explode: true
           schema:
@@ -1529,6 +2015,232 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Configuration not found
+# Contracting Company
+  /contractingCompanies:
+    get:
+      tags:
+      - ContractingCompany
+      summary: Get the list of contracting companies that match the parameters.
+      description: Get the list of contracting companies that match the parameters.
+      operationId: getContractingCompanies
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: contractorName
+          in: query
+          description: The text the contractor's name should include
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            nullable: true
+        - name: contractorType
+          in: query
+          description: The list of contractor types to include
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            nullable: true
+            items:
+              type: integer
+              format: int32
+        - name: status
+          in: query
+          description: The status of contractors to include
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        200:
+          description: A list of Contracting Companies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContractingCompaniesResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ContractingCompaniesResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Contracting Company not found
+    put:
+      tags:
+      - ContractingCompany
+      summary: Update a contracting company.
+      description: Update a contracting company.
+      operationId: updateContractingCompany
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateContractingCompanyParams"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/UpdateContractingCompanyParams"
+      responses:
+        204:
+          description: The Contracting Company was successfully updated
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Contracting Company not found
+    post:
+      tags:
+      - ContractingCompany
+      summary: Create a new contracting company.
+      description: Create a new contracting company.
+      operationId: createContractingCompany
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContractingCompany"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/ContractingCompany"
+      responses:
+        201:
+          description: The new contracting conpanies identifier
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Status201Response'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Status201Response'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+    delete:
+      tags:
+      - ContractingCompany
+      summary: Delete a contracting company.
+      description: Delete a contracting company.
+      operationId: deleteContractingCompany
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: id
+          in: query
+          description: The identifier of the contracting company to delete.
+          required: true
+          style: form
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+      responses:
+        204:
+          description: The contracting company was succesfully deleted.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Contracting Company not found
+  /contractingCompanies/{id}:
+    get:
+      tags:
+      - ContractingCompany
+      summary: Get a contracting company.
+      description: Get a contracting company.
+      operationId: getContractingCompany
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: id
+          in: path
+          description: The identifier of the contracting company to get.
+          required: true
+          explode: true
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: The matching contracting company.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContractingCompany'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ContractingCompany'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Contracting Company not found
 # Hierarchy
   /hierarchies:
     get:
@@ -1869,14 +2581,17 @@ paths:
       description: Add translations into Database received from The Translation Tool
       operationId: setTranslations
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SetTranslation'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/SetTranslation'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SetTranslation'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SetTranslation'
       responses:
         204:
           description: The translation requests were successfully created. The reason why reponse 204 returned instead of 201 because we are not returning any Id for this API.
@@ -2156,9 +2871,6 @@ paths:
       description: Get Currency list by searching
       operationId: getCurrencyForSearch
       parameters:
-        - $ref: '#/components/parameters/AccountHeader'
-        - $ref: '#/components/parameters/IdentityHeader'
-        - $ref: '#/components/parameters/LanguageHeader'
         - name: searchText
           in: path
           required: true
@@ -2191,6 +2903,44 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: A currency list not found
+  '/localization/timezone':
+    get:
+      tags:
+      - Localization
+      summary: Get Timezone list
+      description: Get Timezone list
+      operationId: getTimeZones
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      responses:
+        200:
+          description: A timezone list founded
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TimeZoneList'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TimeZoneList'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: A timezone list not found
 # Location
   /locations:
     get:
@@ -2927,6 +3677,112 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Location not found
+  /locations/validateUniqueLocation:
+    get:
+      tags:
+      - Location
+      summary: Validate unique location name
+      description: Validate unique location name
+      operationId: validateUniqueLocation
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: locationName
+          in: query
+          description: The location name
+          required: false
+          style: form
+          schema:
+            nullable: true
+            type: string
+      responses:
+        204:
+          description: The location name is unique.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        422:
+          description: ValidationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+  /locations/validateUniqueLocationGroup:
+    get:
+      tags:
+      - Location
+      summary: Validate unique location group name under a parent location group
+      description: Validate unique location group name under a parent location group
+      operationId: validateUniqueLocationGroup
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: locationGroupId
+          in: query
+          description: The parent location group identifier
+          required: false
+          style: form
+          explode: true
+          schema:
+            nullable: true
+            minimum: 0
+            type: integer
+            format: int32
+        - name: parentLocationGroupId
+          in: query
+          description: The parent location group identifier
+          required: false
+          style: form
+          explode: true
+          schema:
+            nullable: true
+            minimum: 0
+            type: integer
+            format: int32
+        - name: locationGroupName
+          in: query
+          description: The location name
+          required: false
+          style: form
+          schema:
+            nullable: true
+            type: string
+      responses:
+        204:
+          description: The location group name is unique.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        422:
+          description: ValidationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
 # List
   /lists:
     get:
@@ -3911,6 +4767,647 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Location not found
+# Lookup
+  /lookups/categories/adapter:
+    post:
+      tags:
+      - Lookup
+      summary: Get categories via a lookup using adapter filters.
+      description: Gets a list of categories via lookup adapter filters.
+      operationId: lookupCategoriesByAdapter
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - $ref: '#/components/parameters/LookupText'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRepositoryAdapterFilters'
+      responses:
+        200:
+          description: A list of categories via lookup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /lookups/contractors:
+    post:
+      tags:
+      - Lookup
+      summary: Get contractors via a lookup
+      description: Gets a list of contractors via lookup
+      operationId: lookupContractors
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - $ref: '#/components/parameters/LookupText'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LookupRequest'
+      responses:
+        200:
+          description: A list of contractors via lookup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /lookups/contractors/adapter:
+    post:
+      tags:
+      - Lookup
+      summary: Get contractors via a lookup using adapter filters.
+      description: Gets a list of contractors via lookup adapter filters.
+      operationId: lookupContractorsByAdapter
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - $ref: '#/components/parameters/LookupText'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContractorRepositoryAdapterFilters'
+      responses:
+        200:
+          description: A list of contractors via lookup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /lookups/countries/adapter:
+    post:
+      tags:
+      - Lookup
+      summary: Get countries via a lookup using adapter filters.
+      description: Gets a list of countries via lookup adapter filters.
+      operationId: lookupCountriesByAdapter
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - $ref: '#/components/parameters/LookupText'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CountryRepositoryAdapterFilters'
+      responses:
+        200:
+          description: A list of countries via lookup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /lookups/countryDivisions/adapter:
+    post:
+      tags:
+      - Lookup
+      summary: Get country divisions via a lookup using adapter filters.
+      description: Gets a list of country divisions via lookup adapter filters.
+      operationId: lookupCountryDivisionsByAdapter
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - $ref: '#/components/parameters/LookupText'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CountryDivisionRepositoryAdapterFilters'
+      responses:
+        200:
+          description: A list of country divisions via lookup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /lookups/currencies/adapter:
+    post:
+      tags:
+      - Lookup
+      summary: Get currencies via a lookup using adapter filters.
+      description: Gets a list of currencies via lookup adapter filters.
+      operationId: lookupCurrenciesByAdapter
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - $ref: '#/components/parameters/LookupText'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CurrencyRepositoryAdapterFilters'
+      responses:
+        200:
+          description: A list of currencies via lookup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /lookups/genders/adapter:
+    post:
+      tags:
+      - Lookup
+      summary: Get genders via a lookup using adapter filters.
+      description: Gets a list of genders via lookup adapter filters.
+      operationId: lookupGendersByAdapter
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - $ref: '#/components/parameters/LookupText'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenderRepositoryAdapterFilters'
+      responses:
+        200:
+          description: A list of genders via lookup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /lookups/listitems:
+    post:
+      tags:
+      - Lookup
+      summary: Get list items via a lookup
+      description: Gets a list of list items via lookup
+      operationId: lookupListItems
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - $ref: '#/components/parameters/LookupText'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LookupRequest'
+      responses:
+        200:
+          description: A list of list items via lookup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /lookups/listitems/adapter:
+    post:
+      tags:
+      - Lookup
+      summary: Get list items via a lookup using adapter filters.
+      description: Gets a list of list items via lookup adapter filters.
+      operationId: lookupListItemsByAdapter
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - $ref: '#/components/parameters/LookupText'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListItemRepositoryAdapterFilters'
+      responses:
+        200:
+          description: A list of list items via lookup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /lookups/locations:
+    post:
+      tags:
+      - Lookup
+      summary: Get locations via a lookup
+      description: Gets a list of locations via lookup
+      operationId: lookupLocations
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - $ref: '#/components/parameters/LookupText'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LookupRequest'
+      responses:
+        200:
+          description: A list of locations via lookup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupLocationsResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /lookups/locations/adapter:
+    post:
+      tags:
+      - Lookup
+      summary: Get locations via a lookup using adapter filters.
+      description: Gets a list of locations via lookup adapter filters.
+      operationId: lookupLocationsByAdapter
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - $ref: '#/components/parameters/LookupText'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocationRepositoryAdapterFilters'
+      responses:
+        200:
+          description: A list of locations via lookup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupLocationsResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /lookups/personRelationshipTypes/adapter:
+    post:
+      tags:
+      - Lookup
+      summary: Get personRelationshipTypes via a lookup using adapter filters.
+      description: Gets a list of personRelationshipTypes via lookup adapter filters.
+      operationId: lookupPersonRelationshipTypesByAdapter
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - $ref: '#/components/parameters/LookupText'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonRelationshipTypeRepositoryAdapterFilters'
+      responses:
+        200:
+          description: A list of personRelationshipTypes via lookup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /lookups/persons/adapter:
+    post:
+      tags:
+      - Lookup
+      summary: Get persons via a lookup using adapter filters.
+      description: Gets a list of persons via lookup adapter filters.
+      operationId: lookupPersonsByAdapter
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - $ref: '#/components/parameters/LookupText'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonRepositoryAdapterFilters'
+      responses:
+        200:
+          description: A list of persons via lookup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /lookups/roles/adapter:
+    post:
+      tags:
+      - Lookup
+      summary: Get roles via a lookup using adapter filters.
+      description: Gets a list of roles via lookup adapter filters.
+      operationId: lookupRolesByAdapter
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - $ref: '#/components/parameters/LookupText'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleRepositoryAdapterFilters'
+      responses:
+        200:
+          description: A list of roles via lookup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /lookups/states/adapter:
+    post:
+      tags:
+      - Lookup
+      summary: Get states via a lookup using adapter filters.
+      description: Gets a list of states via lookup adapter filters.
+      operationId: lookupStatesByAdapter
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - $ref: '#/components/parameters/LookupText'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StateRepositoryAdapterFilters'
+      responses:
+        200:
+          description: A list of states via lookup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /lookups/units/adapter:
+    post:
+      tags:
+      - Lookup
+      summary: Get units via a lookup using adapter filters.
+      description: Gets a list of units via lookup adapter filters.
+      operationId: lookupUnitsByAdapter
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - $ref: '#/components/parameters/LookupText'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnitRepositoryAdapterFilters'
+      responses:
+        200:
+          description: A list of units via lookup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
 # Mobile
   /mobile/auth/addToken:
     post:
@@ -3958,7 +5455,6 @@ paths:
           description: token in question is still valid
         401:
           description: token is no longer valid, user is unauthorized
-        
   /mobile/auth/logout:
     post:
       tags:
@@ -3983,6 +5479,271 @@ paths:
           description: token is removed successfully
         401:
           description: the token does not exist (not authorized to log out)
+  /mobile/records/responsibilities:
+    get:
+      tags:
+      - Mobile
+      summary: Mobile endpoint for getting a list of responsibilities available to mobile
+      description: The endpoint will be returning just the Ids
+      operationId: getMobileResponsibilities
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+      responses:
+        200:
+          description: Raw extract of list item exclusion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MobileReponsibilities'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/MobileReponsibilities'
+        401:
+          description: Credientials are invalid.
+  /mobile/config/listExclusions:
+    get:
+      tags:
+      - MobileConfig
+      summary: Get list exclusion
+      description: Get the raw table extract of list exclusion
+      operationId: getListExclusion
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+      responses:
+        200:
+          description: Raw extract of list exclusion
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ListExclusion'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ListExclusion'
+  /mobile/config/listItemExclusions:
+    get:
+      tags:
+      - MobileConfig
+      summary: Get list item Exclusion
+      description: Get the raw table extract of list item exclusion
+      operationId: getListItemExclusion
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+      responses:
+        200:
+          description: Raw extract of list item exclusion
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ListItemExclusion'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ListItemExclusion'
+# Notification
+  '/notification/addrule':
+    post:
+      summary: Adds a new notification into queue
+      operationId: AddNotificationRule
+      tags:
+        - Notification
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationRule'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/NotificationRule'
+      responses:
+        201:
+          description: The notification rule dentifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Notification rule not added
+        422:
+          description: ValidationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+  '/notification/updaterule/{notificationTriggerId}':
+    put:
+      summary: updates a notification rule
+      operationId: UpdateNotificationRule
+      tags:
+        - Notification
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - in: path
+          name: notificationTriggerId
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationRule'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/NotificationRule'
+      responses:
+        201:
+          description: The notification rule identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status201Response'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Notification rule not updated
+        422:
+          description: ValidationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+  '/notification/deleterule/{notificationTriggerId}':
+    delete:
+      summary: deletes a notification rule
+      operationId: DeleteNotificationRule
+      tags:
+        - Notification
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - in: path
+          name: notificationTriggerId
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+      responses:
+        204:
+          description: Notification Rule has been deleted
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Notification Rule not found
+  '/notification/getrules/{notificationId}/{notificationTriggerId}':
+    get:
+      summary: Returns the notification rules
+      operationId: GetNotificationRules
+      tags:
+        - Notification
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - name: notificationId
+          in: path
+          description: The notification id.
+          required: true
+          schema:
+            type: integer
+            example: 1
+        - name: notificationTriggerId
+          in: path
+          description: The notification trigger id.
+          required: true
+          schema:
+            type: integer
+            example: 4858
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationRules'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/NotificationRules'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Notification rule not found
+        422:
+          description: ValidationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
 # Person
   '/persons':
     get:
@@ -4255,52 +6016,17 @@ paths:
             items:
               type: integer
               format: int32
-        - name: pageNumber
-          in: query
-          description: Page Number of the Person
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
-            nullable: true
-        - name: pageSize
-          in: query
-          description: Page Size of the Person
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
-            nullable: true
-        - name: sortBy
-          in: query
-          description: Param for sortBy
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-            nullable: true
-        - name: sortOrder
-          in: query
-          description: Param for sortOrder
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-            nullable: true
-            maxLength: 4
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
       responses:
         200:
           description: A list of persons founded using provided criteria
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Person'
+                $ref: '#/components/schemas/PersonsResponse'
         400:
           description: Bad request
           content:
@@ -4348,6 +6074,15 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Persons not found
+        422:
+          description: ValidationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
     post:
       summary: Creates a new person and returns the person id
       operationId: CreatePerson
@@ -4389,6 +6124,15 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Person not found
+        422:
+          description: ValidationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
     delete:
       tags:
       - Person
@@ -4507,6 +6251,52 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Persons not found
+  '/persons/{personId}/validatePassword':
+    put:
+      summary: Validate the password for the provided user.
+      operationId: validatePersonsPassword
+      tags:
+        - Person
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - in: path
+          name: personId
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FormsAuthPasswordUpdate"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/FormsAuthPasswordUpdate"
+      responses:
+        200:
+          description: Password validation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordValidationResult'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Persons not found
   '/persons/{personId}/personalization':
     get:
       summary: Returns the person's personalization based on person id
@@ -4524,6 +6314,24 @@ paths:
             type: integer
             format: int32
             minimum: 1
+        - name: browserCountryISOCode
+          in: query
+          description: Detected user's country ISO Code
+          required: false
+          style: form
+          schema:
+            type: string
+            nullable: true
+            example: 'CA'
+        - name: browserTimeZoneName
+          in: query
+          description: Detected user's timezone name
+          required: false
+          style: form
+          schema:
+            type: string
+            nullable: true
+            example: 'Pacific Standard Time'
       responses:
         200:
           description: OK
@@ -4603,33 +6411,15 @@ paths:
           required: true
           schema:
             type: string
-        - name: pageNumber
-          in: query
-          description: Page Number of the Person
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
-            nullable: true
-        - name: pageSize
-          in: query
-          description: Page Size of the Person
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
-            nullable: true
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Person'
+                $ref: '#/components/schemas/PersonsResponse'
         400:
           description: Bad request
           content:
@@ -4643,6 +6433,449 @@ paths:
           description: You do not have sufficient rights to this resource
         404:
           description: Persons not found
+  '/persons/validate':
+    post:
+      summary: Validate person attributes
+      operationId: validatePerson
+      tags:
+        - Person
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - in: query
+          name: ruleSet
+          description: the array of rule set we need validate on person
+          required: true
+          schema:
+            type: array
+            items:
+                $ref: '#/components/schemas/PersonValidationRuleSet'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Person'
+      responses:
+        204:
+          description: validation succcess without errors
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Person not found
+        422:
+          description: ValidationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+# Records
+  /records/{productId}/data:
+    post:
+      summary: Create a new record.
+      operationId: createEntityData
+      tags:
+        - Record
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: productId
+          in: path
+          description: The id of the configuration product to create the record under.
+          required: true
+          explode: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        200:
+          description: The records entity data.
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /records/{productId}/{recordId}/data:
+    get:
+      summary: Get a records entity data.
+      operationId: getEntityData
+      tags:
+        - Record
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: productId
+          in: path
+          description: The id of the configuration product to get the record from.
+          required: true
+          explode: true
+          schema:
+            type: integer
+            example: 1
+        - name: recordId
+          in: path
+          description: The id of the  record.
+          required: true
+          explode: true
+          schema:
+            type: integer
+            example: 4858
+      responses:
+        200:
+          description: The records entity data.
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Record not found
+    put:
+      summary: Update a records entity data.
+      operationId: updateEntityData
+      tags:
+        - Record
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: productId
+          in: path
+          description: The id of the configuration product to update the record.
+          required: true
+          explode: true
+          schema:
+            type: integer
+            example: 1
+        - name: recordId
+          in: path
+          description: The id of the  record.
+          required: true
+          explode: true
+          schema:
+            type: integer
+            example: 4858
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        200:
+          description: The records entity data.
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Record not found
+    delete:
+      summary: Deletes a records.
+      operationId: deleteRecord
+      tags:
+        - Record
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: productId
+          in: path
+          description: The id of the configuration product for the record.
+          required: true
+          explode: true
+          schema:
+            type: integer
+            example: 1
+        - name: recordId
+          in: path
+          description: The id of therecord.
+          required: true
+          explode: true
+          schema:
+            type: integer
+            example: 4858
+      responses:
+        204:
+          description: The records was successfully deleted
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+        404:
+          description: Record not found
+  /records/{productId}/search/raw:
+    post:
+      summary: Get the product records for a view.
+      operationId: getProductRecords
+      tags:
+        - Record
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: productId
+          in: path
+          description: The id of the configuration product to get records for.
+          required: true
+          explode: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        200:
+          description: The product records to include in a view.
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /records/{productId}/search/view/{viewId}/raw:
+    post:
+      summary: Get the product records for a view.
+      operationId: getProductRecordsForView
+      tags:
+        - Record
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - name: productId
+          in: path
+          description: The id of the configuration product to get records for.
+          required: true
+          explode: true
+          schema:
+            type: integer
+            example: 1
+        - name: viewId
+          in: path
+          description: The id of the view to get product records for. 
+          required: true
+          explode: true
+          schema:
+            type: integer
+            example: 1
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      requestBody:
+        description: "The non default filters applied along with the view filters"
+        required: false
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        200:
+          description: The product records to include in a view.
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /records/archived/search:
+    post:
+      summary: Get a list of archived product records.
+      operationId: searchArchivedRecords
+      tags:
+        - Record
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArchivedRecordSearchParams'
+      responses:
+        200:
+          description: The applicable archived product records.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArchivedRecordResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /records/archived/restore:
+    post:
+      summary: Restore a set of archived product records and their children
+      operationId: restoreArchivedRecords
+      tags:
+        - Record
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateArchivedRecords'
+      responses:
+        204:
+          description: The achived records were successfully restored.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+  /records/archived/delete:
+    post:
+      summary: Permanently delete a set of archived product records and their children.
+      operationId: deleteArchivedRecords
+      tags:
+        - Record
+      parameters:
+        - $ref: '#/components/parameters/AccountHeader'
+        - $ref: '#/components/parameters/IdentityHeader'
+        - $ref: '#/components/parameters/LanguageHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateArchivedRecords'
+      responses:
+        204:
+          description: The achived records were successfully deleted.
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestError'
+        403:
+          description: You do not have sufficient rights to this resource
+# Meta data
+  /meta/version:
+    get:
+      description: Get the current version of the Mobile API
+      operationId: getversion
+      tags:
+        - Metadata
+      responses:
+        '200':
+          description: current version of API
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 1.0.0
 components:
   parameters:
     AccountHeader:
@@ -4675,6 +6908,59 @@ components:
       schema:
         type: integer
         format: int32
+    PageNumber:
+      description: Which page of results to fetch.
+      in: query
+      name: pageNumber
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        nullable: true
+      required: false
+      example: 1
+    PageSize:
+      description: The number of elements on each page to fetch
+      in: query
+      name: pageSize
+      schema:
+        type: integer
+        format: int32
+        nullable: true
+      required: false
+      example: 50
+    SortBy:
+      description: Param for sortBy
+      in: query
+      name: sortBy
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+        nullable: true
+    SortOrder:
+      description: Param for sortOrder
+      in: query
+      name: sortOrder
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+        nullable: true
+        maxLength: 4
+    LookupText:
+      description: The text used to filter lookup data.
+      in: query
+      name: input
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+        nullable: true
+        example: input
   schemas:
 # Common
     RequestError:
@@ -4703,9 +6989,16 @@ components:
       properties:
         code:
           type: integer
+          nullable: true
           description: The error code if existed
           format: int32
           example: 001
+        id:
+          type: integer
+          nullable: true
+          description: The error id / attribute id
+          format: int32
+          example: 1
         name:
           type: string
           description: The error name / attribute name
@@ -4738,6 +7031,37 @@ components:
             type: integer
             format: int32
             example: 11
+    ResponseList:
+      type: object
+      properties:
+        totalCount:
+          description: |
+            Total count of items in this response set. If this response is
+            paginated, then the length of the `items` array will be less than or
+            equal to the `totalCount`.
+          type: integer
+          format: int32
+          example: 1
+        sortOrder:
+          description: The data point to sort on.
+          type: string
+          example: "Category"
+        sortDirection:
+          description: The direction to apply the sorting.
+          type: string
+          example: "ASC"
+        pageNumber:
+          description: The current page number.
+          type: integer
+          format: int32
+          example: 1
+        pageSize:
+          description: The number of items available on a given page.
+          type: integer
+          format: int32
+          example: 25
+      required:
+        - totalCount
 # Account
     Account:
       type: object
@@ -4747,15 +7071,14 @@ components:
           type: integer
           format: int32
           example: 13
-          nullable: true
         externalAccountId:
           description: The external account id
           type: string
           format: guid
           example: "FEB8B939-BDC0-DD11-8038-DFD6234E2644"
           nullable: true
-        accountIdentifier:
-          description: The account identifier
+        companyDomain:
+          description: The company domain
           type: string
           format: string
           example: "AcmeCorp"
@@ -4794,6 +7117,11 @@ components:
           type: boolean
           example: false
           nullable: true
+        enableSystemNotifications:
+          description: Enables a system notification.
+          type: boolean
+          example: false
+          nullable: true
     AccountUser:
       type: object
       properties:
@@ -4802,8 +7130,8 @@ components:
           type: integer
           format: int32
           example: 13
-        accountIdentifier:
-          description: The account identifier
+        companyDomain:
+          description: The company domain
           type: string
           format: string
           example: "AcmeCorp"
@@ -4910,9 +7238,18 @@ components:
         forgotPasswordKey:
           description: The forgot password key
           type: string
-          format: guid
-          nullable: true
           example: 00000000-0000-0000-0000-000000000000
+    FormsAuthState:
+      type: object
+      properties:
+        passwordChangeRequired:
+          description: Whether the user is required to change their password or not.
+          type: boolean
+          example: false
+        isLocked:
+          description: Whether the user is locked
+          type: boolean
+          example: true
     FormsAuthPasswordChangeRequest:
       type: object
       required:
@@ -4941,8 +7278,6 @@ components:
         forgotPasswordKey:
           description: The forgot password key
           type: string
-          format: guid
-          example: 00000000-0000-0000-0000-000000000000
     FormsAuthBlacklistRequest:
       type: object
       required:
@@ -4990,9 +7325,14 @@ components:
     FormsAuthCrediential:
       type: object
       required:
+        - accountId
         - username
         - password
       properties:
+        accountId:
+          description: Unique identifier for the customer account
+          type: integer
+          example: 1
         username:
           description: The username
           type: string
@@ -5016,6 +7356,23 @@ components:
           type: integer
           format: int32
           example: 1
+        languageId:
+          description: The id of the language for the current user.
+          type: integer
+          format: int22
+          example: 4
+          nullable: true
+        displayName:
+          description: The display of the person being authenticated.
+          type: string
+          format: string
+          example: "John Doe"
+        email:
+          description: The email of the person being authenticated.
+          type: string
+          format: string
+          example: "jdoe@acmecorp.com"
+          nullable: true
         passwordChangeRequired:
           description: Whether the user is required to change their password or not.
           type: boolean
@@ -5028,6 +7385,35 @@ components:
           description: Whether the user is locked
           type: boolean
           example: true
+    FormsAuthKey:
+      type: object
+      properties:
+        key:
+          description: The forms auth key used to ensure only the specific user is performing an authentication action prior to full authentication.
+          type: string
+          example: jwt
+    SsoAuthCrediential:
+      type: object
+      properties:
+        ssoConnection:
+          type: string
+          description: The connection name that maps to the account.
+        ssoLoginUser:
+          type: string
+          description: The serialized SSO user information.
+    SsoAuthVerificationResult:
+      type: object
+      properties:
+        accountId:
+          description: The id of the account the person is authenticated against.
+          type: integer
+          format: int32
+          example: 1
+        personId:
+          description: The id of the person being authenticated.
+          type: integer
+          format: int32
+          example: 1
     SsoIdentityProvider:
       type: object
       properties:
@@ -5096,7 +7482,7 @@ components:
           type: string
           format: string
           nullable: true
-          example: AccountIdentifier
+          example: CompanyDomain
         userNameToPersonMapper:
           description: The mapper for determine who the person is based on the SSO Assertions username.
           type: string
@@ -5282,6 +7668,28 @@ components:
           nullable: true
           items:
             $ref: '#/components/schemas/FormsAuthPasswordRule'
+# Configuration
+    StringConfigurationExpression:
+      type: string
+      example: "$ @ContractorType"
+      nullable: true
+    LookupFilterConfig:
+      type: object
+      properties:
+        binding:
+          type: string
+          description: The binding name the filter is being applied to.
+        operation:
+          $ref: '#/components/schemas/LookupFilterOperation'
+        value:
+          $ref: '#/components/schemas/StringConfigurationExpression'
+    LookupFilterOperation:
+      type: string
+      nullable: true
+      description: The filter operation being performed.
+      enum:
+        - Equals
+        - NotEquals
 # Hierarchy
     Hierarchy:
       type: object
@@ -5300,6 +7708,12 @@ components:
           example: 0
         HierarchyId:
           description: The hierarchy identifier
+          type: integer
+          format: int32
+          example: 11
+          nullable: true
+        RootLocationGroupID:
+          description: The hierarchy root group identifier
           type: integer
           format: int32
           example: 11
@@ -5419,7 +7833,7 @@ components:
           description: Name of Column
           type: string
           nullable: true
-          example: "Single column"
+          example: "Value"
         LanguageID:
           description: Id of the Language
           type: integer
@@ -5430,6 +7844,16 @@ components:
           type: string
           nullable: true
           example: "Incident"
+        TranslationRequestID:
+          description: Id of the Translation Request
+          type: integer
+          nullable: true
+          example: 1
+        DefaultText:
+          description: Original Text
+          type: string
+          nullable: true
+          example: "Original Text"
     MachineTranslation:
       type: object
       properties:
@@ -5466,6 +7890,29 @@ components:
             format: int32
             example: [1,2,3]
 # Localization
+    TimeZoneList:
+      type: object
+      properties:
+        timeZoneId:
+          description: Timezone Id
+          type: integer
+          nullable: true
+          example: 1
+        timeZoneName:
+          description: Timezone Name
+          type: string
+          nullable: true
+          example: "Pacific Standard Time"
+        timeZoneDescription:
+          description: Timezone Description
+          type: string
+          nullable: true
+          example: "Pacific Time (US & Canada)"
+        timeZoneOffset:
+          description: Timezone Offset
+          type: number
+          nullable: true
+          example: -8
     Currency:
       type: object
       properties:
@@ -5726,7 +8173,9 @@ components:
         locationType:
           $ref: '#/components/schemas/LocationType'
         locationStatus:
-          $ref: '#/components/schemas/LocationStatus'
+          nullable: true
+          anyOf:
+            - $ref: '#/components/schemas/LocationStatus'
         parentId:
           type: integer
           nullable: true
@@ -5739,6 +8188,12 @@ components:
           description: The hierarchy identifier
           format: int32
           example: 10
+        level:
+          type: integer
+          nullable: true
+          description: The level of the node on hierarchy
+          format: int32
+          example: 10
         paths:
           type: array
           nullable: true
@@ -5749,6 +8204,12 @@ components:
           type: boolean
           nullable: true
           description: The available status for Location List
+          format: boolean
+          example: true
+        isPartialAvailable:
+          type: boolean
+          nullable: true
+          description: The partial available status for Location List
           format: boolean
           example: true
         sicCode:
@@ -6094,6 +8555,466 @@ components:
                 additionalProperties:
                   type: boolean
                 example: {"1": true, "2": false}
+# Lookup
+    LookupRequest:
+      properties:
+        context: 
+          $ref: '#/components/schemas/ConfigurationContext'
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/LookupFilterConfig'
+    LookupItem:
+      type: object
+      required:
+      - id
+      - value
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: The unique id of the lookup item.
+          example: 756
+        parentId:
+          type: integer
+          format: int32
+          nullable: true
+          description: The optional parent id of the lookup item.
+          example: 123
+        value:
+          type: string
+          description: The display value of the lookup item.
+        secondaryValue:
+          type: string
+          description: The optional secondary display value of the lookup item.
+          nullable: true
+    LookupResponse:
+      allOf:
+        - $ref: '#/components/schemas/ResponseList'
+        - type: object
+          properties:
+            records:
+              type: array
+              items:
+                $ref: '#/components/schemas/LookupItem'
+          required: 
+            - items
+    LookupLocationsResponse:
+      allOf:
+        - $ref: '#/components/schemas/ResponseList'
+        - type: object
+          properties:
+            records:
+              type: array
+              items:
+                $ref: '#/components/schemas/LocationLookupItem'
+          required: 
+            - items
+    CategoryRepositoryAdapterFilters:
+      type: object
+      properties:
+        configurationProductId:
+          type: integer
+          format: int32
+          nullable: true
+          description: Filter to optionally include categories of a specific configuration product.
+          example: 1
+        categoryId:
+          type: integer
+          format: int32
+          nullable: true
+          description: Filter to optionally include a specific category.
+          example: 1
+    ContractorRepositoryAdapterFilters:
+      type: object
+      properties:
+        contractorId:
+          type: integer
+          format: int32
+          nullable: true
+          description: The unique id of the contrator to optionally filter by.
+          example: 756
+        statusId:
+          type: integer
+          format: int32
+          nullable: true
+          description: The status to optionally filter by.
+          example: 16
+        types:
+          type: array
+          items:
+            type: integer
+            format: int32
+          nullable: true
+          description: The list of contrator types to optionally filter by.
+    CountryRepositoryAdapterFilters:
+      type: object
+      properties:
+        countryId:
+          type: integer
+          format: int32
+          nullable: true
+          description: Temporary property to make CountryRepositoryAdapterFilters type
+          example: 756
+    CountryDivisionRepositoryAdapterFilters:
+      type: object
+      properties:
+        countryId:
+          type: integer
+          format: int32
+          nullable: true
+          description: The unique identifier of the parent country.
+          example: 756
+    CurrencyRepositoryAdapterFilters:
+      type: object
+      properties:
+        isDefault:
+          type: boolean
+          nullable: true
+          description: Filter to optionally include only the default currency
+        includeCurrencyIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          nullable: true
+          description: The list of ids of currencies to optionally include.
+        excludeCurrencyIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          nullable: true
+          description: The list of ids of currencies to optionally exclude.
+    GenderRepositoryAdapterFilters:
+      type: object
+      properties:
+        genderId: 
+          type: integer
+          format: int32
+          nullable: true
+          description: Temporary property to make GenderRepositoryAdapterFilters type
+          example: 48678
+    ListItemRepositoryAdapterFilters:
+      type: object
+      properties:
+        listId:
+          type: integer
+          format: int32
+          nullable: true
+          description: The list id to optionally filter by.
+          example: 48678
+        locationId:
+          type: integer
+          format: int32
+          nullable: true
+          description: The location id to optionally filter by.
+          example: 8413
+        includeListItemIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          nullable: true
+          description: The list of ids of list items to optionally include.
+        excludeListItemIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          nullable: true
+          description: The list of ids of list items to optionally exclude.
+    LocationRepositoryAdapterFilters:
+      type: object
+      properties:
+        locationId:
+          type: integer
+          format: int32
+          nullable: true
+          description: The unique id for the location within its type.
+          example: 8413
+        hierarchyId:
+          type: integer
+          format: int32
+          nullable: true
+          description: The id of the hierarchy to optionally limit locations to.
+          example: 1232
+        parentId:
+          type: integer
+          format: int32
+          nullable: true
+          description: The id of the parent location group to optionally filter by.
+          example: 48678
+        locationType:
+          nullable: true
+          allOf:
+          - $ref: '#/components/schemas/LocationType'
+        locationStatuses:
+          type: array
+          items:
+            type: integer
+            format: int32
+          nullable: true
+          description: The list of location statuses to optionally filter by.
+    PersonRelationshipTypeRepositoryAdapterFilters:
+      type: object
+      properties:
+        includePersonRelationshipTypeIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          nullable: true
+          description: The list of ids of person relationship types to optionally include.
+        excludePersonRelationshipTypeIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          nullable: true
+          description: The list of ids of person relationship types to optionally exclude.
+    PersonRepositoryAdapterFilters:
+      type: object
+      properties:
+        personId:
+          type: integer
+          nullable: true
+          description: The id of the person optionally filter by.
+        reportsTo:
+          type: integer
+          nullable: true
+          description: The id of the person to optional filter to the people report to them.
+        supervises:
+          type: integer
+          nullable: true
+          description: The id of the person to optional filter to the person who supervises them.
+        hasLoginAccess:
+          type: boolean
+          nullable: true
+          description: Optionally filter by whether the person has login access.
+        memberOf:
+          type: string
+          nullable: true
+          description: Optionally filter to people who are members of a specific group.
+        locationId:
+          type: integer
+          nullable: true
+          description: The id of the location to optional filter to people who have that location set.
+        relationshipTypeId:
+          type: integer
+          nullable: true
+          description: The id of the relationship type to optionally filter people by.
+        personStatuses:
+          type: array
+          nullable: true
+          description: The list of person statuses to optionally filter by.
+          items:
+            type: integer
+            format: int32
+            example: 1
+    RoleRepositoryAdapterFilters:
+      type: object
+      properties:
+        roleId:
+          type: integer
+          format: int32
+          nullable: true
+          description: The specific role to filter by.
+          example: 8413
+        roleTypeId:
+          type: integer
+          format: int32
+          nullable: true
+          description: The unique id of the role type to optionally filter by.
+    StateRepositoryAdapterFilters:
+      type: object
+      properties:
+        configurationProductId:
+          type: integer
+          nullable: true
+          description: Filter to optionally include state of a specific configuration product.
+        categoryId:
+          type: integer
+          nullable: true
+          description: Filter to optionally include states of a specific category.
+        stateId:
+          type: integer
+          nullable: true
+          description: Filter to optionally include a specific state.
+    UnitRepositoryAdapterFilters:
+      type: object
+      properties:
+        unitSystem:
+          type: integer
+          nullable: true
+          description: The id of the unit system to optionally filter by.
+        unitTypes:
+          type: array
+          nullable: true
+          description: The list of ids of unit types to optionally include.
+          items:
+            type: integer
+            format: int32
+            example: 1
+        isBase:
+          type: boolean
+          nullable: true
+          description: Filter to optionally include only base units.
+        unitScale:
+          type: string
+          nullable: true
+          description: The scale of the units to optionally filter by.
+        includeUnitIds:
+          type: array
+          nullable: true
+          description: The list of ids of units to optionally include.
+          items:
+            type: integer
+            format: int32
+            example: 1
+        excludeUnitIds:
+          type: array
+          nullable: true
+          description: The list of ids of units to optionally exclude.
+          items:
+            type: integer
+            format: int32
+            example: 1
+    LocationLookupItem:
+      type: object
+      required:
+      - id
+      - value
+      properties:
+        hierarchyId:
+          type: integer
+          format: int32
+          description: The hierarchy the location is represented in.
+          example: 132
+        locationType:
+          $ref: '#/components/schemas/LocationType'
+        locationId:
+          type: integer
+          format: int32
+          description: The unique id of the location for the type.
+          example: 123
+        parentId:
+          type: integer
+          format: int32
+          description: The unique id of the parent location group.
+          example: 12
+        name:
+          type: string
+          description: The display name of the location.
+          example: Oakville
+        path:
+          type: string
+          description: The path for the location with in the hierarchy.
+          example: Corporate > North America > Canada
+# Mobile
+    ListExclusion:
+      type: object
+      properties:
+        ListExclusionId:
+          type: integer
+        ListId:
+          type: integer
+        LocationGroupId:
+          type: integer
+          nullable: true
+        LocationId:
+          type: integer
+          nullable: true
+    ListItemExclusion:
+      type: object
+      properties:
+        ListItemExclusionId:
+          type: integer
+        ListItemId:
+          type: integer
+        LocationGroupId:
+          type: integer
+          nullable: true
+        LocationId:
+          type: integer
+          nullable: true
+    MobileReponsibilities:
+      type: object
+      properties:
+        ProductResponsibilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductResponsibilities'
+    ProductResponsibilities:
+      type: object
+      properties:
+        ConfigurationProductId:
+          type: integer
+        RecordIds:
+          type: array
+          items:
+            type: integer
+# Notification
+    NotificationRule:
+      type: object
+      properties:
+        notificationId:
+          type: integer
+        deliveryMethodId:
+          type: integer
+        sendToAllEmployees: 
+          type: integer
+          nullable: true
+        daysValue:
+          type: integer
+          nullable: true
+        effectiveDate:
+          format: date-time
+          type: string
+          nullable: true
+          example: "1995-09-07 10:40:52"
+        applicability:
+          type: object
+          properties:
+            heirarchyId:
+              type: integer
+              nullable: true
+            locations:
+              type: array
+              nullable: true
+              items:
+                type: integer
+            locationGroups:
+              type: array
+              nullable: true
+              items:
+                type: integer
+        recipients:
+          type: object
+          properties:
+            persons:
+              type: array
+              nullable: true
+              items:
+                type: integer
+            roles:
+              type: array
+              nullable: true
+              items:
+                type: integer
+        filterCriteria:
+          type: object
+          properties:
+            expression:
+              type: string
+              nullable: true
+    NotificationRules:
+        type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/NotificationRule'
 # Person
     Person:
       type: object
@@ -6255,6 +9176,17 @@ components:
           type: string
           nullable: true
           example: "FirstName-LastName-JobTitle"
+    PersonsResponse:
+      allOf:
+        - $ref: '#/components/schemas/ResponseList'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/Person'
+          required: 
+            - items
     UpdatePersonParams:
       type: object
       properties:
@@ -6338,9 +9270,6 @@ components:
           type: string
           nullable: true
           example: A1A 1A1
-        languageId:
-          type: integer
-          nullable: true
         relationshipTypeId:
           type: integer
           nullable: true
@@ -6388,7 +9317,254 @@ components:
           format: date-time
           nullable: true
           example: "2029-01-01 12:00:00"
-        personDetails:
+    PersonValidationRuleSet:
+      type: string
+      enum:
+        - Personal
+        - Employment
+        - Login
+# Contracting Company
+    BaseContractingCompany:
+      type: object
+      properties:
+        contractingCompanyId:
+          type: integer
+          format: int32
+          nullable: true
+          description: "The unique identifier for the contracting company"
+          example: 756
+        companyName:
           type: string
           nullable: true
-          example: "FirstName-LastName-JobTitle"
+          description: "The display name of the company"
+          example: "Joe's Drilling"
+        description:
+          type: string
+          nullable: true
+          description: "The description of the company"
+          example: "With over 28 years of experience, Joe's Drilling is the most reliable well drilling contractor in Bancroft"
+        statusId:
+          type: integer
+          format: int32
+          nullable: true
+          description: "The company's status in the system"
+          example: 16
+        phoneNumber:
+          type: string
+          nullable: true
+          description: ""
+          example: "555-555-5555"
+        address:
+          type: string
+          nullable: true
+          description: ""
+          example: "The street address portion of the companys address"
+        city:
+          type: string
+          nullable: true
+          description: ""
+          example: "The city portion of the companys address"
+        countryDivisionId:
+          type: integer
+          format: int32
+          nullable: true
+          description: ""
+          example: "The state/province portion of the companys address"
+        countryId:
+          type: integer
+          format: int32
+          nullable: true
+          description: ""
+          example: "The country portion of the companys address"
+        zipCode:
+          type: string
+          nullable: true
+          description: "The zip code portion of the companys address"
+          example: "90210"
+    ContractingCompany:
+      allOf:
+        - $ref: '#/components/schemas/BaseContractingCompany'
+        - type: object
+          properties:
+            contractorTypes:
+              type: array
+              description: "The list of company's type"
+              nullable: true
+              items:
+                type: integer
+                format: int32
+    UpdateContractingCompanyParams:
+      allOf:
+        - $ref: '#/components/schemas/BaseContractingCompany'
+        - type: object
+          properties:
+            addContractorTypes:
+              type: array
+              description: "The list of company's type to add"
+              nullable: true
+              items:
+                type: integer
+                format: int32
+            deleteContractorTypes:
+              type: array
+              description: "The list of company's type to remove"
+              nullable: true
+              items:
+                type: integer
+                format: int32
+    ContractingCompaniesResponse:
+      allOf:
+        - $ref: '#/components/schemas/ResponseList'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/ContractingCompany'
+          required: 
+            - items
+# Record
+    ConfigurationContext:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            Title: "Tripped on uneven surface"
+            Description: "Employee tripped entering the warehouses south doorway where the concrete path was damaged"
+            IncidentDate: "2019-09-21 9:00:00"
+    ArchivedRecord:
+      type: object
+      properties:
+        recordArchiveID:
+          type: integer
+          format: int32
+          nullable: true
+          description: "The unique id of the archived record."
+          example: 89329
+        parentRecordArchiveId:
+          type: integer
+          format: int32
+          nullable: true
+          description: "The parent of the archived record."
+          example: 123
+        value:
+          type: object
+          properties:
+            category:
+              type: string
+              nullable: true
+              description: "The name of the category the record belongs to."
+              example: "Incident"
+            title:
+              type: string
+              nullable: true
+              description: "The title of the record."
+              example: "Incident"
+            location:
+              type: string
+              nullable: true
+              description: "The delimited list of locations the record exists at."
+              example: "Incident"
+            dateCreated:
+              type: string
+              format: date-time
+              nullable: true
+              description: "The date the record was originally created."
+              example: "2019-11-01 10:40:52"
+            dateDeleted:
+              type: string
+              format: date-time
+              nullable: true
+              description: "The date the record was last deleted."
+              example: "2019-11-02 03:41:56"
+            personDeleted:
+              type: string
+              nullable: true
+              description: "The id of the person that deleted the record."
+              example: "Incident"
+    ArchivedRecordSearchParams:
+      type: object
+      properties:
+        parentRecordArchiveId:
+          type: integer
+          format: int32
+          nullable: true
+          description: "The parent of the record archive ID."
+          example: 123
+        startDateCreated:
+          type: string
+          format: date
+          nullable: true
+          description: "Filter to only include records created after the provided date."
+          example: "2019-01-01"
+        endDateCreated:
+          type: string
+          format: date
+          nullable: true
+          description: "Filter to only include records created prior to the provided date."
+          example: "2020-01-01"
+        startDateDeleted:
+          type: string
+          format: date
+          nullable: true
+          description: "Filter to only include records deleted after the provided date."
+          example: "2019-01-01"
+        endDateDeleted:
+          type: string
+          format: date
+          nullable: true
+          description: "Filter to only include records deleted prior to the provided date."
+          example: "2020-01-01"
+        categoryFilters:
+          type: array
+          nullable: true
+          description: "The list of categories to include deleted records from."
+          items:
+            type: integer
+            format: int32
+        locationFilters:
+          type: array
+          nullable: true
+          description: "The list of locations to include deleted records from."
+          items:
+            type: integer
+            format: int32
+        deletedById:
+          type: integer
+          format: int32
+          nullable: true
+          description: "Limit the results to only those deleted by this person."
+          example: 1337
+    UpdateArchivedRecords:
+      type: array
+      items:
+        $ref: '#/components/schemas/ArchivedRecordIds'
+    ArchivedRecordIds:
+      type: object
+      properties:
+        recordArchiveId:
+          type: integer
+          format: int32
+          description: "The unique id of the archived record to modify."
+          example: 89329
+        childRecordArchiveIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          nullable: true
+          description: "The unique id of the child archived record to modify."
+    ArchivedRecordResponse:
+      allOf:
+        - $ref: '#/components/schemas/ResponseList'
+        - type: object
+          properties:
+            records:
+              type: array
+              items:
+                $ref: '#/components/schemas/ArchivedRecord'
+          required: 
+            - items

@@ -56,22 +56,22 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         /// <summary>Return all accounts in the instance.</summary>
         /// <param name="accountId">The account id</param>
         /// <param name="externalId">The external account id</param>
-        /// <param name="accountIdentifier">The account identifier</param>
+        /// <param name="companyDomain">The company domain</param>
         /// <returns>The matching account</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Account>>> GetAccountsAsync(int? accountId, System.Guid? externalId, string accountIdentifier)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Account>>> GetAccountsAsync(int? accountId, System.Guid? externalId, string companyDomain)
         {
-            return GetAccountsAsync(accountId, externalId, accountIdentifier, System.Threading.CancellationToken.None);
+            return GetAccountsAsync(accountId, externalId, companyDomain, System.Threading.CancellationToken.None);
         }
     
         /// <summary>Return all accounts in the instance.</summary>
         /// <param name="accountId">The account id</param>
         /// <param name="externalId">The external account id</param>
-        /// <param name="accountIdentifier">The account identifier</param>
+        /// <param name="companyDomain">The company domain</param>
         /// <returns>The matching account</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Account>>> GetAccountsAsync(int? accountId, System.Guid? externalId, string accountIdentifier, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Account>>> GetAccountsAsync(int? accountId, System.Guid? externalId, string companyDomain, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/accounts?");
@@ -83,9 +83,9 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
             {
                 urlBuilder_.Append("externalId=").Append(System.Uri.EscapeDataString(ConvertToString(externalId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (accountIdentifier != null) 
+            if (companyDomain != null) 
             {
-                urlBuilder_.Append("accountIdentifier=").Append(System.Uri.EscapeDataString(ConvertToString(accountIdentifier, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append("companyDomain=").Append(System.Uri.EscapeDataString(ConvertToString(companyDomain, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
     
@@ -379,40 +379,21 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         }
     
         /// <summary>Gets the basic user information for an accounts user.</summary>
-        /// <param name="username">Username of the person</param>
-        /// <param name="emailAddress">Email address of the person</param>
-        /// <param name="phoneNumber">Phone number of the person</param>
         /// <returns>The basic details of the user that matches the request</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfoAsync(string username, string emailAddress, string phoneNumber)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfoAsync()
         {
-            return GetUserInfoAsync(username, emailAddress, phoneNumber, System.Threading.CancellationToken.None);
+            return GetUserInfoAsync(System.Threading.CancellationToken.None);
         }
     
         /// <summary>Gets the basic user information for an accounts user.</summary>
-        /// <param name="username">Username of the person</param>
-        /// <param name="emailAddress">Email address of the person</param>
-        /// <param name="phoneNumber">Phone number of the person</param>
         /// <returns>The basic details of the user that matches the request</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfoAsync(string username, string emailAddress, string phoneNumber, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<AccountUser>> GetUserInfoAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/accounts/userInfo?");
-            if (username != null) 
-            {
-                urlBuilder_.Append("username=").Append(System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (emailAddress != null) 
-            {
-                urlBuilder_.Append("emailAddress=").Append(System.Uri.EscapeDataString(ConvertToString(emailAddress, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (phoneNumber != null) 
-            {
-                urlBuilder_.Append("phoneNumber=").Append(System.Uri.EscapeDataString(ConvertToString(phoneNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            urlBuilder_.Length--;
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/accounts/userInfo");
     
             var client_ = _httpClient;
             try
@@ -470,16 +451,10 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                             throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
                         else
-                        if (status_ == "403") 
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
-                        }
-                        else
                         if (status_ == "404") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("No authentication methods for the account", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new SwaggerException("No user info for the account", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -489,6 +464,94 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                         }
             
                         return default(AccountUser);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Request the user be sent their basic user info.</summary>
+        /// <param name="contactInfo">Phone number of the person</param>
+        /// <returns>Any matching user will be sent their basic user info.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task RequestUserInfoAsync(string contactInfo)
+        {
+            return RequestUserInfoAsync(contactInfo, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Request the user be sent their basic user info.</summary>
+        /// <param name="contactInfo">Phone number of the person</param>
+        /// <returns>Any matching user will be sent their basic user info.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task RequestUserInfoAsync(string contactInfo, System.Threading.CancellationToken cancellationToken)
+        {
+            if (contactInfo == null)
+                throw new System.ArgumentNullException("contactInfo");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/accounts/request/userInfo?");
+            urlBuilder_.Append("contactInfo=").Append(System.Uri.EscapeDataString(ConvertToString(contactInfo, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "204") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
                     }
                     finally
                     {
@@ -594,6 +657,213 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                         }
             
                         return default(Account);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Gets the super admin for an account.</summary>
+        /// <returns>The super admin of the account that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Person>> GetAccountSuperAdminAsync()
+        {
+            return GetAccountSuperAdminAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Gets the super admin for an account.</summary>
+        /// <returns>The super admin of the account that matches the request</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Person>> GetAccountSuperAdminAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/accounts/current/admin");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Person); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Person>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Super admin not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(Person);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Gets the super admin for an account.</summary>
+        /// <returns>The new admin identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateAccountSuperAdminAsync(Person body)
+        {
+            return CreateAccountSuperAdminAsync(body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Gets the super admin for an account.</summary>
+        /// <returns>The new admin identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateAccountSuperAdminAsync(Person body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/accounts/current/admin");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "201") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Status201Response); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Status201Response>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(Status201Response);
                     }
                     finally
                     {
@@ -1318,21 +1588,21 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
     
         /// <summary>Gets the authentication methods for the account.</summary>
         /// <param name="accountId">The account id</param>
-        /// <param name="accountIdentifier">The account identifier</param>
+        /// <param name="companyDomain">The company domain</param>
         /// <returns>The authentication methods for the account.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync(int? accountId, string accountIdentifier)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync(int? accountId, string companyDomain)
         {
-            return GetAuthMethodsAsync(accountId, accountIdentifier, System.Threading.CancellationToken.None);
+            return GetAuthMethodsAsync(accountId, companyDomain, System.Threading.CancellationToken.None);
         }
     
         /// <summary>Gets the authentication methods for the account.</summary>
         /// <param name="accountId">The account id</param>
-        /// <param name="accountIdentifier">The account identifier</param>
+        /// <param name="companyDomain">The company domain</param>
         /// <returns>The authentication methods for the account.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync(int? accountId, string accountIdentifier, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<AuthenticationMethod>>> GetAuthMethodsAsync(int? accountId, string companyDomain, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/auth/methods?");
@@ -1340,9 +1610,9 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
             {
                 urlBuilder_.Append("accountId=").Append(System.Uri.EscapeDataString(ConvertToString(accountId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (accountIdentifier != null) 
+            if (companyDomain != null) 
             {
-                urlBuilder_.Append("accountIdentifier=").Append(System.Uri.EscapeDataString(ConvertToString(accountIdentifier, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append("companyDomain=").Append(System.Uri.EscapeDataString(ConvertToString(companyDomain, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
     
@@ -1743,21 +2013,28 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         }
     
         /// <summary>Request to start the forgot password process for a given username.</summary>
+        /// <param name="accountId">The account id</param>
         /// <returns>The person was successfully updated</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPasswordAsync(FormsAuthPasswordChangeRequest body)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPasswordAsync(int accountId, FormsAuthPasswordChangeRequest body)
         {
-            return ForgotPasswordAsync(body, System.Threading.CancellationToken.None);
+            return ForgotPasswordAsync(accountId, body, System.Threading.CancellationToken.None);
         }
     
         /// <summary>Request to start the forgot password process for a given username.</summary>
+        /// <param name="accountId">The account id</param>
         /// <returns>The person was successfully updated</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPasswordAsync(FormsAuthPasswordChangeRequest body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthPasswordChangeResponse>> ForgotPasswordAsync(int accountId, FormsAuthPasswordChangeRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (accountId == null)
+                throw new System.ArgumentNullException("accountId");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/auth/forms/forgotPassword");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/auth/forms/forgotPassword?");
+            urlBuilder_.Append("accountId=").Append(System.Uri.EscapeDataString(ConvertToString(accountId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             try
@@ -1837,6 +2114,329 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                         }
             
                         return default(FormsAuthPasswordChangeResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Validates Password based on account, person and password rules</summary>
+        /// <param name="accountId">The account id</param>
+        /// <returns>Password validation result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePasswordAsync(int accountId, FormsAuthPasswordUpdate body)
+        {
+            return ValidatePasswordAsync(accountId, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Validates Password based on account, person and password rules</summary>
+        /// <param name="accountId">The account id</param>
+        /// <returns>Password validation result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePasswordAsync(int accountId, FormsAuthPasswordUpdate body, System.Threading.CancellationToken cancellationToken)
+        {
+            if (accountId == null)
+                throw new System.ArgumentNullException("accountId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/auth/forms/validatePassword?");
+            urlBuilder_.Append("accountId=").Append(System.Uri.EscapeDataString(ConvertToString(accountId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(PasswordValidationResult); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<PasswordValidationResult>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(PasswordValidationResult);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Update the password for a user</summary>
+        /// <param name="accountId">The account id</param>
+        /// <returns>The person's password was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task ResetPersonsPasswordAsync(int accountId, FormsAuthPasswordUpdate body)
+        {
+            return ResetPersonsPasswordAsync(accountId, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Update the password for a user</summary>
+        /// <param name="accountId">The account id</param>
+        /// <returns>The person's password was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task ResetPersonsPasswordAsync(int accountId, FormsAuthPasswordUpdate body, System.Threading.CancellationToken cancellationToken)
+        {
+            if (accountId == null)
+                throw new System.ArgumentNullException("accountId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/auth/forms/resetPassword?");
+            urlBuilder_.Append("accountId=").Append(System.Uri.EscapeDataString(ConvertToString(accountId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "204") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get the forms authentication state for a user</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="personId">The person identifier</param>
+        /// <returns>The person's forms auth state.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthState>> GetFormsAuthStateAsync(int accountId, int personId)
+        {
+            return GetFormsAuthStateAsync(accountId, personId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get the forms authentication state for a user</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="personId">The person identifier</param>
+        /// <returns>The person's forms auth state.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthState>> GetFormsAuthStateAsync(int accountId, int personId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (accountId == null)
+                throw new System.ArgumentNullException("accountId");
+    
+            if (personId == null)
+                throw new System.ArgumentNullException("personId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/auth/forms/authState?");
+            urlBuilder_.Append("accountId=").Append(System.Uri.EscapeDataString(ConvertToString(accountId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("personId=").Append(System.Uri.EscapeDataString(ConvertToString(personId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(FormsAuthState); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthState>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("No forms auth state available.", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(FormsAuthState);
                     }
                     finally
                     {
@@ -2057,21 +2657,28 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         }
     
         /// <summary>Gets the password rules for the account.</summary>
+        /// <param name="accountId">The account id</param>
         /// <returns>The password rules for the account.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<FormsAuthPasswordRule>>> GetPasswordRulesAsync()
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<FormsAuthPasswordRule>>> GetPasswordRulesAsync(int accountId)
         {
-            return GetPasswordRulesAsync(System.Threading.CancellationToken.None);
+            return GetPasswordRulesAsync(accountId, System.Threading.CancellationToken.None);
         }
     
         /// <summary>Gets the password rules for the account.</summary>
+        /// <param name="accountId">The account id</param>
         /// <returns>The password rules for the account.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<FormsAuthPasswordRule>>> GetPasswordRulesAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<FormsAuthPasswordRule>>> GetPasswordRulesAsync(int accountId, System.Threading.CancellationToken cancellationToken)
         {
+            if (accountId == null)
+                throw new System.ArgumentNullException("accountId");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/auth/forms/rules");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/auth/forms/rules?");
+            urlBuilder_.Append("accountId=").Append(System.Uri.EscapeDataString(ConvertToString(accountId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             try
@@ -2342,6 +2949,321 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get the forms authentication key for a user to assist in their authentication.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="personId">The person identifier</param>
+        /// <returns>The person's forms auth state.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthKey>> GetFormsAuthKeyAsync(int accountId, int personId)
+        {
+            return GetFormsAuthKeyAsync(accountId, personId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get the forms authentication key for a user to assist in their authentication.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="personId">The person identifier</param>
+        /// <returns>The person's forms auth state.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormsAuthKey>> GetFormsAuthKeyAsync(int accountId, int personId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (accountId == null)
+                throw new System.ArgumentNullException("accountId");
+    
+            if (personId == null)
+                throw new System.ArgumentNullException("personId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/auth/forms/key?");
+            urlBuilder_.Append("accountId=").Append(System.Uri.EscapeDataString(ConvertToString(accountId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("personId=").Append(System.Uri.EscapeDataString(ConvertToString(personId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(FormsAuthKey); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthKey>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(FormsAuthKey);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Determine if a forms auth key is valid.</summary>
+        /// <returns>The provided key was valid.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task ValidateFormsAuthKeyAsync(FormsAuthKey body)
+        {
+            return ValidateFormsAuthKeyAsync(body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Determine if a forms auth key is valid.</summary>
+        /// <returns>The provided key was valid.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task ValidateFormsAuthKeyAsync(FormsAuthKey body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/auth/forms/key/validate");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "204") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "422") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The provided key was not valid.", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Valid the login from an sso provider.</summary>
+        /// <returns>Credientials were valid.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoAuthVerificationResult>> AuthSsoHasAccessAsync(SsoAuthCrediential body)
+        {
+            return AuthSsoHasAccessAsync(body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Valid the login from an sso provider.</summary>
+        /// <returns>Credientials were valid.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<SsoAuthVerificationResult>> AuthSsoHasAccessAsync(SsoAuthCrediential body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/auth/sso/login");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(SsoAuthVerificationResult); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<SsoAuthVerificationResult>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "401") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Credientials are invalid.", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(SsoAuthVerificationResult);
                     }
                     finally
                     {
@@ -3400,25 +4322,35 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
             }
         }
     
-        /// <summary>Validates Password based on account, person and password rules</summary>
-        /// <param name="password">password to be passed in</param>
-        /// <returns>Password validation result</returns>
+        /// <summary>Get the form configuration for a state.</summary>
+        /// <param name="category">The name of the category to get the form configuration for.</param>
+        /// <param name="state">The name of the state to get the form configuration for.</param>
+        /// <returns>The state's form configuration</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePasswordAsync(string password)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateFormConfigByNameAsync(string category, string state)
         {
-            return ValidatePasswordAsync(password, System.Threading.CancellationToken.None);
+            return GetStateFormConfigByNameAsync(category, state, System.Threading.CancellationToken.None);
         }
     
-        /// <summary>Validates Password based on account, person and password rules</summary>
-        /// <param name="password">password to be passed in</param>
-        /// <returns>Password validation result</returns>
+        /// <summary>Get the form configuration for a state.</summary>
+        /// <param name="category">The name of the category to get the form configuration for.</param>
+        /// <param name="state">The name of the state to get the form configuration for.</param>
+        /// <returns>The state's form configuration</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePasswordAsync(string password, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateFormConfigByNameAsync(string category, string state, System.Threading.CancellationToken cancellationToken)
         {
+            if (category == null)
+                throw new System.ArgumentNullException("category");
+    
+            if (state == null)
+                throw new System.ArgumentNullException("state");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/auth/validatepassword/{password}");
-            urlBuilder_.Replace("{password}", System.Uri.EscapeDataString(ConvertToString(password, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/config/forms/raw?");
+            urlBuilder_.Append("category=").Append(System.Uri.EscapeDataString(ConvertToString(category, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("state=").Append(System.Uri.EscapeDataString(ConvertToString(state, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             try
@@ -3426,7 +4358,7 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
     
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
@@ -3449,10 +4381,10 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(PasswordValidationResult); 
+                            var result_ = default(string); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<PasswordValidationResult>(responseData_, _settings.Value);
+                                result_ = (string)System.Convert.ChangeType(responseData_, typeof(string));
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -3467,7 +4399,7 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                             var result_ = default(RequestError); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                                result_ = (RequestError)System.Convert.ChangeType(responseData_, typeof(RequestError));
                             } 
                             catch (System.Exception exception_) 
                             {
@@ -3485,7 +4417,7 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                         if (status_ == "404") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("Invalid entry for password", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new SwaggerException("Configuration not found", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -3494,7 +4426,124 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(PasswordValidationResult);
+                        return default(string);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get the form configuration for a state.</summary>
+        /// <param name="categoryId">The id of the category to get the form configuration for.</param>
+        /// <param name="productStateId">The id of the product state to get the form configuration for.</param>
+        /// <returns>The state's form configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateFormConfigAsync(int categoryId, int productStateId)
+        {
+            return GetStateFormConfigAsync(categoryId, productStateId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get the form configuration for a state.</summary>
+        /// <param name="categoryId">The id of the category to get the form configuration for.</param>
+        /// <param name="productStateId">The id of the product state to get the form configuration for.</param>
+        /// <returns>The state's form configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateFormConfigAsync(int categoryId, int productStateId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (categoryId == null)
+                throw new System.ArgumentNullException("categoryId");
+    
+            if (productStateId == null)
+                throw new System.ArgumentNullException("productStateId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/config/forms/{categoryId}/{productStateId}/raw");
+            urlBuilder_.Replace("{categoryId}", System.Uri.EscapeDataString(ConvertToString(categoryId, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{productStateId}", System.Uri.EscapeDataString(ConvertToString(productStateId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(string); 
+                            try
+                            {
+                                result_ = (string)System.Convert.ChangeType(responseData_, typeof(string));
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = (RequestError)System.Convert.ChangeType(responseData_, typeof(RequestError));
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Configuration not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(string);
                     }
                     finally
                     {
@@ -3591,6 +4640,229 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("Product config not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(string);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get a view configuration</summary>
+        /// <param name="name">The name of the view to get the configuration for.</param>
+        /// <returns>The view configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetViewConfigByNameAsync(string name)
+        {
+            return GetViewConfigByNameAsync(name, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get a view configuration</summary>
+        /// <param name="name">The name of the view to get the configuration for.</param>
+        /// <returns>The view configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetViewConfigByNameAsync(string name, System.Threading.CancellationToken cancellationToken)
+        {
+            if (name == null)
+                throw new System.ArgumentNullException("name");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/config/views/raw?");
+            urlBuilder_.Append("name=").Append(System.Uri.EscapeDataString(ConvertToString(name, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(string); 
+                            try
+                            {
+                                result_ = (string)System.Convert.ChangeType(responseData_, typeof(string));
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = (RequestError)System.Convert.ChangeType(responseData_, typeof(RequestError));
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Configuration not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(string);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get a view configuration</summary>
+        /// <param name="viewId">The id of the view to get the configuration for.</param>
+        /// <returns>The view configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetViewConfigByIdAsync(int viewId)
+        {
+            return GetViewConfigByIdAsync(viewId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get a view configuration</summary>
+        /// <param name="viewId">The id of the view to get the configuration for.</param>
+        /// <returns>The view configuration</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetViewConfigByIdAsync(int viewId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (viewId == null)
+                throw new System.ArgumentNullException("viewId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/config/views/{viewId}/raw");
+            urlBuilder_.Replace("{viewId}", System.Uri.EscapeDataString(ConvertToString(viewId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(string); 
+                            try
+                            {
+                                result_ = (string)System.Convert.ChangeType(responseData_, typeof(string));
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = (RequestError)System.Convert.ChangeType(responseData_, typeof(RequestError));
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Configuration not found", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -3733,32 +5005,32 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
     
         /// <summary>Get the workflow configuration for a state</summary>
         /// <param name="categoryId">The id of the category to get the workflow configuration for.</param>
-        /// <param name="stateId">The id of the state to get the workflow configuration for.</param>
+        /// <param name="productStateId">The id of the product state to get the workflow configuration for.</param>
         /// <returns>The state's workflow configuration</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigRawAsync(int categoryId, int stateId)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigRawAsync(int categoryId, int productStateId)
         {
-            return GetStateWorkflowConfigRawAsync(categoryId, stateId, System.Threading.CancellationToken.None);
+            return GetStateWorkflowConfigRawAsync(categoryId, productStateId, System.Threading.CancellationToken.None);
         }
     
         /// <summary>Get the workflow configuration for a state</summary>
         /// <param name="categoryId">The id of the category to get the workflow configuration for.</param>
-        /// <param name="stateId">The id of the state to get the workflow configuration for.</param>
+        /// <param name="productStateId">The id of the product state to get the workflow configuration for.</param>
         /// <returns>The state's workflow configuration</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigRawAsync(int categoryId, int stateId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetStateWorkflowConfigRawAsync(int categoryId, int productStateId, System.Threading.CancellationToken cancellationToken)
         {
             if (categoryId == null)
                 throw new System.ArgumentNullException("categoryId");
     
-            if (stateId == null)
-                throw new System.ArgumentNullException("stateId");
+            if (productStateId == null)
+                throw new System.ArgumentNullException("productStateId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/config/workflows/{categoryId}/{stateId}/raw");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/config/workflows/{categoryId}/{productStateId}/raw");
             urlBuilder_.Replace("{categoryId}", System.Uri.EscapeDataString(ConvertToString(categoryId, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{stateId}", System.Uri.EscapeDataString(ConvertToString(stateId, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{productStateId}", System.Uri.EscapeDataString(ConvertToString(productStateId, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
             try
@@ -3953,6 +5225,549 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                         }
             
                         return default(string);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get the list of contracting companies that match the parameters.</summary>
+        /// <param name="contractorName">The text the contractor's name should include</param>
+        /// <param name="contractorType">The list of contractor types to include</param>
+        /// <param name="status">The status of contractors to include</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <returns>A list of Contracting Companies</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ContractingCompaniesResponse>> GetContractingCompaniesAsync(string contractorName, System.Collections.Generic.IEnumerable<int> contractorType, int? status, int? pageNumber, int? pageSize)
+        {
+            return GetContractingCompaniesAsync(contractorName, contractorType, status, pageNumber, pageSize, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get the list of contracting companies that match the parameters.</summary>
+        /// <param name="contractorName">The text the contractor's name should include</param>
+        /// <param name="contractorType">The list of contractor types to include</param>
+        /// <param name="status">The status of contractors to include</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <returns>A list of Contracting Companies</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ContractingCompaniesResponse>> GetContractingCompaniesAsync(string contractorName, System.Collections.Generic.IEnumerable<int> contractorType, int? status, int? pageNumber, int? pageSize, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/contractingCompanies?");
+            if (contractorName != null) 
+            {
+                urlBuilder_.Append("contractorName=").Append(System.Uri.EscapeDataString(ConvertToString(contractorName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (contractorType != null) 
+            {
+                foreach (var item_ in contractorType) { urlBuilder_.Append("contractorType=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+            }
+            if (status != null) 
+            {
+                urlBuilder_.Append("status=").Append(System.Uri.EscapeDataString(ConvertToString(status, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(ContractingCompaniesResponse); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<ContractingCompaniesResponse>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Contracting Company not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(ContractingCompaniesResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Update a contracting company.</summary>
+        /// <returns>The Contracting Company was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task UpdateContractingCompanyAsync(UpdateContractingCompanyParams body)
+        {
+            return UpdateContractingCompanyAsync(body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Update a contracting company.</summary>
+        /// <returns>The Contracting Company was successfully updated</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task UpdateContractingCompanyAsync(UpdateContractingCompanyParams body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/contractingCompanies");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "204") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Contracting Company not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Create a new contracting company.</summary>
+        /// <returns>The new contracting conpanies identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Status201Response>>> CreateContractingCompanyAsync(ContractingCompany body)
+        {
+            return CreateContractingCompanyAsync(body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Create a new contracting company.</summary>
+        /// <returns>The new contracting conpanies identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Status201Response>>> CreateContractingCompanyAsync(ContractingCompany body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/contractingCompanies");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "201") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(System.Collections.ObjectModel.Collection<Status201Response>); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.ObjectModel.Collection<Status201Response>>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(System.Collections.ObjectModel.Collection<Status201Response>);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Delete a contracting company.</summary>
+        /// <param name="id">The identifier of the contracting company to delete.</param>
+        /// <returns>The contracting company was succesfully deleted.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task DeleteContractingCompanyAsync(int id)
+        {
+            return DeleteContractingCompanyAsync(id, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Delete a contracting company.</summary>
+        /// <param name="id">The identifier of the contracting company to delete.</param>
+        /// <returns>The contracting company was succesfully deleted.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task DeleteContractingCompanyAsync(int id, System.Threading.CancellationToken cancellationToken)
+        {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/contractingCompanies?");
+            urlBuilder_.Append("id=").Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "204") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Contracting Company not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get a contracting company.</summary>
+        /// <param name="id">The identifier of the contracting company to get.</param>
+        /// <returns>The matching contracting company.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ContractingCompany>> GetContractingCompanyAsync(int id)
+        {
+            return GetContractingCompanyAsync(id, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get a contracting company.</summary>
+        /// <param name="id">The identifier of the contracting company to get.</param>
+        /// <returns>The matching contracting company.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ContractingCompany>> GetContractingCompanyAsync(int id, System.Threading.CancellationToken cancellationToken)
+        {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/contractingCompanies/{id}");
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(ContractingCompany); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<ContractingCompany>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Contracting Company not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(ContractingCompany);
                     }
                     finally
                     {
@@ -4808,7 +6623,7 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         /// <summary>Add translations into Database received from The Translation Tool</summary>
         /// <returns>The translation requests were successfully created. The reason why reponse 204 returned instead of 201 because we are not returning any Id for this API.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task SetTranslationsAsync(SetTranslation body)
+        public System.Threading.Tasks.Task SetTranslationsAsync(System.Collections.Generic.IEnumerable<SetTranslation> body)
         {
             return SetTranslationsAsync(body, System.Threading.CancellationToken.None);
         }
@@ -4817,7 +6632,7 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         /// <returns>The translation requests were successfully created. The reason why reponse 204 returned instead of 201 because we are not returning any Id for this API.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task SetTranslationsAsync(SetTranslation body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task SetTranslationsAsync(System.Collections.Generic.IEnumerable<SetTranslation> body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/translations");
@@ -5555,6 +7370,111 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                         }
             
                         return default(System.Collections.ObjectModel.Collection<Currency>);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get Timezone list</summary>
+        /// <returns>A timezone list founded</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<TimeZoneList>>> GetTimeZonesAsync()
+        {
+            return GetTimeZonesAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get Timezone list</summary>
+        /// <returns>A timezone list founded</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<TimeZoneList>>> GetTimeZonesAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/localization/timezone");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(System.Collections.ObjectModel.Collection<TimeZoneList>); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.ObjectModel.Collection<TimeZoneList>>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("A timezone list not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(System.Collections.ObjectModel.Collection<TimeZoneList>);
                     }
                     finally
                     {
@@ -7083,6 +9003,234 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                         }
             
                         return default(bool);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Validate unique location name</summary>
+        /// <param name="locationName">The location name</param>
+        /// <returns>The location name is unique.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task ValidateUniqueLocationAsync(string locationName)
+        {
+            return ValidateUniqueLocationAsync(locationName, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Validate unique location name</summary>
+        /// <param name="locationName">The location name</param>
+        /// <returns>The location name is unique.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task ValidateUniqueLocationAsync(string locationName, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/locations/validateUniqueLocation?");
+            if (locationName != null) 
+            {
+                urlBuilder_.Append("locationName=").Append(System.Uri.EscapeDataString(ConvertToString(locationName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "204") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "422") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("ValidationError", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Validate unique location group name under a parent location group</summary>
+        /// <param name="locationGroupId">The parent location group identifier</param>
+        /// <param name="parentLocationGroupId">The parent location group identifier</param>
+        /// <param name="locationGroupName">The location name</param>
+        /// <returns>The location group name is unique.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task ValidateUniqueLocationGroupAsync(int? locationGroupId, int? parentLocationGroupId, string locationGroupName)
+        {
+            return ValidateUniqueLocationGroupAsync(locationGroupId, parentLocationGroupId, locationGroupName, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Validate unique location group name under a parent location group</summary>
+        /// <param name="locationGroupId">The parent location group identifier</param>
+        /// <param name="parentLocationGroupId">The parent location group identifier</param>
+        /// <param name="locationGroupName">The location name</param>
+        /// <returns>The location group name is unique.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task ValidateUniqueLocationGroupAsync(int? locationGroupId, int? parentLocationGroupId, string locationGroupName, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/locations/validateUniqueLocationGroup?");
+            if (locationGroupId != null) 
+            {
+                urlBuilder_.Append("locationGroupId=").Append(System.Uri.EscapeDataString(ConvertToString(locationGroupId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (parentLocationGroupId != null) 
+            {
+                urlBuilder_.Append("parentLocationGroupId=").Append(System.Uri.EscapeDataString(ConvertToString(parentLocationGroupId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (locationGroupName != null) 
+            {
+                urlBuilder_.Append("locationGroupName=").Append(System.Uri.EscapeDataString(ConvertToString(locationGroupName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "204") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "422") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("ValidationError", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
                     }
                     finally
                     {
@@ -9425,6 +11573,2134 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
             }
         }
     
+        /// <summary>Get categories via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of categories via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCategoriesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CategoryRepositoryAdapterFilters body)
+        {
+            return LookupCategoriesByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get categories via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of categories via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCategoriesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CategoryRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lookups/categories/adapter?");
+            if (input != null) 
+            {
+                urlBuilder_.Append("input=").Append(System.Uri.EscapeDataString(ConvertToString(input, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortBy != null) 
+            {
+                urlBuilder_.Append("sortBy=").Append(System.Uri.EscapeDataString(ConvertToString(sortBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortOrder != null) 
+            {
+                urlBuilder_.Append("sortOrder=").Append(System.Uri.EscapeDataString(ConvertToString(sortOrder, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(LookupResponse); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<LookupResponse>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(LookupResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get contractors via a lookup</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of contractors via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupContractorsAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LookupRequest body)
+        {
+            return LookupContractorsAsync(input, pageNumber, pageSize, sortBy, sortOrder, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get contractors via a lookup</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of contractors via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupContractorsAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LookupRequest body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lookups/contractors?");
+            if (input != null) 
+            {
+                urlBuilder_.Append("input=").Append(System.Uri.EscapeDataString(ConvertToString(input, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortBy != null) 
+            {
+                urlBuilder_.Append("sortBy=").Append(System.Uri.EscapeDataString(ConvertToString(sortBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortOrder != null) 
+            {
+                urlBuilder_.Append("sortOrder=").Append(System.Uri.EscapeDataString(ConvertToString(sortOrder, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(LookupResponse); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<LookupResponse>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(LookupResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get contractors via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of contractors via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupContractorsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, ContractorRepositoryAdapterFilters body)
+        {
+            return LookupContractorsByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get contractors via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of contractors via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupContractorsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, ContractorRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lookups/contractors/adapter?");
+            if (input != null) 
+            {
+                urlBuilder_.Append("input=").Append(System.Uri.EscapeDataString(ConvertToString(input, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortBy != null) 
+            {
+                urlBuilder_.Append("sortBy=").Append(System.Uri.EscapeDataString(ConvertToString(sortBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortOrder != null) 
+            {
+                urlBuilder_.Append("sortOrder=").Append(System.Uri.EscapeDataString(ConvertToString(sortOrder, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(LookupResponse); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<LookupResponse>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(LookupResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get countries via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of countries via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCountriesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CountryRepositoryAdapterFilters body)
+        {
+            return LookupCountriesByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get countries via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of countries via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCountriesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CountryRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lookups/countries/adapter?");
+            if (input != null) 
+            {
+                urlBuilder_.Append("input=").Append(System.Uri.EscapeDataString(ConvertToString(input, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortBy != null) 
+            {
+                urlBuilder_.Append("sortBy=").Append(System.Uri.EscapeDataString(ConvertToString(sortBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortOrder != null) 
+            {
+                urlBuilder_.Append("sortOrder=").Append(System.Uri.EscapeDataString(ConvertToString(sortOrder, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(LookupResponse); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<LookupResponse>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(LookupResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get country divisions via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of country divisions via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCountryDivisionsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CountryDivisionRepositoryAdapterFilters body)
+        {
+            return LookupCountryDivisionsByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get country divisions via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of country divisions via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCountryDivisionsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CountryDivisionRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lookups/countryDivisions/adapter?");
+            if (input != null) 
+            {
+                urlBuilder_.Append("input=").Append(System.Uri.EscapeDataString(ConvertToString(input, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortBy != null) 
+            {
+                urlBuilder_.Append("sortBy=").Append(System.Uri.EscapeDataString(ConvertToString(sortBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortOrder != null) 
+            {
+                urlBuilder_.Append("sortOrder=").Append(System.Uri.EscapeDataString(ConvertToString(sortOrder, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(LookupResponse); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<LookupResponse>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(LookupResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get currencies via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of currencies via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCurrenciesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CurrencyRepositoryAdapterFilters body)
+        {
+            return LookupCurrenciesByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get currencies via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of currencies via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCurrenciesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CurrencyRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lookups/currencies/adapter?");
+            if (input != null) 
+            {
+                urlBuilder_.Append("input=").Append(System.Uri.EscapeDataString(ConvertToString(input, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortBy != null) 
+            {
+                urlBuilder_.Append("sortBy=").Append(System.Uri.EscapeDataString(ConvertToString(sortBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortOrder != null) 
+            {
+                urlBuilder_.Append("sortOrder=").Append(System.Uri.EscapeDataString(ConvertToString(sortOrder, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(LookupResponse); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<LookupResponse>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(LookupResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get genders via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of genders via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupGendersByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, GenderRepositoryAdapterFilters body)
+        {
+            return LookupGendersByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get genders via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of genders via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupGendersByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, GenderRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lookups/genders/adapter?");
+            if (input != null) 
+            {
+                urlBuilder_.Append("input=").Append(System.Uri.EscapeDataString(ConvertToString(input, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortBy != null) 
+            {
+                urlBuilder_.Append("sortBy=").Append(System.Uri.EscapeDataString(ConvertToString(sortBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortOrder != null) 
+            {
+                urlBuilder_.Append("sortOrder=").Append(System.Uri.EscapeDataString(ConvertToString(sortOrder, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(LookupResponse); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<LookupResponse>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(LookupResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get list items via a lookup</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of list items via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupListItemsAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LookupRequest body)
+        {
+            return LookupListItemsAsync(input, pageNumber, pageSize, sortBy, sortOrder, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get list items via a lookup</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of list items via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupListItemsAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LookupRequest body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lookups/listitems?");
+            if (input != null) 
+            {
+                urlBuilder_.Append("input=").Append(System.Uri.EscapeDataString(ConvertToString(input, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortBy != null) 
+            {
+                urlBuilder_.Append("sortBy=").Append(System.Uri.EscapeDataString(ConvertToString(sortBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortOrder != null) 
+            {
+                urlBuilder_.Append("sortOrder=").Append(System.Uri.EscapeDataString(ConvertToString(sortOrder, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(LookupResponse); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<LookupResponse>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(LookupResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get list items via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of list items via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupListItemsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, ListItemRepositoryAdapterFilters body)
+        {
+            return LookupListItemsByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get list items via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of list items via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupListItemsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, ListItemRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lookups/listitems/adapter?");
+            if (input != null) 
+            {
+                urlBuilder_.Append("input=").Append(System.Uri.EscapeDataString(ConvertToString(input, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortBy != null) 
+            {
+                urlBuilder_.Append("sortBy=").Append(System.Uri.EscapeDataString(ConvertToString(sortBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortOrder != null) 
+            {
+                urlBuilder_.Append("sortOrder=").Append(System.Uri.EscapeDataString(ConvertToString(sortOrder, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(LookupResponse); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<LookupResponse>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(LookupResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get locations via a lookup</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of locations via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupLocationsResponse>> LookupLocationsAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LookupRequest body)
+        {
+            return LookupLocationsAsync(input, pageNumber, pageSize, sortBy, sortOrder, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get locations via a lookup</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of locations via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupLocationsResponse>> LookupLocationsAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LookupRequest body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lookups/locations?");
+            if (input != null) 
+            {
+                urlBuilder_.Append("input=").Append(System.Uri.EscapeDataString(ConvertToString(input, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortBy != null) 
+            {
+                urlBuilder_.Append("sortBy=").Append(System.Uri.EscapeDataString(ConvertToString(sortBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortOrder != null) 
+            {
+                urlBuilder_.Append("sortOrder=").Append(System.Uri.EscapeDataString(ConvertToString(sortOrder, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(LookupLocationsResponse); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<LookupLocationsResponse>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(LookupLocationsResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get locations via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of locations via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupLocationsResponse>> LookupLocationsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LocationRepositoryAdapterFilters body)
+        {
+            return LookupLocationsByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get locations via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of locations via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupLocationsResponse>> LookupLocationsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LocationRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lookups/locations/adapter?");
+            if (input != null) 
+            {
+                urlBuilder_.Append("input=").Append(System.Uri.EscapeDataString(ConvertToString(input, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortBy != null) 
+            {
+                urlBuilder_.Append("sortBy=").Append(System.Uri.EscapeDataString(ConvertToString(sortBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortOrder != null) 
+            {
+                urlBuilder_.Append("sortOrder=").Append(System.Uri.EscapeDataString(ConvertToString(sortOrder, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(LookupLocationsResponse); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<LookupLocationsResponse>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(LookupLocationsResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get personRelationshipTypes via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of personRelationshipTypes via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupPersonRelationshipTypesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, PersonRelationshipTypeRepositoryAdapterFilters body)
+        {
+            return LookupPersonRelationshipTypesByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get personRelationshipTypes via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of personRelationshipTypes via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupPersonRelationshipTypesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, PersonRelationshipTypeRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lookups/personRelationshipTypes/adapter?");
+            if (input != null) 
+            {
+                urlBuilder_.Append("input=").Append(System.Uri.EscapeDataString(ConvertToString(input, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortBy != null) 
+            {
+                urlBuilder_.Append("sortBy=").Append(System.Uri.EscapeDataString(ConvertToString(sortBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortOrder != null) 
+            {
+                urlBuilder_.Append("sortOrder=").Append(System.Uri.EscapeDataString(ConvertToString(sortOrder, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(LookupResponse); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<LookupResponse>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(LookupResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get persons via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of persons via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupPersonsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, PersonRepositoryAdapterFilters body)
+        {
+            return LookupPersonsByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get persons via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of persons via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupPersonsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, PersonRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lookups/persons/adapter?");
+            if (input != null) 
+            {
+                urlBuilder_.Append("input=").Append(System.Uri.EscapeDataString(ConvertToString(input, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortBy != null) 
+            {
+                urlBuilder_.Append("sortBy=").Append(System.Uri.EscapeDataString(ConvertToString(sortBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortOrder != null) 
+            {
+                urlBuilder_.Append("sortOrder=").Append(System.Uri.EscapeDataString(ConvertToString(sortOrder, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(LookupResponse); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<LookupResponse>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(LookupResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get roles via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of roles via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupRolesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, RoleRepositoryAdapterFilters body)
+        {
+            return LookupRolesByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get roles via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of roles via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupRolesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, RoleRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lookups/roles/adapter?");
+            if (input != null) 
+            {
+                urlBuilder_.Append("input=").Append(System.Uri.EscapeDataString(ConvertToString(input, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortBy != null) 
+            {
+                urlBuilder_.Append("sortBy=").Append(System.Uri.EscapeDataString(ConvertToString(sortBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortOrder != null) 
+            {
+                urlBuilder_.Append("sortOrder=").Append(System.Uri.EscapeDataString(ConvertToString(sortOrder, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(LookupResponse); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<LookupResponse>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(LookupResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get states via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of states via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupStatesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, StateRepositoryAdapterFilters body)
+        {
+            return LookupStatesByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get states via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of states via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupStatesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, StateRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lookups/states/adapter?");
+            if (input != null) 
+            {
+                urlBuilder_.Append("input=").Append(System.Uri.EscapeDataString(ConvertToString(input, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortBy != null) 
+            {
+                urlBuilder_.Append("sortBy=").Append(System.Uri.EscapeDataString(ConvertToString(sortBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortOrder != null) 
+            {
+                urlBuilder_.Append("sortOrder=").Append(System.Uri.EscapeDataString(ConvertToString(sortOrder, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(LookupResponse); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<LookupResponse>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(LookupResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get units via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of units via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupUnitsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, UnitRepositoryAdapterFilters body)
+        {
+            return LookupUnitsByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get units via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>A list of units via lookup</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupUnitsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, UnitRepositoryAdapterFilters body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/lookups/units/adapter?");
+            if (input != null) 
+            {
+                urlBuilder_.Append("input=").Append(System.Uri.EscapeDataString(ConvertToString(input, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortBy != null) 
+            {
+                urlBuilder_.Append("sortBy=").Append(System.Uri.EscapeDataString(ConvertToString(sortBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortOrder != null) 
+            {
+                urlBuilder_.Append("sortOrder=").Append(System.Uri.EscapeDataString(ConvertToString(sortOrder, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(LookupResponse); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<LookupResponse>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(LookupResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
         /// <summary>Insert a white listed mobile access token</summary>
         /// <param name="body">The token to be persisted</param>
         /// <returns>token is successfully inserted for user</returns>
@@ -9647,6 +13923,724 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
             }
         }
     
+        /// <summary>Mobile endpoint for getting a list of responsibilities available to mobile</summary>
+        /// <returns>Raw extract of list item exclusion</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<MobileReponsibilities>> GetMobileResponsibilitiesAsync()
+        {
+            return GetMobileResponsibilitiesAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Mobile endpoint for getting a list of responsibilities available to mobile</summary>
+        /// <returns>Raw extract of list item exclusion</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<MobileReponsibilities>> GetMobileResponsibilitiesAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/mobile/records/responsibilities");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(MobileReponsibilities); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<MobileReponsibilities>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "401") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Credientials are invalid.", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(MobileReponsibilities);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get list exclusion</summary>
+        /// <returns>Raw extract of list exclusion</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListExclusion>>> GetListExclusionAsync()
+        {
+            return GetListExclusionAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get list exclusion</summary>
+        /// <returns>Raw extract of list exclusion</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListExclusion>>> GetListExclusionAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/mobile/config/listExclusions");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(System.Collections.ObjectModel.Collection<ListExclusion>); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.ObjectModel.Collection<ListExclusion>>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(System.Collections.ObjectModel.Collection<ListExclusion>);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get list item Exclusion</summary>
+        /// <returns>Raw extract of list item exclusion</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListItemExclusion>>> GetListItemExclusionAsync()
+        {
+            return GetListItemExclusionAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get list item Exclusion</summary>
+        /// <returns>Raw extract of list item exclusion</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<ListItemExclusion>>> GetListItemExclusionAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/mobile/config/listItemExclusions");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(System.Collections.ObjectModel.Collection<ListItemExclusion>); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.ObjectModel.Collection<ListItemExclusion>>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(System.Collections.ObjectModel.Collection<ListItemExclusion>);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Adds a new notification into queue</summary>
+        /// <returns>The notification rule dentifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> AddNotificationRuleAsync(NotificationRule body)
+        {
+            return AddNotificationRuleAsync(body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Adds a new notification into queue</summary>
+        /// <returns>The notification rule dentifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> AddNotificationRuleAsync(NotificationRule body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/notification/addrule");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "201") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Status201Response); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Status201Response>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Notification rule not added", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "422") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("ValidationError", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(Status201Response);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>updates a notification rule</summary>
+        /// <returns>The notification rule identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> UpdateNotificationRuleAsync(int notificationTriggerId, NotificationRule body)
+        {
+            return UpdateNotificationRuleAsync(notificationTriggerId, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>updates a notification rule</summary>
+        /// <returns>The notification rule identifier</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> UpdateNotificationRuleAsync(int notificationTriggerId, NotificationRule body, System.Threading.CancellationToken cancellationToken)
+        {
+            if (notificationTriggerId == null)
+                throw new System.ArgumentNullException("notificationTriggerId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/notification/updaterule/{notificationTriggerId}");
+            urlBuilder_.Replace("{notificationTriggerId}", System.Uri.EscapeDataString(ConvertToString(notificationTriggerId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "201") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Status201Response); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Status201Response>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Notification rule not updated", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "422") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("ValidationError", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(Status201Response);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>deletes a notification rule</summary>
+        /// <returns>Notification Rule has been deleted</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task DeleteNotificationRuleAsync(int notificationTriggerId)
+        {
+            return DeleteNotificationRuleAsync(notificationTriggerId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>deletes a notification rule</summary>
+        /// <returns>Notification Rule has been deleted</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task DeleteNotificationRuleAsync(int notificationTriggerId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (notificationTriggerId == null)
+                throw new System.ArgumentNullException("notificationTriggerId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/notification/deleterule/{notificationTriggerId}");
+            urlBuilder_.Replace("{notificationTriggerId}", System.Uri.EscapeDataString(ConvertToString(notificationTriggerId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "204") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Notification Rule not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Returns the notification rules</summary>
+        /// <param name="notificationId">The notification id.</param>
+        /// <param name="notificationTriggerId">The notification trigger id.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<NotificationRules>> GetNotificationRulesAsync(int notificationId, int notificationTriggerId)
+        {
+            return GetNotificationRulesAsync(notificationId, notificationTriggerId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Returns the notification rules</summary>
+        /// <param name="notificationId">The notification id.</param>
+        /// <param name="notificationTriggerId">The notification trigger id.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<NotificationRules>> GetNotificationRulesAsync(int notificationId, int notificationTriggerId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (notificationId == null)
+                throw new System.ArgumentNullException("notificationId");
+    
+            if (notificationTriggerId == null)
+                throw new System.ArgumentNullException("notificationTriggerId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/notification/getrules/{notificationId}/{notificationTriggerId}");
+            urlBuilder_.Replace("{notificationId}", System.Uri.EscapeDataString(ConvertToString(notificationId, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{notificationTriggerId}", System.Uri.EscapeDataString(ConvertToString(notificationTriggerId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(NotificationRules); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<NotificationRules>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Notification rule not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "422") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("ValidationError", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(NotificationRules);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
         /// <summary>Search for persons by params</summary>
         /// <param name="employmentStatus">Status of the person ( active = 11, inactive = 12 )</param>
         /// <param name="displayName">Display Name of the Person</param>
@@ -9673,13 +14667,13 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         /// <param name="loginExpirationDateStart">Start date of range for Expiry Date of the Person</param>
         /// <param name="loginExpirationDateEnd">End date of range for Expiry Date of the Person</param>
         /// <param name="contactPreference">Contact Type of the person email/phone</param>
-        /// <param name="pageNumber">Page Number of the Person</param>
-        /// <param name="pageSize">Page Size of the Person</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
         /// <param name="sortBy">Param for sortBy</param>
         /// <param name="sortOrder">Param for sortOrder</param>
         /// <returns>A list of persons founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Person>>> GetPersonsAsync(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PersonsResponse>> GetPersonsAsync(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder)
         {
             return GetPersonsAsync(employmentStatus, displayName, location, emailAddress, firstName, lastName, countryDivision, country, relationshipToCompany, contractingCompany, customerName, supervisor, startDateStart, startDateEnd, endDateStart, endDateEnd, currentPositionStartDateStart, currentPositionStartDateEnd, employeeID, currentPosition, loginAccessRequired, username, loginExpirationDateStart, loginExpirationDateEnd, contactPreference, pageNumber, pageSize, sortBy, sortOrder, System.Threading.CancellationToken.None);
         }
@@ -9710,14 +14704,14 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         /// <param name="loginExpirationDateStart">Start date of range for Expiry Date of the Person</param>
         /// <param name="loginExpirationDateEnd">End date of range for Expiry Date of the Person</param>
         /// <param name="contactPreference">Contact Type of the person email/phone</param>
-        /// <param name="pageNumber">Page Number of the Person</param>
-        /// <param name="pageSize">Page Size of the Person</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
         /// <param name="sortBy">Param for sortBy</param>
         /// <param name="sortOrder">Param for sortOrder</param>
         /// <returns>A list of persons founded using provided criteria</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Person>>> GetPersonsAsync(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PersonsResponse>> GetPersonsAsync(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/persons?");
@@ -9868,10 +14862,10 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(System.Collections.ObjectModel.Collection<Person>); 
+                            var result_ = default(PersonsResponse); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.ObjectModel.Collection<Person>>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<PersonsResponse>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -9913,7 +14907,7 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(System.Collections.ObjectModel.Collection<Person>);
+                        return default(PersonsResponse);
                     }
                     finally
                     {
@@ -10002,6 +14996,21 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("Persons not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "422") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("ValidationError", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -10108,6 +15117,21 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("Person not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "422") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("ValidationError", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -10437,26 +15461,151 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
             }
         }
     
-        /// <summary>Returns the person's personalization based on person id</summary>
-        /// <returns>OK</returns>
+        /// <summary>Validate the password for the provided user.</summary>
+        /// <returns>Password validation result</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalizationAsync(int personId)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePersonsPasswordAsync(int personId, FormsAuthPasswordUpdate body)
         {
-            return GetPersonPersonalizationAsync(personId, System.Threading.CancellationToken.None);
+            return ValidatePersonsPasswordAsync(personId, body, System.Threading.CancellationToken.None);
         }
     
-        /// <summary>Returns the person's personalization based on person id</summary>
-        /// <returns>OK</returns>
+        /// <summary>Validate the password for the provided user.</summary>
+        /// <returns>Password validation result</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalizationAsync(int personId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePersonsPasswordAsync(int personId, FormsAuthPasswordUpdate body, System.Threading.CancellationToken cancellationToken)
         {
             if (personId == null)
                 throw new System.ArgumentNullException("personId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/persons/{personId}/personalization");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/persons/{personId}/validatePassword");
             urlBuilder_.Replace("{personId}", System.Uri.EscapeDataString(ConvertToString(personId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(PasswordValidationResult); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<PasswordValidationResult>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Persons not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(PasswordValidationResult);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Returns the person's personalization based on person id</summary>
+        /// <param name="browserCountryISOCode">Detected user's country ISO Code</param>
+        /// <param name="browserTimeZoneName">Detected user's timezone name</param>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalizationAsync(int personId, string browserCountryISOCode, string browserTimeZoneName)
+        {
+            return GetPersonPersonalizationAsync(personId, browserCountryISOCode, browserTimeZoneName, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Returns the person's personalization based on person id</summary>
+        /// <param name="browserCountryISOCode">Detected user's country ISO Code</param>
+        /// <param name="browserTimeZoneName">Detected user's timezone name</param>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalizationAsync(int personId, string browserCountryISOCode, string browserTimeZoneName, System.Threading.CancellationToken cancellationToken)
+        {
+            if (personId == null)
+                throw new System.ArgumentNullException("personId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/persons/{personId}/personalization?");
+            urlBuilder_.Replace("{personId}", System.Uri.EscapeDataString(ConvertToString(personId, System.Globalization.CultureInfo.InvariantCulture)));
+            if (browserCountryISOCode != null) 
+            {
+                urlBuilder_.Append("browserCountryISOCode=").Append(System.Uri.EscapeDataString(ConvertToString(browserCountryISOCode, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (browserTimeZoneName != null) 
+            {
+                urlBuilder_.Append("browserTimeZoneName=").Append(System.Uri.EscapeDataString(ConvertToString(browserTimeZoneName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             try
@@ -10646,22 +15795,22 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
         }
     
         /// <summary>Returns persons based on name</summary>
-        /// <param name="pageNumber">Page Number of the Person</param>
-        /// <param name="pageSize">Page Size of the Person</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Person>>> GetPersonsByNameAsync(string name, int? pageNumber, int? pageSize)
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PersonsResponse>> GetPersonsByNameAsync(string name, int? pageNumber, int? pageSize)
         {
             return GetPersonsByNameAsync(name, pageNumber, pageSize, System.Threading.CancellationToken.None);
         }
     
         /// <summary>Returns persons based on name</summary>
-        /// <param name="pageNumber">Page Number of the Person</param>
-        /// <param name="pageSize">Page Size of the Person</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.ObjectModel.Collection<Person>>> GetPersonsByNameAsync(string name, int? pageNumber, int? pageSize, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PersonsResponse>> GetPersonsByNameAsync(string name, int? pageNumber, int? pageSize, System.Threading.CancellationToken cancellationToken)
         {
             if (name == null)
                 throw new System.ArgumentNullException("name");
@@ -10708,10 +15857,10 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(System.Collections.ObjectModel.Collection<Person>); 
+                            var result_ = default(PersonsResponse); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.ObjectModel.Collection<Person>>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<PersonsResponse>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -10753,7 +15902,1203 @@ namespace VelocityEhs.Service.PublicApi.Ehs.Infrastructure
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(System.Collections.ObjectModel.Collection<Person>);
+                        return default(PersonsResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Validate person attributes</summary>
+        /// <param name="ruleSet">the array of rule set we need validate on person</param>
+        /// <returns>validation succcess without errors</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task ValidatePersonAsync(System.Collections.Generic.IEnumerable<PersonValidationRuleSet> ruleSet, Person body)
+        {
+            return ValidatePersonAsync(ruleSet, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Validate person attributes</summary>
+        /// <param name="ruleSet">the array of rule set we need validate on person</param>
+        /// <returns>validation succcess without errors</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task ValidatePersonAsync(System.Collections.Generic.IEnumerable<PersonValidationRuleSet> ruleSet, Person body, System.Threading.CancellationToken cancellationToken)
+        {
+            if (ruleSet == null)
+                throw new System.ArgumentNullException("ruleSet");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/persons/validate?");
+            foreach (var item_ in ruleSet) { urlBuilder_.Append("ruleSet=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "204") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Person not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "422") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("ValidationError", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Create a new record.</summary>
+        /// <param name="productId">The id of the configuration product to create the record under.</param>
+        /// <returns>The records entity data.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> CreateEntityDataAsync(int productId, System.IO.Stream body)
+        {
+            return CreateEntityDataAsync(productId, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Create a new record.</summary>
+        /// <param name="productId">The id of the configuration product to create the record under.</param>
+        /// <returns>The records entity data.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> CreateEntityDataAsync(int productId, System.IO.Stream body, System.Threading.CancellationToken cancellationToken)
+        {
+            if (productId == null)
+                throw new System.ArgumentNullException("productId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/records/{productId}/data");
+            urlBuilder_.Replace("{productId}", System.Uri.EscapeDataString(ConvertToString(productId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StreamContent(body);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("text/plain");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(string); 
+                            try
+                            {
+                                result_ = (string)System.Convert.ChangeType(responseData_, typeof(string));
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = (RequestError)System.Convert.ChangeType(responseData_, typeof(RequestError));
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(string);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get a records entity data.</summary>
+        /// <param name="productId">The id of the configuration product to get the record from.</param>
+        /// <param name="recordId">The id of the  record.</param>
+        /// <returns>The records entity data.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetEntityDataAsync(int productId, int recordId)
+        {
+            return GetEntityDataAsync(productId, recordId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get a records entity data.</summary>
+        /// <param name="productId">The id of the configuration product to get the record from.</param>
+        /// <param name="recordId">The id of the  record.</param>
+        /// <returns>The records entity data.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetEntityDataAsync(int productId, int recordId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (productId == null)
+                throw new System.ArgumentNullException("productId");
+    
+            if (recordId == null)
+                throw new System.ArgumentNullException("recordId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/records/{productId}/{recordId}/data");
+            urlBuilder_.Replace("{productId}", System.Uri.EscapeDataString(ConvertToString(productId, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{recordId}", System.Uri.EscapeDataString(ConvertToString(recordId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(string); 
+                            try
+                            {
+                                result_ = (string)System.Convert.ChangeType(responseData_, typeof(string));
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = (RequestError)System.Convert.ChangeType(responseData_, typeof(RequestError));
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Record not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(string);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Update a records entity data.</summary>
+        /// <param name="productId">The id of the configuration product to update the record.</param>
+        /// <param name="recordId">The id of the  record.</param>
+        /// <returns>The records entity data.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> UpdateEntityDataAsync(int productId, int recordId, System.IO.Stream body)
+        {
+            return UpdateEntityDataAsync(productId, recordId, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Update a records entity data.</summary>
+        /// <param name="productId">The id of the configuration product to update the record.</param>
+        /// <param name="recordId">The id of the  record.</param>
+        /// <returns>The records entity data.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> UpdateEntityDataAsync(int productId, int recordId, System.IO.Stream body, System.Threading.CancellationToken cancellationToken)
+        {
+            if (productId == null)
+                throw new System.ArgumentNullException("productId");
+    
+            if (recordId == null)
+                throw new System.ArgumentNullException("recordId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/records/{productId}/{recordId}/data");
+            urlBuilder_.Replace("{productId}", System.Uri.EscapeDataString(ConvertToString(productId, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{recordId}", System.Uri.EscapeDataString(ConvertToString(recordId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StreamContent(body);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("text/plain");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(string); 
+                            try
+                            {
+                                result_ = (string)System.Convert.ChangeType(responseData_, typeof(string));
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = (RequestError)System.Convert.ChangeType(responseData_, typeof(RequestError));
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Record not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(string);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Deletes a records.</summary>
+        /// <param name="productId">The id of the configuration product for the record.</param>
+        /// <param name="recordId">The id of therecord.</param>
+        /// <returns>The records was successfully deleted</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task DeleteRecordAsync(int productId, int recordId)
+        {
+            return DeleteRecordAsync(productId, recordId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Deletes a records.</summary>
+        /// <param name="productId">The id of the configuration product for the record.</param>
+        /// <param name="recordId">The id of therecord.</param>
+        /// <returns>The records was successfully deleted</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task DeleteRecordAsync(int productId, int recordId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (productId == null)
+                throw new System.ArgumentNullException("productId");
+    
+            if (recordId == null)
+                throw new System.ArgumentNullException("recordId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/records/{productId}/{recordId}/data");
+            urlBuilder_.Replace("{productId}", System.Uri.EscapeDataString(ConvertToString(productId, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{recordId}", System.Uri.EscapeDataString(ConvertToString(recordId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "204") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Record not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get the product records for a view.</summary>
+        /// <param name="productId">The id of the configuration product to get records for.</param>
+        /// <returns>The product records to include in a view.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductRecordsAsync(int productId, System.IO.Stream body)
+        {
+            return GetProductRecordsAsync(productId, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get the product records for a view.</summary>
+        /// <param name="productId">The id of the configuration product to get records for.</param>
+        /// <returns>The product records to include in a view.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductRecordsAsync(int productId, System.IO.Stream body, System.Threading.CancellationToken cancellationToken)
+        {
+            if (productId == null)
+                throw new System.ArgumentNullException("productId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/records/{productId}/search/raw");
+            urlBuilder_.Replace("{productId}", System.Uri.EscapeDataString(ConvertToString(productId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StreamContent(body);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("text/plain");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(string); 
+                            try
+                            {
+                                result_ = (string)System.Convert.ChangeType(responseData_, typeof(string));
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = (RequestError)System.Convert.ChangeType(responseData_, typeof(RequestError));
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(string);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get the product records for a view.</summary>
+        /// <param name="productId">The id of the configuration product to get records for.</param>
+        /// <param name="viewId">The id of the view to get product records for.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <param name="body">The non default filters applied along with the view filters</param>
+        /// <returns>The product records to include in a view.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductRecordsForViewAsync(int productId, int viewId, int? pageNumber, int? pageSize, string sortBy, string sortOrder, System.IO.Stream body)
+        {
+            return GetProductRecordsForViewAsync(productId, viewId, pageNumber, pageSize, sortBy, sortOrder, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get the product records for a view.</summary>
+        /// <param name="productId">The id of the configuration product to get records for.</param>
+        /// <param name="viewId">The id of the view to get product records for.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <param name="body">The non default filters applied along with the view filters</param>
+        /// <returns>The product records to include in a view.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetProductRecordsForViewAsync(int productId, int viewId, int? pageNumber, int? pageSize, string sortBy, string sortOrder, System.IO.Stream body, System.Threading.CancellationToken cancellationToken)
+        {
+            if (productId == null)
+                throw new System.ArgumentNullException("productId");
+    
+            if (viewId == null)
+                throw new System.ArgumentNullException("viewId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/records/{productId}/search/view/{viewId}/raw?");
+            urlBuilder_.Replace("{productId}", System.Uri.EscapeDataString(ConvertToString(productId, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{viewId}", System.Uri.EscapeDataString(ConvertToString(viewId, System.Globalization.CultureInfo.InvariantCulture)));
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortBy != null) 
+            {
+                urlBuilder_.Append("sortBy=").Append(System.Uri.EscapeDataString(ConvertToString(sortBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortOrder != null) 
+            {
+                urlBuilder_.Append("sortOrder=").Append(System.Uri.EscapeDataString(ConvertToString(sortOrder, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StreamContent(body);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("text/plain");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(string); 
+                            try
+                            {
+                                result_ = (string)System.Convert.ChangeType(responseData_, typeof(string));
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = (RequestError)System.Convert.ChangeType(responseData_, typeof(RequestError));
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(string);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get a list of archived product records.</summary>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>The applicable archived product records.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ArchivedRecordResponse>> SearchArchivedRecordsAsync(int? pageNumber, int? pageSize, string sortBy, string sortOrder, ArchivedRecordSearchParams body)
+        {
+            return SearchArchivedRecordsAsync(pageNumber, pageSize, sortBy, sortOrder, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get a list of archived product records.</summary>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <returns>The applicable archived product records.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ArchivedRecordResponse>> SearchArchivedRecordsAsync(int? pageNumber, int? pageSize, string sortBy, string sortOrder, ArchivedRecordSearchParams body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/records/archived/search?");
+            if (pageNumber != null) 
+            {
+                urlBuilder_.Append("pageNumber=").Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageSize != null) 
+            {
+                urlBuilder_.Append("pageSize=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortBy != null) 
+            {
+                urlBuilder_.Append("sortBy=").Append(System.Uri.EscapeDataString(ConvertToString(sortBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortOrder != null) 
+            {
+                urlBuilder_.Append("sortOrder=").Append(System.Uri.EscapeDataString(ConvertToString(sortOrder, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(ArchivedRecordResponse); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<ArchivedRecordResponse>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(ArchivedRecordResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Restore a set of archived product records and their children</summary>
+        /// <returns>The achived records were successfully restored.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task RestoreArchivedRecordsAsync(System.Collections.Generic.IEnumerable<ArchivedRecordIds> body)
+        {
+            return RestoreArchivedRecordsAsync(body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Restore a set of archived product records and their children</summary>
+        /// <returns>The achived records were successfully restored.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task RestoreArchivedRecordsAsync(System.Collections.Generic.IEnumerable<ArchivedRecordIds> body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/records/archived/restore");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "204") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Permanently delete a set of archived product records and their children.</summary>
+        /// <returns>The achived records were successfully deleted.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task DeleteArchivedRecordsAsync(System.Collections.Generic.IEnumerable<ArchivedRecordIds> body)
+        {
+            return DeleteArchivedRecordsAsync(body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Permanently delete a set of archived product records and their children.</summary>
+        /// <returns>The achived records were successfully deleted.</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task DeleteArchivedRecordsAsync(System.Collections.Generic.IEnumerable<ArchivedRecordIds> body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/records/archived/delete");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "204") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(RequestError); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestError>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<RequestError>("Bad request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("You do not have sufficient rights to this resource", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <returns>current version of API</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetversionAsync()
+        {
+            return GetversionAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <returns>current version of API</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetversionAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/meta/version");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(string); 
+                            try
+                            {
+                                result_ = (string)System.Convert.ChangeType(responseData_, typeof(string));
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(string);
                     }
                     finally
                     {

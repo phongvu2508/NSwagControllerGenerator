@@ -44,6 +44,14 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <returns>The account was successfully updated.</returns>
         System.Threading.Tasks.Task UpdateAccountCurrencyListAsync(UpdateAccountCurrencyList body);
     
+        /// <summary>Get an account language list</summary>
+        /// <response code="200">The langauge list of the account that matches the request</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Language List not found</response>
+        /// <returns>The langauge list of the account that matches the request</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Language>>> GetAccountLanguagesAsync();
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
@@ -62,7 +70,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Account not found</response>
         /// <returns>The personalization of the account that matches the request</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("account/personalization")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("account/personalization"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetAccountPersonalization()
         {
             return this.implementation.GetAccountPersonalizationAsync();
@@ -74,7 +82,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Account not found</response>
         /// <returns>The account was successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("account/personalization")]
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("account/personalization"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task UpdateAccountPersonalization([Microsoft.AspNetCore.Mvc.FromBody] UpdatePersonalization body)
         {
             return this.implementation.UpdateAccountPersonalizationAsync(body);
@@ -86,7 +94,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Currency List not found</response>
         /// <returns>The currency list of the account that matches the request</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("account/currency")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("account/currency"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Currency>>> GetAccountCurrencyList()
         {
             return this.implementation.GetAccountCurrencyListAsync();
@@ -99,10 +107,324 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">No currency for the account</response>
         /// <returns>The account was successfully updated.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("account/currency")]
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("account/currency"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task UpdateAccountCurrencyList([Microsoft.AspNetCore.Mvc.FromBody] UpdateAccountCurrencyList body)
         {
             return this.implementation.UpdateAccountCurrencyListAsync(body);
+        }
+    
+        /// <summary>Get an account language list</summary>
+        /// <response code="200">The langauge list of the account that matches the request</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Language List not found</response>
+        /// <returns>The langauge list of the account that matches the request</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("account/language"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Language>>> GetAccountLanguages()
+        {
+            return this.implementation.GetAccountLanguagesAsync();
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface IAuthenticationController
+    {
+        /// <summary>Gets the authentication methods for the account.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <response code="200">The authentication methods for the account.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">No authentication methods for the account</response>
+        /// <returns>The authentication methods for the account.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<AuthenticationMethod>>> GetAuthMethodsAsync(int accountId);
+    
+        /// <summary>Request to start the forgot password process for a given username.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <response code="204">The person was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The person was successfully updated</returns>
+        System.Threading.Tasks.Task ForgotPasswordAsync(int accountId, FormsAuthPasswordChangeRequest body);
+    
+        /// <summary>Validates Password based on account, person and password rules</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="body">The Password Parameters</param>
+        /// <response code="200">Password validation result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Invalid entry for password</response>
+        /// <returns>Password validation result</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePasswordAsync(int accountId, FormsAuthPasswordUpdate body);
+    
+        /// <summary>Update the password for a user</summary>
+        /// <param name="accountId">The account id</param>
+        /// <response code="204">The person was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The person was successfully updated</returns>
+        System.Threading.Tasks.Task ResetPersonsPasswordAsync(int accountId, FormsAuthPasswordUpdate body);
+    
+        /// <summary>Gets the password rules for the account.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <response code="200">The password rules for the account.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">No password rules for the account</response>
+        /// <returns>The password rules for the account.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<FormsAuthPasswordRule>>> GetPasswordRulesAsync(int accountId);
+    
+        /// <summary>Determine if a forms auth key is valid.</summary>
+        /// <response code="204">The provided key was valid.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="422">The provided key was not valid.</response>
+        /// <returns>The provided key was valid.</returns>
+        System.Threading.Tasks.Task ValidateFormsAuthKeyAsync(FormsAuthKey body);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class AuthenticationController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private IAuthenticationController implementation;
+    
+        public AuthenticationController(IAuthenticationController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <summary>Gets the authentication methods for the account.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <response code="200">The authentication methods for the account.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">No authentication methods for the account</response>
+        /// <returns>The authentication methods for the account.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/methods")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<AuthenticationMethod>>> GetAuthMethods(int accountId)
+        {
+            return this.implementation.GetAuthMethodsAsync(accountId);
+        }
+    
+        /// <summary>Request to start the forgot password process for a given username.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <response code="204">The person was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The person was successfully updated</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/forms/forgotPassword")]
+        public System.Threading.Tasks.Task ForgotPassword(int accountId, [Microsoft.AspNetCore.Mvc.FromBody] FormsAuthPasswordChangeRequest body)
+        {
+            return this.implementation.ForgotPasswordAsync(accountId, body);
+        }
+    
+        /// <summary>Validates Password based on account, person and password rules</summary>
+        /// <param name="accountId">The account id</param>
+        /// <param name="body">The Password Parameters</param>
+        /// <response code="200">Password validation result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Invalid entry for password</response>
+        /// <returns>Password validation result</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/forms/validatePassword")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePassword(int accountId, [Microsoft.AspNetCore.Mvc.FromBody] FormsAuthPasswordUpdate body)
+        {
+            return this.implementation.ValidatePasswordAsync(accountId, body);
+        }
+    
+        /// <summary>Update the password for a user</summary>
+        /// <param name="accountId">The account id</param>
+        /// <response code="204">The person was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The person was successfully updated</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("auth/forms/resetPassword")]
+        public System.Threading.Tasks.Task ResetPersonsPassword(int accountId, [Microsoft.AspNetCore.Mvc.FromBody] FormsAuthPasswordUpdate body)
+        {
+            return this.implementation.ResetPersonsPasswordAsync(accountId, body);
+        }
+    
+        /// <summary>Gets the password rules for the account.</summary>
+        /// <param name="accountId">The account id</param>
+        /// <response code="200">The password rules for the account.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">No password rules for the account</response>
+        /// <returns>The password rules for the account.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth/forms/rules")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<FormsAuthPasswordRule>>> GetPasswordRules(int accountId)
+        {
+            return this.implementation.GetPasswordRulesAsync(accountId);
+        }
+    
+        /// <summary>Determine if a forms auth key is valid.</summary>
+        /// <response code="204">The provided key was valid.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="422">The provided key was not valid.</response>
+        /// <returns>The provided key was valid.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/forms/key/validate")]
+        public System.Threading.Tasks.Task ValidateFormsAuthKey([Microsoft.AspNetCore.Mvc.FromBody] FormsAuthKey body)
+        {
+            return this.implementation.ValidateFormsAuthKeyAsync(body);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface IConfigurationController
+    {
+        /// <summary>Get the form configuration for a state.</summary>
+        /// <param name="category">The name of the category to get the form configuration for.</param>
+        /// <param name="state">The name of the state to get the form configuration for.</param>
+        /// <response code="200">The state's form configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The state's form configuration</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormConfig>> GetStateFormConfigByNameAsync(string category, string state);
+    
+        /// <summary>Get the form configuration for a state.</summary>
+        /// <param name="categoryId">The id of the category to get the form configuration for.</param>
+        /// <param name="productStateId">The id of the product state to get the form configuration for.</param>
+        /// <response code="200">The state's form configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The state's form configuration</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormConfig>> GetStateFormConfigAsync(int categoryId, int productStateId);
+    
+        /// <summary>Get a view configuration</summary>
+        /// <param name="name">The name of the view to get the configuration for.</param>
+        /// <response code="200">The view configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The view configuration</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ViewConfig>> GetViewConfigByNameAsync(string name);
+    
+        /// <summary>Get a view configuration</summary>
+        /// <param name="viewId">The id of the view to get the configuration for.</param>
+        /// <response code="200">The view configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The view configuration</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ViewConfig>> GetViewConfigByIdAsync(int viewId);
+    
+        /// <summary>Get the workflow configuration for a state</summary>
+        /// <param name="category">The name of the category to get the workflow configuration for.</param>
+        /// <param name="state">The name of the state to get the workflow configuration for.</param>
+        /// <response code="200">The state's workflow configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The state's workflow configuration</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<WorkflowConfig>> GetStateWorkflowConfigByNameAsync(string category, string state);
+    
+        /// <summary>Get the workflow configuration for a state</summary>
+        /// <param name="categoryId">The id of the category to get the workflow configuration for.</param>
+        /// <param name="productStateId">The id of the product state to get the workflow configuration for.</param>
+        /// <response code="200">The state's workflow configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The state's workflow configuration</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<WorkflowConfig>> GetStateWorkflowConfigRawAsync(int categoryId, int productStateId);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class ConfigurationController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private IConfigurationController implementation;
+    
+        public ConfigurationController(IConfigurationController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <summary>Get the form configuration for a state.</summary>
+        /// <param name="category">The name of the category to get the form configuration for.</param>
+        /// <param name="state">The name of the state to get the form configuration for.</param>
+        /// <response code="200">The state's form configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The state's form configuration</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("config/forms"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormConfig>> GetStateFormConfigByName(string category, string state)
+        {
+            return this.implementation.GetStateFormConfigByNameAsync(category, state);
+        }
+    
+        /// <summary>Get the form configuration for a state.</summary>
+        /// <param name="categoryId">The id of the category to get the form configuration for.</param>
+        /// <param name="productStateId">The id of the product state to get the form configuration for.</param>
+        /// <response code="200">The state's form configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The state's form configuration</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("config/forms/{categoryId}/{productStateId}"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<FormConfig>> GetStateFormConfig(int categoryId, int productStateId)
+        {
+            return this.implementation.GetStateFormConfigAsync(categoryId, productStateId);
+        }
+    
+        /// <summary>Get a view configuration</summary>
+        /// <param name="name">The name of the view to get the configuration for.</param>
+        /// <response code="200">The view configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The view configuration</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("config/views"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ViewConfig>> GetViewConfigByName(string name)
+        {
+            return this.implementation.GetViewConfigByNameAsync(name);
+        }
+    
+        /// <summary>Get a view configuration</summary>
+        /// <param name="viewId">The id of the view to get the configuration for.</param>
+        /// <response code="200">The view configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The view configuration</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("config/views/{viewId}"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ViewConfig>> GetViewConfigById(int viewId)
+        {
+            return this.implementation.GetViewConfigByIdAsync(viewId);
+        }
+    
+        /// <summary>Get the workflow configuration for a state</summary>
+        /// <param name="category">The name of the category to get the workflow configuration for.</param>
+        /// <param name="state">The name of the state to get the workflow configuration for.</param>
+        /// <response code="200">The state's workflow configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The state's workflow configuration</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("config/workflows"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<WorkflowConfig>> GetStateWorkflowConfigByName(string category, string state)
+        {
+            return this.implementation.GetStateWorkflowConfigByNameAsync(category, state);
+        }
+    
+        /// <summary>Get the workflow configuration for a state</summary>
+        /// <param name="categoryId">The id of the category to get the workflow configuration for.</param>
+        /// <param name="productStateId">The id of the product state to get the workflow configuration for.</param>
+        /// <response code="200">The state's workflow configuration</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Configuration not found</response>
+        /// <returns>The state's workflow configuration</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("config/workflows/{categoryId}/{productStateId}"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<WorkflowConfig>> GetStateWorkflowConfigRaw(int categoryId, int productStateId)
+        {
+            return this.implementation.GetStateWorkflowConfigRawAsync(categoryId, productStateId);
         }
     
     }
@@ -130,10 +452,155 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="200">the current users navigation</response>
         /// <response code="204">Unable to complete search.</response>
         /// <returns>the current users navigation</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("global-search/getResults")]
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("global-search/getResults"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<GlobalSearchResult>> GetGlobalSearchResults([Microsoft.AspNetCore.Mvc.FromBody] GlobalSearchParameters body)
         {
             return this.implementation.GetGlobalSearchResultsAsync(body);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface IHierarchyController
+    {
+        /// <summary>Return a list all Hierarchies</summary>
+        /// <response code="200">A list of Hierarchies</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Hierarchies not found</response>
+        /// <returns>A list of Hierarchies</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Hierarchy>>> GetHierarchiesAsync();
+    
+        /// <summary>Update existing Hierarchy</summary>
+        /// <param name="body">The updated Hierarchy object</param>
+        /// <response code="204">The hierarchy was successfully updated.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Hierarchy not found</response>
+        /// <returns>The hierarchy was successfully updated.</returns>
+        System.Threading.Tasks.Task UpdateHierarchyAsync(System.Collections.Generic.IEnumerable<UpdateHierarchyParams> body);
+    
+        /// <summary>Create new Hierarchy</summary>
+        /// <param name="body">The new Hierarchy schema</param>
+        /// <response code="201">The new hierarchy identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new hierarchy identifier</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateHierarchyAsync(NewHierarchyParams body);
+    
+        /// <summary>Get a Hierarchy by id</summary>
+        /// <param name="hierarchyId">The Hierarchy identifier</param>
+        /// <response code="200">A Hierarchy by id</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Hierarchy not found</response>
+        /// <returns>A Hierarchy by id</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Hierarchy>> GetHierarchyAsync(int? hierarchyId);
+    
+        /// <summary>Delete a Hierarchy by Hierarchy id</summary>
+        /// <param name="hierarchyId">The Hierarchy identifier</param>
+        /// <response code="204">Delete Hierarchy result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Hierarchy not found</response>
+        /// <returns>Delete Hierarchy result</returns>
+        System.Threading.Tasks.Task DeleteHierarchyAsync(int? hierarchyId);
+    
+        /// <summary>Get a Hierarchies stats</summary>
+        /// <param name="hierarchyId">The Hierarchy identifier</param>
+        /// <response code="200">The hierarchy stats</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Hierarchy not found</response>
+        /// <returns>The hierarchy stats</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<HierarchyStats>> GetHierarchyStatsAsync(int hierarchyId);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class HierarchyController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private IHierarchyController implementation;
+    
+        public HierarchyController(IHierarchyController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <summary>Return a list all Hierarchies</summary>
+        /// <response code="200">A list of Hierarchies</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Hierarchies not found</response>
+        /// <returns>A list of Hierarchies</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("hierarchies"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Hierarchy>>> GetHierarchies()
+        {
+            return this.implementation.GetHierarchiesAsync();
+        }
+    
+        /// <summary>Update existing Hierarchy</summary>
+        /// <param name="body">The updated Hierarchy object</param>
+        /// <response code="204">The hierarchy was successfully updated.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Hierarchy not found</response>
+        /// <returns>The hierarchy was successfully updated.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("hierarchies"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task UpdateHierarchy([Microsoft.AspNetCore.Mvc.FromBody] System.Collections.Generic.IEnumerable<UpdateHierarchyParams> body)
+        {
+            return this.implementation.UpdateHierarchyAsync(body);
+        }
+    
+        /// <summary>Create new Hierarchy</summary>
+        /// <param name="body">The new Hierarchy schema</param>
+        /// <response code="201">The new hierarchy identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new hierarchy identifier</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("hierarchies"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateHierarchy([Microsoft.AspNetCore.Mvc.FromBody] NewHierarchyParams body)
+        {
+            return this.implementation.CreateHierarchyAsync(body);
+        }
+    
+        /// <summary>Get a Hierarchy by id</summary>
+        /// <param name="hierarchyId">The Hierarchy identifier</param>
+        /// <response code="200">A Hierarchy by id</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Hierarchy not found</response>
+        /// <returns>A Hierarchy by id</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("hierarchies/{hierarchyId}"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Hierarchy>> GetHierarchy(int? hierarchyId)
+        {
+            return this.implementation.GetHierarchyAsync(hierarchyId);
+        }
+    
+        /// <summary>Delete a Hierarchy by Hierarchy id</summary>
+        /// <param name="hierarchyId">The Hierarchy identifier</param>
+        /// <response code="204">Delete Hierarchy result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Hierarchy not found</response>
+        /// <returns>Delete Hierarchy result</returns>
+        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("hierarchies/{hierarchyId}"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task DeleteHierarchy(int? hierarchyId)
+        {
+            return this.implementation.DeleteHierarchyAsync(hierarchyId);
+        }
+    
+        /// <summary>Get a Hierarchies stats</summary>
+        /// <param name="hierarchyId">The Hierarchy identifier</param>
+        /// <response code="200">The hierarchy stats</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Hierarchy not found</response>
+        /// <returns>The hierarchy stats</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("hierarchies/{hierarchyId}/stats"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<HierarchyStats>> GetHierarchyStats(int hierarchyId)
+        {
+            return this.implementation.GetHierarchyStatsAsync(hierarchyId);
         }
     
     }
@@ -167,7 +634,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The new translation identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("translations/machine")]
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("translations/machine"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateMachineTranslationRequest([Microsoft.AspNetCore.Mvc.FromBody] MachineTranslation body)
         {
             return this.implementation.CreateMachineTranslationRequestAsync(body);
@@ -176,343 +643,363 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface INavigationController
+    public interface IListController
     {
-        /// <response code="200">the current users navigation</response>
-        /// <returns>the current users navigation</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Navigation>> GetNavigationAsync();
+        /// <summary>Search for lists based on params</summary>
+        /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <param name="productFilters">The array of selected products to include</param>
+        /// <response code="200">A list of lists found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Lists not found</response>
+        /// <returns>A list of lists found using provided criteria</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<List>>> GetListsAsync(System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters);
+    
+        /// <summary>Update existing list</summary>
+        /// <param name="body">The updated list schema</param>
+        /// <response code="204">The list was successfully updated.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List not found</response>
+        /// <returns>The list was successfully updated.</returns>
+        System.Threading.Tasks.Task UpdateListAsync(UpdateListParams body);
+    
+        /// <summary>Create new list</summary>
+        /// <param name="body">The list schema</param>
+        /// <response code="201">The new list identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new list identifier</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateListAsync(List body);
+    
+        /// <summary>Delete a list by list id</summary>
+        /// <param name="listId">The list identifier</param>
+        /// <response code="204">List deletion result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List not found</response>
+        /// <returns>List deletion result</returns>
+        System.Threading.Tasks.Task DeleteListAsync(int listId);
+    
+        /// <summary>Get a list by list id</summary>
+        /// <param name="listId">The list to be returned</param>
+        /// <response code="200">A list with provided identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List not found</response>
+        /// <returns>A list with provided identifier</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListByIdAsync(int listId);
+    
+        /// <summary>Get lists by list name</summary>
+        /// <param name="listName">The lists to be returned</param>
+        /// <response code="200">A list of lists found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List not found</response>
+        /// <returns>A list of lists found using provided criteria</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListSearch>>> GetListsByNameAsync(string listName);
+    
+        /// <summary>Search for list items based on params</summary>
+        /// <param name="listId">The list the list items retrieved belong to (null will return all lists)</param>
+        /// <param name="listStatusFilters">The array of selected statuses of lists to include</param>
+        /// <param name="listItemStatusFilters">The array of selected statuses list items to include</param>
+        /// <response code="200">A list of list items found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List item not found</response>
+        /// <returns>A list of list items found using provided criteria</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItem>>> GetListItemsAsync(int? listId, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters);
+    
+        /// <summary>Update existing list item</summary>
+        /// <param name="body">The updated list item schema</param>
+        /// <response code="204">The list item was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>The list item was successfully updated</returns>
+        System.Threading.Tasks.Task UpdateListItemAsync(UpdateListItemParams body);
+    
+        /// <summary>Create new list item</summary>
+        /// <param name="body">The new list item schema</param>
+        /// <response code="201">The new list item identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new list item identifier</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201MultipleResponses>> CreateListItemAsync(NewListItemParams body);
+    
+        /// <summary>Delete a list item by list item id</summary>
+        /// <param name="listItemId">The list item identifier</param>
+        /// <response code="204">List Item deletion result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>List Item deletion result</returns>
+        System.Threading.Tasks.Task DeleteListItemAsync(int listItemId);
+    
+        /// <summary>Get a list item by list item id</summary>
+        /// <param name="listItemId">The list item to be returned</param>
+        /// <response code="200">A list item with provided identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>A list item with provided identifier</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ListItem>> GetListItemByIdAsync(int listItemId);
+    
+        /// <summary>Get list items by list item name</summary>
+        /// <param name="listItemName">The list items to be returned</param>
+        /// <response code="200">A list of list items found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>A list of list items found using provided criteria</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItemSearch>>> GetListItemsByNameAsync(string listItemName);
+    
+        /// <summary>Reorders all list items in a list</summary>
+        /// <param name="body">The reorder list item schema</param>
+        /// <response code="204">The list item reorder was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>The list item reorder was successfully updated</returns>
+        System.Threading.Tasks.Task ReorderListItemAsync(ReorderListItemParams body);
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial class NavigationController : Microsoft.AspNetCore.Mvc.Controller
+    public partial class ListController : Microsoft.AspNetCore.Mvc.Controller
     {
-        private INavigationController implementation;
+        private IListController implementation;
     
-        public NavigationController(INavigationController implementation)
+        public ListController(IListController implementation)
         {
             this.implementation = implementation;
         }
     
-        /// <response code="200">the current users navigation</response>
-        /// <returns>the current users navigation</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("navigation")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Navigation>> GetNavigation()
+        /// <summary>Search for lists based on params</summary>
+        /// <param name="statusFilters">The array of selected statuses to include</param>
+        /// <param name="productFilters">The array of selected products to include</param>
+        /// <response code="200">A list of lists found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Lists not found</response>
+        /// <returns>A list of lists found using provided criteria</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<List>>> GetLists(System.Collections.Generic.IEnumerable<int> statusFilters, System.Collections.Generic.IEnumerable<int> productFilters)
         {
-            return this.implementation.GetNavigationAsync();
+            return this.implementation.GetListsAsync(statusFilters, productFilters);
+        }
+    
+        /// <summary>Update existing list</summary>
+        /// <param name="body">The updated list schema</param>
+        /// <response code="204">The list was successfully updated.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List not found</response>
+        /// <returns>The list was successfully updated.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("lists"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task UpdateList([Microsoft.AspNetCore.Mvc.FromBody] UpdateListParams body)
+        {
+            return this.implementation.UpdateListAsync(body);
+        }
+    
+        /// <summary>Create new list</summary>
+        /// <param name="body">The list schema</param>
+        /// <response code="201">The new list identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new list identifier</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lists"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateList([Microsoft.AspNetCore.Mvc.FromBody] List body)
+        {
+            return this.implementation.CreateListAsync(body);
+        }
+    
+        /// <summary>Delete a list by list id</summary>
+        /// <param name="listId">The list identifier</param>
+        /// <response code="204">List deletion result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List not found</response>
+        /// <returns>List deletion result</returns>
+        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("lists"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task DeleteList(int listId)
+        {
+            return this.implementation.DeleteListAsync(listId);
+        }
+    
+        /// <summary>Get a list by list id</summary>
+        /// <param name="listId">The list to be returned</param>
+        /// <response code="200">A list with provided identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List not found</response>
+        /// <returns>A list with provided identifier</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/{listId}"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<List>> GetListById(int listId)
+        {
+            return this.implementation.GetListByIdAsync(listId);
+        }
+    
+        /// <summary>Get lists by list name</summary>
+        /// <param name="listName">The lists to be returned</param>
+        /// <response code="200">A list of lists found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List not found</response>
+        /// <returns>A list of lists found using provided criteria</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/search"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListSearch>>> GetListsByName(string listName)
+        {
+            return this.implementation.GetListsByNameAsync(listName);
+        }
+    
+        /// <summary>Search for list items based on params</summary>
+        /// <param name="listId">The list the list items retrieved belong to (null will return all lists)</param>
+        /// <param name="listStatusFilters">The array of selected statuses of lists to include</param>
+        /// <param name="listItemStatusFilters">The array of selected statuses list items to include</param>
+        /// <response code="200">A list of list items found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List item not found</response>
+        /// <returns>A list of list items found using provided criteria</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/items"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItem>>> GetListItems(int? listId, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters)
+        {
+            return this.implementation.GetListItemsAsync(listId, listStatusFilters, listItemStatusFilters);
+        }
+    
+        /// <summary>Update existing list item</summary>
+        /// <param name="body">The updated list item schema</param>
+        /// <response code="204">The list item was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>The list item was successfully updated</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("lists/items"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task UpdateListItem([Microsoft.AspNetCore.Mvc.FromBody] UpdateListItemParams body)
+        {
+            return this.implementation.UpdateListItemAsync(body);
+        }
+    
+        /// <summary>Create new list item</summary>
+        /// <param name="body">The new list item schema</param>
+        /// <response code="201">The new list item identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The new list item identifier</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lists/items"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201MultipleResponses>> CreateListItem([Microsoft.AspNetCore.Mvc.FromBody] NewListItemParams body)
+        {
+            return this.implementation.CreateListItemAsync(body);
+        }
+    
+        /// <summary>Delete a list item by list item id</summary>
+        /// <param name="listItemId">The list item identifier</param>
+        /// <response code="204">List Item deletion result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>List Item deletion result</returns>
+        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("lists/items"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task DeleteListItem(int listItemId)
+        {
+            return this.implementation.DeleteListItemAsync(listItemId);
+        }
+    
+        /// <summary>Get a list item by list item id</summary>
+        /// <param name="listItemId">The list item to be returned</param>
+        /// <response code="200">A list item with provided identifier</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>A list item with provided identifier</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/items/{listItemId}"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ListItem>> GetListItemById(int listItemId)
+        {
+            return this.implementation.GetListItemByIdAsync(listItemId);
+        }
+    
+        /// <summary>Get list items by list item name</summary>
+        /// <param name="listItemName">The list items to be returned</param>
+        /// <response code="200">A list of list items found using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>A list of list items found using provided criteria</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/items/search"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItemSearch>>> GetListItemsByName(string listItemName)
+        {
+            return this.implementation.GetListItemsByNameAsync(listItemName);
+        }
+    
+        /// <summary>Reorders all list items in a list</summary>
+        /// <param name="body">The reorder list item schema</param>
+        /// <response code="204">The list item reorder was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">List Item not found</response>
+        /// <returns>The list item reorder was successfully updated</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("lists/items/reorder"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task ReorderListItem([Microsoft.AspNetCore.Mvc.FromBody] ReorderListItemParams body)
+        {
+            return this.implementation.ReorderListItemAsync(body);
         }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface IUsersController
+    public interface ILocalizationController
     {
-        /// <response code="200">the current user</response>
-        /// <response code="204">The current user could not be found.</response>
-        /// <returns>the current user</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<User>> GetCurrentUserAsync();
-    
-        /// <summary>Unlocks the current user</summary>
-        /// <response code="204">The current user was successfully unlocked.</response>
+        /// <summary>Get Currency list by searching</summary>
+        /// <response code="200">A currency list founded using provided criteria</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Current User not found</response>
-        /// <returns>The current user was successfully unlocked.</returns>
-        System.Threading.Tasks.Task UnlockCurrentUserAsync();
+        /// <response code="404">A currency list not found</response>
+        /// <returns>A currency list founded using provided criteria</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Currency>>> GetCurrencyForSearchAsync(string searchText);
     
-        /// <summary>Update the password for the current user.</summary>
-        /// <param name="body">Password Parameters</param>
-        /// <response code="204">The current user was successfully updated</response>
+        /// <summary>Get Timezone list</summary>
+        /// <response code="200">A timezone list founded</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Current User not found</response>
-        /// <returns>The current user was successfully updated</returns>
-        System.Threading.Tasks.Task UpdateCurrentUserPasswordAsync(PasswordParams body);
+        /// <response code="404">A timezone list not found</response>
+        /// <returns>A timezone list founded</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<TimeZoneList>>> GetTimeZonesAsync();
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial class UsersController : Microsoft.AspNetCore.Mvc.Controller
+    public partial class LocalizationController : Microsoft.AspNetCore.Mvc.Controller
     {
-        private IUsersController implementation;
+        private ILocalizationController implementation;
     
-        public UsersController(IUsersController implementation)
+        public LocalizationController(ILocalizationController implementation)
         {
             this.implementation = implementation;
         }
     
-        /// <response code="200">the current user</response>
-        /// <response code="204">The current user could not be found.</response>
-        /// <returns>the current user</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("users/me")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<User>> GetCurrentUser()
+        /// <summary>Get Currency list by searching</summary>
+        /// <response code="200">A currency list founded using provided criteria</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">A currency list not found</response>
+        /// <returns>A currency list founded using provided criteria</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("localization/search/{searchText}"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Currency>>> GetCurrencyForSearch(string searchText)
         {
-            return this.implementation.GetCurrentUserAsync();
+            return this.implementation.GetCurrencyForSearchAsync(searchText);
         }
     
-        /// <summary>Unlocks the current user</summary>
-        /// <response code="204">The current user was successfully unlocked.</response>
+        /// <summary>Get Timezone list</summary>
+        /// <response code="200">A timezone list founded</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Current User not found</response>
-        /// <returns>The current user was successfully unlocked.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("users/me"), Microsoft.AspNetCore.Authorization.Authorize]
-        public System.Threading.Tasks.Task UnlockCurrentUser()
+        /// <response code="404">A timezone list not found</response>
+        /// <returns>A timezone list founded</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("localization/timezone"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<TimeZoneList>>> GetTimeZones()
         {
-            return this.implementation.UnlockCurrentUserAsync();
-        }
-    
-        /// <summary>Update the password for the current user.</summary>
-        /// <param name="body">Password Parameters</param>
-        /// <response code="204">The current user was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Current User not found</response>
-        /// <returns>The current user was successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("users/me/setPassword"), Microsoft.AspNetCore.Authorization.Authorize]
-        public System.Threading.Tasks.Task UpdateCurrentUserPassword([Microsoft.AspNetCore.Mvc.FromBody] PasswordParams body)
-        {
-            return this.implementation.UpdateCurrentUserPasswordAsync(body);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface ILoginController
-    {
-        /// <param name="body">The login request body</param>
-        /// <response code="200">The login succeeded</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <returns>The login succeeded</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LoginResponse>> LoginAsync(LoginParams body);
-    
-        /// <summary>Validates Password based on account, person and password rules</summary>
-        /// <param name="body">The Password Parameters</param>
-        /// <response code="200">Password validation result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Invalid entry for password</response>
-        /// <returns>Password validation result</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePasswordAsync(PasswordParams body);
-    
-        /// <summary>Gets the password rules for the account.</summary>
-        /// <response code="200">The password rules for the account.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No password rules for the account</response>
-        /// <returns>The password rules for the account.</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<FormsAuthPasswordRule>>> GetPasswordRulesAsync();
-    
-        /// <summary>Gets the expiry datetime of the json web token.</summary>
-        /// <response code="200">The expiry of the token.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Token not found for the account</response>
-        /// <returns>The expiry of the token.</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<TokenExpiry>> GettokenexpiryAsync();
-    
-        /// <summary>logout current user.</summary>
-        /// <response code="204">The current user was successfully logged out</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Current User not found</response>
-        /// <returns>The current user was successfully logged out</returns>
-        System.Threading.Tasks.Task LogoutAsync();
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial class LoginController : Microsoft.AspNetCore.Mvc.Controller
-    {
-        private ILoginController implementation;
-    
-        public LoginController(ILoginController implementation)
-        {
-            this.implementation = implementation;
-        }
-    
-        /// <param name="body">The login request body</param>
-        /// <response code="200">The login succeeded</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <returns>The login succeeded</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("login")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LoginResponse>> Login([Microsoft.AspNetCore.Mvc.FromBody] LoginParams body)
-        {
-            return this.implementation.LoginAsync(body);
-        }
-    
-        /// <summary>Validates Password based on account, person and password rules</summary>
-        /// <param name="body">The Password Parameters</param>
-        /// <response code="200">Password validation result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Invalid entry for password</response>
-        /// <returns>Password validation result</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("validatepassword"), Microsoft.AspNetCore.Authorization.Authorize]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidatePassword([Microsoft.AspNetCore.Mvc.FromBody] PasswordParams body)
-        {
-            return this.implementation.ValidatePasswordAsync(body);
-        }
-    
-        /// <summary>Gets the password rules for the account.</summary>
-        /// <response code="200">The password rules for the account.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">No password rules for the account</response>
-        /// <returns>The password rules for the account.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("rules"), Microsoft.AspNetCore.Authorization.Authorize]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<FormsAuthPasswordRule>>> GetPasswordRules()
-        {
-            return this.implementation.GetPasswordRulesAsync();
-        }
-    
-        /// <summary>Gets the expiry datetime of the json web token.</summary>
-        /// <response code="200">The expiry of the token.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Token not found for the account</response>
-        /// <returns>The expiry of the token.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("checktokenexpiry"), Microsoft.AspNetCore.Authorization.Authorize]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<TokenExpiry>> Gettokenexpiry()
-        {
-            return this.implementation.GettokenexpiryAsync();
-        }
-    
-        /// <summary>logout current user.</summary>
-        /// <response code="204">The current user was successfully logged out</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Current User not found</response>
-        /// <returns>The current user was successfully logged out</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("logout"), Microsoft.AspNetCore.Authorization.Authorize]
-        public System.Threading.Tasks.Task Logout()
-        {
-            return this.implementation.LogoutAsync();
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface IHierarchyController
-    {
-        /// <summary>Return a list all Hierarchies</summary>
-        /// <response code="200">A list of Hierarchies</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchies not found</response>
-        /// <returns>A list of Hierarchies</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Hierarchy>>> GetHierarchiesAsync();
-    
-        /// <summary>Update existing Hierarchy</summary>
-        /// <param name="body">The updated Hierarchy object</param>
-        /// <response code="204">The hierarchy was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchy not found</response>
-        /// <returns>The hierarchy was successfully updated.</returns>
-        System.Threading.Tasks.Task UpdateHierarchyAsync(UpdateHierarchyParams body);
-    
-        /// <summary>Create new Hierarchy</summary>
-        /// <param name="body">The new Hierarchy schema</param>
-        /// <response code="201">The new hierarchy identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <returns>The new hierarchy identifier</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateHierarchyAsync(NewHierarchyParams body);
-    
-        /// <summary>Get a Hierarchy by id</summary>
-        /// <param name="hierarchyId">The Hierarchy identifier</param>
-        /// <response code="200">A Hierarchy by id</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchy not found</response>
-        /// <returns>A Hierarchy by id</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Hierarchy>> GetHierarchyAsync(int? hierarchyId);
-    
-        /// <summary>Delete a Hierarchy by Hierarchy id</summary>
-        /// <param name="hierarchyId">The Hierarchy identifier</param>
-        /// <response code="204">Delete Hierarchy result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchy not found</response>
-        /// <returns>Delete Hierarchy result</returns>
-        System.Threading.Tasks.Task DeleteHierarchyAsync(int? hierarchyId);
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial class HierarchyController : Microsoft.AspNetCore.Mvc.Controller
-    {
-        private IHierarchyController implementation;
-    
-        public HierarchyController(IHierarchyController implementation)
-        {
-            this.implementation = implementation;
-        }
-    
-        /// <summary>Return a list all Hierarchies</summary>
-        /// <response code="200">A list of Hierarchies</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchies not found</response>
-        /// <returns>A list of Hierarchies</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("hierarchies")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Hierarchy>>> GetHierarchies()
-        {
-            return this.implementation.GetHierarchiesAsync();
-        }
-    
-        /// <summary>Update existing Hierarchy</summary>
-        /// <param name="body">The updated Hierarchy object</param>
-        /// <response code="204">The hierarchy was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchy not found</response>
-        /// <returns>The hierarchy was successfully updated.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("hierarchies")]
-        public System.Threading.Tasks.Task UpdateHierarchy([Microsoft.AspNetCore.Mvc.FromBody] UpdateHierarchyParams body)
-        {
-            return this.implementation.UpdateHierarchyAsync(body);
-        }
-    
-        /// <summary>Create new Hierarchy</summary>
-        /// <param name="body">The new Hierarchy schema</param>
-        /// <response code="201">The new hierarchy identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <returns>The new hierarchy identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("hierarchies")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateHierarchy([Microsoft.AspNetCore.Mvc.FromBody] NewHierarchyParams body)
-        {
-            return this.implementation.CreateHierarchyAsync(body);
-        }
-    
-        /// <summary>Get a Hierarchy by id</summary>
-        /// <param name="hierarchyId">The Hierarchy identifier</param>
-        /// <response code="200">A Hierarchy by id</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchy not found</response>
-        /// <returns>A Hierarchy by id</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("hierarchies/{hierarchyId}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Hierarchy>> GetHierarchy(int? hierarchyId)
-        {
-            return this.implementation.GetHierarchyAsync(hierarchyId);
-        }
-    
-        /// <summary>Delete a Hierarchy by Hierarchy id</summary>
-        /// <param name="hierarchyId">The Hierarchy identifier</param>
-        /// <response code="204">Delete Hierarchy result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Hierarchy not found</response>
-        /// <returns>Delete Hierarchy result</returns>
-        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("hierarchies/{hierarchyId}")]
-        public System.Threading.Tasks.Task DeleteHierarchy(int? hierarchyId)
-        {
-            return this.implementation.DeleteHierarchyAsync(hierarchyId);
+            return this.implementation.GetTimeZonesAsync();
         }
     
     }
@@ -637,6 +1124,26 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <returns>The location successfully moved.</returns>
         System.Threading.Tasks.Task MoveLocationAsync(MovingLocationParams body);
     
+        /// <summary>Validate unique location name</summary>
+        /// <param name="locationName">The location name</param>
+        /// <response code="204">The location name is unique.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="422">ValidationError</response>
+        /// <returns>The location name is unique.</returns>
+        System.Threading.Tasks.Task ValidateUniqueLocationAsync(string locationName);
+    
+        /// <summary>Validate unique location group name under a parent location group</summary>
+        /// <param name="locationGroupId">The parent location group identifier</param>
+        /// <param name="parentLocationGroupId">The parent location group identifier</param>
+        /// <param name="locationGroupName">The location name</param>
+        /// <response code="204">The location group name is unique.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="422">ValidationError</response>
+        /// <returns>The location group name is unique.</returns>
+        System.Threading.Tasks.Task ValidateUniqueLocationGroupAsync(int? locationGroupId, int? parentLocationGroupId, string locationGroupName);
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
@@ -661,7 +1168,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Locations not found</response>
         /// <returns>A list of locations founded using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocations(int? id, LocationType? locationType, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? limit, int? offset)
         {
             return this.implementation.GetLocationsAsync(id, locationType, hierarchyId, locationStatuses, limit, offset);
@@ -674,7 +1181,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location not found</response>
         /// <returns>The location was successfully updated.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("locations")]
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("locations"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task UpdateLocation([Microsoft.AspNetCore.Mvc.FromBody] Location body)
         {
             return this.implementation.UpdateLocationAsync(body);
@@ -686,7 +1193,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <returns>The new location identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locations")]
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locations"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateLocation([Microsoft.AspNetCore.Mvc.FromBody] NewLocationParams body)
         {
             return this.implementation.CreateLocationAsync(body);
@@ -700,7 +1207,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location not found</response>
         /// <returns>Location deletion result</returns>
-        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("locations")]
+        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("locations"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task DeleteLocation(int id, LocationType locationType)
         {
             return this.implementation.DeleteLocationAsync(id, locationType);
@@ -714,7 +1221,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location not found</response>
         /// <returns>A location with provided identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/{locationId}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/{locationId}"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Location>> GetLocationById(int locationId, LocationType locationType)
         {
             return this.implementation.GetLocationByIdAsync(locationId, locationType);
@@ -730,7 +1237,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location not found</response>
         /// <returns>A list of locations founded using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/search")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/search"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationsByName(string locationName, int? hierarchyId, System.Collections.Generic.IEnumerable<LocationType> locationTypes, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses)
         {
             return this.implementation.GetLocationsByNameAsync(locationName, hierarchyId, locationTypes, locationStatuses);
@@ -747,7 +1254,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Locations not found</response>
         /// <returns>A list of locations founded using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/traverse")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/traverse"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetTraversedLocations(int id, LocationType locationType, int hierarchyId, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels)
         {
             return this.implementation.GetTraversedLocationsAsync(id, locationType, hierarchyId, locationStatuses, levels);
@@ -762,7 +1269,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Locations not found</response>
         /// <returns>A list of locations founded using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/childLocations")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/childLocations"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetChildLocations(int id, System.Collections.Generic.IEnumerable<LocationType> locationTypes, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses)
         {
             return this.implementation.GetChildLocationsAsync(id, locationTypes, locationStatuses);
@@ -777,7 +1284,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Locations not found</response>
         /// <returns>A count of locations found using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/childLocationsCount")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/childLocationsCount"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<int>> GetChildLocationsCount(int id, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels)
         {
             return this.implementation.GetChildLocationsCountAsync(id, locationStatuses, levels);
@@ -792,7 +1299,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Locations not found</response>
         /// <returns>A count of locations found using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/childLocationGroupsCount")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/childLocationGroupsCount"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<int>> GetChildLocationGroupsCount(int id, System.Collections.Generic.IEnumerable<LocationStatus> locationStatuses, int? levels)
         {
             return this.implementation.GetChildLocationGroupsCountAsync(id, locationStatuses, levels);
@@ -804,225 +1311,38 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location not found</response>
         /// <returns>The location successfully moved.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locations/move")]
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locations/move"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task MoveLocation([Microsoft.AspNetCore.Mvc.FromBody] MovingLocationParams body)
         {
             return this.implementation.MoveLocationAsync(body);
         }
     
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface IListController
-    {
-        /// <summary>Search for lists based on params</summary>
-        /// <param name="statusFilters">The array of selected statuses to include</param>
-        /// <response code="200">A list of lists found using provided criteria</response>
+        /// <summary>Validate unique location name</summary>
+        /// <param name="locationName">The location name</param>
+        /// <response code="204">The location name is unique.</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Lists not found</response>
-        /// <returns>A list of lists found using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<List>>> GetListsAsync(System.Collections.Generic.IEnumerable<int> statusFilters);
-    
-        /// <summary>Update existing list</summary>
-        /// <param name="body">The updated list schema</param>
-        /// <response code="204">The list was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List not found</response>
-        /// <returns>The list was successfully updated.</returns>
-        System.Threading.Tasks.Task UpdateListAsync(List body);
-    
-        /// <summary>Create new list</summary>
-        /// <param name="body">The list schema</param>
-        /// <response code="201">The new list identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <returns>The new list identifier</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateListAsync(List body);
-    
-        /// <summary>Delete a list by list id</summary>
-        /// <param name="listId">The list identifier</param>
-        /// <response code="204">List deletion result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List not found</response>
-        /// <returns>List deletion result</returns>
-        System.Threading.Tasks.Task DeleteListAsync(int listId);
-    
-        /// <summary>Search for list items based on params</summary>
-        /// <param name="listId">The list the list items retrieved belong to (null will return all lists)</param>
-        /// <param name="listStatusFilters">The array of selected statuses of lists to include</param>
-        /// <param name="listItemStatusFilters">The array of selected statuses list items to include</param>
-        /// <response code="200">A list of list items found using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List item not found</response>
-        /// <returns>A list of list items found using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItem>>> GetListItemsAsync(int? listId, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters);
-    
-        /// <summary>Update existing list item</summary>
-        /// <param name="body">The updated list item schema</param>
-        /// <response code="204">The list item was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List Item not found</response>
-        /// <returns>The list item was successfully updated</returns>
-        System.Threading.Tasks.Task UpdateListItemAsync(UpdateListItemParams body);
-    
-        /// <summary>Create new list item</summary>
-        /// <param name="body">The new list item schema</param>
-        /// <response code="201">The new list item identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <returns>The new list item identifier</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201MultipleResponses>> CreateListItemAsync(NewListItemParams body);
-    
-        /// <summary>Delete a list item by list item id</summary>
-        /// <param name="listItemId">The list item identifier</param>
-        /// <response code="204">List Item deletion result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List Item not found</response>
-        /// <returns>List Item deletion result</returns>
-        System.Threading.Tasks.Task DeleteListItemAsync(int listItemId);
-    
-        /// <summary>Reorders all list items in a list</summary>
-        /// <param name="body">The reorder list item schema</param>
-        /// <response code="204">The list item reorder was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List Item not found</response>
-        /// <returns>The list item reorder was successfully updated</returns>
-        System.Threading.Tasks.Task ReorderListItemAsync(ReorderListItemParams body);
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial class ListController : Microsoft.AspNetCore.Mvc.Controller
-    {
-        private IListController implementation;
-    
-        public ListController(IListController implementation)
+        /// <response code="422">ValidationError</response>
+        /// <returns>The location name is unique.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/validateUniqueLocation"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task ValidateUniqueLocation(string locationName)
         {
-            this.implementation = implementation;
+            return this.implementation.ValidateUniqueLocationAsync(locationName);
         }
     
-        /// <summary>Search for lists based on params</summary>
-        /// <param name="statusFilters">The array of selected statuses to include</param>
-        /// <response code="200">A list of lists found using provided criteria</response>
+        /// <summary>Validate unique location group name under a parent location group</summary>
+        /// <param name="locationGroupId">The parent location group identifier</param>
+        /// <param name="parentLocationGroupId">The parent location group identifier</param>
+        /// <param name="locationGroupName">The location name</param>
+        /// <response code="204">The location group name is unique.</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">Lists not found</response>
-        /// <returns>A list of lists found using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<List>>> GetLists(System.Collections.Generic.IEnumerable<int> statusFilters)
+        /// <response code="422">ValidationError</response>
+        /// <returns>The location group name is unique.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locations/validateUniqueLocationGroup"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task ValidateUniqueLocationGroup(int? locationGroupId, int? parentLocationGroupId, string locationGroupName)
         {
-            return this.implementation.GetListsAsync(statusFilters);
-        }
-    
-        /// <summary>Update existing list</summary>
-        /// <param name="body">The updated list schema</param>
-        /// <response code="204">The list was successfully updated.</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List not found</response>
-        /// <returns>The list was successfully updated.</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("lists")]
-        public System.Threading.Tasks.Task UpdateList([Microsoft.AspNetCore.Mvc.FromBody] List body)
-        {
-            return this.implementation.UpdateListAsync(body);
-        }
-    
-        /// <summary>Create new list</summary>
-        /// <param name="body">The list schema</param>
-        /// <response code="201">The new list identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <returns>The new list identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lists")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreateList([Microsoft.AspNetCore.Mvc.FromBody] List body)
-        {
-            return this.implementation.CreateListAsync(body);
-        }
-    
-        /// <summary>Delete a list by list id</summary>
-        /// <param name="listId">The list identifier</param>
-        /// <response code="204">List deletion result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List not found</response>
-        /// <returns>List deletion result</returns>
-        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("lists")]
-        public System.Threading.Tasks.Task DeleteList(int listId)
-        {
-            return this.implementation.DeleteListAsync(listId);
-        }
-    
-        /// <summary>Search for list items based on params</summary>
-        /// <param name="listId">The list the list items retrieved belong to (null will return all lists)</param>
-        /// <param name="listStatusFilters">The array of selected statuses of lists to include</param>
-        /// <param name="listItemStatusFilters">The array of selected statuses list items to include</param>
-        /// <response code="200">A list of list items found using provided criteria</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List item not found</response>
-        /// <returns>A list of list items found using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("lists/items")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<ListItem>>> GetListItems(int? listId, System.Collections.Generic.IEnumerable<int> listStatusFilters, System.Collections.Generic.IEnumerable<int> listItemStatusFilters)
-        {
-            return this.implementation.GetListItemsAsync(listId, listStatusFilters, listItemStatusFilters);
-        }
-    
-        /// <summary>Update existing list item</summary>
-        /// <param name="body">The updated list item schema</param>
-        /// <response code="204">The list item was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List Item not found</response>
-        /// <returns>The list item was successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("lists/items")]
-        public System.Threading.Tasks.Task UpdateListItem([Microsoft.AspNetCore.Mvc.FromBody] UpdateListItemParams body)
-        {
-            return this.implementation.UpdateListItemAsync(body);
-        }
-    
-        /// <summary>Create new list item</summary>
-        /// <param name="body">The new list item schema</param>
-        /// <response code="201">The new list item identifier</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <returns>The new list item identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lists/items")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201MultipleResponses>> CreateListItem([Microsoft.AspNetCore.Mvc.FromBody] NewListItemParams body)
-        {
-            return this.implementation.CreateListItemAsync(body);
-        }
-    
-        /// <summary>Delete a list item by list item id</summary>
-        /// <param name="listItemId">The list item identifier</param>
-        /// <response code="204">List Item deletion result</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List Item not found</response>
-        /// <returns>List Item deletion result</returns>
-        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("lists/items")]
-        public System.Threading.Tasks.Task DeleteListItem(int listItemId)
-        {
-            return this.implementation.DeleteListItemAsync(listItemId);
-        }
-    
-        /// <summary>Reorders all list items in a list</summary>
-        /// <param name="body">The reorder list item schema</param>
-        /// <response code="204">The list item reorder was successfully updated</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="403">You do not have sufficient rights to this resource</response>
-        /// <response code="404">List Item not found</response>
-        /// <returns>The list item reorder was successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("lists/items/reorder")]
-        public System.Threading.Tasks.Task ReorderListItem([Microsoft.AspNetCore.Mvc.FromBody] ReorderListItemParams body)
-        {
-            return this.implementation.ReorderListItemAsync(body);
+            return this.implementation.ValidateUniqueLocationGroupAsync(locationGroupId, parentLocationGroupId, locationGroupName);
         }
     
     }
@@ -1134,7 +1454,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location list not found</response>
         /// <returns>A List of available location identifier for this location list</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/{listId}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/{listId}"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LocationListAvailability>> GetLocationListAvailabilityById(int listId)
         {
             return this.implementation.GetLocationListAvailabilityByIdAsync(listId);
@@ -1148,7 +1468,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location list not found</response>
         /// <returns>The availability was successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("locationlists/{listId}")]
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("locationlists/{listId}"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task SetLocationListAvailability(int listId, [Microsoft.AspNetCore.Mvc.FromBody] LocationListAvailabilityDetails body)
         {
             return this.implementation.SetLocationListAvailabilityAsync(listId, body);
@@ -1165,7 +1485,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location list not found</response>
         /// <returns>A list of locations with statuses founded using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locationlists/{listId}")]
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locationlists/{listId}"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListAvailabilityStructure(int listId, int locationId, LocationType locationType, int hierarchyId, int? levels)
         {
             return this.implementation.GetLocationListAvailabilityStructureAsync(listId, locationId, locationType, hierarchyId, levels);
@@ -1179,7 +1499,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location not found</response>
         /// <returns>A List of available location list identifier for this location</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/locations/{locationId}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/locations/{locationId}"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<int>>> GetLocationListAvailabilityByLocationId(int locationId, LocationType locationType)
         {
             return this.implementation.GetLocationListAvailabilityByLocationIdAsync(locationId, locationType);
@@ -1192,7 +1512,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location list item not found</response>
         /// <returns>A List of available location identifier for this location list item</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/items/{listItemId}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/items/{listItemId}"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LocationListAvailability>> GetLocationListItemAvailabilityById(int listItemId)
         {
             return this.implementation.GetLocationListItemAvailabilityByIdAsync(listItemId);
@@ -1206,7 +1526,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location list item not found</response>
         /// <returns>The availability was successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("locationlists/items/{listItemId}")]
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("locationlists/items/{listItemId}"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task SetLocationListItemAvailability(int listItemId, [Microsoft.AspNetCore.Mvc.FromBody] LocationListAvailabilityDetails body)
         {
             return this.implementation.SetLocationListItemAvailabilityAsync(listItemId, body);
@@ -1223,7 +1543,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location list not found</response>
         /// <returns>A list of locations with statuses founded using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locationlists/items/{listItemId}")]
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("locationlists/items/{listItemId}"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Location>>> GetLocationListItemAvailabilityStructure(int listItemId, int locationId, LocationType locationType, int hierarchyId, int? levels)
         {
             return this.implementation.GetLocationListItemAvailabilityStructureAsync(listItemId, locationId, locationType, hierarchyId, levels);
@@ -1238,10 +1558,420 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Location not found</response>
         /// <returns>A List of available location item list identifier for this location</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/items/locations/{locationId}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("locationlists/items/locations/{locationId}"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<int>>> GetLocationListItemAvailabilityByLocationId(int locationId, int listId, LocationType locationType)
         {
             return this.implementation.GetLocationListItemAvailabilityByLocationIdAsync(locationId, listId, locationType);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface ILookupController
+    {
+        /// <summary>Get categories via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of categories via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of categories via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCategoriesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CategoryRepositoryAdapterFilters body);
+    
+        /// <summary>Get contractors via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of contractors via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of contractors via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupContractorsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, ContractorRepositoryAdapterFilters body);
+    
+        /// <summary>Get countries via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of countries via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of countries via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCountriesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CountryRepositoryAdapterFilters body);
+    
+        /// <summary>Get country divisions via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of country divisions via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of country divisions via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCountryDivisionsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CountryDivisionRepositoryAdapterFilters body);
+    
+        /// <summary>Get currencies via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of currencies via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of currencies via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCurrenciesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, CurrencyRepositoryAdapterFilters body);
+    
+        /// <summary>Get genders via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of genders via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of genders via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupGendersByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, GenderRepositoryAdapterFilters body);
+    
+        /// <summary>Get list items via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of list items via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of list items via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupListItemsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, ListItemRepositoryAdapterFilters body);
+    
+        /// <summary>Get locations via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of locations via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of locations via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupLocationsResponse>> LookupLocationsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, LocationRepositoryAdapterFilters body);
+    
+        /// <summary>Get person relationship types via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of person relationship types via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of person relationship types via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupPersonRelationshipTypesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, PersonRelationshipTypeRepositoryAdapterFilters body);
+    
+        /// <summary>Get persons via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of persons via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of persons via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupPersonsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, PersonRepositoryAdapterFilters body);
+    
+        /// <summary>Get roles via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of roles via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of roles via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupRolesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, RoleRepositoryAdapterFilters body);
+    
+        /// <summary>Get states via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of states via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of states via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupStatesByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, StateRepositoryAdapterFilters body);
+    
+        /// <summary>Get units via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of units via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of units via lookup</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupUnitsByAdapterAsync(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, UnitRepositoryAdapterFilters body);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class LookupController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private ILookupController implementation;
+    
+        public LookupController(ILookupController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <summary>Get categories via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of categories via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of categories via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/categories/adapter"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCategoriesByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] CategoryRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupCategoriesByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get contractors via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of contractors via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of contractors via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/contractors/adapter"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupContractorsByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] ContractorRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupContractorsByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get countries via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of countries via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of countries via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/countries/adapter"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCountriesByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] CountryRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupCountriesByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get country divisions via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of country divisions via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of country divisions via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/countryDivisions/adapter"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCountryDivisionsByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] CountryDivisionRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupCountryDivisionsByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get currencies via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of currencies via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of currencies via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/currencies/adapter"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupCurrenciesByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] CurrencyRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupCurrenciesByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get genders via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of genders via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of genders via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/genders/adapter"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupGendersByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] GenderRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupGendersByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get list items via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of list items via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of list items via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/listitems/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupListItemsByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] ListItemRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupListItemsByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get locations via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of locations via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of locations via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/locations/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupLocationsResponse>> LookupLocationsByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] LocationRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupLocationsByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get person relationship types via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of person relationship types via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of person relationship types via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/personRelationshipTypes/adapter"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupPersonRelationshipTypesByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] PersonRelationshipTypeRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupPersonRelationshipTypesByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get persons via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of persons via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of persons via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/persons/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupPersonsByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] PersonRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupPersonsByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get roles via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of roles via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of roles via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/roles/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupRolesByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] RoleRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupRolesByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get states via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of states via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of states via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/states/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupStatesByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] StateRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupStatesByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+        /// <summary>Get units via a lookup using adapter filters.</summary>
+        /// <param name="input">The text used to filter lookup data.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <response code="200">A list of units via lookup</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>A list of units via lookup</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("lookups/units/adapter")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<LookupResponse>> LookupUnitsByAdapter(string input, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] UnitRepositoryAdapterFilters body)
+        {
+            return this.implementation.LookupUnitsByAdapterAsync(input, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface INavigationController
+    {
+        /// <response code="200">the current users navigation</response>
+        /// <returns>the current users navigation</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Navigation>> GetNavigationAsync();
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class NavigationController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private INavigationController implementation;
+    
+        public NavigationController(INavigationController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <response code="200">the current users navigation</response>
+        /// <returns>the current users navigation</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("navigation"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Navigation>> GetNavigation()
+        {
+            return this.implementation.GetNavigationAsync();
         }
     
     }
@@ -1275,8 +2005,8 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <param name="loginExpirationDateStart">Start date of range for Expiry Date of the Person</param>
         /// <param name="loginExpirationDateEnd">End date of range for Expiry Date of the Person</param>
         /// <param name="contactPreference">Contact Type of the person email/phone</param>
-        /// <param name="pageNumber">Page Number of the Person</param>
-        /// <param name="pageSize">Page Size of the Person</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
         /// <param name="sortBy">Param for sortBy</param>
         /// <param name="sortOrder">Param for sortOrder</param>
         /// <response code="200">A list of persons founded using provided criteria</response>
@@ -1284,7 +2014,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Persons not found</response>
         /// <returns>A list of persons founded using provided criteria</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Person>>> GetPersonsAsync(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PersonsResponse>> GetPersonsAsync(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder);
     
         /// <summary>Updates a person based on person id</summary>
         /// <param name="body">The updated person schema</param>
@@ -1292,6 +2022,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Persons not found</response>
+        /// <response code="422">ValidationError</response>
         /// <returns>The person was successfully updated</returns>
         System.Threading.Tasks.Task UpdatePersonAsync(UpdatePersonParams body);
     
@@ -1301,6 +2032,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Person not found</response>
+        /// <response code="422">ValidationError</response>
         /// <returns>The new person identifier</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreatePersonAsync(Person body);
     
@@ -1322,12 +2054,14 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Person>> GetPersonByIdAsync(int personId);
     
         /// <summary>Returns the person's personalization based on person id</summary>
+        /// <param name="browserCountryISOCode">Detected user's country ISO Code</param>
+        /// <param name="browserTimeZoneName">Detected user's timezone name</param>
         /// <response code="200">OK</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Person not found</response>
         /// <returns>OK</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalizationAsync(int personId);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalizationAsync(int personId, string browserCountryISOCode, string browserTimeZoneName);
     
         /// <summary>Updates a personalization based on person id</summary>
         /// <response code="204">The person was successfully updated</response>
@@ -1338,14 +2072,24 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         System.Threading.Tasks.Task UpdatePersonPersonalizationAsync(int personId, UpdatePersonalization body);
     
         /// <summary>Returns persons based on name</summary>
-        /// <param name="pageNumber">Page Number of the Person</param>
-        /// <param name="pageSize">Page Size of the Person</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
         /// <response code="200">OK</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Persons not found</response>
         /// <returns>OK</returns>
-        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Person>>> GetPersonsByNameAsync(string name, int? pageNumber, int? pageSize);
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PersonsResponse>> GetPersonsByNameAsync(string name, int? pageNumber, int? pageSize);
+    
+        /// <summary>Validate person attributes</summary>
+        /// <param name="ruleSet">the array of rule set we need validate on person</param>
+        /// <response code="204">validation succcess without errors</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Person not found</response>
+        /// <response code="422">ValidationError</response>
+        /// <returns>validation succcess without errors</returns>
+        System.Threading.Tasks.Task ValidatePersonAsync(System.Collections.Generic.IEnumerable<PersonValidationRuleSet> ruleSet, Person body);
     
     }
     
@@ -1385,8 +2129,8 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <param name="loginExpirationDateStart">Start date of range for Expiry Date of the Person</param>
         /// <param name="loginExpirationDateEnd">End date of range for Expiry Date of the Person</param>
         /// <param name="contactPreference">Contact Type of the person email/phone</param>
-        /// <param name="pageNumber">Page Number of the Person</param>
-        /// <param name="pageSize">Page Size of the Person</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
         /// <param name="sortBy">Param for sortBy</param>
         /// <param name="sortOrder">Param for sortOrder</param>
         /// <response code="200">A list of persons founded using provided criteria</response>
@@ -1394,8 +2138,8 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Persons not found</response>
         /// <returns>A list of persons founded using provided criteria</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Person>>> GetPersons(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder)
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PersonsResponse>> GetPersons(System.Collections.Generic.IEnumerable<int> employmentStatus, string displayName, System.Collections.Generic.IEnumerable<int> location, string emailAddress, string firstName, string lastName, System.Collections.Generic.IEnumerable<int> countryDivision, System.Collections.Generic.IEnumerable<int> country, System.Collections.Generic.IEnumerable<int> relationshipToCompany, System.Collections.Generic.IEnumerable<int> contractingCompany, System.Collections.Generic.IEnumerable<int> customerName, System.Collections.Generic.IEnumerable<int> supervisor, System.DateTimeOffset? startDateStart, System.DateTimeOffset? startDateEnd, System.DateTimeOffset? endDateStart, System.DateTimeOffset? endDateEnd, System.DateTimeOffset? currentPositionStartDateStart, System.DateTimeOffset? currentPositionStartDateEnd, string employeeID, string currentPosition, bool? loginAccessRequired, string username, System.DateTimeOffset? loginExpirationDateStart, System.DateTimeOffset? loginExpirationDateEnd, System.Collections.Generic.IEnumerable<int> contactPreference, int? pageNumber, int? pageSize, string sortBy, string sortOrder)
         {
             return this.implementation.GetPersonsAsync(employmentStatus, displayName, location, emailAddress, firstName, lastName, countryDivision, country, relationshipToCompany, contractingCompany, customerName, supervisor, startDateStart, startDateEnd, endDateStart, endDateEnd, currentPositionStartDateStart, currentPositionStartDateEnd, employeeID, currentPosition, loginAccessRequired, username, loginExpirationDateStart, loginExpirationDateEnd, contactPreference, pageNumber, pageSize, sortBy, sortOrder);
         }
@@ -1406,8 +2150,9 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Persons not found</response>
+        /// <response code="422">ValidationError</response>
         /// <returns>The person was successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("persons")]
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("persons"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task UpdatePerson([Microsoft.AspNetCore.Mvc.FromBody] UpdatePersonParams body)
         {
             return this.implementation.UpdatePersonAsync(body);
@@ -1419,8 +2164,9 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Person not found</response>
+        /// <response code="422">ValidationError</response>
         /// <returns>The new person identifier</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("persons")]
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("persons"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Status201Response>> CreatePerson([Microsoft.AspNetCore.Mvc.FromBody] Person body)
         {
             return this.implementation.CreatePersonAsync(body);
@@ -1433,7 +2179,7 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Person not found</response>
         /// <returns>Person has been deleted</returns>
-        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("persons")]
+        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("persons"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task DeletePerson(int personId)
         {
             return this.implementation.DeletePersonAsync(personId);
@@ -1445,22 +2191,24 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Person not found</response>
         /// <returns>OK</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons/{personId}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons/{personId}"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Person>> GetPersonById(int personId)
         {
             return this.implementation.GetPersonByIdAsync(personId);
         }
     
         /// <summary>Returns the person's personalization based on person id</summary>
+        /// <param name="browserCountryISOCode">Detected user's country ISO Code</param>
+        /// <param name="browserTimeZoneName">Detected user's timezone name</param>
         /// <response code="200">OK</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Person not found</response>
         /// <returns>OK</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons/{personId}/personalization")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalization(int personId)
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons/{personId}/personalization"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Personalization>> GetPersonPersonalization(int personId, string browserCountryISOCode, string browserTimeZoneName)
         {
-            return this.implementation.GetPersonPersonalizationAsync(personId);
+            return this.implementation.GetPersonPersonalizationAsync(personId, browserCountryISOCode, browserTimeZoneName);
         }
     
         /// <summary>Updates a personalization based on person id</summary>
@@ -1469,246 +2217,295 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Persons not found</response>
         /// <returns>The person was successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("persons/{personId}/personalization")]
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("persons/{personId}/personalization"), Microsoft.AspNetCore.Authorization.Authorize]
         public System.Threading.Tasks.Task UpdatePersonPersonalization(int personId, [Microsoft.AspNetCore.Mvc.FromBody] UpdatePersonalization body)
         {
             return this.implementation.UpdatePersonPersonalizationAsync(personId, body);
         }
     
         /// <summary>Returns persons based on name</summary>
-        /// <param name="pageNumber">Page Number of the Person</param>
-        /// <param name="pageSize">Page Size of the Person</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
         /// <response code="200">OK</response>
         /// <response code="400">Bad request</response>
         /// <response code="403">You do not have sufficient rights to this resource</response>
         /// <response code="404">Persons not found</response>
         /// <returns>OK</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons/search/{name}")]
-        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<Person>>> GetPersonsByName(string name, int? pageNumber, int? pageSize)
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("persons/search/{name}"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PersonsResponse>> GetPersonsByName(string name, int? pageNumber, int? pageSize)
         {
             return this.implementation.GetPersonsByNameAsync(name, pageNumber, pageSize);
+        }
+    
+        /// <summary>Validate person attributes</summary>
+        /// <param name="ruleSet">the array of rule set we need validate on person</param>
+        /// <response code="204">validation succcess without errors</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Person not found</response>
+        /// <response code="422">ValidationError</response>
+        /// <returns>validation succcess without errors</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("persons/validate"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task ValidatePerson(System.Collections.Generic.IEnumerable<PersonValidationRuleSet> ruleSet, [Microsoft.AspNetCore.Mvc.FromBody] Person body)
+        {
+            return this.implementation.ValidatePersonAsync(ruleSet, body);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface IRecordController
+    {
+        /// <summary>Create a new record.</summary>
+        /// <param name="product">The id of the configuration product to create the record under.</param>
+        /// <response code="200">The records entity data.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The records entity data.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<WorkflowEntityData>> CreateEntityDataAsync(ConfigurationProduct product, WorkflowEntityData body);
+    
+        /// <summary>Get a records entity data.</summary>
+        /// <param name="product">The id of the configuration product to get the record from.</param>
+        /// <param name="recordId">The id of the  record.</param>
+        /// <response code="200">The records entity data.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Record not found</response>
+        /// <returns>The records entity data.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<WorkflowEntityData>> GetEntityDataAsync(ConfigurationProduct product, int recordId);
+    
+        /// <summary>Update a records entity data.</summary>
+        /// <param name="product">The id of the configuration product to update the record.</param>
+        /// <param name="recordId">The id of the  record.</param>
+        /// <response code="200">The records entity data.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Record not found</response>
+        /// <returns>The records entity data.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<WorkflowEntityData>> UpdateEntityDataAsync(ConfigurationProduct product, int recordId, WorkflowEntityData body);
+    
+        /// <summary>Deletes a records.</summary>
+        /// <param name="product">The id of the configuration product for the record.</param>
+        /// <param name="recordId">The id of therecord.</param>
+        /// <response code="204">The records was successfully deleted</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Record not found</response>
+        /// <returns>The records was successfully deleted</returns>
+        System.Threading.Tasks.Task DeleteRecordAsync(ConfigurationProduct product, int recordId);
+    
+        /// <summary>Get the product records for a view.</summary>
+        /// <param name="product">The id of the configuration product to get records for.</param>
+        /// <response code="200">The product records to include in a view.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The product records to include in a view.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ProductRecordSearchResult>> GetProductRecordsAsync(ConfigurationProduct product, ProductRecordSearch body);
+    
+        /// <summary>Get the product records for a view.</summary>
+        /// <param name="product">The id of the configuration product to get records for.</param>
+        /// <param name="viewId">The id of the view to get product records for.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <param name="body">The non default filters applied along with the view filters</param>
+        /// <response code="200">The product records to include in a view.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The product records to include in a view.</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ProductRecordSearchResult>> GetProductRecordsForViewAsync(ConfigurationProduct product, int viewId, int? pageNumber, int? pageSize, string sortBy, string sortOrder, ProductRecordSearchFilterCriteria body);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class RecordController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private IRecordController implementation;
+    
+        public RecordController(IRecordController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <summary>Create a new record.</summary>
+        /// <param name="product">The id of the configuration product to create the record under.</param>
+        /// <response code="200">The records entity data.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The records entity data.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("records/{product}/data"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<WorkflowEntityData>> CreateEntityData(ConfigurationProduct product, [Microsoft.AspNetCore.Mvc.FromBody] WorkflowEntityData body)
+        {
+            return this.implementation.CreateEntityDataAsync(product, body);
+        }
+    
+        /// <summary>Get a records entity data.</summary>
+        /// <param name="product">The id of the configuration product to get the record from.</param>
+        /// <param name="recordId">The id of the  record.</param>
+        /// <response code="200">The records entity data.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Record not found</response>
+        /// <returns>The records entity data.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("records/{product}/{recordId}/data"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<WorkflowEntityData>> GetEntityData(ConfigurationProduct product, int recordId)
+        {
+            return this.implementation.GetEntityDataAsync(product, recordId);
+        }
+    
+        /// <summary>Update a records entity data.</summary>
+        /// <param name="product">The id of the configuration product to update the record.</param>
+        /// <param name="recordId">The id of the  record.</param>
+        /// <response code="200">The records entity data.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Record not found</response>
+        /// <returns>The records entity data.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("records/{product}/{recordId}/data"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<WorkflowEntityData>> UpdateEntityData(ConfigurationProduct product, int recordId, [Microsoft.AspNetCore.Mvc.FromBody] WorkflowEntityData body)
+        {
+            return this.implementation.UpdateEntityDataAsync(product, recordId, body);
+        }
+    
+        /// <summary>Deletes a records.</summary>
+        /// <param name="product">The id of the configuration product for the record.</param>
+        /// <param name="recordId">The id of therecord.</param>
+        /// <response code="204">The records was successfully deleted</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Record not found</response>
+        /// <returns>The records was successfully deleted</returns>
+        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("records/{product}/{recordId}/data"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task DeleteRecord(ConfigurationProduct product, int recordId)
+        {
+            return this.implementation.DeleteRecordAsync(product, recordId);
+        }
+    
+        /// <summary>Get the product records for a view.</summary>
+        /// <param name="product">The id of the configuration product to get records for.</param>
+        /// <response code="200">The product records to include in a view.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The product records to include in a view.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("records/{product}/search"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ProductRecordSearchResult>> GetProductRecords(ConfigurationProduct product, [Microsoft.AspNetCore.Mvc.FromBody] ProductRecordSearch body)
+        {
+            return this.implementation.GetProductRecordsAsync(product, body);
+        }
+    
+        /// <summary>Get the product records for a view.</summary>
+        /// <param name="product">The id of the configuration product to get records for.</param>
+        /// <param name="viewId">The id of the view to get product records for.</param>
+        /// <param name="pageNumber">Which page of results to fetch.</param>
+        /// <param name="pageSize">The number of elements on each page to fetch</param>
+        /// <param name="sortBy">Param for sortBy</param>
+        /// <param name="sortOrder">Param for sortOrder</param>
+        /// <param name="body">The non default filters applied along with the view filters</param>
+        /// <response code="200">The product records to include in a view.</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <returns>The product records to include in a view.</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("records/{product}/search/view/{viewId}"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<ProductRecordSearchResult>> GetProductRecordsForView(ConfigurationProduct product, int viewId, int? pageNumber, int? pageSize, string sortBy, string sortOrder, [Microsoft.AspNetCore.Mvc.FromBody] ProductRecordSearchFilterCriteria body)
+        {
+            return this.implementation.GetProductRecordsForViewAsync(product, viewId, pageNumber, pageSize, sortBy, sortOrder, body);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface IUsersController
+    {
+        /// <summary>Update the password for the current user.</summary>
+        /// <param name="body">Password Parameters</param>
+        /// <response code="204">The current user was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Current User not found</response>
+        /// <returns>The current user was successfully updated</returns>
+        System.Threading.Tasks.Task UpdateCurrentUserPasswordAsync(FormsAuthPasswordUpdate body);
+    
+        /// <summary>Validate the password for the current user.</summary>
+        /// <param name="body">Password Parameters</param>
+        /// <response code="200">Password validation result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Current User not found</response>
+        /// <returns>Password validation result</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidateCurrentUserPasswordAsync(FormsAuthPasswordUpdate body);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class UsersController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private IUsersController implementation;
+    
+        public UsersController(IUsersController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <summary>Update the password for the current user.</summary>
+        /// <param name="body">Password Parameters</param>
+        /// <response code="204">The current user was successfully updated</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Current User not found</response>
+        /// <returns>The current user was successfully updated</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("users/me/setPassword"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task UpdateCurrentUserPassword([Microsoft.AspNetCore.Mvc.FromBody] FormsAuthPasswordUpdate body)
+        {
+            return this.implementation.UpdateCurrentUserPasswordAsync(body);
+        }
+    
+        /// <summary>Validate the password for the current user.</summary>
+        /// <param name="body">Password Parameters</param>
+        /// <response code="200">Password validation result</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="403">You do not have sufficient rights to this resource</response>
+        /// <response code="404">Current User not found</response>
+        /// <returns>Password validation result</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("users/me/validatePassword"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<PasswordValidationResult>> ValidateCurrentUserPassword([Microsoft.AspNetCore.Mvc.FromBody] FormsAuthPasswordUpdate body)
+        {
+            return this.implementation.ValidateCurrentUserPasswordAsync(body);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public interface IVersionController
+    {
+        /// <response code="200">current version of API</response>
+        /// <returns>current version of API</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> GetversionAsync();
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.2.4.0 (NJsonSchema v9.13.36.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial class VersionController : Microsoft.AspNetCore.Mvc.Controller
+    {
+        private IVersionController implementation;
+    
+        public VersionController(IVersionController implementation)
+        {
+            this.implementation = implementation;
+        }
+    
+        /// <response code="200">current version of API</response>
+        /// <returns>current version of API</returns>
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("meta/version/internalapi"), Microsoft.AspNetCore.Authorization.Authorize]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<string>> Getversion()
+        {
+            return this.implementation.GetversionAsync();
         }
     
     }
     
     
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class GlobalSearchItem 
-    {
-        [Newtonsoft.Json.JsonProperty("Id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Id { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static GlobalSearchItem FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<GlobalSearchItem>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class GlobalSearchParameters 
-    {
-        [Newtonsoft.Json.JsonProperty("SearchTerm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string SearchTerm { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static GlobalSearchParameters FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<GlobalSearchParameters>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class GlobalSearchResult 
-    {
-        [Newtonsoft.Json.JsonProperty("Items", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<GlobalSearchItem> Items { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("TotalResultCount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int TotalResultCount { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static GlobalSearchResult FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<GlobalSearchResult>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class Navigation 
-    {
-        [Newtonsoft.Json.JsonProperty("MegaMenu", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<NavigationMenu> MegaMenu { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("ConfigurationMenu", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public object ConfigurationMenu { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("HelpMenu", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public object HelpMenu { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("VelocityRibbon", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<NavigationElement> VelocityRibbon { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("Settings", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public object Settings { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static Navigation FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Navigation>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class NavigationMenu 
-    {
-        [Newtonsoft.Json.JsonProperty("Key", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Key { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("DisplayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string DisplayName { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("Groups", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<NavigationElementGroup> Groups { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static NavigationMenu FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<NavigationMenu>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class NavigationElementGroup 
-    {
-        [Newtonsoft.Json.JsonProperty("Key", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Key { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("DisplayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string DisplayName { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("Links", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<NavigationElement> Links { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static NavigationElementGroup FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<NavigationElementGroup>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class NavigationElement 
-    {
-        [Newtonsoft.Json.JsonProperty("Key", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Key { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("DisplayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string DisplayName { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("LinkUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string LinkUrl { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("NewTab", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool NewTab { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static NavigationElement FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<NavigationElement>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class NavigationSettings 
-    {
-        [Newtonsoft.Json.JsonProperty("ColourBarColour", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ColourBarColour { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("AccountLogoFilePath", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string AccountLogoFilePath { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("UserProfileAvailable", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool UserProfileAvailable { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("LogoutAvailable", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool LogoutAvailable { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static NavigationSettings FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<NavigationSettings>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class User 
-    {
-        [Newtonsoft.Json.JsonProperty("AccountPersonID", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int AccountPersonID { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("FirstName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string FirstName { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("LastName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string LastName { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static User FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<User>(data);
-        }
-    
-    }
-    
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class RequestError 
     {
@@ -1741,8 +2538,12 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
     public partial class RequestErrorDetail 
     {
         /// <summary>The error code if existed</summary>
-        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Code { get; set; }
+        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Code { get; set; }
+    
+        /// <summary>The error id / attribute id</summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Id { get; set; }
     
         /// <summary>The error name / attribute name</summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1804,6 +2605,1184 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ResponseList 
+    {
+        /// <summary>Total count of items in this response set. If this response is
+        /// paginated, then the length of the `items` array will be less than or
+        /// equal to the `totalCount`.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("totalCount", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalCount { get; set; }
+    
+        /// <summary>The current page number.</summary>
+        [Newtonsoft.Json.JsonProperty("pageNumber", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int PageNumber { get; set; }
+    
+        /// <summary>The number of items available on a given page.</summary>
+        [Newtonsoft.Json.JsonProperty("pageSize", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int PageSize { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ResponseList FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseList>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdateAccountCurrencyList 
+    {
+        /// <summary>list of currency Id list to add</summary>
+        [Newtonsoft.Json.JsonProperty("addCurrencyIdList", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> AddCurrencyIdList { get; set; }
+    
+        /// <summary>list of currency Id list to delete</summary>
+        [Newtonsoft.Json.JsonProperty("deleteCurrencyIdList", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> DeleteCurrencyIdList { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdateAccountCurrencyList FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateAccountCurrencyList>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class AuthenticationMethod 
+    {
+        /// <summary>The authentication method id.</summary>
+        [Newtonsoft.Json.JsonProperty("authenticationMethodId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int AuthenticationMethodId { get; set; }
+    
+        /// <summary>The name of the authentication method.</summary>
+        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static AuthenticationMethod FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<AuthenticationMethod>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormsAuthPasswordRule 
+    {
+        /// <summary>The id of the password rule.</summary>
+        [Newtonsoft.Json.JsonProperty("ruleId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RuleId { get; set; }
+    
+        /// <summary>The description of the password rule.</summary>
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        /// <summary>The value for the rule.</summary>
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormsAuthPasswordRule FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthPasswordRule>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormsAuthPasswordChangeRequest 
+    {
+        /// <summary>The username</summary>
+        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Username { get; set; }
+    
+        /// <summary>The method in which to deliver the forgot password information.</summary>
+        [Newtonsoft.Json.JsonProperty("deliveryMethod", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public FormsAuthPasswordChangeRequestDeliveryMethod DeliveryMethod { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormsAuthPasswordChangeRequest FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthPasswordChangeRequest>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormsAuthPasswordUpdate 
+    {
+        /// <summary>The users password</summary>
+        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Password { get; set; }
+    
+        /// <summary>The forgot password key</summary>
+        [Newtonsoft.Json.JsonProperty("forgotPasswordKey", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ForgotPasswordKey { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormsAuthPasswordUpdate FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthPasswordUpdate>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class PasswordValidationResult 
+    {
+        /// <summary>Token to store</summary>
+        [Newtonsoft.Json.JsonProperty("isvalid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool Isvalid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("unfollowedrules", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<FormsAuthPasswordRule> Unfollowedrules { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static PasswordValidationResult FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PasswordValidationResult>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormsAuthKey 
+    {
+        /// <summary>The forms auth key used to ensure only the specific user is performing an authentication action prior to full authentication.</summary>
+        [Newtonsoft.Json.JsonProperty("key", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Key { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormsAuthKey FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthKey>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum ConfigurationProduct
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"Incident")]
+        Incident = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"CorrectiveAction")]
+        CorrectiveAction = 1,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum LookupType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"None")]
+        None = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Category")]
+        Category = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Contractor")]
+        Contractor = 2,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Country")]
+        Country = 3,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"CountryDivision")]
+        CountryDivision = 4,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Currency")]
+        Currency = 5,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Gender")]
+        Gender = 6,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"ListItem")]
+        ListItem = 7,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Location")]
+        Location = 8,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Person")]
+        Person = 9,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"PersonRelationshipType")]
+        PersonRelationshipType = 10,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Role")]
+        Role = 11,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"State")]
+        State = 12,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Unit")]
+        Unit = 13,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum FieldDataType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"Text")]
+        Text = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Boolean")]
+        Boolean = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Integer")]
+        Integer = 2,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Double")]
+        Double = 3,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Date")]
+        Date = 4,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"DateTime")]
+        DateTime = 5,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"UniqueIdentifier")]
+        UniqueIdentifier = 6,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Money")]
+        Money = 7,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Time")]
+        Time = 8,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum FormContainerType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"DataPoint")]
+        DataPoint = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Template")]
+        Template = 1,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum FieldCollectionMethod
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"Input")]
+        Input = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Calculated")]
+        Calculated = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"InputOrCalculated")]
+        InputOrCalculated = 2,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"ReadOnly")]
+        ReadOnly = 3,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum RelationshipCollectionMethod
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"Lookup")]
+        Lookup = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Template")]
+        Template = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"LookupOrTemplate")]
+        LookupOrTemplate = 2,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"ReadOnly")]
+        ReadOnly = 3,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum LookupFilterOperation
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"Equals")]
+        Equals = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"NotEquals")]
+        NotEquals = 1,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormConfig 
+    {
+        /// <summary>The unique ID for the form.</summary>
+        [Newtonsoft.Json.JsonProperty("formId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int FormId { get; set; }
+    
+        /// <summary>Represents the category associated with the form.</summary>
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int CategoryId { get; set; }
+    
+        /// <summary>Represents the state associated with the form.</summary>
+        [Newtonsoft.Json.JsonProperty("stateId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int StateId { get; set; }
+    
+        /// <summary>The unique name for the form</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>The display title for the form</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+    
+        /// <summary>Description of the form.</summary>
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        /// <summary>Whether the form includes attachments.</summary>
+        [Newtonsoft.Json.JsonProperty("includeAttachments", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string IncludeAttachments { get; set; }
+    
+        /// <summary>Whether the form includes links.</summary>
+        [Newtonsoft.Json.JsonProperty("includeLinks", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string IncludeLinks { get; set; }
+    
+        /// <summary>Whether the form includes audit trail.</summary>
+        [Newtonsoft.Json.JsonProperty("includeAuditTrail", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string IncludeAuditTrail { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("formTabs", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<FormTabConfig> FormTabs { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormConfig FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormConfig>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormTabConfig 
+    {
+        /// <summary>The unique ID for the form.</summary>
+        [Newtonsoft.Json.JsonProperty("tabId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int TabId { get; set; }
+    
+        /// <summary>The unique name for the tab</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>The display title for the tab</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+    
+        /// <summary>The order the tab displays relative to other tabs.</summary>
+        [Newtonsoft.Json.JsonProperty("displayOrder", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int DisplayOrder { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("components", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<FormComponent> Components { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormTabConfig FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormTabConfig>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormComponent 
+    {
+        /// <summary>The unique ID for the component.</summary>
+        [Newtonsoft.Json.JsonProperty("componentId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ComponentId { get; set; }
+    
+        /// <summary>The unique name for the component</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>The display title for the component</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+    
+        /// <summary>Helptext for the component.</summary>
+        [Newtonsoft.Json.JsonProperty("helpText", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string HelpText { get; set; }
+    
+        /// <summary>The order the tab displays relative to other components.</summary>
+        [Newtonsoft.Json.JsonProperty("displayOrder", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int DisplayOrder { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("containers", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<FormContainer> Containers { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormComponent FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormComponent>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormContainer 
+    {
+        /// <summary>The unique ID for the container.</summary>
+        [Newtonsoft.Json.JsonProperty("containerId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ContainerId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("containerType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public FormContainerType ContainerType { get; set; }
+    
+        /// <summary>The unique name for the container</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>The display title for the container</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+    
+        /// <summary>Helptext for the container.</summary>
+        [Newtonsoft.Json.JsonProperty("helpText", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string HelpText { get; set; }
+    
+        /// <summary>The order the tab displays relative to other containers.</summary>
+        [Newtonsoft.Json.JsonProperty("displayOrder", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int DisplayOrder { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("containers", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<FormContainer> Containers { get; set; }
+    
+        /// <summary>Relationship workflow associated with the template.</summary>
+        [Newtonsoft.Json.JsonProperty("relationshipId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RelationshipId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("fields", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<FormField> Fields { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormContainer FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormContainer>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FormField 
+    {
+        /// <summary>The unique ID for the field.</summary>
+        [Newtonsoft.Json.JsonProperty("fieldId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int FieldId { get; set; }
+    
+        /// <summary>Name pointing to the workflow field associated with form field.</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>Id pointing to the workflow field associated with form field.</summary>
+        [Newtonsoft.Json.JsonProperty("productFieldId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ProductFieldId { get; set; }
+    
+        /// <summary>Id pointing to the workflow relationship associated with form field.</summary>
+        [Newtonsoft.Json.JsonProperty("productRelationshipId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ProductRelationshipId { get; set; }
+    
+        /// <summary>Title of the form field.</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+    
+        /// <summary>The description of the form field.</summary>
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        /// <summary>The order the tab displays relative to other containers.</summary>
+        [Newtonsoft.Json.JsonProperty("displayOrder", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int DisplayOrder { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("settings", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public object Settings { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FormField FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormField>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ViewConfig 
+    {
+        /// <summary>The unique identifier for the view.</summary>
+        [Newtonsoft.Json.JsonProperty("viewId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ViewId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("configurationProduct", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ConfigurationProduct ConfigurationProduct { get; set; }
+    
+        /// <summary>The unique name for the view.</summary>
+        [Newtonsoft.Json.JsonProperty("viewName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ViewName { get; set; }
+    
+        /// <summary>The internationalized title for the view.</summary>
+        [Newtonsoft.Json.JsonProperty("viewTitle", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ViewTitle { get; set; }
+    
+        /// <summary>The order the view should be displayed relative other views.</summary>
+        [Newtonsoft.Json.JsonProperty("listOrder", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ListOrder { get; set; }
+    
+        /// <summary>The list of record values to display.</summary>
+        [Newtonsoft.Json.JsonProperty("displayValues", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<ViewDisplayValue> DisplayValues { get; set; }
+    
+        /// <summary>The list of filters on the records.</summary>
+        [Newtonsoft.Json.JsonProperty("filters", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<ViewFilter> Filters { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ViewConfig FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ViewConfig>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ViewDisplayValue 
+    {
+        /// <summary>The unique identifier of the display value.</summary>
+        [Newtonsoft.Json.JsonProperty("viewDisplayValueId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ViewDisplayValueId { get; set; }
+    
+        /// <summary>The unique product relationship or field name.</summary>
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        /// <summary>The display title of the display value.</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+    
+        /// <summary>The description of the display value.</summary>
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        /// <summary>Whether or not the view is sorted by this value.</summary>
+        [Newtonsoft.Json.JsonProperty("orderBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool OrderBy { get; set; }
+    
+        /// <summary>The direction to sort by if ordered by.</summary>
+        [Newtonsoft.Json.JsonProperty("orderDirection", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string OrderDirection { get; set; }
+    
+        /// <summary>The order the value should be positioned relative other values.</summary>
+        [Newtonsoft.Json.JsonProperty("listOrder", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ListOrder { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ViewDisplayValue FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ViewDisplayValue>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ViewFilter 
+    {
+        /// <summary>The unique identifier for the view filter.</summary>
+        [Newtonsoft.Json.JsonProperty("viewFilterId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ViewFilterId { get; set; }
+    
+        /// <summary>The display title of the filter value.</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+    
+        /// <summary>The description of the filter value.</summary>
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        /// <summary>The unique product relationship or field name.</summary>
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        /// <summary>The default criteria type for the filter.</summary>
+        [Newtonsoft.Json.JsonProperty("defaultCriteriaType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DefaultCriteriaType { get; set; }
+    
+        /// <summary>The lookup type if the filter is a relationship lookup.</summary>
+        [Newtonsoft.Json.JsonProperty("lookupType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LookupType? LookupType { get; set; }
+    
+        /// <summary>The type of data if the filter is a field.</summary>
+        [Newtonsoft.Json.JsonProperty("dataType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public FieldDataType? DataType { get; set; }
+    
+        /// <summary>The unique settings for the filter.</summary>
+        [Newtonsoft.Json.JsonProperty("settings", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Settings { get; set; }
+    
+        /// <summary>Whether or not the filter should be visible to the user.</summary>
+        [Newtonsoft.Json.JsonProperty("visibile", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool Visibile { get; set; }
+    
+        /// <summary>Whether or not the user should be able to change the filter value.</summary>
+        [Newtonsoft.Json.JsonProperty("editable", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool Editable { get; set; }
+    
+        /// <summary>The order the filter should appear relative other filters.</summary>
+        [Newtonsoft.Json.JsonProperty("listOrder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ListOrder { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ViewFilter FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ViewFilter>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class WorkflowConfig 
+    {
+        /// <summary>The category identifier</summary>
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int CategoryId { get; set; }
+    
+        /// <summary>The unique name for the category</summary>
+        [Newtonsoft.Json.JsonProperty("categoryName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CategoryName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("configurationProduct", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ConfigurationProduct ConfigurationProduct { get; set; }
+    
+        /// <summary>The title of the product the workflow config is for.</summary>
+        [Newtonsoft.Json.JsonProperty("productTitle", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ProductTitle { get; set; }
+    
+        /// <summary>The description of the product the workflow config is for.</summary>
+        [Newtonsoft.Json.JsonProperty("productDescription", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ProductDescription { get; set; }
+    
+        /// <summary>The display title for the category</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+    
+        /// <summary>The plural display title for the category</summary>
+        [Newtonsoft.Json.JsonProperty("titlePlural", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TitlePlural { get; set; }
+    
+        /// <summary>The description of the category</summary>
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        /// <summary>The short code for the category used to generate a record number.</summary>
+        [Newtonsoft.Json.JsonProperty("shortCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ShortCode { get; set; }
+    
+        /// <summary>The order in which this category should be displayed relative to other categories</summary>
+        [Newtonsoft.Json.JsonProperty("listOrder", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ListOrder { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("state", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public StateConfig State { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static WorkflowConfig FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<WorkflowConfig>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class StateConfig 
+    {
+        /// <summary>The state identifier</summary>
+        [Newtonsoft.Json.JsonProperty("stateId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int StateId { get; set; }
+    
+        /// <summary>The product state identifier</summary>
+        [Newtonsoft.Json.JsonProperty("productStateId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ProductStateId { get; set; }
+    
+        /// <summary>The category identifier</summary>
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int CategoryId { get; set; }
+    
+        /// <summary>The unique name for the state</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>The display title for the state</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+    
+        /// <summary>The description of the state</summary>
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        /// <summary>The list of fields</summary>
+        [Newtonsoft.Json.JsonProperty("fields", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<FieldConfig> Fields { get; set; }
+    
+        /// <summary>The list of relationships</summary>
+        [Newtonsoft.Json.JsonProperty("relationships", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<RelationshipConfig> Relationships { get; set; }
+    
+        /// <summary>The list of relationships</summary>
+        [Newtonsoft.Json.JsonProperty("transitions", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<TransitionConfig> Transitions { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static StateConfig FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<StateConfig>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FieldConfig 
+    {
+        /// <summary>The field identifier</summary>
+        [Newtonsoft.Json.JsonProperty("fieldId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int FieldId { get; set; }
+    
+        /// <summary>The unique name for the field</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>The display title for the field</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+    
+        /// <summary>The description of the field</summary>
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        /// <summary>The category identifier</summary>
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int CategoryId { get; set; }
+    
+        /// <summary>The state identifier</summary>
+        [Newtonsoft.Json.JsonProperty("stateId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int StateId { get; set; }
+    
+        /// <summary>The product field identifier</summary>
+        [Newtonsoft.Json.JsonProperty("productFieldId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ProductFieldId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("collectionMethod", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public FieldCollectionMethod CollectionMethod { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("dataType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public FieldDataType DataType { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("required", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Required { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("available", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Available { get; set; }
+    
+        /// <summary>The minimum length of data.</summary>
+        [Newtonsoft.Json.JsonProperty("minLength", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MinLength { get; set; }
+    
+        /// <summary>The maximum length of data.</summary>
+        [Newtonsoft.Json.JsonProperty("maxLength", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaxLength { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        /// <summary>Whether the field should recalculate its value if there is already a value.</summary>
+        [Newtonsoft.Json.JsonProperty("recalculate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Recalculate { get; set; }
+    
+        /// <summary>Whether the fields changed should be displayed</summary>
+        [Newtonsoft.Json.JsonProperty("displayTrackedChanges", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool DisplayTrackedChanges { get; set; }
+    
+        /// <summary>Whether the a reason is required when the fields value changes</summary>
+        [Newtonsoft.Json.JsonProperty("provideExplanation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool ProvideExplanation { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("validations", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<FieldValidationConfig> Validations { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FieldConfig FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FieldConfig>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class RelationshipConfig 
+    {
+        /// <summary>The relationship identifier</summary>
+        [Newtonsoft.Json.JsonProperty("relationshipId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int RelationshipId { get; set; }
+    
+        /// <summary>The unique name for the relationship</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>The display title for the relationship</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+    
+        /// <summary>The plural display title for the relationship</summary>
+        [Newtonsoft.Json.JsonProperty("titlePlural", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TitlePlural { get; set; }
+    
+        /// <summary>The description of the relationship</summary>
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        /// <summary>Whether or not the relationship is a root entity.</summary>
+        [Newtonsoft.Json.JsonProperty("rootEntity", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool RootEntity { get; set; }
+    
+        /// <summary>The category identifier</summary>
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int CategoryId { get; set; }
+    
+        /// <summary>The state identifier</summary>
+        [Newtonsoft.Json.JsonProperty("stateId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int StateId { get; set; }
+    
+        /// <summary>The product relationship identifier</summary>
+        [Newtonsoft.Json.JsonProperty("productRelationshipId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ProductRelationshipId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("collectionMethod", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public RelationshipCollectionMethod CollectionMethod { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("lookupType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LookupType LookupType { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("minimum", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Minimum { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("maximum", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Maximum { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("available", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Available { get; set; }
+    
+        /// <summary>Whether the fields changed should be displayed</summary>
+        [Newtonsoft.Json.JsonProperty("displayTrackedChanges", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool DisplayTrackedChanges { get; set; }
+    
+        /// <summary>Whether the a reason is required when the fields value changes</summary>
+        [Newtonsoft.Json.JsonProperty("provideExplanation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool ProvideExplanation { get; set; }
+    
+        /// <summary>The list of fields</summary>
+        [Newtonsoft.Json.JsonProperty("fields", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<FieldConfig> Fields { get; set; }
+    
+        /// <summary>The list of relationships</summary>
+        [Newtonsoft.Json.JsonProperty("relationships", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<RelationshipConfig> Relationships { get; set; }
+    
+        /// <summary>The list of fields</summary>
+        [Newtonsoft.Json.JsonProperty("filters", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<RelationshipFilterConfig> Filters { get; set; }
+    
+        /// <summary>The list of fields</summary>
+        [Newtonsoft.Json.JsonProperty("defaultFilters", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<RelationshipFilterConfig> DefaultFilters { get; set; }
+    
+        /// <summary>The list of fields</summary>
+        [Newtonsoft.Json.JsonProperty("validations", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<RelationshipValidationConfig> Validations { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static RelationshipConfig FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RelationshipConfig>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class TransitionConfig 
+    {
+        /// <summary>The end state of a workflow record after the transition is performed.</summary>
+        [Newtonsoft.Json.JsonProperty("toStateId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ToStateId { get; set; }
+    
+        /// <summary>The title of the transition.</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+    
+        /// <summary>Whether an explaination is needed for performing the transition.</summary>
+        [Newtonsoft.Json.JsonProperty("explanationRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool ExplanationRequired { get; set; }
+    
+        /// <summary>The message that can be displayed to the user when the transition completes successfully.</summary>
+        [Newtonsoft.Json.JsonProperty("successMessage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SuccessMessage { get; set; }
+    
+        /// <summary>Whether the transition is consider a primary transition of the workflow.</summary>
+        [Newtonsoft.Json.JsonProperty("primaryTransition", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool PrimaryTransition { get; set; }
+    
+        /// <summary>Order of the tranition relative to other transitions.</summary>
+        [Newtonsoft.Json.JsonProperty("listOrder", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ListOrder { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static TransitionConfig FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<TransitionConfig>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class RelationshipFilterConfig 
+    {
+        /// <summary>The binding name the filter is being applied to.</summary>
+        [Newtonsoft.Json.JsonProperty("binding", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Binding { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("operation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LookupFilterOperation Operation { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static RelationshipFilterConfig FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RelationshipFilterConfig>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FieldValidationConfig 
+    {
+        /// <summary>Validation identifier, unique within the containing field if provided.</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>Text describing the validation.</summary>
+        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Message { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("enabled", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Enabled { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("validation", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Validation { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static FieldValidationConfig FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FieldValidationConfig>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class RelationshipValidationConfig 
+    {
+        /// <summary>Validation identifier, unique within the containing relationship if provided.</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>Text describing the validation.</summary>
+        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Message { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("enabled", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Enabled { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("validation", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Validation { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static RelationshipValidationConfig FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RelationshipValidationConfig>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class GlobalSearchItem 
+    {
+        [Newtonsoft.Json.JsonProperty("Id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Id { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static GlobalSearchItem FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<GlobalSearchItem>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class GlobalSearchParameters 
+    {
+        [Newtonsoft.Json.JsonProperty("SearchTerm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SearchTerm { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static GlobalSearchParameters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<GlobalSearchParameters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class GlobalSearchResult 
+    {
+        [Newtonsoft.Json.JsonProperty("Items", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<GlobalSearchItem> Items { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("TotalResultCount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int TotalResultCount { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static GlobalSearchResult FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<GlobalSearchResult>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Hierarchy 
     {
         /// <summary>The Hierarchy name</summary>
@@ -1817,6 +3796,10 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <summary>The hierarchy identifier</summary>
         [Newtonsoft.Json.JsonProperty("HierarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? HierarchyId { get; set; }
+    
+        /// <summary>The hierarchy root group identifier</summary>
+        [Newtonsoft.Json.JsonProperty("RootLocationGroupID", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RootLocationGroupID { get; set; }
     
         public string ToJson() 
         {
@@ -1882,6 +3865,410 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class HierarchyStats 
+    {
+        [Newtonsoft.Json.JsonProperty("locationCount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int LocationCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationActiveCount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int LocationActiveCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationInactiveCount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int LocationInactiveCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationArchivedCount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int LocationArchivedCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationGroupCount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int LocationGroupCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationGroupActiveCount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int LocationGroupActiveCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationGroupInactiveCount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int LocationGroupInactiveCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationGroupArchivedCount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int LocationGroupArchivedCount { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static HierarchyStats FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<HierarchyStats>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class MachineTranslation 
+    {
+        /// <summary>Unique Id of person</summary>
+        [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PersonId { get; set; }
+    
+        /// <summary>Original Language</summary>
+        [Newtonsoft.Json.JsonProperty("originalLanguage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string OriginalLanguage { get; set; }
+    
+        /// <summary>Id of Translated Language</summary>
+        [Newtonsoft.Json.JsonProperty("translatedLanguageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TranslatedLanguageId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static MachineTranslation FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<MachineTranslation>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ListItem 
+    {
+        [Newtonsoft.Json.JsonProperty("listitemid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Listitemid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Listid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("editable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Editable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("itemorder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Itemorder { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("statusid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Statusid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ListItem FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListItem>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class NewListItemParams 
+    {
+        [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Listid { get; set; }
+    
+        /// <summary>The array of list item values</summary>
+        [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<string> Values { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static NewListItemParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<NewListItemParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdateListItemParams 
+    {
+        [Newtonsoft.Json.JsonProperty("listitemid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Listitemid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("editable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Editable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("statusid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Statusid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdateListItemParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateListItemParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ReorderListItemParams 
+    {
+        [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Listid { get; set; }
+    
+        /// <summary>The array of list item values</summary>
+        [Newtonsoft.Json.JsonProperty("listitems", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<ListItem> Listitems { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ReorderListItemParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ReorderListItemParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ListItemSearch 
+    {
+        [Newtonsoft.Json.JsonProperty("listitemid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Listitemid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("listitemtext", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Listitemtext { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("statusid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Statusid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Listid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("productids", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> Productids { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("listtext", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Listtext { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ListItemSearch FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListItemSearch>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class List 
+    {
+        [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Listid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("orderable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Orderable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("editable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Editable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("statusid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Statusid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("itemsorderable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Itemsorderable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("itemseditable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Itemseditable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("productlist", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> Productlist { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static List FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<List>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdateListParams 
+    {
+        [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Listid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("orderable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Orderable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("editable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Editable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("statusid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Statusid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("itemseditable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Itemseditable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("addproductlist", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> Addproductlist { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("removeproductlist", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> Removeproductlist { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdateListParams FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateListParams>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ListSearch 
+    {
+        [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Listid { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("listtext", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Listtext { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("productids", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> Productids { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("statusid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Statusid { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ListSearch FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListSearch>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Language 
+    {
+        [Newtonsoft.Json.JsonProperty("languageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LanguageId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("languageCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string LanguageCode { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("languageName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string LanguageName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("nativeLanguage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string NativeLanguage { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("defaultLanguage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DefaultLanguage { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Language FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Language>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Currency 
+    {
+        /// <summary>Currency Id</summary>
+        [Newtonsoft.Json.JsonProperty("currencyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CurrencyId { get; set; }
+    
+        /// <summary>Currency Code</summary>
+        [Newtonsoft.Json.JsonProperty("currencyCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CurrencyCode { get; set; }
+    
+        /// <summary>Currency Description</summary>
+        [Newtonsoft.Json.JsonProperty("currencyDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CurrencyDescription { get; set; }
+    
+        /// <summary>Currency Display String</summary>
+        [Newtonsoft.Json.JsonProperty("currencyDisplayString", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CurrencyDisplayString { get; set; }
+    
+        /// <summary>Default Currency</summary>
+        [Newtonsoft.Json.JsonProperty("defaultCurrency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DefaultCurrency { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Currency FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Currency>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class TimeZoneList 
+    {
+        /// <summary>Timezone Id</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TimeZoneId { get; set; }
+    
+        /// <summary>Timezone Name</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TimeZoneName { get; set; }
+    
+        /// <summary>Timezone Description</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TimeZoneDescription { get; set; }
+    
+        /// <summary>Timezone Offset</summary>
+        [Newtonsoft.Json.JsonProperty("timeZoneOffset", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? TimeZoneOffset { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static TimeZoneList FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<TimeZoneList>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Location 
     {
         /// <summary>The location identifier</summary>
@@ -1909,6 +4296,10 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         [Newtonsoft.Json.JsonProperty("hierarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? HierarchyId { get; set; }
     
+        /// <summary>The level of the node on hierarchy</summary>
+        [Newtonsoft.Json.JsonProperty("level", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Level { get; set; }
+    
         /// <summary>The location path</summary>
         [Newtonsoft.Json.JsonProperty("paths", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IList<string> Paths { get; set; }
@@ -1916,6 +4307,10 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <summary>The available status for Location List</summary>
         [Newtonsoft.Json.JsonProperty("isAvailable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? IsAvailable { get; set; }
+    
+        /// <summary>The partial available status for Location List</summary>
+        [Newtonsoft.Json.JsonProperty("isPartialAvailable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsPartialAvailable { get; set; }
     
         /// <summary>The SIC code</summary>
         [Newtonsoft.Json.JsonProperty("sicCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2088,146 +4483,6 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class ListItem 
-    {
-        [Newtonsoft.Json.JsonProperty("listitemid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Listitemid { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Listid { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("editable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Editable { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("itemorder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Itemorder { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("statusid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Statusid { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Value { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static ListItem FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListItem>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class NewListItemParams 
-    {
-        [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Listid { get; set; }
-    
-        /// <summary>The array of list item values</summary>
-        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<string> Value { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static NewListItemParams FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<NewListItemParams>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class UpdateListItemParams 
-    {
-        [Newtonsoft.Json.JsonProperty("listitemid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Listitemid { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("editable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Editable { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("statusid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Statusid { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Value { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static UpdateListItemParams FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateListItemParams>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class ReorderListItemParams 
-    {
-        [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Listid { get; set; }
-    
-        /// <summary>The array of list item values</summary>
-        [Newtonsoft.Json.JsonProperty("listitems", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<ListItem> Listitems { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static ReorderListItemParams FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ReorderListItemParams>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class List 
-    {
-        [Newtonsoft.Json.JsonProperty("listid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Listid { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("orderable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Orderable { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("editable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Editable { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("statusid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Statusid { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("itemsorderable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Itemsorderable { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("itemseditable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Itemseditable { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Value { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static List FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<List>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class LocationListAvailability 
     {
         /// <summary>The array of location identifiers</summary>
@@ -2269,6 +4524,162 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         public static LocationListAvailabilityDetails FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<LocationListAvailabilityDetails>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Navigation 
+    {
+        [Newtonsoft.Json.JsonProperty("MegaMenu", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<NavigationMenu> MegaMenu { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ConfigurationMenu", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public object ConfigurationMenu { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("HelpMenu", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public object HelpMenu { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("VelocityRibbon", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<NavigationElement> VelocityRibbon { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Settings", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public object Settings { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Navigation FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Navigation>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class NavigationMenu 
+    {
+        [Newtonsoft.Json.JsonProperty("Key", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Key { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("DisplayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DisplayName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Groups", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<NavigationElementGroup> Groups { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static NavigationMenu FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<NavigationMenu>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class NavigationElementGroup 
+    {
+        [Newtonsoft.Json.JsonProperty("Key", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Key { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("DisplayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DisplayName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Links", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<NavigationElement> Links { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static NavigationElementGroup FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<NavigationElementGroup>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class NavigationElement 
+    {
+        [Newtonsoft.Json.JsonProperty("Key", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Key { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("DisplayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DisplayName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LinkUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string LinkUrl { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("NewTab", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool NewTab { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static NavigationElement FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<NavigationElement>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class NavigationSettings 
+    {
+        [Newtonsoft.Json.JsonProperty("ColourBarColour", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ColourBarColour { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("AccountLogoFilePath", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string AccountLogoFilePath { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("UserProfileAvailable", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool UserProfileAvailable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LogoutAvailable", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool LogoutAvailable { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static NavigationSettings FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<NavigationSettings>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class User 
+    {
+        [Newtonsoft.Json.JsonProperty("AccountPersonID", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int AccountPersonID { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("FirstName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string FirstName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LastName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string LastName { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static User FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<User>(data);
         }
     
     }
@@ -2418,6 +4829,25 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class PersonsResponse : ResponseList
+    {
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IList<Person> Items { get; set; } = new System.Collections.Generic.List<Person>();
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static PersonsResponse FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PersonsResponse>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class UpdatePersonParams 
     {
         [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2480,6 +4910,9 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         [Newtonsoft.Json.JsonProperty("postalCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PostalCode { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("languageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LanguageId { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("RelationshipTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? RelationshipTypeId { get; set; }
     
@@ -2537,6 +4970,10 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         /// <summary>The unique person id</summary>
         [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? PersonId { get; set; }
+    
+        /// <summary>The Preference of dateFormat language id</summary>
+        [Newtonsoft.Json.JsonProperty("languageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LanguageId { get; set; }
     
         /// <summary>The dateFormat for personalization</summary>
         [Newtonsoft.Json.JsonProperty("dateFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2613,6 +5050,10 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
         [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? PersonId { get; set; }
     
+        /// <summary>The Preference of dateFormat language id</summary>
+        [Newtonsoft.Json.JsonProperty("languageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LanguageId { get; set; }
+    
         /// <summary>The dateFormat for personalization</summary>
         [Newtonsoft.Json.JsonProperty("dateFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string DateFormat { get; set; }
@@ -2666,232 +5107,823 @@ namespace VelocityEhs.UI.Web.Ehs.WebApi.Controllers
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class MachineTranslation 
+    public enum PersonValidationRuleSet
     {
-        /// <summary>Unique Id of person</summary>
+        [System.Runtime.Serialization.EnumMember(Value = @"Personal")]
+        Personal = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Employment")]
+        Employment = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Login")]
+        Login = 2,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum EntityOperation
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"Add")]
+        Add = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Modify")]
+        Modify = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Remove")]
+        Remove = 2,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class WorkflowData 
+    {
+        /// <summary>The operation being performed on the data.</summary>
+        [Newtonsoft.Json.JsonProperty("operation", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public EntityOperation? Operation { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("requestIdentifiers", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IDictionary<string, object> RequestIdentifiers { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IDictionary<string, object> Values { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("relationships", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IDictionary<string, System.Collections.Generic.IList<RelatedWorkflowEntityData>> Relationships { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static WorkflowData FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<WorkflowData>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class WorkflowEntityData : WorkflowData
+    {
+        /// <summary>The category identifier</summary>
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int CategoryId { get; set; }
+    
+        /// <summary>The state identifier</summary>
+        [Newtonsoft.Json.JsonProperty("stateId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int StateId { get; set; }
+    
+        /// <summary>The unique number of the record</summary>
+        [Newtonsoft.Json.JsonProperty("recordNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RecordNumber { get; set; }
+    
+        /// <summary>The date and time the record was last modified</summary>
+        [Newtonsoft.Json.JsonProperty("lastModified", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? LastModified { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static WorkflowEntityData FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<WorkflowEntityData>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class RelatedWorkflowEntityData : WorkflowData
+    {
+        /// <summary>The category identifier</summary>
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CategoryId { get; set; }
+    
+        /// <summary>The state identifier</summary>
+        [Newtonsoft.Json.JsonProperty("stateId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StateId { get; set; }
+    
+        /// <summary>The unique number of the record</summary>
+        [Newtonsoft.Json.JsonProperty("recordNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RecordNumber { get; set; }
+    
+        /// <summary>The date and time the record was last modified</summary>
+        [Newtonsoft.Json.JsonProperty("lastModified", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? LastModified { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static RelatedWorkflowEntityData FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RelatedWorkflowEntityData>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ProductRecord 
+    {
+        /// <summary>The unique identifier for the record.</summary>
+        [Newtonsoft.Json.JsonProperty("requestIdentifier", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int RequestIdentifier { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IDictionary<string, string> Values { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ProductRecord FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProductRecord>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ProductRecordSearch 
+    {
+        /// <summary>The number of records to include on a page.</summary>
+        [Newtonsoft.Json.JsonProperty("pageSize", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int PageSize { get; set; }
+    
+        /// <summary>The page number the records are for.</summary>
+        [Newtonsoft.Json.JsonProperty("page", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Page { get; set; }
+    
+        /// <summary>The list of record values to display.</summary>
+        [Newtonsoft.Json.JsonProperty("displayValues", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<ProductRecordSearchDisplayValue> DisplayValues { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("filters", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProductRecordSearchFilterCriteria Filters { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ProductRecordSearch FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProductRecordSearch>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ProductRecordSearchDisplayValue 
+    {
+        /// <summary>The unique product relationship or field name.</summary>
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        /// <summary>Whether or not the view is sorted by this value.</summary>
+        [Newtonsoft.Json.JsonProperty("orderBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool OrderBy { get; set; }
+    
+        /// <summary>The direction to sort by if ordered by.</summary>
+        [Newtonsoft.Json.JsonProperty("orderDirection", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string OrderDirection { get; set; }
+    
+        /// <summary>The priority of the order by relative to other order by's.</summary>
+        [Newtonsoft.Json.JsonProperty("orderPriority", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? OrderPriority { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ProductRecordSearchDisplayValue FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProductRecordSearchDisplayValue>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ProductRecordSearchFilterCriteria 
+    {
+        /// <summary>The criteria relationship.</summary>
+        [Newtonsoft.Json.JsonProperty("criteriaRelationship", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CriteriaRelationship { get; set; }
+    
+        /// <summary>The list of filter criteria values.</summary>
+        [Newtonsoft.Json.JsonProperty("criteria", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<ProductRecordSearchFilterCriteriaValue> Criteria { get; set; }
+    
+        /// <summary>The nested filter criteria.</summary>
+        [Newtonsoft.Json.JsonProperty("nestedCriteria", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<ProductRecordSearchFilterCriteria> NestedCriteria { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ProductRecordSearchFilterCriteria FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProductRecordSearchFilterCriteria>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ProductRecordSearchFilterCriteriaValue 
+    {
+        /// <summary>The value the filter is on.</summary>
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("criteriaType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProductRecordSearchFilterCriteriaType CriteriaType { get; set; }
+    
+        /// <summary>The criteria value applied.</summary>
+        [Newtonsoft.Json.JsonProperty("criteriaValue", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CriteriaValue { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ProductRecordSearchFilterCriteriaValue FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProductRecordSearchFilterCriteriaValue>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ProductRecordSearchResult 
+    {
+        /// <summary>The number of records to include on a page.</summary>
+        [Newtonsoft.Json.JsonProperty("pageSize", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int PageSize { get; set; }
+    
+        /// <summary>The page number the records are for.</summary>
+        [Newtonsoft.Json.JsonProperty("page", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Page { get; set; }
+    
+        /// <summary>The total number of records applicable to the search.</summary>
+        [Newtonsoft.Json.JsonProperty("totalRecords", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int TotalRecords { get; set; }
+    
+        /// <summary>The list of record values to display.</summary>
+        [Newtonsoft.Json.JsonProperty("displayValues", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<ProductRecordSearchResultDisplayValue> DisplayValues { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("filters", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProductRecordSearchFilterCriteria Filters { get; set; }
+    
+        /// <summary>The list of records.</summary>
+        [Newtonsoft.Json.JsonProperty("records", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<ProductRecord> Records { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ProductRecordSearchResult FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProductRecordSearchResult>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ProductRecordSearchResultDisplayValue : ProductRecordSearchDisplayValue
+    {
+        /// <summary>The internationalized title of the display value.</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+    
+        /// <summary>The internationalized description of the display value.</summary>
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        /// <summary>The order the display value should be ordered relative to other display values.</summary>
+        [Newtonsoft.Json.JsonProperty("listOrder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ListOrder { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ProductRecordSearchResultDisplayValue FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProductRecordSearchResultDisplayValue>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum ProductRecordSearchFilterCriteriaType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"ANY")]
+        ANY = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"IS_EQUAL")]
+        IS_EQUAL = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"ISNOT_EQUAL")]
+        ISNOT_EQUAL = 2,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"BETWEEN")]
+        BETWEEN = 3,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"IS_DESCENDANTLOCATION")]
+        IS_DESCENDANTLOCATION = 4,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"ISNOT_DESCENDANTLOCATION")]
+        ISNOT_DESCENDANTLOCATION = 5,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LookupItem 
+    {
+        /// <summary>The unique id of the lookup item.</summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        public int Id { get; set; }
+    
+        /// <summary>The optional parent id of the lookup item.</summary>
+        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ParentId { get; set; }
+    
+        /// <summary>The display value of the lookup item.</summary>
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Value { get; set; }
+    
+        /// <summary>The optional secondary display value of the lookup item.</summary>
+        [Newtonsoft.Json.JsonProperty("secondaryValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SecondaryValue { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LookupItem FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LookupItem>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LookupResponse : ResponseList
+    {
+        [Newtonsoft.Json.JsonProperty("records", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<LookupItem> Records { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LookupResponse FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LookupResponse>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LookupLocationsResponse : ResponseList
+    {
+        [Newtonsoft.Json.JsonProperty("records", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<LocationLookupItem> Records { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LookupLocationsResponse FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LookupLocationsResponse>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LocationLookupItem 
+    {
+        /// <summary>The hierarchy the location is represented in.</summary>
+        [Newtonsoft.Json.JsonProperty("hierarchyId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int HierarchyId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LocationType LocationType { get; set; }
+    
+        /// <summary>The unique id of the location for the type.</summary>
+        [Newtonsoft.Json.JsonProperty("locationId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int LocationId { get; set; }
+    
+        /// <summary>The unique id of the parent location group.</summary>
+        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ParentId { get; set; }
+    
+        /// <summary>The display name of the location.</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>The path for the location with in the hierarchy.</summary>
+        [Newtonsoft.Json.JsonProperty("path", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Path { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LocationLookupItem FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LocationLookupItem>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CategoryRepositoryAdapterFilters 
+    {
+        /// <summary>Filter to optionally include categories of a specific configuration product.</summary>
+        [Newtonsoft.Json.JsonProperty("configurationProductId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ConfigurationProductId { get; set; }
+    
+        /// <summary>Filter to optionally include a specific category.</summary>
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CategoryId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static CategoryRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CategoryRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ContractorRepositoryAdapterFilters 
+    {
+        /// <summary>The unique id of the contrator to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("contractorId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ContractorId { get; set; }
+    
+        /// <summary>The status to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("statusId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StatusId { get; set; }
+    
+        /// <summary>The list of contrator types to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("types", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> Types { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ContractorRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ContractorRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CountryRepositoryAdapterFilters 
+    {
+        /// <summary>Temporary property to make CountryRepositoryAdapterFilters type</summary>
+        [Newtonsoft.Json.JsonProperty("countryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CountryId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static CountryRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CountryRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CountryDivisionRepositoryAdapterFilters 
+    {
+        /// <summary>The unique identifier of the parent country.</summary>
+        [Newtonsoft.Json.JsonProperty("countryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CountryId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static CountryDivisionRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CountryDivisionRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CurrencyRepositoryAdapterFilters 
+    {
+        /// <summary>Filter to optionally include only the default currency</summary>
+        [Newtonsoft.Json.JsonProperty("isDefault", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsDefault { get; set; }
+    
+        /// <summary>The list of ids of currencies to optionally include.</summary>
+        [Newtonsoft.Json.JsonProperty("includeCurrencyIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> IncludeCurrencyIds { get; set; }
+    
+        /// <summary>The list of ids of currencies to optionally exclude.</summary>
+        [Newtonsoft.Json.JsonProperty("excludeCurrencyIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> ExcludeCurrencyIds { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static CurrencyRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CurrencyRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class GenderRepositoryAdapterFilters 
+    {
+        /// <summary>Temporary property to make GenderRepositoryAdapterFilters type</summary>
+        [Newtonsoft.Json.JsonProperty("genderId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? GenderId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static GenderRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<GenderRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ListItemRepositoryAdapterFilters 
+    {
+        /// <summary>The list id to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("listId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ListId { get; set; }
+    
+        /// <summary>The location id to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("locationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LocationId { get; set; }
+    
+        /// <summary>The list of ids of list items to optionally include.</summary>
+        [Newtonsoft.Json.JsonProperty("includeListItemIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> IncludeListItemIds { get; set; }
+    
+        /// <summary>The list of ids of list items to optionally exclude.</summary>
+        [Newtonsoft.Json.JsonProperty("excludeListItemIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> ExcludeListItemIds { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ListItemRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListItemRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LocationRepositoryAdapterFilters 
+    {
+        /// <summary>The unique id for the location within its type.</summary>
+        [Newtonsoft.Json.JsonProperty("locationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LocationId { get; set; }
+    
+        /// <summary>The id of the hierarchy to optionally limit locations to.</summary>
+        [Newtonsoft.Json.JsonProperty("hierarchyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? HierarchyId { get; set; }
+    
+        /// <summary>The id of the parent location group to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ParentId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("locationType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public LocationType? LocationType { get; set; }
+    
+        /// <summary>The list of location statuses to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("locationStatuses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> LocationStatuses { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static LocationRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LocationRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class PersonRelationshipTypeRepositoryAdapterFilters 
+    {
+        /// <summary>The list of ids of person relationship types to optionally include.</summary>
+        [Newtonsoft.Json.JsonProperty("includePersonRelationshipTypeIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> IncludePersonRelationshipTypeIds { get; set; }
+    
+        /// <summary>The list of ids of person relationship types to optionally exclude.</summary>
+        [Newtonsoft.Json.JsonProperty("excludePersonRelationshipTypeIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> ExcludePersonRelationshipTypeIds { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static PersonRelationshipTypeRepositoryAdapterFilters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PersonRelationshipTypeRepositoryAdapterFilters>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class PersonRepositoryAdapterFilters 
+    {
+        /// <summary>The id of the person optionally filter by.</summary>
         [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? PersonId { get; set; }
     
-        /// <summary>Original Language</summary>
-        [Newtonsoft.Json.JsonProperty("originalLanguage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string OriginalLanguage { get; set; }
+        /// <summary>The id of the person to optional filter to the people report to them.</summary>
+        [Newtonsoft.Json.JsonProperty("reportsTo", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ReportsTo { get; set; }
     
-        /// <summary>Id of Translated Language</summary>
-        [Newtonsoft.Json.JsonProperty("translatedLanguageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? TranslatedLanguageId { get; set; }
+        /// <summary>The id of the person to optional filter to the person who supervises them.</summary>
+        [Newtonsoft.Json.JsonProperty("supervises", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Supervises { get; set; }
+    
+        /// <summary>Optionally filter by whether the person has login access.</summary>
+        [Newtonsoft.Json.JsonProperty("hasLoginAccess", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HasLoginAccess { get; set; }
+    
+        /// <summary>Optionally filter to people who are members of a specific group.</summary>
+        [Newtonsoft.Json.JsonProperty("memberOf", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string MemberOf { get; set; }
+    
+        /// <summary>The id of the location to optional filter to people who have that location set.</summary>
+        [Newtonsoft.Json.JsonProperty("locationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LocationId { get; set; }
+    
+        /// <summary>The id of the relationship type to optionally filter people by.</summary>
+        [Newtonsoft.Json.JsonProperty("relationshipTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RelationshipTypeId { get; set; }
+    
+        /// <summary>The list of person statuses to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("personStatuses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> PersonStatuses { get; set; }
     
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static MachineTranslation FromJson(string data)
+        public static PersonRepositoryAdapterFilters FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<MachineTranslation>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PersonRepositoryAdapterFilters>(data);
         }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class UpdateAccountCurrencyList 
+    public partial class RoleRepositoryAdapterFilters 
     {
-        /// <summary>list of currency Id list to add</summary>
-        [Newtonsoft.Json.JsonProperty("addCurrencyIdList", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> AddCurrencyIdList { get; set; }
+        /// <summary>The specific role to filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("roleId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RoleId { get; set; }
     
-        /// <summary>list of currency Id list to delete</summary>
-        [Newtonsoft.Json.JsonProperty("deleteCurrencyIdList", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<int> DeleteCurrencyIdList { get; set; }
+        /// <summary>The unique id of the role type to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("roleTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RoleTypeId { get; set; }
     
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static UpdateAccountCurrencyList FromJson(string data)
+        public static RoleRepositoryAdapterFilters FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateAccountCurrencyList>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RoleRepositoryAdapterFilters>(data);
         }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class LoginParams 
+    public partial class StateRepositoryAdapterFilters 
     {
-        /// <summary>The account id</summary>
-        [Newtonsoft.Json.JsonProperty("accountid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Accountid { get; set; }
+        /// <summary>Filter to optionally include state of a specific configuration product.</summary>
+        [Newtonsoft.Json.JsonProperty("configurationProductId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ConfigurationProductId { get; set; }
     
-        /// <summary>The language id</summary>
-        [Newtonsoft.Json.JsonProperty("languageid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Languageid { get; set; }
+        /// <summary>Filter to optionally include states of a specific category.</summary>
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CategoryId { get; set; }
     
-        /// <summary>The username</summary>
-        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Username { get; set; }
-    
-        /// <summary>The password</summary>
-        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Password { get; set; }
+        /// <summary>Filter to optionally include a specific state.</summary>
+        [Newtonsoft.Json.JsonProperty("stateId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StateId { get; set; }
     
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static LoginParams FromJson(string data)
+        public static StateRepositoryAdapterFilters FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<LoginParams>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<StateRepositoryAdapterFilters>(data);
         }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class PasswordParams 
+    public partial class UnitRepositoryAdapterFilters 
     {
-        /// <summary>The password</summary>
-        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Password { get; set; }
+        /// <summary>The id of the unit system to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("unitSystem", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? UnitSystem { get; set; }
+    
+        /// <summary>The list of ids of unit types to optionally include.</summary>
+        [Newtonsoft.Json.JsonProperty("unitTypes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> UnitTypes { get; set; }
+    
+        /// <summary>Filter to optionally include only base units.</summary>
+        [Newtonsoft.Json.JsonProperty("isBase", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsBase { get; set; }
+    
+        /// <summary>The scale of the units to optionally filter by.</summary>
+        [Newtonsoft.Json.JsonProperty("unitScale", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string UnitScale { get; set; }
+    
+        /// <summary>The list of ids of units to optionally include.</summary>
+        [Newtonsoft.Json.JsonProperty("includeUnitIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> IncludeUnitIds { get; set; }
+    
+        /// <summary>The list of ids of units to optionally exclude.</summary>
+        [Newtonsoft.Json.JsonProperty("excludeUnitIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IList<int> ExcludeUnitIds { get; set; }
     
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static PasswordParams FromJson(string data)
+        public static UnitRepositoryAdapterFilters FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<PasswordParams>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UnitRepositoryAdapterFilters>(data);
         }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class LoginResponse 
+    public enum FormsAuthPasswordChangeRequestDeliveryMethod
     {
-        /// <summary>The jwt token generated</summary>
-        [Newtonsoft.Json.JsonProperty("token", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Token { get; set; }
+        [System.Runtime.Serialization.EnumMember(Value = @"email")]
+        Email = 0,
     
-        /// <summary>An identity verification required</summary>
-        [Newtonsoft.Json.JsonProperty("identityverificationrequired", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Identityverificationrequired { get; set; }
-    
-        /// <summary>A password change is required</summary>
-        [Newtonsoft.Json.JsonProperty("passwordchangerequired", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Passwordchangerequired { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static LoginResponse FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<LoginResponse>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class PasswordValidationResult 
-    {
-        /// <summary>boolean if password validation succeeded</summary>
-        [Newtonsoft.Json.JsonProperty("isvalid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool Isvalid { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("unfollowedrules", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IList<FormsAuthPasswordRule> Unfollowedrules { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static PasswordValidationResult FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<PasswordValidationResult>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class FormsAuthPasswordRule 
-    {
-        /// <summary>The id of the password rule.</summary>
-        [Newtonsoft.Json.JsonProperty("ruleId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? RuleId { get; set; }
-    
-        /// <summary>The description of the password rule.</summary>
-        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Description { get; set; }
-    
-        /// <summary>The value for the rule.</summary>
-        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Value { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static FormsAuthPasswordRule FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<FormsAuthPasswordRule>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class TokenExpiry 
-    {
-        /// <summary>Token Expiry</summary>
-        [Newtonsoft.Json.JsonProperty("tokenexpiry", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? Tokenexpiry { get; set; }
-    
-        /// <summary>The epoch remaining time.</summary>
-        [Newtonsoft.Json.JsonProperty("epochvalue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? Epochvalue { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static TokenExpiry FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<TokenExpiry>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.36.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class Currency 
-    {
-        /// <summary>Currency Id</summary>
-        [Newtonsoft.Json.JsonProperty("currencyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? CurrencyId { get; set; }
-    
-        /// <summary>Currency Code</summary>
-        [Newtonsoft.Json.JsonProperty("currencyCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string CurrencyCode { get; set; }
-    
-        /// <summary>Currency Description</summary>
-        [Newtonsoft.Json.JsonProperty("currencyDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string CurrencyDescription { get; set; }
-    
-        /// <summary>Default Currency</summary>
-        [Newtonsoft.Json.JsonProperty("defaultCurrency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? DefaultCurrency { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static Currency FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Currency>(data);
-        }
+        [System.Runtime.Serialization.EnumMember(Value = @"phone")]
+        Phone = 1,
     
     }
 
